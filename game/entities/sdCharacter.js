@@ -2401,7 +2401,7 @@ class sdCharacter extends sdEntity
 		}
 	}
 	
-	get mass() { return 80 * this.stability_upgrade / 2 * this.s / 100; }
+	get mass() { return 80 * this.s / 100; }
 	Impulse( x, y )
 	{
 		this.sx += x / this.mass;
