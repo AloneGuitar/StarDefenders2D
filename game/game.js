@@ -1063,10 +1063,23 @@ let enf_once = true;
 		
 		if ( code === 'KeyZ' )
 		{
+			if ( sdWorld.my_entity.workbench_level >= 10 )
+			{
+			if ( sdWorld.target_scale === 1.5 )
+			window.onresize();
+			else
+			if ( sdWorld.target_scale === 8 )
+			sdWorld.target_scale = 1.5;
+			else
+			sdWorld.target_scale = 8;
+			}
+			else
+			{
 			if ( sdWorld.target_scale === 8 )
 			window.onresize();
 			else
 			sdWorld.target_scale = 8;
+			}
 		}
 		
 		if ( key_states.GetKey( code ) !== 1 )
@@ -1095,7 +1108,7 @@ let enf_once = true;
 			if ( sdWorld.my_entity.hea > 0 )
 			if ( !sdWorld.my_entity._is_being_removed )
 			if ( sdWorld.my_entity._inventory[ sdGun.classes[ sdGun.CLASS_BUILD_TOOL ].slot ] && 
-			     sdWorld.my_entity._inventory[ sdGun.classes[ sdGun.CLASS_BUILD_TOOL ].slot ].class === sdGun.CLASS_BUILD_TOOL )
+			     ( sdWorld.my_entity._inventory[ sdGun.classes[ sdGun.CLASS_BUILD_TOOL ].slot ].class === sdGun.CLASS_BUILD_TOOL || sdWorld.my_entity._inventory[ sdGun.classes[ sdGun.CLASS_BUILD_TOOL ].slot ].class === sdGun.CLASS_BUILD_TOOL_MK2 ) )
 			{
 				key_states.SetKey( 'Digit9', 1 );
 				key_states.SetKey( 'Digit9', 0 );

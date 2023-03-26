@@ -1,10 +1,10 @@
 <html>
     <head>
-	<title>Star Defenders - free multiplayer sandbox game</title>
+	<title>Lore of Star Susanoos</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-	<meta name="title" content="Play Star Defenders">
-	<meta name="description" content="Star Defenders is a free multiplayer sandbox game. Fight alien creatures from unknown realms alongside friends you'll definitely make here!">
+	<meta name="title" content="Lore Memory">
+	<meta name="description" content="When will Star Defenders become to Star Susanoos?">
 	<meta name="keywords" content="game, play, sandbox, real-time, fast-paced, side-scrolling, Star Defenders, free, free-to-play, open-source, game like Minecraft, game like Terraria, game like Moonbase Alpha, game like Doom, host your own server, expedition, Mars, space, depressed astronauts, TTS, text-to-speech, multiplayer, HTML5, WebGL, creative, interesting">
 	<meta name="robots" content="index, follow">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -16,23 +16,11 @@
 	<script src="client/sdErrorReporter.js"></script>
 	<!--
  
-	    This is a test of new in-line code for HTML files (these still could end up being cached by browsers when it is not needed though):
- 
-	    <? 
-		print_html = false; // Prevent following HTML snippet to be printed right away - we will use it as a variable for a string
-		let piece_of_text = ?>:: 1 2 3 4 5 6 7 8 9 10 ::
-:: 11 12 13 14 15 16 17 ::
-
-<?
-		// Print string value 3 times
-		for ( let i = 0; i < 3; i++ )
-		print( piece_of_text );
- 
-		print_html = true;
-	    ?>
+	    To learn how to install your ads go there https://developers.google.com/ad-placement/docs/beta
+	
 	-->
 	<script async
-	    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=<? print( sdWorld.server_config.adsense_client ) ?>"
+	    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7381466440820611"
 	    crossorigin="anonymous">
 	</script>
 	<!--data-adbreak-test="on"-->
@@ -46,8 +34,6 @@
 	<div id="twitch_player_div"></div>
 	<div id="youtube_player_div"></div>
 	<script>
-
-
 	    
 	    globalThis.twitch_player_div = document.getElementById( 'twitch_player_div' );
 	    globalThis.youtube_player_div = document.getElementById( 'youtube_player_div' );
@@ -115,9 +101,6 @@
 				    twitch_player_load_callback( twitch_player );
 				    twitch_player_load_callback = null;
 				}
-			    };
-			    let error = ()=>
-			    {
 			    };
 			    twitch_player.addEventListener( Twitch.Player.READY, next );
 			    twitch_player.addEventListener( Twitch.Player.ERROR, error );
@@ -192,6 +175,166 @@
 	<script src="client/sdMobileKeyboard.js" type="module"></script>
 	<script src="game.js" type="module"></script>
 	<div id="mobile_ui" style="display:none;z-index:100;position:fixed;left:0;top:0">
+	    <!--
+        	<span id="mobile_move_button" class="r_conteiner" style="
+                position: fixed;
+                left: 5vh;
+                width: 30vh;
+                height: 30vh;
+                background-color: #ffffff0d;
+                bottom: 5vh;
+                border-radius: 20vh;
+                text-align: center;
+                line-height: 30vh;
+                margin: 0px;
+                padding: 0px;
+                font-size: 3vh;
+                color: #ffffff24;
+            ">Move</span>
+
+<span id="mobile_reload_button" class="r_conteiner" style="
+                position: fixed;
+                right: 40%;
+                width: 14vh;
+                height: 14vh;
+                background-color: #ffffff0d;
+                bottom: 6vh;
+                border-radius: 20vh;
+                text-align: center;
+                line-height: 14vh;
+                margin: 0px;
+                padding: 0px;
+                font-size: 3vh;
+                color: #ffffff24;
+            ">Reload</span>
+
+<span id="mobile_1_button" class="r_conteiner" style="
+                position: fixed;
+                right: 49vh;
+                width: 14vh;
+                height: 14vh;
+                background-color: #ffffff0d;
+                bottom: 6vh;
+                border-radius: 20vh;
+                text-align: center;
+                line-height: 14vh;
+                margin: 0px;
+                padding: 0px;
+                font-size: 3vh;
+                color: #ffffff24;
+            ">Pistol</span>
+<span id="mobile_2_button" class="r_conteiner" style="
+                position: fixed;
+                right: 49vh;
+                width: 14vh;
+                height: 14vh;
+                background-color: #ffffff0d;
+                bottom: 24vh;
+                border-radius: 20vh;
+                text-align: center;
+                line-height: 14vh;
+                margin: 0px;
+                padding: 0px;
+                font-size: 3vh;
+                color: #ffffff24;
+            ">Rifle</span>
+
+<span id="mobile_3_button" class="r_conteiner" style="
+                position: fixed;
+                right: 41vh;
+                width: 14vh;
+                height: 14vh;
+                background-color: #ffffff0d;
+                bottom: 40vh;
+                border-radius: 20vh;
+                text-align: center;
+                line-height: 14vh;
+                margin: 0px;
+                padding: 0px;
+                font-size: 3vh;
+                color: #ffffff24;
+            ">Shotgun</span>
+
+<span id="mobile_4_button" class="r_conteiner" style="
+                position: fixed;
+                right: 24vh;
+                width: 14vh;
+                height: 14vh;
+                background-color: #ffffff0d;
+                bottom: 49vh;
+                border-radius: 20vh;
+                text-align: center;
+                line-height: 14vh;
+                margin: 0px;
+                padding: 0px;
+                font-size: 3vh;
+                color: #ffffff24;
+            ">Sniper</span>
+
+<span id="mobile_5_button" class="r_conteiner" style="
+                position: fixed;
+                right: 5vh;
+                width: 14vh;
+                height: 14vh;
+                background-color: #ffffff0d;
+                bottom: 48vh;
+                border-radius: 20vh;
+                text-align: center;
+                line-height: 14vh;
+                margin: 0px;
+                padding: 0px;
+                font-size: 3vh;
+                color: #ffffff24;
+            ">RL</span>
+
+            <span id="mobile_shoot_button" class="r_conteiner" style="
+                position: fixed;
+                right: 5vh;
+                width: 40vh;
+                height: 40vh;
+                background-color: #ffffff0d;
+                bottom: 5vh;
+                border-radius: 20vh;
+                text-align: center;
+                line-height: 40vh;
+                margin: 0px;
+                padding: 0px;
+                font-size: 3vh;
+                color: #ffffff24;
+            ">Shoot</span>
+            
+            <span id="mobile_x_button" class="r_conteiner" style="
+                position: fixed;
+                right: 5vh;
+                width: 14vh;
+                height: 14vh;
+                background-color: #ffffff0d;
+                bottom: 70vh;
+                border-radius: 20vh;
+                text-align: center;
+                line-height: 14vh;
+                margin: 0px;
+                padding: 0px;
+                font-size: 3vh;
+                color: #ffffff24;
+            ">Build</span>
+	    
+	    <span id="mobile_s_button" class="r_conteiner" style="
+                position: fixed;
+                right: 25vh;
+                width: 14vh;
+                height: 14vh;
+                background-color: #ffffff0d;
+                bottom: 70vh;
+                border-radius: 20vh;
+                text-align: center;
+                line-height: 14vh;
+                margin: 0px;
+                padding: 0px;
+                font-size: 3vh;
+                color: #ffffff24;
+            ">Sword</span>
+	    -->
 	</div>
 	<div id="settings_container" style="
 		position: fixed;
@@ -227,17 +370,6 @@
 		<br><br>
 		<span class="sdtitle">Other servers:</span>
 		<div class="sdgroup">
-		    <a class="server serverA" href="http://localhost:3000">localhost:3000<div>your local server will be here<br>(contact us to appear in list)</div></a>
-		    
-		    <a class="server serverB" href="https://www.gevanni.com:3000">gevanni.com:3000<div>Europe, Ukraine<br>Main test server, core game in its' raw unchanged state</div></a>
-		    <a class="server serverB" href="https://www.plazmaburst2.com:8443">plazmaburst2.com:8443<div>USA, California<br>Secondary server, no rules, only blue base shielding units<br>Hosted by Coolbuddy.com<br>since July 31, 2021</div></a>
-		    
-		    
-		    
-		    <a class="server serverC" href="https://stardefenders.io:3000">stardefenders.io:3000<div>Canada, Quebec<br>Active development<br>Hosted by mrmcshroom -- ULTRAWIDE<br>since March 27, 2021</div></a>
-		    <a class="server serverC" href="https://stardefenders.io:3001">stardefenders.io:3001<div>Canada, Quebec<br>Active development<br>Hosted by mrmcshroom -- EASY<br>since March 27, 2021</div></a>
-		    <a class="server serverC" href="https://stardefenders.io:3002">stardefenders.io:3002<div>Canada, Quebec<br>Active development<br>Hosted by mrmcshroom -- PEACEFUL<br>since March 27, 2021</div></a>
-		    <a class="server serverC" href="https://stardefenders.io:4000">stardefenders.io:4000<div>Canada, Quebec<br>Active development<br>Hosted by mrmcshroom, managed by Booraz.<br>since September, 2022</div></a>
 		</div>
 	    </div>
 	    
@@ -355,15 +487,39 @@
 	    </div>
 	    
 	    <div class="set_block" tabindex="1" mycondition="entity1">
-		<span class="sdtitle">Melee weapon</span><br>
-		<!--<input type="checkbox" id="start_with1" value="pistol_and_buildtool">
-		<label for="start_with1">Pistol and build tool</label>
-		<br>-->
-		<input type="checkbox" id="start_with1" value="sword_and_buildtool" checked>
-		<label for="start_with1">Sword</label>
+		<span class="sdtitle">Weapon Pack</span><br>
+		<input type="checkbox" id="start_with1" value="pistol_and_buildtool">
+		<label for="start_with1">SD Assault</label>
 		<br>
-		<input type="checkbox" id="start_with2" value="shovel_and_buildtool">
-		<label for="start_with2">Shovel</label>
+		<input type="checkbox" id="start_with2" value="sword_and_buildtool" checked>
+		<label for="start_with2">SD Assassin</label>
+		<br>
+		<input type="checkbox" id="start_with3" value="shovel_and_buildtool">
+		<label for="start_with3">SD Miner</label>
+		<br>
+		<input type="checkbox" id="start_with4" value="0">
+		<label for="start_with4">SD Sniper</label>
+		<br>
+		<input type="checkbox" id="start_with5" value="0">
+		<label for="start_with5">Falkok</label>
+		<br>
+		<input type="checkbox" id="start_with6" value="0">
+		<label for="start_with6">Cube</label>
+		<br>
+		<input type="checkbox" id="start_with7" value="0">
+		<label for="start_with7">Velox</label>
+		<br>
+		<input type="checkbox" id="start_with8" value="0">
+		<label for="start_with8">Erthal</label>
+		<br>
+		<input type="checkbox" id="start_with9" value="0">
+		<label for="start_with9">Setr</label>
+		<br>
+		<input type="checkbox" id="start_with10" value="0">
+		<label for="start_with10">Sarronian</label>
+		<br>
+		<input type="checkbox" id="start_with11" value="0">
+		<label for="start_with11">Time Shifter</label>
 	    </div>
 	    
 	    <!--
@@ -515,6 +671,42 @@
 		<br>
 		<input type="checkbox" id="drone_helmet34" value="1">
 		<label for="drone_helmet34">Constellation</label><!-- by LordBored, re-added on request, originally named Raven -->
+                <br>
+		<input type="checkbox" id="drone_helmet35" value="1">
+		<label for="drone_helmet35">Com</label>
+                <br>
+		<input type="checkbox" id="drone_helmet36" value="1">
+		<label for="drone_helmet36">Crystal</label>
+                <br>
+		<input type="checkbox" id="drone_helmet37" value="1">
+		<label for="drone_helmet37">Artificial Crystal</label>
+                <br>
+		<input type="checkbox" id="drone_helmet38" value="1">
+		<label for="drone_helmet38">Shark</label>
+                <br>
+		<input type="checkbox" id="drone_helmet39" value="1">
+		<label for="drone_helmet39">Council</label>
+                <br>
+		<input type="checkbox" id="drone_helmet40" value="1">
+		<label for="drone_helmet40">Setr</label>
+                <br>
+		<input type="checkbox" id="drone_helmet41" value="1">
+		<label for="drone_helmet41">Virus</label>
+                <br>
+		<input type="checkbox" id="drone_helmet42" value="1">
+		<label for="drone_helmet42">Sarronian</label>
+                <br>
+		<input type="checkbox" id="drone_helmet43" value="1">
+		<label for="drone_helmet43">Tzyrg</label>
+                <br>
+		<input type="checkbox" id="drone_helmet44" value="1">
+		<label for="drone_helmet44">Storage</label>
+                <br>
+		<input type="checkbox" id="drone_helmet45" value="1">
+		<label for="drone_helmet45">Ultimate</label>
+                <br>
+		<input type="checkbox" id="drone_helmet46" value="1">
+		<label for="drone_helmet46">Cube</label>
 	    </div>
 	    
 	    <div class="set_block" tabindex="1" mycondition="entity1">
@@ -866,6 +1058,27 @@
                 <br>
 		<input type="checkbox" id="helmet116" value="116">
 		<label for="helmet116">Fixer Alt</label>
+                <br>
+		<input type="checkbox" id="helmet117" value="117">
+		<label for="helmet117">Phoenix Falkok Alt</label>
+                <br>
+		<input type="checkbox" id="helmet118" value="118">
+		<label for="helmet118">Cleaner</label>
+                <br>
+		<input type="checkbox" id="helmet119" value="119">
+		<label for="helmet119">Glass</label>
+                <br>
+		<input type="checkbox" id="helmet120" value="120">
+		<label for="helmet120">Interceptor</label>
+                <br>
+		<input type="checkbox" id="helmet121" value="121">
+		<label for="helmet121">Medic Alt</label>
+                <br>
+		<input type="checkbox" id="helmet122" value="122">
+		<label for="helmet122">Erthal</label>
+                <br>
+		<input type="checkbox" id="helmet123" value="123">
+		<label for="helmet123">Milk</label>
 	    </div>
 	    
 	    <div class="set_block" tabindex="1" mycondition="entity1">
@@ -1130,6 +1343,21 @@
 		<br>
 		<input type="checkbox" id="body87" value="1">
 		<label for="body87">Fixer</label>
+		<br>
+		<input type="checkbox" id="body88" value="1">
+		<label for="body88">Afterburn Alt</label>
+		<br>
+		<input type="checkbox" id="body89" value="1">
+		<label for="body89">Council Alt</label>
+		<br>
+		<input type="checkbox" id="body90" value="1">
+		<label for="body90">Glass</label>
+		<br>
+		<input type="checkbox" id="body91" value="1">
+		<label for="body91">Erthal</label>
+		<br>
+		<input type="checkbox" id="body92" value="1">
+		<label for="body92">Milk</label>
 	    </div>
 	    
 	    <div class="set_block" tabindex="1" mycondition="entity1">
@@ -1394,14 +1622,29 @@
 		<br>
 		<input type="checkbox" id="legs87" value="1">
 		<label for="legs87">Fixer</label>
+		<br>
+		<input type="checkbox" id="legs88" value="1">
+		<label for="legs88">Afterburn Alt</label>
+		<br>
+		<input type="checkbox" id="legs89" value="1">
+		<label for="legs89">Council Alt</label>
+		<br>
+		<input type="checkbox" id="legs90" value="1">
+		<label for="legs90">Glass</label>
+		<br>
+		<input type="checkbox" id="legs91" value="1">
+		<label for="legs91">Erthal</label>
+		<br>
+		<input type="checkbox" id="legs92" value="1">
+		<label for="legs92">Milk</label>
 	    </div>
 	    
 	    <div class="set_block" tabindex="1">
 		<span class="sdtitle">Show debug info</span><br>
-		<input type="checkbox" id="bugs1" value="no" checked>
+		<input type="checkbox" id="bugs1" value="no">
 		<label for="bugs1">No</label>
 		<br>
-		<input type="checkbox" id="bugs2" value="yes">
+		<input type="checkbox" id="bugs2" value="yes" checked>
 		<label for="bugs2">Yes</label>
 	    </div>
 	    
@@ -1433,6 +1676,30 @@
 		<br>
 		<input type="checkbox" id="voice9" value="high" onclick="globalThis.TestVoice(this)">
 		<label for="voice9">Setr</label>
+		<br>
+		<input type="checkbox" id="voice10" value="high" onclick="">
+		<label for="voice10">No Voice</label>
+		<br>
+		<input type="checkbox" id="voice11" value="high" onclick="globalThis.TestVoice(this)">
+		<label for="voice11">Falkok Alt</label>
+		<br>
+		<input type="checkbox" id="voice12" value="high" onclick="globalThis.TestVoice(this)">
+		<label for="voice12">Robotic (Female)</label>
+		<br>
+		<input type="checkbox" id="voice13" value="high" onclick="globalThis.TestVoice(this)">
+		<label for="voice13">Virus</label>
+		<br>
+		<input type="checkbox" id="voice14" value="high" onclick="globalThis.TestVoice(this)">
+		<label for="voice14">Overlord</label>
+		<br>
+		<input type="checkbox" id="voice15" value="high" onclick="globalThis.TestVoice(this)">
+		<label for="voice14">Guanako</label>
+		<br>
+		<input type="checkbox" id="voice16" value="high" onclick="globalThis.TestVoice(this)">
+		<label for="voice14">Octopus</label>
+		<br>
+		<input type="checkbox" id="voice17" value="high" onclick="globalThis.TestVoice(this)">
+		<label for="voice14">Cube</label>
 	    </div>
 	    
 	    <div class="set_block" tabindex="1">
@@ -1478,7 +1745,7 @@
 	    <input id="last_local_time_start" type="hidden">
 	    
 	    
-	    <input type="button" style="background-color:#2b7939; width: 300px;" id="start_btn" onclick="sdWorld.PlayAdAndStart( globalThis.GetPlayerSettings(), this );" value="Play with other players"> 
+	    <input type="button" style="background-color:#2b7939; width: 300px;" id="start_btn" onclick="sdWorld.Start( globalThis.GetPlayerSettings() );" value="Play with other players"> 
 	    <input type="button" style="background-color:#333333; width: 300px;" id="start_offline_btn" onclick="sdWorld.StartOffline( globalThis.GetPlayerSettings() );" value="Play offline (does not work)"> 
 	    <input type="button" onclick="globalThis.ResetSkin();" value="Reset skin to default">
 	    
@@ -1572,36 +1839,86 @@
 		
 		
 		let ent2;
-		let ent3;
+			
+		if ( inputs_hash[ 'start_with2' ].el.checked )
 		{
-		    ent3 = new sdGun({ x:0, y:0, class: sdGun.CLASS_PISTOL });
-		    ent._inventory[ 1 ] = ent3;
-		    ent3._held_by = ent;
-		}
-		
-		if ( inputs_hash[ 'start_with1' ].el.checked )
-		{
-		    ent2 = new sdGun({ x:0, y:0, class: sdGun.CLASS_SWORD });
+		    ent2 = new sdGun({ x:0, y:0, class: sdGun.CLASS_NEEDLE });
 		    ent._inventory[ 0 ] = ent2;
 		    ent2._held_by = ent;
 		}
 		else
-		/*if ( inputs_hash[ 'start_with1' ].el.checked )
+		if ( inputs_hash[ 'start_with1' ].el.checked )
 		{
-		    ent2 = new sdGun({ x:0, y:0, class: sdGun.CLASS_PISTOL });
+		    ent2 = new sdGun({ x:0, y:0, class: sdGun.CLASS_RIFLE });
 		    ent._inventory[ 1 ] = ent2;
 		    ent2._held_by = ent;
-	        }
-		else*/
-		if ( inputs_hash[ 'start_with2' ].el.checked )
+	        	}
+		else
+		if ( inputs_hash[ 'start_with3' ].el.checked )
 		{
-		    ent2 = new sdGun({ x:0, y:0, class: sdGun.CLASS_SHOVEL });
+		    ent2 = new sdGun({ x:0, y:0, class: sdGun.CLASS_SHOTGUN });
 		    ent._inventory[ 0 ] = ent2;
 		    ent2._held_by = ent;
-	        }	
+	        	}
+		else
+		if ( inputs_hash[ 'start_with4' ].el.checked )
+		{
+		    ent2 = new sdGun({ x:0, y:0, class: sdGun.CLASS_SNIPER });
+		    ent._inventory[ 0 ] = ent2;
+		    ent2._held_by = ent;
+	        	}
+		else
+		if ( inputs_hash[ 'start_with5' ].el.checked )
+		{
+		    ent2 = new sdGun({ x:0, y:0, class: sdGun.CLASS_FALKOK_RIFLE });
+		    ent._inventory[ 0 ] = ent2;
+		    ent2._held_by = ent;
+	        	}
+		else
+		if ( inputs_hash[ 'start_with6' ].el.checked )
+		{
+		    ent2 = new sdGun({ x:0, y:0, class: sdGun.CLASS_TRIPLE_RAIL });
+		    ent._inventory[ 0 ] = ent2;
+		    ent2._held_by = ent;
+	        	}
+		else
+		if ( inputs_hash[ 'start_with7' ].el.checked )
+		{
+		    ent2 = new sdGun({ x:0, y:0, class: sdGun.CLASS_VELOX_COMBAT_RIFLE });
+		    ent._inventory[ 0 ] = ent2;
+		    ent2._held_by = ent;
+	        	}
+		else
+		if ( inputs_hash[ 'start_with8' ].el.checked )
+		{
+		    ent2 = new sdGun({ x:0, y:0, class: sdGun.CLASS_ERTHAL_BURST_RIFLE });
+		    ent._inventory[ 0 ] = ent2;
+		    ent2._held_by = ent;
+	        	}
+		else
+		if ( inputs_hash[ 'start_with9' ].el.checked )
+		{
+		    ent2 = new sdGun({ x:0, y:0, class: sdGun.CLASS_SETR_PLASMA_SHOTGUN });
+		    ent._inventory[ 0 ] = ent2;
+		    ent2._held_by = ent;
+	        	}
+		else
+		if ( inputs_hash[ 'start_with10' ].el.checked )
+		{
+		    ent2 = new sdGun({ x:0, y:0, class: sdGun.CLASS_ALIEN_ENERGY_RIFLE });
+		    ent._inventory[ 0 ] = ent2;
+		    ent2._held_by = ent;
+	        	}
+		else
+		if ( inputs_hash[ 'start_with11' ].el.checked )
+		{
+		    ent2 = new sdGun({ x:0, y:0, class: sdGun.CLASS_TIME_PACK });
+		    ent._inventory[ 0 ] = ent2;
+		    ent2._held_by = ent;
+	        	}
 		
 		
-		//if ( !inputs_hash[ 'start_with2' ].el.checked && !inputs_hash[ 'start_with3' ].el.checked )
+		if ( !inputs_hash[ 'start_with2' ].el.checked && !inputs_hash[ 'start_with3' ].el.checked )
 		ent.gun_slot = ( sdWorld.time % 4000 ) < 2000 ? 0 : 1;
 		
 		//ent._an = Math.PI / 2;
@@ -1623,10 +1940,8 @@
 		{
 		    ent.fire_anim = 5 / ( ( sdWorld.time + 500 ) % 2000 ) / 250;
 		    
-		    /*
-		    //if ( !inputs_hash[ 'start_with2' ].el.checked && !inputs_hash[ 'start_with3' ].el.checked )
-		    if ( ent.gun_slot === 1 )
-		    ent2.muzzle = 5 / ( ( sdWorld.time + 500 ) % 2000 ) / 250;*/
+		    if ( !inputs_hash[ 'start_with2' ].el.checked && !inputs_hash[ 'start_with3' ].el.checked )
+		    ent2.muzzle = 5 / ( ( sdWorld.time + 500 ) % 2000 ) / 250;
 		}
 
 		ctx.scale( 4,4 );
@@ -1646,9 +1961,6 @@
 
 		ent2.remove();
 		ent2._remove();
-
-		ent3.remove();
-		ent3._remove();
 
 		ctx.restore();
 		
@@ -1807,15 +2119,15 @@
 		    let cond = conditional_elements[ i ].getAttribute( 'mycondition' );
 		    
 		    let cond_parts = cond.split('||');
-		    
+
 		    let vis = false;
-		    
+
 		    for ( let i2 = 0; i2 < cond_parts.length; i2++ )
 		    {
 			if ( inputs_hash[ cond_parts[ i2 ].trim() ].el.checked )
 			vis = true;
 		    }
-		    
+
 		    conditional_elements[ i ].style.display = vis ? '' : 'none';
 		}
 		
