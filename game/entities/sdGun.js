@@ -238,7 +238,7 @@ class sdGun extends sdEntity
 
 							mult *= from_entity.GetHitDamageMultiplier( this.x, this.y );
 						}
-						//if ( from_entity.is( sdCharacter ) )
+						if ( from_entity.is( sdCharacter ) )
 						from_entity.DamageWithEffect( projectile_properties._damage * this._dangerous_from._damage_mult, this._dangerous_from );
 						else
 						from_entity.DamageWithEffect( projectile_properties._damage, this._dangerous_from );
