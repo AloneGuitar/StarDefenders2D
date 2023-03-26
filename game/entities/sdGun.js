@@ -31,9 +31,6 @@ class sdGun extends sdEntity
 	{
 		if ( !sdEffect.initiated )
 		sdEffect.init_class();
-		
-		//sdGun.img_muzzle1 = sdWorld.CreateImageFromFile( 'muzzle1' );
-		//sdGun.img_muzzle2 = sdWorld.CreateImageFromFile( 'muzzle2' );
 		sdGun.img_muzzle_sheet = sdWorld.CreateImageFromFile( 'muzzle_sheet' );
 		
 		sdGun.img_present = sdWorld.CreateImageFromFile( 'present' );
@@ -73,6 +70,9 @@ class sdGun extends sdEntity
 	get mass()
 	{
 		return 30;
+
+		if ( has_class.is_giant )
+		return 60;
 	}
 	get bounce_intensity()
 	{
@@ -142,25 +142,6 @@ class sdGun extends sdEntity
 
 		if ( sdWorld.is_server )
 		{
-			/*if ( this.class === sdGun.CLASS_SCORE_SHARD )
-			if ( Math.random() < 0.1 )
-			if ( !this._is_being_removed )
-			if ( !from_entity._is_being_removed )
-			if ( from_entity.is( sdGun ) )
-			if ( from_entity.class === sdGun.CLASS_SCORE_SHARD )
-			if ( this.extra === from_entity.extra )
-			{
-				let new_extra = ~~Math.sqrt( this.extra + from_entity.extra );
-				
-				if ( new_extra < sdGun.score_shard_recolor_tiers.length )
-				{
-					from_entity.extra = new_extra;
-					from_entity.sd_filter = sdGun.score_shard_recolor_tiers[ new_extra ];
-					this.remove();
-					return;
-				}
-			}*/
-			
 			if ( this.dangerous )
 			{
 				if ( from_entity.is( sdGun ) )
@@ -257,10 +238,9 @@ class sdGun extends sdEntity
 
 							mult *= from_entity.GetHitDamageMultiplier( this.x, this.y );
 						}
-
-						//if ( this._dangerous_from && this._dangerous_from.is( sdCharacter ) )
-						//from_entity.DamageWithEffect( projectile_properties._damage * this._dangerous_from._damage_mult, this._dangerous_from );
-						//else
+						//if ( from_entity.is( sdCharacter ) )
+						from_entity.DamageWithEffect( projectile_properties._damage * this._dangerous_from._damage_mult, this._dangerous_from );
+						else
 						from_entity.DamageWithEffect( projectile_properties._damage, this._dangerous_from );
 
 						this.DamageWithEffect( 1 );
@@ -608,9 +588,6 @@ class sdGun extends sdEntity
 		if ( this.class === sdGun.CLASS_SWORD )
 		return 0;
 		
-		//if ( this.class === sdGun.CLASS_SABER )
-		//return 2;
-		
 		if ( this.class === sdGun.CLASS_PISTOL )
 		return 0;
 
@@ -951,61 +928,17 @@ class sdGun extends sdEntity
 							bullet_obj.acy = Math.cos( an );
 						}
 						
-						//bullet_obj._damage *= bullet_obj._owner._damage_mult;
+						bullet_obj._damage *= bullet_obj._owner._damage_mult;
 						
 						if ( bullet_obj._owner.power_ef > 0 )
 						bullet_obj._damage *= 2.5;
 					
 						bullet_obj._damage *= scale;
-						
-						/*if ( bullet_obj._owner._upgrade_counters[ 'upgrade_damage' ] )
-						bullet_obj._armor_penetration_level = bullet_obj._owner._upgrade_counters[ 'upgrade_damage' ];
-						else
-						bullet_obj._armor_penetration_level = 0;*/
 						bullet_obj._armor_penetration_level = 3;
 					
 						if ( typeof projectile_properties._armor_penetration_level !== 'undefined' )
 						bullet_obj._armor_penetration_level = projectile_properties._armor_penetration_level;
-					
-						/*if ( globalThis.CATCH_ERRORS )
-						if ( isNaN( -bullet_obj.sx * 0.3 * bullet_obj._knock_scale ) || 
-							 isNaN( -bullet_obj.sy * 0.3 * bullet_obj._knock_scale ) || 
-							 isNaN( bullet_obj._owner.mass ) || 
-							 bullet_obj._owner.mass === 0 )
-						{
-							let report = [ 'Something is not right about either spawned bullet or character! .Impulse will crash server' ];
-							
-							report.push( 
 
-								`an = ${ an }`,
-								`this._held_by.GetLookAngle() = ${this._held_by.GetLookAngle()}`,
-								`this._held_by._side = ${ this._held_by._side }`,
-								`this._held_by._recoil = ${ this._held_by._recoil }`,
-								`this._held_by.look_x = ${ this._held_by.look_x }`,
-								`this._held_by.look_y = ${ this._held_by.look_y }`,
-								`this._held_by.x = ${ this._held_by.x }`,
-								`this._held_by.y = ${ this._held_by.y }`,
-								
-								`spread = ${ spread }`,
-
-								`bullet_obj._owner.mass = ${ bullet_obj._owner.mass }`,
-
-								`bullet_obj._owner.s = ${ bullet_obj._owner.s }`,
-
-								`bullet_obj._owner.sx = ${ bullet_obj._owner.sx }`,
-
-								`bullet_obj._owner.sy = ${ bullet_obj._owner.sy }`,
-
-								`this.class = ${ this.class }` 
-							);
-							
-							for ( var p in bullet_obj )
-							report.push( `bullet_obj.${ p } = ${ bullet_obj[ p ] }` );
-						
-							console.warn( report.join(', \n') );
-							throw new Error( report.join(', \n') );
-						}*/
-						
 						bullet_obj._owner.Impulse( -bullet_obj.sx * 0.3 * bullet_obj._knock_scale, -bullet_obj.sy * 0.3 * bullet_obj._knock_scale );
 						
 						bullet_obj._owner._recoil += bullet_obj._knock_scale * vel * 0.02; // 0.01
@@ -1018,7 +951,7 @@ class sdGun extends sdEntity
 						sdEntity.entities.push( bullet_obj );
 					}
 				}
-				
+
 				if ( sdGun.classes[ this.class ].muzzle_x !== null )
 				{
 					this.muzzle = Math.min( 5, ( projectile_properties._damage || 10 ) / 45 * 5 * sdGun.classes[ this.class ].count );
@@ -1030,8 +963,6 @@ class sdGun extends sdEntity
 					}
 
 					if ( !sdWorld.is_server || sdWorld.is_singleplayer )
-					//if ( this._last_muzzle < this.muzzle )
-					//if ( this._held_by )
 					{
 						let initial_an = this._held_by.GetLookAngle() + this._held_by._side * Math.PI / 2;
 						let an = initial_an + ( Math.random() * 2 - 1 ) * 0.5 + this._held_by._side * Math.PI / 2 * 0.5;
@@ -1092,8 +1023,6 @@ class sdGun extends sdEntity
 			{
 				this._held_by._inventory[ this.GetSlot() ] = this;
 			}
-
-			// Other kinds of entities like sdStorage will handle pointers properly without extra logic here (since they are public and entity pointers will naturally work)
 		}
 	}
 	
@@ -1276,9 +1205,6 @@ class sdGun extends sdEntity
 			if ( sdGun.classes[ this.class].onMade )
 			if ( sdGun.classes[ this.class].upgrades )
 			{
-				/*let upgradeString = sdGun.classes[ this.class ].upgrades.toString(); // Convert to string so we can see if gun has new damage upgrade stuff
-				let has_upgrades = ( upgradeString.indexOf( 'AddGunDefaultUpgrades' ) !== -1 )
-				if ( has_upgrades )*/
 				// I tried checking if it has the new upgrade function but I don't know what I am doing wrong. Can someone help / tell me? - Booraz149
 				// Current iteration below seems to work without issues, however I think it would be ideal if it could check if "upgrades" section of gun class has explicitly "AddGunDefaultUpgrades"
 				{
@@ -1354,8 +1280,6 @@ class sdGun extends sdEntity
 
 				if ( this._held_by === null )
 				ctx.rotate( this.tilt / sdGun.tilt_scale );
-
-				//if ( this.class === sdGun.CLASS_SNIPER || this.class === sdGun.CLASS_RAYGUN || this.class === sdGun.CLASS_PHASERCANNON_P03 || this.class === sdGun.CLASS_ERTHAL_BURST_RIFLE || this.class === sdGun.CLASS_BURST_PISTOL || this.class === sdGun.CLASS_GAUSS_RIFLE || this.class === sdGun.CLASS_ZAPPER || this.class === sdGun.CLASS_KIVORTEC_AVRS_P09 ) // It could probably be separated as a variable declared in sdGunClass to determine if it has reloading animation or not
 				if ( has_class.has_images )
 				{
 					let odd = ( this.reload_time_left % 10 ) < 5 ? 0 : 1;
@@ -1376,20 +1300,6 @@ class sdGun extends sdEntity
 					if ( this._held_by === null && !this.dangerous && !sdShop.isDrawing )
 					image = has_class.image_no_matter;
 				}
-				/*
-				if ( this.class === sdGun.CLASS_SWORD )
-				{
-					//if ( this._held_by === null || this._held_by.matter < this.GetBulletCost( true ) )
-					if ( this._held_by === null && !this.dangerous )
-					image = has_class.image_no_matter;
-				}
-
-				if ( this.class === sdGun.CLASS_SABER )
-				{
-					//if ( this._held_by === null || this._held_by.matter < this.GetBulletCost( true ) )
-					if ( this._held_by === null && !this.dangerous )
-					image = has_class.image_no_matter;
-				}*/
 
 				if ( this.ttl >= 0 && this.ttl < 30 )
 				ctx.globalAlpha = 0.5;
@@ -1402,32 +1312,9 @@ class sdGun extends sdEntity
 				if ( this.class === sdGun.CLASS_CRYSTAL_SHARD )
 				{
 					let v = this.extra / sdWorld.crystal_shard_value * 40;
-					/*if ( v > 40 )
-					ctx.filter = 'hue-rotate(' + ( v - 40 ) + 'deg)';*/
 
 					ctx.filter = sdWorld.GetCrystalHue( v );
 				}
-
-				/*if ( this.class === sdGun.CLASS_TRIPLE_RAIL || 
-					 this.class === sdGun.CLASS_RAIL_PISTOL || 
-					 this.class === sdGun.CLASS_RAIL_SHOTGUN || 
-					 this.class === sdGun.CLASS_CUBE_SHARD || 
-					 this.class === sdGun.CLASS_HEALING_RAY || 
-					 this.class === sdGun.CLASS_LOST_CONVERTER ) // Cube weaponry, looked up color wheel since sdFilter is not worth it
-				{
-					if ( this.extra === 1 )
-					{
-						ctx.filter = 'hue-rotate(-120deg) saturate(100) brightness(1.5)'; // yellow
-					}
-					if ( this.extra === 2 )
-					{
-						ctx.filter = 'saturate(0) brightness(1.5)'; // white color
-					}
-					if ( this.extra === 3 )
-					{
-						ctx.filter = 'hue-rotate(120deg)  saturate(100)'; // pink
-					}
-				}*/
 
 				if ( this.class === sdGun.CLASS_BUILDTOOL_UPG )
 				{
@@ -1446,7 +1333,6 @@ class sdGun extends sdEntity
 				}
 
 				if ( has_class.is_sword )
-				//if ( this.class === sdGun.CLASS_SWORD )
 				if ( this._held_by )
 				{
 					if ( this.class !== sdGun.CLASS_POPCORN )
@@ -1462,14 +1348,6 @@ class sdGun extends sdEntity
 					else
 					ctx.rotate( - Math.PI / 8 );
 				}
-				/*
-				if ( this.class === sdGun.CLASS_SABER )
-				if ( this._held_by )
-				{
-					if ( this._held_by.fire_anim <= 0 )
-					ctx.rotate( - Math.PI / 2 );
-				}
-				*/
 			}
 		   
 			let muzzle_x = undefined;
@@ -1551,31 +1429,36 @@ class sdGun extends sdEntity
 			if ( has_class.image_frames )
 			{
 				let frame = Math.floor( ( sdWorld.time + ( this._net_id || 0 ) * 2154 ) / has_class.image_duration ) % has_class.image_frames;
+
+				if ( has_class.is_giant )
+				{
+				ctx.drawImageFilterCache( image, 0 + frame * 64,0,64,64,  - 32, - 32, 64,64 );
+				}
+				else
+				{
 				ctx.drawImageFilterCache( image, 0 + frame * 32,0,32,32,  - 16, - 16, 32,32 );
+				}
 			}
 			else
 			{
+				if ( has_class.is_giant )
+				{
+				ctx.drawImageFilterCache( image, - 32, - 32, 64,64 );
+				}
+				else
+				{
 				ctx.drawImageFilterCache( image, - 16, - 16, 32,32 );
+				}
 			}
-			
+
 			ctx.filter = 'none';
 			ctx.sd_filter = null;
-			
+
 			if ( muzzle_x !== undefined )
 			if ( this.muzzle > 0 )
 			{
-				/*if ( this.muzzle > 2.5 )
-				{
-					ctx.drawImageFilterCache( sdGun.img_muzzle2, muzzle_x - 16, muzzle_y - 16, 32,32 );
-				}
-				else
-				if ( this.muzzle > 0 )
-				{
-					ctx.drawImageFilterCache( sdGun.img_muzzle1, muzzle_x - 16, muzzle_y - 16, 32,32 );
-				}*/
-						
 				let yy = 4 - ~~( Math.min( 5, this.muzzle ) / 5 * 5 );
-				
+
 				for ( let xx = 0; xx < 2; xx++ )
 				{
 					if ( xx === 0 )
@@ -1591,9 +1474,15 @@ class sdGun extends sdEntity
 						else
 						ctx.sd_tint_filter = [ 255 / 255, 216 / 255, 33 / 255 ];
 					}
-				
+
+					if ( has_class.is_giant )
+					{
+					ctx.drawImageFilterCache( sdGun.img_muzzle_sheet, xx*64,yy*64,64,64, muzzle_x - 32, muzzle_y - 32, 64,64 );
+					}
+					else
+					{
 					ctx.drawImageFilterCache( sdGun.img_muzzle_sheet, xx*32,yy*32,32,32, muzzle_x - 16, muzzle_y - 16, 32,32 );
-					
+					}
 					ctx.sd_tint_filter = null;
 				}
 				

@@ -29,25 +29,6 @@ class sdBullet extends sdEntity
 			'bullet': sdWorld.CreateImageFromFile( 'bullet' )
 			 // Auto-appended now
 		};
-		/*
-			'ball': sdWorld.CreateImageFromFile( 'ball' ),
-			'ball_g': sdWorld.CreateImageFromFile( 'ball_g' ),
-			'blaster_proj': sdWorld.CreateImageFromFile( 'blaster_proj' ),
-			'rocket_proj': sdWorld.CreateImageFromFile( 'rocket_proj' ),
-			'grenade': sdWorld.CreateImageFromFile( 'grenade' ),
-			'snowball': sdWorld.CreateImageFromFile( 'snowball' ),
-			'f_psicutter_proj': sdWorld.CreateImageFromFile( 'f_psicutter_proj' ),
-			'ball_charged':  sdWorld.CreateImageFromFile( 'ball_charged' ),
-			'mini_rocket':  sdWorld.CreateImageFromFile( 'mini_rocket' ),
-			'mini_rocket_green':  sdWorld.CreateImageFromFile( 'mini_rocket_green' ),
-			'gauss_rifle_proj':  sdWorld.CreateImageFromFile( 'gauss_rifle_proj' ),
-			'mini_missile_p241':  sdWorld.CreateImageFromFile( 'mini_missile_p241' ),
-			'transparent_proj':  sdWorld.CreateImageFromFile( 'transparent_proj' ),
-			'f_hover_rocket':  sdWorld.CreateImageFromFile( 'f_hover_rocket' ),
-			'ball_orange':  sdWorld.CreateImageFromFile( 'ball_orange' ),
-			'ab_tooth':  sdWorld.CreateImageFromFile( 'ab_tooth' ),
-			'bullet':  sdWorld.CreateImageFromFile( 'bullet' )
-		};*/
 		
 		sdBullet.images_with_smoke = 
 		{
@@ -218,9 +199,9 @@ class sdBullet extends sdEntity
 		sdWorld.SendEffect({ 
 			x:this.x, 
 			y:this.y, 
-			radius:this.explosion_radius, 
-			//damage_scale: ( this._owner && this._owner.IsPlayerClass() ? this._owner._damage_mult : 1 ), 
-			damage_scale: 2, 
+			radius:this.explosion_radius * ( this._owner && this._owner._damage_mult > 1.2 ? this._owner._damage_mult * 0.8 : 1 ), 
+			damage_scale: ( this._owner && this._owner.IsPlayerClass() ? this._owner._damage_mult * 2 : 2 ), 
+			//damage_scale: 2, 
 			type:sdEffect.TYPE_EXPLOSION,
 			armor_penetration_level: this._armor_penetration_level,
 			owner:this._owner,
@@ -691,6 +672,17 @@ class sdBullet extends sdEntity
 									// Do not throw arround developers who are testing something
 								}
 								else
+								if ( from_entity.stability_upgrade >= 25 )
+								{
+								}
+								else
+								if ( from_entity.stability_upgrade > 0 )
+								{
+									this._knock_scale /= from_entity.stability_upgrade;
+									from_entity.Impulse( this.sx * Math.abs( this._damage ) * this._knock_scale, 
+													 this.sy * Math.abs( this._damage ) * this._knock_scale );
+								}
+								else
 								from_entity.Impulse( this.sx * Math.abs( this._damage ) * this._knock_scale, 
 													 this.sy * Math.abs( this._damage ) * this._knock_scale );
 
@@ -832,7 +824,7 @@ class sdBullet extends sdEntity
 
 								let base_damage = dmg;
 
-								//from_entity.DamageWithEffect( dmg, this._owner );
+								from_entity.DamageWithEffect( dmg, this._owner );
 
 
 								/*if ( from_entity.GetClass() === 'sdLifeBox' ) This logic is moved to sdLifeBox.prototype.GetHitDamageMultiplier
