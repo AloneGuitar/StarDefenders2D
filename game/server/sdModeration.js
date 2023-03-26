@@ -544,7 +544,10 @@ class sdModeration
 					sdEntity.entities.push( new sdGun({ x:socket.character.x, y:socket.character.y, class:sdGun.CLASS_ADMIN_REMOVER }) );
 					sdEntity.entities.push( new sdGun({ x:socket.character.x, y:socket.character.y, class:sdGun.CLASS_ADMIN_TELEPORTER }) );
 					sdEntity.entities.push( new sdGun({ x:socket.character.x, y:socket.character.y, class:sdGun.CLASS_ADMIN_DAMAGER }) );
-					sdEntity.entities.push( new sdGun({ x:socket.character.x, y:socket.character.y, class:sdGun.CLASS_BUILD_TOOL }) );
+					sdEntity.entities.push( new sdGun({ x:socket.character.x, y:socket.character.y, class:sdGun.CLASS_ADMIN_HEAL }) );
+					sdEntity.entities.push( new sdGun({ x:socket.character.x, y:socket.character.y, class:sdGun.CLASS_ADMIN_LOST }) );
+					sdEntity.entities.push( new sdGun({ x:socket.character.x, y:socket.character.y, class:sdGun.CLASS_ADMIN_EMPTY }) );
+					sdEntity.entities.push( new sdGun({ x:socket.character.x, y:socket.character.y, class:sdGun.CLASS_BUILD_TOOL_MK2 }) );
 					
 					socket.character.InstallUpgrade( 'upgrade_jetpack' );
 					socket.character.InstallUpgrade( 'upgrade_hook' );
@@ -580,7 +583,7 @@ class sdModeration
 			if ( sdEntity.entities[ i ].GetClass() === parts[ 1 ] || parts[ 1 ] === '*' )
 			{
 				sdEntity.entities[ i ].remove();
-				
+
 				if ( parts[ 0 ] === 'remove' )
 				sdEntity.entities[ i ]._broken = false;
 			}
@@ -627,7 +630,7 @@ class sdModeration
 							character.remove();
 							return;
 						}
-						
+
 						if ( character.GetClass() === 'sdPlayerOverlord' ) // If player is using overlord, despawn it instantly.
 						{
 							character.remove();

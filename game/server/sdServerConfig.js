@@ -38,9 +38,9 @@ class sdServerConfigFull extends sdServerConfigShort
 	// ...
 	
 	static database_server = null; // Example: 'https://www.gevanni.com:3000'; // Remote database_server must allow current server's IP in list above. Set as null if this server should have its' own database
-	
+
 	static adsense_client = 'ca-pub-7381466440820611'; // To learn how to install your ads go there https://developers.google.com/ad-placement/docs/beta . This adsense_client comes from HTML code for AdSense. You'll additionally be requested to allow ads on your domain via ads.txt file. Your server will not show ads designed for other servers and vice versa
-	
+		
 	static save_raw_version_of_snapshot = true; // One that can be easily viewed in Notepad-like applications. It is never used within server logic. "true" can slow-down snapshot generation.
 	
 	static store_game_files_in_ram = false; // Will make server never use hard drive without need until next reboot, except for cases when backup is being made (more RAM usage, can be suitable for VPS servers that have strange Disk I/O issues)
@@ -153,7 +153,7 @@ class sdServerConfigFull extends sdServerConfigShort
 	static GetBSUDamageMultiplier()
 	{
 		return 1; // Damage multiplier from damaging blocks proteced by BSU.
-	}		
+	}			
 	static onExtraWorldLogic( GSPEED )
 	{
 	}
@@ -181,13 +181,39 @@ class sdServerConfigFull extends sdServerConfigShort
 		let instructor_entity = null;
 		
 		// Spawn starter items based off what player wants to spawn with
-		let guns = [ sdGun.CLASS_BUILD_TOOL, sdGun.CLASS_PISTOL, sdGun.CLASS_MEDIKIT ];
-		
+		let guns = [ sdGun.CLASS_BUILD_TOOL, sdGun.CLASS_MEDIKIT ];
 		if ( player_settings.start_with1 )
-		guns.push( sdGun.CLASS_SWORD );
+		guns.push( sdGun.CLASS_PISTOL ),guns.push( sdGun.CLASS_LMG ),guns.push( sdGun.CLASS_ROCKET ),guns.push( sdGun.CLASS_LVL1_MEDIUM_ARMOR );
 		else
 		if ( player_settings.start_with2 )
-		guns.push( sdGun.CLASS_SHOVEL );
+		guns.push( sdGun.CLASS_SWORD ),guns.push( sdGun.CLASS_NEEDLE ),guns.push( sdGun.CLASS_SPARK ), character_entity._damage_mult = 1.2, character_entity._upgrade_counters[ 'upgrade_damage' ] = 1, character_entity._upgrade_counters[ 'upgrade_invisibility' ] = 1, character_entity._ghost_allowed = true, character_entity.hmax = 200, character_entity.hea = 200;
+		else
+		if ( player_settings.start_with3 )
+		guns.push( sdGun.CLASS_SHOVEL ),guns.push( sdGun.CLASS_SHOTGUN ),guns.push( sdGun.CLASS_GRENADE_LAUNCHER ), character_entity._matter_capacity_boosters = 8 * 45;
+		else
+		if ( player_settings.start_with4 )
+		guns.push( sdGun.CLASS_SNIPER ),guns.push( sdGun.CLASS_SMG ), character_entity._damage_mult = 1.4, character_entity._upgrade_counters[ 'upgrade_damage' ] = 2, character_entity._upgrade_counters[ 'upgrade_invisibility' ] = 1, character_entity._ghost_allowed = true, character_entity.hmax = 200, character_entity.hea = 200;
+		else
+		if ( player_settings.start_with5 )
+		guns.push( sdGun.CLASS_FALKOK_RIFLE ),guns.push( sdGun.CLASS_RAYGUN ),guns.push( sdGun.CLASS_FALKOK_PSI_CUTTER ), character_entity._jetpack_allowed = true, character_entity._upgrade_counters[ 'upgrade_jetpack' ] = 1, character_entity._jetpack_fuel_multiplier = 0.85, character_entity._upgrade_counters[ 'upgrade_jetpack_fuel_cost_reduction' ] = 1;
+		else
+		if ( player_settings.start_with6 )
+		guns.push( sdGun.CLASS_TRIPLE_RAIL ),guns.push( sdGun.CLASS_RAIL_PISTOL ),guns.push( sdGun.CLASS_RAIL_SHOTGUN ), character_entity._jetpack_allowed = true, character_entity._upgrade_counters[ 'upgrade_jetpack' ] = 1, character_entity._matter_regeneration = 1, character_entity._upgrade_counters[ 'upgrade_matter_regeneration' ] = 1;
+		else
+		if ( player_settings.start_with7 )
+		guns.push( sdGun.CLASS_RAIL_CANNON ),guns.push( sdGun.CLASS_VELOX_PISTOL ),guns.push( sdGun.CLASS_VELOX_COMBAT_RIFLE ),character_entity.s = 110, character_entity._upgrade_counters[ 'upgrade_suit' ] = 1, character_entity.hmax = 450, character_entity.hea = 450, character_entity._upgrade_counters[ 'upgrade_jetpack_power' ] = 1, character_entity._jetpack_power = 1.5;
+		else
+		if ( player_settings.start_with8 )
+		guns.push( sdGun.CLASS_ERTHAL_BURST_RIFLE ),guns.push( sdGun.CLASS_ERTHAL_PLASMA_PISTOL ),guns.push( sdGun.CLASS_LVL1_HEAVY_ARMOR );
+		else
+		if ( player_settings.start_with9 )
+		guns.push( sdGun.CLASS_SETR_PLASMA_SHOTGUN ),guns.push( sdGun.CLASS_LVL1_LIGHT_ARMOR ), character_entity._matter_capacity_boosters = 4 * 45, character_entity._damage_mult = 1.2, character_entity._upgrade_counters[ 'upgrade_damage' ] = 1, character_entity._upgrade_counters[ 'upgrade_stability_recovery' ] = 1, character_entity._stability_recovery_multiplier = 1 + ( 3 / character_entity._upgrade_counters[ 'upgrade_stability_recovery' ] );
+		else
+		if ( player_settings.start_with10 )
+		guns.push( sdGun.CLASS_ALIEN_ENERGY_RIFLE ),guns.push( sdGun.CLASS_LVL1_ARMOR_REGEN ),guns.push( sdGun.CLASS_LVL1_LIGHT_ARMOR ), character_entity._damage_mult = 1.2, character_entity._upgrade_counters[ 'upgrade_damage' ] = 1, character_entity._air_upgrade = 2, character_entity._upgrade_counters[ 'upgrade_oxygen_capacity' ] = 1;
+		else
+		if ( player_settings.start_with11 )
+		guns.push( sdGun.CLASS_LVL1_LIGHT_ARMOR ),character_entity.s = 111, character_entity._damage_mult = 1.2, character_entity._upgrade_counters[ 'upgrade_damage' ] = 1, character_entity._upgrade_counters[ 'upgrade_suit' ] = 1, character_entity.hmax = 650, character_entity.hea = 650, character_entity._matter_capacity_boosters = 4 * 45;
 
 		if ( character_entity.is( sdCharacter ) )
 		for ( var i = 0; i < sdGun.classes.length; i++ )
@@ -452,21 +478,26 @@ class sdServerConfigFull extends sdServerConfigShort
 			
 			instructor_entity = new sdCharacter({ x:my_character_entity.x + 32, y:my_character_entity.y - 32 });
 			instructor_entity._ai_enabled = sdCharacter.AI_MODEL_TEAMMATE;//sdCharacter.AI_MODEL_INSTRUCTOR;
-			instructor_entity._ai_gun_slot = sdGun.classes[ sdGun.CLASS_RAILGUN ].slot;
+			instructor_entity._ai_gun_slot = 1;
 			instructor_entity._allow_despawn = false;
 			instructor_entity._ai_level = 10;
-			instructor_entity._matter_regeneration = 1;
+			instructor_entity._matter_regeneration = 20;
 			instructor_entity._matter_regeneration_multiplier = 10;
 			
-			let instructor_gun = new sdGun({ x:instructor_entity.x, y:instructor_entity.y, class:sdGun.CLASS_RAILGUN });
+			let instructor_gun = new sdGun({ x:instructor_entity.x, y:instructor_entity.y, class:sdGun.CLASS_COUNCIL_PISTOL });
 			
-			let instructor_settings = {"hero_name":"Instructor","color_bright":"#7aadff","color_dark":"#25668e","color_bright3":"#7aadff","color_dark3":"#25668e","color_visor":"#ffffff","color_suit":"#000000","color_shoes":"#303954","color_skin":"#51709a","voice1":true,"voice2":false,"voice3":false,"voice4":false,"voice5":false,"color_suit2":"#000000","color_dark2":"#25668e"};
+			let instructor_settings = {"hero_name":"Council Acolyte","color_bright":"#e1e100","color_dark":"#ffffff","color_bright3":"#ffff00","color_dark3":"#e1e1e1","color_visor":"#ffff00","color_suit":"#ffffff","color_suit2":"#e1e1e1","color_dark2":"#ffe100","color_shoes":"#e1e1e1","color_skin":"#ffffff","color_extra1":"#ffff00","helmet1":false,"helmet23":true,"body11":true,"legs8":true,"voice1":false,"voice2":false,"voice3":true,"voice4":false,"voice5":false,"voice6":false,"voice7":false,"voice8":true};
 
 			instructor_entity.sd_filter = sdWorld.ConvertPlayerDescriptionToSDFilter_v2( instructor_settings );
 			instructor_entity._voice = sdWorld.ConvertPlayerDescriptionToVoice( instructor_settings );
 			instructor_entity.title = instructor_settings.hero_name;
-			//instructor_entity.matter = 1;
-			instructor_entity.matter_max = 1;
+			instructor_entity.helmet = sdWorld.ConvertPlayerDescriptionToHelmet( instructor_settings );
+			instructor_entity.body = sdWorld.ConvertPlayerDescriptionToBody( instructor_settings );
+			instructor_entity.legs = sdWorld.ConvertPlayerDescriptionToLegs( instructor_settings );
+			instructor_entity.hea = 1400;
+			instructor_entity.hmax = 1400;
+			instructor_entity.s = 110;
+			instructor_entity.matter_max = 300;
 			let instructor_interval0 = setInterval( ()=>
 			{
 				if ( instructor_entity.hea <= 0 || instructor_entity._is_being_removed )
