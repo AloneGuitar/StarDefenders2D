@@ -25,12 +25,6 @@ class sdDrone extends sdEntity
 
 		sdDrone.img_drone_falkok2 = sdWorld.CreateImageFromFile( 'drone_falkok_sprite3' ); // Sprite by gravel/flora/floor
 
-		/*
-		sdDrone.img_drone_falkok = sdWorld.CreateImageFromFile( 'drone_falkok' );
-		sdDrone.img_drone_falkok_attack = sdWorld.CreateImageFromFile( 'drone_falkok_attack' );
-		sdDrone.img_drone_falkok_destroyed = sdWorld.CreateImageFromFile( 'drone_falkok_destroyed' );
-		*/
-
 		// Maybe we should make sprite sheets too for "sdPlayerDrone"s? - Molis
 		sdDrone.img_drone_robot = sdWorld.CreateImageFromFile( 'drone_robot2' );
 		sdDrone.img_drone_robot_attack = sdWorld.CreateImageFromFile( 'drone_robot_attack2' );
@@ -40,45 +34,13 @@ class sdDrone extends sdEntity
 		sdDrone.img_drone_alien = sdWorld.CreateImageFromFile( 'drone_alien_sprite' );
 		sdDrone.img_drone_alien2 = sdWorld.CreateImageFromFile( 'drone_alien2_sprite' );
 
-		/*
-		sdDrone.img_drone_alien = sdWorld.CreateImageFromFile( 'drone_alien' );
-		sdDrone.img_drone_alien_attack = sdWorld.CreateImageFromFile( 'drone_alien_attack' );
-		sdDrone.img_drone_alien_destroyed = sdWorld.CreateImageFromFile( 'drone_alien_destroyed' );
-
-
-		sdDrone.img_drone_alien2 = sdWorld.CreateImageFromFile( 'drone_alien2' );
-		sdDrone.img_drone_alien2_attack = sdWorld.CreateImageFromFile( 'drone_alien2_attack' );
-		sdDrone.img_drone_alien2_destroyed = sdWorld.CreateImageFromFile( 'drone_alien2_destroyed' );
-		*/
-
 		sdDrone.img_drone_alien3 = sdWorld.CreateImageFromFile( 'drone_alien3' );
-		//sdDrone.img_drone_alien3_attack = sdWorld.CreateImageFromFile( 'drone_alien3_attack' );
-		//sdDrone.img_drone_alien3_destroyed = sdWorld.CreateImageFromFile( 'drone_alien3_destroyed' );
 
 		sdDrone.img_drone_council = sdWorld.CreateImageFromFile( 'drone_council_sprite' );
 		sdDrone.img_drone_setr = sdWorld.CreateImageFromFile( 'drone_setr_sprite' );
 
 		sdDrone.img_drone_tzyrg = sdWorld.CreateImageFromFile( 'drone_tzyrg_sprite' ); // By floor/flora
 		sdDrone.img_drone_tzyrg2 = sdWorld.CreateImageFromFile( 'drone_tzyrg2_sprite' ); // By floor/flora
-
-		/*
-		sdDrone.img_drone_council = sdWorld.CreateImageFromFile( 'drone_council' );
-		sdDrone.img_drone_council_attack = sdWorld.CreateImageFromFile( 'drone_council_attack' );
-		sdDrone.img_drone_council_destroyed = sdWorld.CreateImageFromFile( 'drone_council_destroyed' );
-
-		sdDrone.img_drone_setr = sdWorld.CreateImageFromFile( 'drone_setr' );
-		sdDrone.img_drone_setr_attack = sdWorld.CreateImageFromFile( 'drone_setr_attack' );
-		sdDrone.img_drone_setr_destroyed = sdWorld.CreateImageFromFile( 'drone_setr_destroyed' );
-
-		sdDrone.img_drone_tzyrg = sdWorld.CreateImageFromFile( 'drone_tzyrg' ); // By floor/flora
-		sdDrone.img_drone_tzyrg_attack = sdWorld.CreateImageFromFile( 'drone_tzyrg_attack' ); // By floor/flora
-		sdDrone.img_drone_tzyrg_destroyed = sdWorld.CreateImageFromFile( 'drone_tzyrg_destroyed' ); // By floor/flora
-
-
-		sdDrone.img_drone_tzyrg2 = sdWorld.CreateImageFromFile( 'drone_tzyrg2' ); // By floor / flora
-		sdDrone.img_drone_tzyrg2_attack = sdWorld.CreateImageFromFile( 'drone_tzyrg2_attack' ); // By floor / flora
-		sdDrone.img_drone_tzyrg2_destroyed = sdWorld.CreateImageFromFile( 'drone_tzyrg2_destroyed' ); // By floor / flora
-		*/
 		
 		sdDrone.death_duration = 15;
 		sdDrone.post_death_ttl = 30 * 10;
@@ -119,7 +81,7 @@ class sdDrone extends sdEntity
 		
 		this.type = params.type || 1;
 		
-		this._hmax =  this.type === sdDrone.DRONE_SETR ? 150 : this.type === sdDrone.DRONE_COUNCIL ? 200 : this.type === sdDrone.DRONE_SARRORIAN_DETONATOR ? 100 : this.type === sdDrone.DRONE_SARRORIAN_DETONATOR_CONTAINER ? 850 : this.type === sdDrone.DRONE_SARRORIAN ? 600 : this.type === sdDrone.DRONE_TZYRG_WATCHER ? 500 : this.type === sdDrone.DRONE_FALKOK ? 130 : this.type === sdDrone.DRONE_FALKOK_RAIL ? 175 : 100; // TYPE=1: 1 shot for regular railgun but 2 for mech one, TYPE=2: 1 shot from any railgun
+		this._hmax =  this.type === sdDrone.DRONE_SETR ? 300 : this.type === sdDrone.DRONE_COUNCIL ? 400 : this.type === sdDrone.DRONE_SARRORIAN_DETONATOR ? 200 : this.type === sdDrone.DRONE_SARRORIAN_DETONATOR_CONTAINER ? 1700 : this.type === sdDrone.DRONE_SARRORIAN ? 1200 : this.type === sdDrone.DRONE_TZYRG_WATCHER ? 1000 : this.type === sdDrone.DRONE_FALKOK ? 260 : this.type === sdDrone.DRONE_FALKOK_RAIL ? 350 : 200; // TYPE=1: 1 shot for regular railgun but 2 for mech one, TYPE=2: 1 shot from any railgun
 		this._hea = this._hmax;
 		this._ai_team = params._ai_team || 1;
 
@@ -423,7 +385,7 @@ class sdDrone extends sdEntity
 		if ( this._hea < -600 || ( this._hea < 0 && this.type === sdDrone.DRONE_SARRORIAN_DETONATOR ) )
 		this.remove();
 	}
-	get mass() { return 500; }
+	get mass() { return 50; }
 	Impulse( x, y )
 	{
 		this.sx += x / this.mass;
