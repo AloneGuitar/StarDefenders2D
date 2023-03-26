@@ -414,7 +414,7 @@ class sdLongRangeTeleport extends sdEntity
 		{
 			if ( ent.y > this.y ) // I have no clue but for some reason blue LRTP teleports counts stuff placed under it but doesn't teleport it? - Booraz149
 			return false; // I just know that this fixes that, so I guess this is a bandaid fix.
-		
+
 			// Moving it here to prevent crystals being teleported through blocks
 			if ( ent.x + ent.hitbox_x1 <= x2 &&
 			     ent.x + ent.hitbox_x2 >= x1 &&
@@ -427,7 +427,6 @@ class sdLongRangeTeleport extends sdEntity
 			{
 				return false;
 			}
-
 
 			if ( use_task_filter )
 			{
@@ -570,12 +569,6 @@ class sdLongRangeTeleport extends sdEntity
 			
 			if ( IsTeleportable( ent ) )
 			{
-				// Moving it to IsTeleportable to prevent crystals being teleported through blocks
-				//if ( ent.x + ent.hitbox_x1 <= x2 )
-				//if ( ent.x + ent.hitbox_x2 >= x1 )
-				//if ( ent.y + ent.hitbox_y1 <= y2 )
-				//if ( ent.y + ent.hitbox_y2 >= y1 )
-				//if ( sdWorld.CheckLineOfSight( this.x, this.y, ent.x + ( ent._hitbox_x1 + ent._hitbox_x2 ) / 2, ent.y + ( ent._hitbox_y1 + ent._hitbox_y2 ) / 2, null, null, [ 'sdBlock', 'sdDoor' ] ) )
 				ents_final.push( ent );
 			}
 		}
@@ -652,8 +645,8 @@ class sdLongRangeTeleport extends sdEntity
 		let rewards = reward_type;// || 1;
 		if ( rewards === 'CLAIM_REWARD_SHARDS' )
 		{
-			let shard, shard2, shard3, shard4, shard5, shard6, shard7;
-			shard = new sdGun({ x:this.x, y:this.y - 16, class:sdGun.CLASS_CUBE_SHARD });
+			let shard, shard2, shard3, shard4, shard5, shard6, shard7, shard8, shard9, shard10;
+			shard = new sdGun({ x:this.x + 20, y:this.y - 16, class:sdGun.CLASS_CUBE_SHARD });
 			sdEntity.entities.push( shard );
 			shard2 = new sdGun({ x:this.x - 4, y:this.y - 16, class:sdGun.CLASS_CUBE_SHARD });
 			sdEntity.entities.push( shard2 );
@@ -667,50 +660,89 @@ class sdLongRangeTeleport extends sdEntity
 			sdEntity.entities.push( shard6 );
 			shard7 = new sdGun({ x:this.x + 12, y:this.y - 16, class:sdGun.CLASS_CUBE_SHARD });
 			sdEntity.entities.push( shard7 );
+			shard8 = new sdGun({ x:this.x - 16, y:this.y - 16, class:sdGun.CLASS_CUBE_SHARD });
+			sdEntity.entities.push( shard8 );
+			shard9 = new sdGun({ x:this.x + 16, y:this.y - 16, class:sdGun.CLASS_CUBE_SHARD });
+			sdEntity.entities.push( shard9 );
+			shard10 = new sdGun({ x:this.x - 20, y:this.y - 16, class:sdGun.CLASS_CUBE_SHARD });
+			sdEntity.entities.push( shard10 );
 		}
 		else
 		if ( rewards === 'CLAIM_REWARD_WEAPON' )
 		{
 			let gun, rng;
-			rng = Math.random() * 1.8; // With more gun rewards, these values will change
-			if ( rng < 0.2 )
+			rng = Math.random() * 1.8;
+			if ( rng < 0.1 )
 			gun = new sdGun({ x:this.x, y:this.y - 16, class:sdGun.CLASS_TOPS_DMR });
 			else
-			if ( rng < 0.4 )
-			gun = new sdGun({ x:this.x, y:this.y - 16, class:sdGun.CLASS_TOPS_SHOTGUN });
-			else
-			if ( rng < 0.6 )
+			if ( rng < 0.2 )
 			gun = new sdGun({ x:this.x, y:this.y - 16, class:sdGun.CLASS_COMBAT_INSTRUCTOR });
 			else
-			if ( rng < 0.8 )
+			if ( rng < 0.3 )
+			gun = new sdGun({ x:this.x, y:this.y - 16, class:sdGun.CLASS_BUILD_TOOL_MK2 });
+			else
+			if ( rng < 0.4 )
 			gun = new sdGun({ x:this.x, y:this.y - 16, class:sdGun.CLASS_ZAPPER });
 			else
-			if ( rng < 1 )
-			gun = new sdGun({ x:this.x, y:this.y - 16, class:sdGun.CLASS_RAYRIFLE });
+			if ( rng < 0.5 )
+			gun = new sdGun({ x:this.x, y:this.y - 16, class:sdGun.CLASS_SETR_ROCKET });
+			else
+			if ( rng < 0.6 )
+			gun = new sdGun({ x:this.x, y:this.y - 16, class:sdGun.CLASS_ERTHAL_ROCKET });
+			else
+			if ( rng < 0.7 )
+			gun = new sdGun({ x:this.x, y:this.y - 16, class:sdGun.CLASS_MINIGUN });
+			else
+			if ( rng < 0.8 )
+			gun = new sdGun({ x:this.x, y:this.y - 16, class:sdGun.CLASS_OVERLORD_BLASTER });
+			else
+			if ( rng < 0.9 )
+			gun = new sdGun({ x:this.x, y:this.y - 16, class:sdGun.CLASS_CUBE_TELEPORTER });
+			else
+			if ( rng < 1.0 )
+			gun = new sdGun({ x:this.x, y:this.y - 16, class:sdGun.CLASS_SARRONIAN_FOCUS_BEAM });
+			else
+			if ( rng < 1.1 )
+			gun = new sdGun({ x:this.x, y:this.y - 16, class:sdGun.CLASS_FMECH_MINIGUN });
 			else
 			if ( rng < 1.2 )
-			gun = new sdGun({ x:this.x, y:this.y - 16, class:sdGun.CLASS_MMG_THE_RIPPER_T3 });
+			gun = new sdGun({ x:this.x, y:this.y - 16, class:sdGun.CLASS_HEALING_RAY2 });
 			else
-			if ( rng < 1.4 )
+			if ( rng < 1.3 )
 			gun = new sdGun({ x:this.x, y:this.y - 16, class:sdGun.CLASS_AREA_AMPLIFIER });
 			else
-			if ( rng < 1.6 )
+			if ( rng < 1.4 )
 			gun = new sdGun({ x:this.x, y:this.y - 16, class:sdGun.CLASS_ILLUSION_MAKER });
 			else
-			gun = new sdGun({ x:this.x, y:this.y - 16, class:sdGun.CLASS_LVL4_ARMOR_REGEN });
-		
+			if ( rng < 1.5 )
+			gun = new sdGun({ x:this.x, y:this.y - 16, class:sdGun.CLASS_TELEPORT_SWORD });
+			else
+			if ( rng < 1.6 )
+			gun = new sdGun({ x:this.x, y:this.y - 16, class:sdGun.CLASS_LVL5_ARMOR_REGEN });
+			else
+			if ( rng < 1.7 )
+			gun = new sdGun({ x:this.x, y:this.y - 16, class:sdGun.CLASS_GIANT_ZAPPER });
+			else
+			if ( rng < 1.75 )
+			gun = new sdGun({ x:this.x, y:this.y - 16, class:sdGun.CLASS_COUNCIL_SNIPER });
+			else
+			gun = new sdGun({ x:this.x, y:this.y - 16, class:sdGun.CLASS_CUBE_SPEAR });
 			sdEntity.entities.push( gun );
 		}
 		else
 		if ( rewards === 'CLAIM_REWARD_CRYSTALS' )
 		{
-			let crystal, crystal2, crystal3;
-			crystal = new sdCrystal({ x:this.x - 24, y:this.y - 24, matter_max: 5120, type:sdCrystal.TYPE_CRYSTAL_ARTIFICIAL });
+			let crystal, crystal2, crystal3, crystal4, crystal5;
+			crystal = new sdCrystal({ x:this.x - 12, y:this.y - 24, matter_max: 10240, type:sdCrystal.TYPE_CRYSTAL_ARTIFICIAL });
 			sdEntity.entities.push( crystal );
-			crystal2 = new sdCrystal({ x:this.x, y:this.y - 24, matter_max: 5120, type:sdCrystal.TYPE_CRYSTAL_ARTIFICIAL });
+			crystal2 = new sdCrystal({ x:this.x, y:this.y - 24, matter_max: 10240, type:sdCrystal.TYPE_CRYSTAL_ARTIFICIAL });
 			sdEntity.entities.push( crystal2 );
-			crystal3 = new sdCrystal({ x:this.x + 24, y:this.y - 24, matter_max: 5120, type:sdCrystal.TYPE_CRYSTAL_ARTIFICIAL });
+			crystal3 = new sdCrystal({ x:this.x + 12, y:this.y - 24, matter_max: 10240, type:sdCrystal.TYPE_CRYSTAL_ARTIFICIAL });
 			sdEntity.entities.push( crystal3 );
+			crystal4 = new sdCrystal({ x:this.x - 24, y:this.y - 24, matter_max: 5120, type:sdCrystal.TYPE_CRYSTAL_ARTIFICIAL });
+			sdEntity.entities.push( crystal4 );
+			crystal5 = new sdCrystal({ x:this.x + 24, y:this.y - 24, matter_max: 5120, type:sdCrystal.TYPE_CRYSTAL_ARTIFICIAL });
+			sdEntity.entities.push( crystal5 );
 		}
 		else
 		if ( rewards === 'CLAIM_REWARD_CONTAINER' )
@@ -732,7 +764,7 @@ class sdLongRangeTeleport extends sdEntity
 			if ( socket && socket.ad_reward_pending )
 			{
 				socket.ad_reward_pending = false;
-				
+
 				let r = [ 640, 1280, 2560, 5120 ][ ~~( Math.pow( Math.random(), 2 ) * 4 ) ];
 				let crystal = new sdCrystal({ x:this.x, y:this.y - 24, matter_max: r, type:sdCrystal.TYPE_CRYSTAL_ARTIFICIAL });
 				sdEntity.entities.push( crystal );
@@ -787,21 +819,21 @@ class sdLongRangeTeleport extends sdEntity
 	
 		if ( snapshots.length > 0 )
 		sdSound.PlaySound({ name:'teleport', x:this.x, y:this.y, volume:0.5 });
-	
+
 		let new_entities = [];
 		this._last_inserted_entities_array = new_entities;
-		
+
 		const custom_filtering_method = ( e )=>
 		{
 			if ( e === this )
 			return false;
-			
+
 			if ( new_entities.indexOf( e ) === -1 )
 			return true;
-		
+
 			return false;
 		};
-		
+
 		this._last_overlap_issue_entities = [];
 						
 		for ( let i = 0; i < snapshots.length; i++ )
@@ -829,11 +861,11 @@ class sdLongRangeTeleport extends sdEntity
 					ent._respawn_protection = 30 * 10; // 10 seconds of protection once teleported
 					ent._god = false;
 				}
-				
+
 				if ( !ent.CanMoveWithoutOverlap( ent.x, ent.y, 0, custom_filtering_method ) || 
 					 !sdWorld.CheckLineOfSight( this.x, this.y, ent.x + ( ent._hitbox_x1 + ent._hitbox_x2 ) / 2, ent.y + ( ent._hitbox_y1 + ent._hitbox_y2 ) / 2, null, null, [ 'sdBlock', 'sdDoor' ] ) )
 				this._last_overlap_issue_entities.push( sdWorld.last_hit_entity );
-				
+
 				new_entities.push( ent );
 			}
 			
@@ -846,7 +878,6 @@ class sdLongRangeTeleport extends sdEntity
 			sdLongRangeTeleport.one_time_keys.push( key );
 			
 			one_time_keys[ i ] = key.hash;
-			
 		}
 		for ( let i = 0; i < sdWorld.unresolved_entity_pointers.length; i++ )
 		{
@@ -970,7 +1001,7 @@ class sdLongRangeTeleport extends sdEntity
 		if ( command_name === 'AD_START_ALLOWED' )
 		{
 			let old_volume = sdSound.volume;
-			
+
 			let started = false;
 
 			adBreak({
@@ -987,13 +1018,13 @@ class sdLongRangeTeleport extends sdEntity
 				adViewed: ()=>
 				{
 					let lrtp = sdEntity.GetObjectByClassAndNetId( 'auto', parameters_array[ 0 ] );
-					
+
 					globalThis.socket.emit( 'ENTITY_CONTEXT_ACTION', [ lrtp.GetClass(), lrtp._net_id, 'CLAIM_REWARD_AD', [] ] );
 				},
 				beforeAd: () => { sdSound.SetVolumeScale( 0 ); }, // Prepare for the ad. Mute and pause the game flow
 				afterAd: () => { sdSound.SetVolumeScale( old_volume ); } // Resume the game and un-mute the sound
 			});
-			
+
 			setTimeout( ()=>
 			{
 				if ( !started )
@@ -1025,7 +1056,7 @@ class sdLongRangeTeleport extends sdEntity
 						'Mothership: No ads for you now. Sorry :('
 					]);
 				}
-				
+
 			}, 1500 );
 		}
 		else
@@ -1074,7 +1105,6 @@ class sdLongRangeTeleport extends sdEntity
 				return;
 			}
 			
-			//if ( exectuter_character._god || sdWorld.inDist2D_Boolean( this.x, this.y, exectuter_character.x, exectuter_character.y, 64 ) )
 			if ( exectuter_character._god || ( this.inRealDist2DToEntity_Boolean( exectuter_character, 64 ) && executer_socket.character.canSeeForUse( this ) ) )
 			{
 				//let can_reset_teleport = !( this.is_charging || sdWorld.time < this._is_busy_since + 15 * 1000 );
@@ -1108,7 +1138,7 @@ class sdLongRangeTeleport extends sdEntity
 							if ( this.matter >= this._matter_max )
 							{
 								let claim_cost = ( command_name === 'CLAIM_REWARD_AD' ) ? 0 : sdTask.reward_claim_task_amount;
-								
+
 								if ( this.delay === 0 && exectuter_character._task_reward_counter >= claim_cost )
 								{
 									this.Activation();
@@ -1116,12 +1146,12 @@ class sdLongRangeTeleport extends sdEntity
 									this._charge_complete_method = ()=>
 									{
 										this.Deactivation();
-										
+
 										if ( exectuter_character._is_being_removed ) // LRTP duping prevention
 										{
 											return;
 										}
-										
+
 										if ( exectuter_character._task_reward_counter < claim_cost ) // Prevent claiming reward on multiple long-range teleports
 										{
 											executer_socket.SDServiceMessage( 'Reward claim was rejected - reward was claimed somewhere else' );
@@ -1133,7 +1163,7 @@ class sdLongRangeTeleport extends sdEntity
 											executer_socket.SDServiceMessage( 'Reward claim was rejected - not enough matter' );
 											return;
 										}
-										
+
 										this.GiveRewards( command_name, executer_socket );
 										exectuter_character._task_reward_counter = Math.max( 0, exectuter_character._task_reward_counter - claim_cost );
 									};
@@ -1207,9 +1237,7 @@ class sdLongRangeTeleport extends sdEntity
 					}
 				}
 				else
-				if ( command_name === 'TELEPORT_STUFF' || 
-					 command_name === 'SAVE_STUFF' || 
-					 command_name === 'GET_PRIVATE_STORAGE' )
+				if ( command_name === 'TELEPORT_STUFF' || command_name === 'SAVE_STUFF' || command_name === 'GET_PRIVATE_STORAGE' )
 				{
 					if ( !this.is_server_teleport )
 					{
@@ -1231,7 +1259,7 @@ class sdLongRangeTeleport extends sdEntity
 											executer_socket.SDServiceMessage( 'Not enough matter' );
 											return;
 										}
-										
+
 										let collected_entities_array = [];
 
 										if ( command_name === 'TELEPORT_STUFF' )
@@ -1285,7 +1313,6 @@ class sdLongRangeTeleport extends sdEntity
 												let initiator_hash_or_user_uid = exectuter_character._my_hash;
 												let this_x = this.x;
 												let this_y = this.y;
-												
 												this.matter = 0;
 
 												sdDatabase.Exec( 
@@ -1322,7 +1349,6 @@ class sdLongRangeTeleport extends sdEntity
 											let initiator_hash_or_user_uid = exectuter_character._my_hash;
 											let this_x = this.x;
 											let this_y = this.y;
-												
 											this.matter = 0;
 
 											sdDatabase.Exec( 
@@ -1346,24 +1372,24 @@ class sdLongRangeTeleport extends sdEntity
 															let snapshots = response[ 1 ];
 															let relative_x = response[ 2 ];
 															let relative_y = response[ 3 ];
-															
+
 															this.InsertEntitiesOnTop( snapshots, relative_x, relative_y );
-															
+
 															if ( this._last_overlap_issue_entities.length > 0 )
 															{
 																for ( let i = 0; i < this._last_overlap_issue_entities.length; i++ )
 																if ( this._last_overlap_issue_entities[ i ] ) // Not null, which is a world bounds
 																this._last_overlap_issue_entities[ i ].ApplyStatusEffect({ type: sdStatusEffect.TYPE_STEERING_WHEEL_PING, c: [ 6, 0.5, 0.5 ], observer: exectuter_character });
-																
+
 																while ( this._last_inserted_entities_array.length > 0 )
 																{
 																	let e = this._last_inserted_entities_array.pop();
 																	e.remove();
 																	e._broken = false;
-																	
+
 																	sdLongRangeTeleport.teleported_items.add( e );
 																}
-																
+
 																// Return back...
 																sdDatabase.Exec( 
 																	[ 
@@ -1596,10 +1622,10 @@ class sdLongRangeTeleport extends sdEntity
 					{
 						if ( sdTask.tasks[ i ].mission === sdTask.MISSION_TASK_CLAIM_REWARD )
 						{
-							this.AddContextOption( 'Claim rewards ( cube shards )', 'CLAIM_REWARD_SHARDS', [] );
-							this.AddContextOption( 'Claim rewards ( weapon )', 'CLAIM_REWARD_WEAPON', [] );
-							this.AddContextOption( 'Claim rewards ( crystals )', 'CLAIM_REWARD_CRYSTALS', [] );
-							this.AddContextOption( 'Claim rewards ( advanced matter container )', 'CLAIM_REWARD_CONTAINER', [] );
+							this.AddContextOption( 'Claim rewards ( Cube shards )', 'CLAIM_REWARD_SHARDS', [] );
+							this.AddContextOption( 'Claim rewards ( Weapon )', 'CLAIM_REWARD_WEAPON', [] );
+							this.AddContextOption( 'Claim rewards ( Crystals )', 'CLAIM_REWARD_CRYSTALS', [] );
+							this.AddContextOption( 'Claim rewards ( Advanced matter container )', 'CLAIM_REWARD_CONTAINER', [] );
 						}
 
 						if ( sdTask.tasks[ i ].mission === sdTask.MISSION_LRTP_EXTRACTION )
@@ -1624,8 +1650,7 @@ class sdLongRangeTeleport extends sdEntity
 					sdMotherShipStorageManager.Close();
 					sdMotherShipStorageManager.Open({ lrtp: this });
 				}, true );
-				
-				
+
 				this.AddContextOption( 'Ask Mothership for crystals ( watch ad )', 'AD_REWARD_START', [] );
 			}
 			else

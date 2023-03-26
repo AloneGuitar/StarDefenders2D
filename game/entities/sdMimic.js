@@ -23,18 +23,6 @@ class sdMimic extends sdEntity
 	static init_class()
 	{
 		sdMimic.img_mimic = sdWorld.CreateImageFromFile( 'sdMimic' );
-		/*
-		sdMimic.img_quickie_idle1 = sdWorld.CreateImageFromFile( 'quickie_idle1' );
-		sdMimic.img_quickie_idle2 = sdWorld.CreateImageFromFile( 'quickie_idle2' );
-		sdMimic.img_quickie_walk1 = sdWorld.CreateImageFromFile( 'quickie_walk1' );
-		sdMimic.img_quickie_walk2 = sdWorld.CreateImageFromFile( 'quickie_walk2' );
-		
-		sdMimic.death_imgs = [
-			sdWorld.CreateImageFromFile( 'quickie_death1' ),
-			sdWorld.CreateImageFromFile( 'quickie_death2' ),
-			sdWorld.CreateImageFromFile( 'quickie_death3' )
-		];
-		*/
 		sdMimic.death_duration = 10;
 		sdMimic.post_death_ttl = 180;
 		
@@ -118,10 +106,13 @@ class sdMimic extends sdEntity
 		
 		this.sx = 0;
 		this.sy = 0;
-		
+
 		this._hmax = 400;
 	
 		this._hea = this._hmax;
+
+		this._nature_damage = 1000000;
+		this._player_damage = 0;
 		//this.gibbed = false; 
 		this.death_anim = 0;
 		
@@ -176,7 +167,7 @@ class sdMimic extends sdEntity
 		if ( this._current_target !== character )
 		if ( this._hea > 0 )
 		if ( character.IsTargetable() && character.IsVisible( this ) )
-		if ( ( character.hea || character._hea ) > 0 )
+		if ( ( character.hea || character._hea ) > 0 && character.hmax < 2700 && character.matter_max < 13200 )
 		{
 			if ( this.d !== null )
 			this._freeze_until = sdWorld.time + 5000;
@@ -537,39 +528,20 @@ class sdMimic extends sdEntity
 					let xx = from_entity.x + ( from_entity._hitbox_x1 + from_entity._hitbox_x2 ) / 2;
 					let yy = from_entity.y + ( from_entity._hitbox_y1 + from_entity._hitbox_y2 ) / 2;
 
-					if ( /*from_entity.GetClass() === 'sdCharacter' ||
-						 from_entity.GetClass() === 'sdBlock' ||
-						 from_entity.GetClass() === 'sdMatterContainer' ||
-						 from_entity.GetClass() === 'sdMatterAmplifier' ||
-						 from_entity.GetClass() === 'sdCrystalCombiner' ||
-						 from_entity.GetClass() === 'sdConveyor' ||
-						 from_entity.GetClass() === 'sdStorage' ||
-						 from_entity.GetClass() === 'sdCrystal' ||
-						 from_entity.GetClass() === 'sdJunk' ||
-						 from_entity.GetClass() === 'sdTeleport' ||
-						 from_entity.GetClass() === 'sdDoor' ||
-						 from_entity.GetClass() === 'sdCom' ||
-						 from_entity.GetClass() === 'sdNode' ||
-						 from_entity.GetClass() === 'sdTurret' ||*/
-						 ( !from_entity.is( sdMimic ) && 
-						   !from_entity.is( sdAbomination ) && 
-						   !from_entity.is( sdFleshGrabber ) && 
-						   ( !from_entity.is( sdBlock ) || !from_entity._natural ) && 
-						   from_entity.IsBGEntity() === this.IsBGEntity() && 
-						   from_entity.IsTargetable( this ) 
-						 ) ||
-						 from_entity === this._current_target 
+					if (  ( !from_entity.is( sdMimic ) && 
+					   !from_entity.is( sdAbomination ) && 
+					   !from_entity.is( sdFleshGrabber ) && 
+					   !from_entity.is( sdBlock ) && 
+					   from_entity.IsBGEntity() === this.IsBGEntity() && 
+					   from_entity.IsTargetable( this )  ) ||
+					 from_entity === this._current_target 
 					)
+
 					if ( from_entity.IsTargetable() )
 					{
 						this._last_bite = sdWorld.time;
 						if ( from_entity.GetClass() === 'sdBlock' || from_entity.GetClass() === 'sdDoor' )
 						{
-							/*if ( from_entity._reinforced_level > 0 ) // Quickies should not damage reinforced blocks to prevent raiders using them
-							{
-								// No damage
-							}
-							else*/
 							from_entity.DamageWithEffect( 45, this );
 						}
 						else
@@ -623,7 +595,6 @@ class sdMimic extends sdEntity
 		{
 			ctx.save();
 			{
-				//ctx.scale( this.side, 1 );
 
 				ctx.drawImageFilterCache( sdMimic.img_mimic, this.attacking * 32,0, 32,32, -16, -16, 32,32 );
 			}

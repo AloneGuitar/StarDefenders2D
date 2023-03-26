@@ -50,7 +50,7 @@ class sdCharacter extends sdEntity
 	{
 		sdCharacter.img_teammate = sdWorld.CreateImageFromFile( 'teammate' );
 		
-		sdCharacter.climb_filter = [ 'sdBlock', 'sdLost', 'sdBarrel', 'sdCrystal', 'sdCharacter', 'sdDoor', 'sdMatterContainer', 'sdCube' ];
+		sdCharacter.climb_filter = [ 'sdBlock', 'sdLost', 'sdBarrel', 'sdCrystal', 'sdCharacter', 'sdDoor', 'sdMatterContner', 'sdCube' ];
 		
 		sdCharacter.stability_damage_from_damage_scale = 1.25;
 		sdCharacter.stability_damage_from_velocity_changes_scale = 128 / 6;
@@ -179,7 +179,14 @@ class sdCharacter extends sdEntity
 			sdWorld.CreateImageFromFile( 'helmet_terminus2' ), // by LordBored
 			sdWorld.CreateImageFromFile( 'helmet_versatile' ), // by LordBored
 			sdWorld.CreateImageFromFile( 'helmet_fixer' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_fixer2' ) // by LordBored
+			sdWorld.CreateImageFromFile( 'helmet_fixer2' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmet_phfalkok2' ),
+			sdWorld.CreateImageFromFile( 'helmet_cleaner' ),
+			sdWorld.CreateImageFromFile( 'helmet_glass' ),
+			sdWorld.CreateImageFromFile( 'helmet_interceptor' ),
+			sdWorld.CreateImageFromFile( 'helmet_medic' ),
+			sdWorld.CreateImageFromFile( 'helmet_erthal' ),
+			sdWorld.CreateImageFromFile( 'helmet_milk' )
 			// Note: Commas -> , are important since it all is just a big Array: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array
 		];
 		
@@ -281,7 +288,12 @@ class sdCharacter extends sdEntity
 			sdWorld.CreateImageFromFile( 'skins/versatile' ), // by LordBored
 			sdWorld.CreateImageFromFile( 'skins/versatile2' ), // by LordBored
 			sdWorld.CreateImageFromFile( 'skins/warlord' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/fixer' ) // by LordBored
+			sdWorld.CreateImageFromFile( 'skins/fixer' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'skins/afterburn2' ),
+			sdWorld.CreateImageFromFile( 'skins/council2' ),
+			sdWorld.CreateImageFromFile( 'skins/glass' ),
+			sdWorld.CreateImageFromFile( 'skins/erthal' ),
+			sdWorld.CreateImageFromFile( 'skins/milk' )
 		];
 		
 		// x y rotation, for images below
@@ -340,7 +352,7 @@ class sdCharacter extends sdEntity
 		
 		sdCharacter.disowned_body_ttl = 30 * 60 * 1; // 1 min
 	
-		sdCharacter.starter_matter = 50;
+		sdCharacter.starter_matter = 75;
 		sdCharacter.matter_required_to_destroy_command_center = 300; // Will be used to measure command centres' self-destruct if no characters with enough matter will showup near them
 		
 		sdCharacter.default_weapon_draw_time = 7;
@@ -355,24 +367,33 @@ class sdCharacter extends sdEntity
 	
 	GetBleedEffect()
 	{
-		if ( this._voice.variant === 'whisperf' || this._voice.variant === 'croak' || this._voice.variant ==='m2' )
+		if ( this._voice.variant === 'whisperf' && this._voice.pitch !== 0 || this._voice.variant === 'croak' && this._voice.pitch === 1 || this._voice.variant ==='f5' || this._voice.variant ==='m2' )
 		return sdEffect.TYPE_BLOOD_GREEN;
 		
-		if ( this._voice.variant === 'klatt3' || this._voice.variant === 'silence' )
+		if ( this._voice.variant === 'klatt3' || this._voice.variant === 'silence' || this._voice.variant === 'whisperf' && this._voice.pitch === 0 )
 		return sdEffect.TYPE_WALL_HIT;
 	
 		return sdEffect.TYPE_BLOOD;
 	}
 	GetBleedEffectHue()
 	{
-		if ( this._voice.variant === 'croak' )
+		if ( this._voice.variant === 'croak' && this._voice.pitch === 1 )
 		return -73;
 	
-		if ( this._voice.variant === 'whisperf' )
+		if ( this._voice.variant === 'whisperf' && this._voice.pitch !== 0 )
 		return 73;
 
-		if ( this._voice.variant === 'm2' )
+		if ( this._voice.variant === 'm2' && this._voice.pitch === 40 )
 		return 133;
+
+		if ( this._voice.variant === 'm2' && this._voice.pitch === 20 )
+		return -73;
+
+		if ( this._voice.variant === 'f5' && this._voice.pitch === 70 )
+		return -73;
+
+		if ( this._voice.variant === 'f5' && this._voice.pitch === 90 )
+		return 61;
 	
 		return 0;
 	}
@@ -508,7 +529,8 @@ class sdCharacter extends sdEntity
 		{
 			let old_matter_max = this.matter_max;
 
-			this.matter_max = Math.min( 50 + Math.max( 0, this._score * 20 ), 1850 ) + this._matter_capacity_boosters;
+			if ( this.matter_max <= 13250 )
+			this.matter_max = Math.min( 75 + Math.max( 0, this._score * 20 ), 2750 ) + this._matter_capacity_boosters + this._energy_upgrade + this._energy_sent;
 			
 			// Keep matter multiplied when low score or else it feels like matter gets removed
 			if ( this._score < 100 )
@@ -689,10 +711,13 @@ class sdCharacter extends sdEntity
 		this._local_ragdoll_ever_synced = false; // To track need to precalculate ragdoll logic
 		
 		this.s = 100; // Scale, %
+
+		this.anim_change = true;
 		
 		this.stability = 100; // -100...100. Low values cause player to activate ragdoll and move slower. Drops down due to high damage (not towards the armor) and high impulses received
 		this._ignored_stability_damage = 0; // Grows when stability damage is received. If above certain moment - it goes towards stabiltiy damage. Slowly decreses overtime. Should accumulate shotgun-like damages
 		this._ignored_stability_damage_last = 0; // Time of last stability damage for passive solving of accumulation decrease
+		this.stability_upgrade = 0;
 		
 		this._socket = null; // undefined causes troubles
 		this._my_hash = undefined;
@@ -791,6 +816,8 @@ class sdCharacter extends sdEntity
 		this.armor_speed_reduction = 0; // Armor speed reduction, depends on armor type
 		this._armor_repair_amount = 0; // Armor repair speed
 
+		this.fist_change = false;
+
 		//this.anim_death = 0;
 		this._anim_walk = 0;
 		this.fire_anim = 0;
@@ -838,27 +865,28 @@ class sdCharacter extends sdEntity
 		this._hook_allowed = false; // Through upgrade
 		this._jetpack_allowed = false; // Through upgrade
 		this._ghost_allowed = false; // Through upgrade
-		//this._coms_allowed = false; // Through upgrade, only non-proximity one
-		this._damage_mult = 2; // Through upgrade. Has no effect anymore, but level of 3 allows damaging some buildings
-		//this._build_hp_mult = 1; // Through upgrade
+		//this._coms_allowed = true; // Through upgrade, only non-proximity one
+		this._damage_mult = 1; // Through upgrade. Has no effect anymore, but level of 3 allows damaging some buildings
+		this._build_hp_mult = 0; // Through upgrade
 		this._matter_regeneration = 0; // Through upgrade
-		//this._recoil_mult = 1; // Through upgrade
-		//this._air_upgrade = 1; // Underwater breath capacity upgrade
+		this._recoil_mult = 1; // Through upgrade
+		this._air_upgrade = 1; // Underwater breath capacity upgrade
 		this.build_tool_level = 0; // Used for some unlockable upgrades in build tool
 		this._jetpack_fuel_multiplier = 1; // Fuel cost reduction upgrade
 		this._matter_regeneration_multiplier = 1; // Matter regen multiplier upgrade
 		this._stability_recovery_multiplier = 1; // How fast does the character recover after stability damage?
-		//this.workbench_level = 0; // Stand near workbench to unlock some workbench build stuff
+		this.workbench_level = 0; // Stand near workbench to unlock some workbench build stuff
+		this.speed_up = false;
 		this._task_reward_counter = 0;
 
 		this._score_to_level = 50;// How much score is needed to level up character?
 		this._score_to_level_additive = 50; // How much score it increases to level up next level
 		this._max_level = 30; // Current maximum level for players to reach
 
-		//this._acquired_bt_mech = false; // Has the character picked up build tool upgrade that the flying mech drops?
+		this._acquired_bt_mech = false;
 		//this._acquired_bt_rift = false; // Has the character picked up build tool upgrade that the portals drop?
 		//this._acquired_bt_score = false; // Has the character reached over 5000 score?
-		//this._acquired_bt_projector = false; // Has the character picked up build tool upgrade that the dark matter beam projectors drop?
+		this._acquired_bt_projector = false; // Has the character picked up build tool upgrade that the dark matter beam projectors drop?
 		this.flying = false; // Jetpack flying
 		//this._last_act_y = this.act_y; // For mid-air jump jetpack activation
 		
@@ -911,6 +939,8 @@ class sdCharacter extends sdEntity
 		
 		this._matter_capacity_boosters = 0; // Cube shards are increasing this value
 		this._matter_capacity_boosters_max = 20 * 45;
+		this._energy_upgrade = 0;
+		this._energy_sent = 0;
 		
 		this.stim_ef = 0; // Stimpack effect
 		this.power_ef = 0; // Damage multiplication effect
@@ -979,8 +1009,8 @@ class sdCharacter extends sdEntity
 		this._weapon_draw_timer = Math.max( 0, this._weapon_draw_timer - GSPEED );
 		
 		if ( this._recoil > 0 )
-		this._recoil = Math.max( 0, sdWorld.MorphWithTimeScale( this._recoil , -0.01, 0.935 , GSPEED ) ); //0.9 was "laser beams" basically and nullified the point for "Recoil upgrade"
-		//this._recoil = Math.max( 0, sdWorld.MorphWithTimeScale( this._recoil , -0.01, 0.935 * this._recoil_mult , GSPEED ) ); //0.9 was "laser beams" basically and nullified the point for "Recoil upgrade"
+		//this._recoil = Math.max( 0, sdWorld.MorphWithTimeScale( this._recoil , -0.01, 0.935 , GSPEED ) ); //0.9 was "laser beams" basically and nullified the point for "Recoil upgrade"
+		this._recoil = Math.max( 0, sdWorld.MorphWithTimeScale( this._recoil , -0.01, 0.935 * this._recoil_mult , GSPEED ) ); //0.9 was "laser beams" basically and nullified the point for "Recoil upgrade"
 
 		if ( this.fire_anim > 0 )
 		this.fire_anim = Math.max( 0, this.fire_anim - GSPEED );
@@ -1010,7 +1040,6 @@ class sdCharacter extends sdEntity
 			{
 				let will_throw_grenade = this._key_states.GetKey( 'KeyG' ) && ( this._upgrade_counters[ 'upgrade_grenades' ] );
 				let will_fire = will_throw_grenade || this._key_states.GetKey( 'Mouse1' );
-				
 				let shoot_from_scenario = false;
 
 				if ( will_fire )
@@ -1079,6 +1108,15 @@ class sdCharacter extends sdEntity
 							this.matter -= 150;
 
 							let _class = sdGun.CLASS_THROWABLE_GRENADE;
+							if ( this._god && this._damage_mult >= 1 && this._damage_mult < 1.5 )
+							{
+							_class = sdGun.CLASS_CUBE_SPEAR;
+							}
+							else
+							if ( this._god && this._damage_mult >= 1.5 )
+							{
+							_class = sdGun.CLASS_LOST_CONVERTER;
+							}
 
 							if ( !offset )
 							offset = this.GetBulletSpawnOffset();
@@ -1101,7 +1139,7 @@ class sdCharacter extends sdEntity
 							bullet_obj._armor_penetration_level = 0;
 
 							sdEntity.entities.push( bullet_obj );
-							
+
 							sdSound.PlaySound({ name:'sword_attack2', x:this.x, y:this.y, volume: 0.5, pitch: 1 });
 						}
 						else
@@ -1114,6 +1152,7 @@ class sdCharacter extends sdEntity
 					}
 				}
 				else
+
 				if ( this._inventory[ this.gun_slot ] )
 				{
 					if ( this._key_states.GetKey( 'KeyN' ) )
@@ -1167,7 +1206,24 @@ class sdCharacter extends sdEntity
 
 							if ( sdWorld.is_server )
 							{
-								let _class = sdGun.CLASS_FISTS;
+							let _class = sdGun.CLASS_FISTS;
+
+								if ( this._damage_mult >= 1.1 && this._damage_mult < 1.5 && this.fist_change === true )
+								{
+								_class = sdGun.CLASS_SWORD;
+								}
+								else
+								if ( this._damage_mult >= 1.5 && this._damage_mult < 1.9 && this.fist_change === true )
+								{
+								_class = sdGun.CLASS_SABER;
+								}
+								else
+								if ( this._damage_mult >= 1.9 && this.fist_change === true )
+								{
+								_class = sdGun.CLASS_ZAPPER;
+								}
+								else
+								_class = sdGun.CLASS_FISTS;
 
 								if ( !offset )
 								offset = this.GetBulletSpawnOffset();
@@ -1189,13 +1245,157 @@ class sdCharacter extends sdEntity
 
 								bullet_obj._armor_penetration_level = 0;
 
+								if ( this._damage_mult >= 1.9 && this.fist_change === true )
+								{
+								bullet_obj._temperature_addition = 1000;
+								}
+								else
+								bullet_obj._temperature_addition = 0;
+
 								bullet_obj.time_left *= ( this.s / 100 );
 
-								bullet_obj._damage *= ( this.s / 100 );
+								bullet_obj._damage *= ( this.s * this._damage_mult / 100 );
 
-								if ( this._ai_team === 1 )
-								if ( this.title === 'Falkonian Sword Bot' )
-								bullet_obj._damage = 250; // Falkonian sword bot should be lethal at close range.
+								//if ( this._ai_team === 1 || this.s > 249 )
+								//if ( this.title === 'Falkonian Sword Bot' )
+								//bullet_obj._damage = (this.s * this._damage_mult); // Falkonian sword bot should be lethal at close range.
+
+				if ( this.matter >= 5 )
+				{
+				if ( sdWorld.inDist2D_Boolean( this.x, this.y, this.look_x, this.look_y, 600 ) && this._energy_upgrade >= 8690 && this._damage_mult >= 1.9 && this._matter_capacity_boosters >= 900 && this._energy_sent >= 900 && this.fist_change === true )
+				{
+					let damage_value = bullet_obj._damage * 2;
+
+					let dx = this.look_x - this.x;
+					let dy = this.look_y - this.y;
+
+					let landed_hit = false;
+
+					let from_x = this.x;
+					let from_y = this.y;
+
+					let to_x = from_x;
+					let to_y = from_y;
+
+					let di = sdWorld.Dist2D_Vector( dx, dy );
+
+					if ( di > 1 )
+					{
+						dx /= di;
+						dy /= di;
+					}
+					else
+					{
+						return true;
+					}
+
+					let j = this.y;
+
+					let hit_entities = new Set();
+
+					let pending_solid_wall_hit = null;
+
+					let Damage = ( e )=>
+					{
+						if ( !hit_entities.has( e ) )
+						{
+							hit_entities.add( e );
+
+							if ( e.IsTargetable( this ) )
+							{
+								e.DamageWithEffect( damage_value, this );
+
+								if ( !landed_hit )
+								{
+									landed_hit = true;
+									sdSound.PlaySound({ name:'cube_teleport', x:e.x, y:e.y, volume:2, pitch: 1.5 });
+								}
+							}
+						}
+
+						return false;
+					};
+
+					let custom_filtering_method = ( e )=>
+					{
+						if ( sdCom.com_visibility_unignored_classes.indexOf( e.GetClass() ) !== -1 )
+						pending_solid_wall_hit = e;
+
+						return false;
+					};
+
+					let step_size = 8;
+					let i = 0;
+					let max_i = 0;
+					while ( i <= di )
+					{
+						pending_solid_wall_hit = null;
+
+						let xx = from_x + dx * i;
+						let yy = from_y + dy * i;
+						this.CanMoveWithoutOverlap( xx, yy, 2, custom_filtering_method );
+
+						if ( this.CanMoveWithoutOverlap( xx, yy, 2 ) )
+						{
+							to_x = xx;
+							to_y = yy;
+							max_i = i;
+						}
+						else
+						{
+							if ( sdWorld.last_hit_entity )
+							Damage( sdWorld.last_hit_entity );
+						}
+
+						if ( pending_solid_wall_hit )
+						{
+							break;
+						}
+
+						if ( i < di )
+						{
+							i += step_size;
+							if ( i >= di )
+							i = di;
+						}
+						else
+						break;
+					}
+					i = 0;
+					while ( i <= max_i )
+					{
+						let xx = from_x + dx * i;
+						let yy = from_y + dy * i;
+
+						this.CanMoveWithoutOverlap( xx, yy, 2, Damage );
+
+						if ( i < max_i )
+						{
+							i += step_size;
+							if ( i >= max_i )
+							i = max_i;
+						}
+						else
+						break;
+					}
+					sdWorld.SendEffect({ x:this.x, y:this.y, x2:to_x, y2:to_y, type:sdEffect.TYPE_BEAM, color:'#CCCCCC' });
+					this.x = to_x;
+					this.y = to_y;
+					this.sx = dx * 2;
+					this.sy = dy * 2;
+					this.ApplyServerSidePositionAndVelocity( true, 0, 0 );
+
+					if ( landed_hit === true )
+					{
+						bullet_obj._combo_timer = 45;
+						bullet_obj._combo++;
+					}
+					else
+					bullet_obj._combo = Math.max( 0, bullet_obj._combo - 1 );
+					this.matter -= landed_hit === true ? 1 : 5;
+					bullet_obj._reload_time = 15 - Math.min( 7.5, bullet_obj._combo * 0.5 );
+				}
+				}
 
 								sdEntity.entities.push( bullet_obj );
 							}
@@ -1232,7 +1432,6 @@ class sdCharacter extends sdEntity
 
 				if ( this._inventory[ this.gun_slot ] )
 				{
-					//if ( this.gun_slot === 0 )
 					if ( sdGun.classes[ this._inventory[ this.gun_slot ].class ] )
 					if ( sdGun.classes[ this._inventory[ this.gun_slot ].class ].is_sword )
 					{
@@ -1245,7 +1444,7 @@ class sdCharacter extends sdEntity
 
 					this.DropWeapon( this.gun_slot );
 
-					this.gun_slot = 0;
+					this.gun_slot = -1;
 					if ( sdWorld.my_entity === this )
 					sdWorld.PreventCharacterPropertySyncForAWhile( 'gun_slot' );
 
@@ -1262,6 +1461,19 @@ class sdCharacter extends sdEntity
 	{
 		if ( this._auto_shoot_in <= 0 )
 		{
+			if ( this._key_states.GetKey( 'KeyH' ) )
+			{
+				this.gun_slot = -1;
+				this._backup_slot = this.gun_slot;
+				if ( sdWorld.my_entity === this )
+				sdWorld.PreventCharacterPropertySyncForAWhile( 'gun_slot' );
+
+				if ( this.reload_anim > 0 )
+				this.reload_anim = 0;
+
+				this._weapon_draw_timer = sdCharacter.default_weapon_draw_time;
+			}
+			else
 			if ( this._key_states.GetKey( 'KeyQ' ) )
 			{
 				if ( !this._q_held )
@@ -1334,7 +1546,7 @@ class sdCharacter extends sdEntity
 		if ( !this.ghosting )
 		return true;
 	
-		if ( this.flying || this.hea <= 0 || ( this.fire_anim > 0 && this.gun_slot !== 0 ) || this.pain_anim > 0 || this._auto_shoot_in > 0 || this.time_ef > 0 )
+		if ( this.flying || this.hea <= 0 || ( this.fire_anim > 0 && this.gun_slot !== 0 && this.gun_slot !== -1 ) || this.pain_anim > 0 || this._auto_shoot_in > 0 || this.time_ef > 0 )
 		return true;
 	
 		if ( observer_character )
@@ -1763,7 +1975,7 @@ class sdCharacter extends sdEntity
 	RemoveArmor()
 	{
 		this.armor = 0;
-		this.armor_max = 0;
+		//this.armor_max = 0;
 		//this._armor_absorb_perc = 0;
 		//this.armor_speed_reduction = 0; 
 		//this._armor_repair_amount = 0; // Completely broken armor cannot be repaired
@@ -1773,11 +1985,12 @@ class sdCharacter extends sdEntity
 		params.armor = params.armor || 100;
 		params._armor_absorb_perc = params._armor_absorb_perc || 0;
 		params.armor_speed_reduction = params.armor_speed_reduction || 0;
-		
+
 		// Make sure it is better by all stats only
 		if ( params.armor >= this.armor_max )
 		if ( params._armor_absorb_perc >= this._armor_absorb_perc || this.armor_max === 0 )
 		//if ( params.armor_speed_reduction <= this.armor_speed_reduction * 2 || this.armor_max === 0 )
+
 		if ( ( 1 - this._armor_absorb_perc ) * this.armor < ( 1 - params._armor_absorb_perc ) * params.armor )
 		{
 			this.armor = params.armor;
@@ -1803,7 +2016,7 @@ class sdCharacter extends sdEntity
 		if ( dmg > 0 )
 		return;
 		
-		dmg /= this.s / 100;
+		dmg /= this.s / 100 ;
 		
 		// For onDamage logic that exists in default config
 		if ( initiator && initiator._is_being_removed )
@@ -1896,52 +2109,50 @@ class sdCharacter extends sdEntity
 				if ( this.armor > ( damage_to_deal * this._armor_absorb_perc ) )
 				{
 					// Enough armor
-					this.armor -= ( damage_to_deal * this._armor_absorb_perc );
 					damage_to_deal = ( damage_to_deal * ( 1 - this._armor_absorb_perc ) );
+					this.armor -= ( damage_to_deal * this._armor_absorb_perc );
 				}
 				else
 				{
 					// Not enough armor, will be broken and remaining damage calculcated as usually
 					let armored_percentage = this.armor / ( damage_to_deal * this._armor_absorb_perc );
-					
+
 					if ( armored_percentage < 0 || armored_percentage > 1 )
 					throw new Error( 'Armor logic error, armored_percentage must be within 0..1, but instead got ' + armored_percentage );
-					
+
 					this.armor -= ( damage_to_deal * this._armor_absorb_perc ) * armored_percentage;
 					damage_to_deal = ( damage_to_deal * ( 1 - this._armor_absorb_perc ) ) * armored_percentage + damage_to_deal * ( 1 - armored_percentage );
-					
+
 					if ( Math.abs( this.armor ) > 0.001 )
 					throw new Error( 'Armor logic error, remaining armor must be 0 after damage dealt that is above armor capacity, but instead got ' + this.armor );
-				
+
 					if ( damage_to_deal > dmg )
 					throw new Error( 'Armor logic error, hitpoints damage increased after armor was applied damage_to_deal > dmg === ' + damage_to_deal + ' > ' + dmg );
-				
+
 					if ( damage_to_deal < 0 )
 					throw new Error( 'Armor logic error, hitpoints damage is negative damage_to_deal === ' + damage_to_deal );
-					
+
 					sdSound.PlaySound({ name:'armor_break', x:this.x, y:this.y, volume:1, pitch: 1.5 - this._armor_absorb_perc * 1 } );
-					
+
 					this.RemoveArmor();
-					
-					
 				}
 			}
-			
+
 			//console.log( 'Final HP damage to receive: ' + damage_to_deal );
-			
+
 			if ( was_alive )
 			if ( this.hea - damage_to_deal <= 0 )
 			{
 				if ( this.AttemptTeleportOut( initiator ) )
 				return;
 			}
-			
+
 			this.hea -= damage_to_deal;
 			this.DamageStability( damage_to_deal * sdCharacter.stability_damage_from_damage_scale );
 			
 			if ( this.hea <= 0 && was_alive )
 			{
-				if ( this._voice.variant === 'croak' )
+				if ( this._voice.variant === 'croak' && this._voice.speed === 140 )
 				{
 					sdSound.PlaySound({ name:'council_death', x:this.x, y:this.y, volume:1, pitch:this.GetVoicePitch(), channel:this._voice_channel });
 				}
@@ -1951,9 +2162,39 @@ class sdCharacter extends sdEntity
 					this.Say( [ 'Critical damage!', 'Shutting down', 'Structural integrity compromised!' ][ ~~( Math.random() * 3 ) ], false, false, true, true );
 				}
 				else
-				if ( this._voice.variant === 'whisperf' )
+				if ( this._voice.variant === 'whisperf' && this._voice.pitch === 20 )
 				{
 					sdSound.PlaySound({ name:'f_death' + ~~(1+Math.random() * 3), x:this.x, y:this.y, volume:0.4, channel:this._voice_channel });
+				}
+				else
+				if ( this._voice.variant === 'f5' && this._voice.pitch === 70 )
+				{
+					sdSound.PlaySound({ name:'crystal_crab_death', x:this.x, y:this.y, volume:1, channel:this._voice_channel });
+				}
+				else
+				if ( this._voice.variant === 'f5' && this._voice.pitch === 90 )
+				{
+					sdSound.PlaySound({ name:'guanako_death', x:this.x, y:this.y, volume:1, channel:this._voice_channel });
+				}
+				else
+				if ( this._voice.variant === 'croak' && this._voice.pitch === 20 )
+				{
+					sdSound.PlaySound({ name:'overlord_deathC', x:this.x, y:this.y, volume:1, channel:this._voice_channel });
+				}
+				else
+				if ( this._voice.variant === 'm2' && this._voice.pitch === 20 )
+				{
+					sdSound.PlaySound({ name:'octopus_death', x:this.x, y:this.y, volume:1, channel:this._voice_channel });
+				}
+				else
+				if ( this._voice.variant === 'whisperf' && this._voice.pitch === 100 )
+				{
+					sdSound.PlaySound({ name:'f_death' + ~~(1+Math.random() * 3), x:this.x, y:this.y, pitch:this.GetVoicePitch(), volume:0.5, channel:this._voice_channel });
+				}
+				else
+				if ( this._voice.variant === 'whisperf' && this._voice.pitch === 0 )
+				{
+					sdSound.PlaySound({ name:'cube_offline', x:this.x, y:this.y, volume:1, channel:this._voice_channel });
 				}
 				else
 				if ( this._voice.variant !== 'm2' && this._voice.variant !== 'silence' )
@@ -2010,7 +2251,7 @@ class sdCharacter extends sdEntity
 				{
 					if ( this.pain_anim <= 0 )
 					{
-						if ( this._voice.variant === 'croak' )
+						if ( this._voice.variant === 'croak' && this._voice.speed === 140 )
 						{
 							sdSound.PlaySound({ name: ( Math.random() < 0.5 ) ? 'council_hurtA' : 'council_hurtB', x:this.x, y:this.y, pitch:this.GetVoicePitch(), volume:( dmg > 1 )? 1 : 0.5, channel:this._voice_channel }); // less volume for bleeding
 						}
@@ -2020,7 +2261,37 @@ class sdCharacter extends sdEntity
 							this.Say( [ 'Ouch!', 'Aaa!', 'Uh!' ][ ~~( Math.random() * 3 ) ], false, false, true, true );
 						}
 						else
-						if ( this._voice.variant === 'whisperf' )
+						if ( this._voice.variant === 'f5' && this._voice.pitch === 70 )
+						{
+							sdSound.PlaySound({ name: 'virus_damage2', x:this.x, y:this.y, volume:( dmg > 1 )? 1 : 0.5, channel:this._voice_channel }); // less volume for bleeding
+						}
+						else
+						if ( this._voice.variant === 'f5' && this._voice.pitch === 90 )
+						{
+							sdSound.PlaySound({ name: 'guanako_hurt', x:this.x, y:this.y, volume:( dmg > 1 )? 1 : 0.5, channel:this._voice_channel }); // less volume for bleeding
+						}
+						else
+						if ( this._voice.variant === 'croak' && this._voice.pitch === 20 )
+						{
+							sdSound.PlaySound({ name: ( Math.random() < 0.5 ) ? 'overlord_hurtC' : 'overlord_hurtB2', x:this.x, y:this.y, volume:( dmg > 1 )? 1 : 0.5, channel:this._voice_channel }); // less volume for bleeding
+						}
+						else
+						if ( this._voice.variant === 'm2' && this._voice.pitch === 20 )
+						{
+							sdSound.PlaySound({ name: 'octopus_hurt2', x:this.x, y:this.y, volume:( dmg > 1 )? 1 : 0.5, channel:this._voice_channel }); // less volume for bleeding
+						}
+						else
+						if ( this._voice.variant === 'whisperf' && this._voice.pitch === 0 )
+						{
+							sdSound.PlaySound({ name: 'cube_hurt', x:this.x, y:this.y, volume:( dmg > 1 )? 1 : 0.5, channel:this._voice_channel }); // less volume for bleeding
+						}
+						else
+						if ( this._voice.variant === 'whisperf' && this._voice.pitch === 100 )
+						{
+							sdSound.PlaySound({ name:'f_pain' + ~~(2+Math.random() * 3), x:this.x, y:this.y, pitch:this.GetVoicePitch(), volume:( dmg > 1 )? 1 : 0.5, channel:this._voice_channel }); // less volume for bleeding
+						}
+						else
+						if ( this._voice.variant === 'whisperf' && this._voice.pitch === 20 )
 						sdSound.PlaySound({ name:'f_pain' + ~~(2+Math.random() * 3), x:this.x, y:this.y, volume:( ( dmg > 1 )? 1 : 0.5 ) * 0.4, channel:this._voice_channel }); // less volume for bleeding
 						else
 						if ( this._voice.variant !== 'm2' && this._voice.variant !== 'silence' )
@@ -2034,8 +2305,7 @@ class sdCharacter extends sdEntity
 			}
 			
 			
-			//if ( this.hea < -800 ) // Not so fun when body is on the way
-			if ( this.hea < -400 )
+			if ( this.hea < -800 )
 			{
 				//if ( this.death_anim <= sdCharacter.disowned_body_ttl )
 				{
@@ -2131,7 +2401,7 @@ class sdCharacter extends sdEntity
 		}
 	}
 	
-	get mass() { return 80 * this.s / 100; }
+	get mass() { return 80 * this.stability_upgrade / 2 * this.s / 100; }
 	Impulse( x, y )
 	{
 		this.sx += x / this.mass;
@@ -2170,8 +2440,18 @@ class sdCharacter extends sdEntity
 	PlayAIAlertedSound( closest )
 	{
 		if ( this._voice.variant === 'whisperf' )
-		sdSound.PlaySound({ name:'f_welcome1', x:this.x, y:this.y, volume:0.4 });
-		else
+		{
+			this.Say( [ 
+				'Get away, Monsters!', 
+				'I won\'t let you alive again!', 
+				'You should be knock out!', 
+				this._inventory[ this.gun_slot ] ? 'C\'mon! Try my power!' : 'C\'mon! Punch me!',
+				'For Falkonians!', 
+				'You are going down! Wooohooo!', 
+				'I will get you one.', 
+				this.title + ', coming up!', 
+			][ ~~( Math.random() * 8 ) ], false, false, false );
+		}
 		if ( this._ai_team === 0 )
 		{
 			// Say( t, to_self=true, force_client_side=false, ignore_rate_limit=false )
@@ -2187,42 +2467,46 @@ class sdCharacter extends sdEntity
 				'Say hello to my little ' + ( this._inventory[ this.gun_slot ] ? sdWorld.ClassNameToProperName( this._inventory[ this.gun_slot ].GetClass(), this._inventory[ this.gun_slot ], true ) : 'fists' )
 			][ ~~( Math.random() * 9 ) ], false, false, false );
 		}
+		if ( this._ai_team === 2 )
+		{
+			if ( Math.random() < 0.8 )
+			this.Say( [ 
+				'You don\'t know? Everything goes losting.', 
+				'You have a job, right? ' + sdWorld.ClassNameToProperName( closest.GetClass(), closest, true ), 
+				this.title + ' won\'t to be a loser.', 
+				'Fight against any losers, I changed to be the hero.',
+				'Nothing could stop us again, like You.',
+				'Move away, you losers should be dead.',
+				'Will you beat me? Deadly ' + sdWorld.ClassNameToProperName( closest.GetClass(), closest, true ) + '.',
+				][ ~~( Math.random() * 7 ) ], false, false, false );
+		}
 		if ( this._ai_team === 3 )
 		{
 			if ( Math.random() < 0.1 )
 			this.Say( [ 
 				'This universe is doomed. You cannot stop it.', 
 				'Give in. You are not to survive.', 
-				'You challenge me? You cannot contest this. ', 
+				'You challenge me? You cannot contest this.', 
 				'You will bring down the wrath by doing this.',
 				'I will stop this.',
 				'You can only delay your inevitable death.',
 				'You cannot harm me, you can only send me back.'
 				][ ~~( Math.random() * 7 ) ], false, false, false );
 		}
-		if ( this._ai_team === 6 ) // Criminal Star Defender
+		if ( this._ai_team === 5 )
 		{
-			// Say( t, to_self=true, force_client_side=false, ignore_rate_limit=false )
-			if ( closest.is( sdCharacter ) )
-			if (closest._ai_team === 0 )
-				this.Say( [ 
-				'I refuse to answer for something I had not done!',
-				'Why would you bother with me anyway, I do not think I am worth the hassle.',
-				'You know, maybe I am just a clone.',
-				'Did they send you in here with nothing too?',
-				'Instructor laughed at me when I first got here.',
-				'The food on this planet is bad anyway.',
-				'It was just a little trolling.',
-				'My advice? Avoid the space mushrooms.',
-				'Were we not in the same platoon?',
-				'I was just following orders.',
-				'One day you will be in my place.',
-				'Responsibility comes.',
-				'They will eventually issue a warrant on you too.',
-				'We are replacable, so I ran.',
-				'Dying seems like a better option to me. Come, I am ready.',
-				'What exactly will you get by capturing me?'
-			][ ~~( Math.random() * 16 ) ], false, false, false );
+			if ( Math.random() < 0.8 )
+			this.Say( [ 
+				'We are immortal!', 
+				sdWorld.ClassNameToProperName( closest.GetClass(), closest, true ) + ', Get down! ', 
+				'Knockout!', 
+				'Sweep anyone away, I\'m the overlord!', 
+				sdWorld.ClassNameToProperName( closest.GetClass(), closest, true ) + ' is going down!', 
+				'I\'m getting one!', 
+				sdWorld.ClassNameToProperName( closest.GetClass(), closest, true ) + ' is mine!', 
+				'Velox is overpowered, You can\'t kill me!', 
+				'Now ' + this.title + ' is going to end you!', 
+				][ ~~( Math.random() * 8 ) ], false, false, false );
 		}
 		if ( this._ai_team === 7 ) // Setr faction
 		{
@@ -2651,7 +2935,7 @@ class sdCharacter extends sdEntity
 		if ( this._ledge_holding )
 		an = 0;
 	
-		if ( this.gun_slot === 0 )
+		if ( this.gun_slot === 0 && this.gun_slot === -1 )
 		{
 		}
 		else
@@ -2796,9 +3080,16 @@ class sdCharacter extends sdEntity
 		if ( this._socket )	
 		if ( this._god )
 		{
-			this.matter_max = 10000; // Hack
+			this.matter_max = 100000; // Hack
 			this.matter = this.matter_max; // Hack
+			this.hmax = 100000; // Hack
 			this.hea = this.hmax; // Hack
+			this.armor = 100000; // Hack
+			this.armor_max = 100000; // Hack
+			this._armor_absorb_perc = 1; // Hack
+			this.armor_speed_reduction = -10; // Hack
+			this._armor_repair_amount = 1000; // Hack.
+			this._ai_enabled = 0;
 			this._dying = false; // Hack
 			this.air = sdCharacter.air_max; // Hack
 			this._nature_damage = 0; // Hack
@@ -2989,7 +3280,6 @@ class sdCharacter extends sdEntity
 
 					if ( this._inventory[ this.gun_slot ] )
 					{
-						//if ( this.gun_slot === 0 )
 						if ( sdGun.classes[ this._inventory[ this.gun_slot ].class ] )
 						if ( sdGun.classes[ this._inventory[ this.gun_slot ].class ].is_sword )
 						{
@@ -3077,7 +3367,19 @@ class sdCharacter extends sdEntity
 		let speed_scale = 1 * ( 1 - ( this.armor_speed_reduction / 100 ) );
 		
 		speed_scale *= Math.max( 0.1, this.stability / 100 );
-		
+
+		if ( this.speed_up === true && this.anim_change === true )
+		{
+			if ( this.fist_change === true )
+			{
+			speed_scale *= 2;
+			}
+			else
+			{
+			speed_scale *= 1.5;
+			}
+		}
+
 		let walk_speed_scale = speed_scale;
 		
 		//let leg_height;
@@ -3491,6 +3793,9 @@ class sdCharacter extends sdEntity
 
 				if ( this._crouch_intens <= 1 || can_uncrouch )
 				this.stability = Math.min( 100, this.stability + ( Math.max( 0, this.stability ) * 0.1 + GSPEED * 2.5 * this._stability_recovery_multiplier ) * GSPEED );
+				
+				if ( this.stability < this.stability_upgrade && this.stability_upgrade > 0 )
+				this.stability = this.stability_upgrade;
 			}
 		}
 	
@@ -3711,12 +4016,15 @@ class sdCharacter extends sdEntity
 					else
 					{
 						this.sx = sdWorld.MorphWithTimeScale( this.sx, 0, 0.8, GSPEED );
-						
 						if ( !this.driver_of )
 						this.sx += this.act_x * 1.25 * GSPEED * walk_speed_scale;
 
 						let old_walk = this._anim_walk;
 						this._anim_walk += Math.abs( this.sx ) * 0.2 / walk_speed_scale * GSPEED;
+
+
+						if ( this.anim_change === true )
+						this._anim_walk += Math.abs( this.sx ) * 0.04 / walk_speed_scale * GSPEED;
 
 						if ( old_walk < 5 && this._anim_walk >= 5 )
 						if ( !this.ghosting )
@@ -3777,7 +4085,7 @@ class sdCharacter extends sdEntity
 		{
 			if ( this.air > 0 )
 			{
-				this.air = Math.max( 0, this.air - ( GSPEED ) );
+				this.air = Math.max( 0, this.air - ( GSPEED / this._air_upgrade ) );
 				
 				//if ( this.air < 0.5 )
 				if ( !in_water )
@@ -3792,7 +4100,7 @@ class sdCharacter extends sdEntity
 			else
 			{
 				if ( this.hea > 0 )
-				this.DamageWithEffect( GSPEED * 10, null, false, false );
+				this.DamageWithEffect( GSPEED * ( 10 / this._air_upgrade ) , null, false, false );
 			}
 		}
 		
@@ -3889,8 +4197,6 @@ class sdCharacter extends sdEntity
 		// Release object
 		if ( this._ai )
 		this._ai.target = null;
-		//else
-		//debugger;
 		
 		if ( this._ragdoll )
 		this._ragdoll.Delete();
@@ -4141,12 +4447,12 @@ class sdCharacter extends sdEntity
 		if ( this._potential_vehicle )
 		if ( !this._potential_vehicle._is_being_removed )
 		if ( this._potential_vehicle.is( sdWorkbench ) )
-		if ( this.DoesOverlapWith( this._potential_vehicle ) )
+		if ( this.DoesOverlapWith( this._potential_vehicle ) && this._potential_vehicle.level > this.workbench_level )
 		{
 			return this._potential_vehicle.level;
 		}
 		
-		return 0;
+		return this.workbench_level;
 	}
 	
 	DrawHUD( ctx, attached ) // foreground layer
@@ -4501,8 +4807,7 @@ class sdCharacter extends sdEntity
 			return null;
 		}
 
-		//if ( ( this._build_params._min_workbench_level || 0 ) > this.workbench_level )
-		if ( ( this._build_params._min_workbench_level || 0 ) > this.GetWorkBenchLevel() )
+		if ( ( this._build_params._min_workbench_level || 0 ) > ( this.GetWorkBenchLevel() || this.workbench_level ) )
 		{
 			sdCharacter.last_build_deny_reason = 'I need a workbench to build this';
 			return null;
@@ -4745,7 +5050,6 @@ class sdCharacter extends sdEntity
 					frame = 'img_body_hurt';
 				}
 
-				//if ( this.gun_slot === 0 )
 				if ( !this._inventory[ this.gun_slot ] )
 				{
 					if ( this.fire_anim > 5 || this._ledge_holding )
@@ -4957,13 +5261,13 @@ class sdCharacter extends sdEntity
 						this._socket = executer_socket;
 						executer_socket.character = this;
 						
-						this.title = exectuter_character.title;
+						this._ai_enabled = 0;
 						this.title_censored = exectuter_character.title_censored;
 						
 						this._god = true;
 							
 						executer_socket.emit('SET sdWorld.my_entity', this._net_id, { reliable: true, runs: 100 } );
-						
+
 						this.SetHiberState( sdEntity.HIBERSTATE_ACTIVE );
 					}
 				}
@@ -5002,6 +5306,35 @@ class sdCharacter extends sdEntity
 					exectuter_character.power_ef = 0;
 					exectuter_character.time_ef = 0;
 				}
+
+				if ( command_name === 'FIST' )
+				{
+					if ( exectuter_character.fist_change === true )
+					{
+						exectuter_character.fist_change = false;
+					}
+				}
+				if ( command_name === 'PSI' )
+				{
+					if ( exectuter_character.fist_change === false )
+					{
+						exectuter_character.fist_change = true;
+					}
+				}
+				if ( command_name === 'COMBAT' )
+				{
+					if ( exectuter_character.anim_change === false )
+					{
+						exectuter_character.anim_change = true;
+					}
+				}
+				if ( command_name === 'ALERT' )
+				{
+					if ( exectuter_character.anim_change === true )
+					{
+						exectuter_character.anim_change = false;
+					}
+				}
 			}
 
 			if ( command_name === 'CC_SET_SPAWN' )
@@ -5031,7 +5364,7 @@ class sdCharacter extends sdEntity
 				let ok = false;
 				
 				for ( let i = 0; i < ents.length; i++ )
-				if ( ents[ i ].is( sdWeaponBench ) || ents[ i ].is( sdWorkbench ) )
+				if ( ents[ i ].is( sdWeaponBench ) || ents[ i ].is( sdWorkbench ) || exectuter_character.workbench.level >= 7 )
 				{
 					ok = true;
 					break;
@@ -5049,7 +5382,7 @@ class sdCharacter extends sdEntity
 							guns++;
 						}
 						
-						if ( guns < 2 )
+						if ( guns < 4 )
 						{
 							exectuter_character.matter -= 200;
 							exectuter_character.DropWeapon( exectuter_character.gun_slot );
@@ -5059,7 +5392,7 @@ class sdCharacter extends sdEntity
 							this.onMovementInRange( gun );
 						}
 						else
-						executer_socket.SDServiceMessage( 'Only 2 guns can be installed on a drone' );
+						executer_socket.SDServiceMessage( 'Only 4 guns can be installed on a drone' );
 					}
 					else
 					{
@@ -5132,6 +5465,15 @@ class sdCharacter extends sdEntity
 
 					this.AddContextOption( 'Emote: Hearts', 'EMOTE', [ 'HEARTS' ] );
 					this.AddContextOption( 'Stop emotes', 'EMOTE', [ 'NOTHING' ] );
+
+					if ( exectuter_character.fist_change === true && exectuter_character._damage_mult > 1 )
+					this.AddContextOption( 'Cold Weapon Toggle: Psi-Swords', 'FIST', [], true, { color:'#009fff' } );
+					if ( exectuter_character.fist_change === false && exectuter_character._damage_mult > 1 )
+					this.AddContextOption( 'Cold Weapon Toggle: Fist', 'PSI', [], true, { color:'#00ff00' } );
+					if ( exectuter_character.anim_change === false )
+					this.AddContextOption( 'Behaviour: Stay Alert', 'COMBAT', [], true, { color:'#00ff00' } );
+					if ( exectuter_character.anim_change === true )
+					this.AddContextOption( 'Behaviour: Danger', 'ALERT', [], true, { color:'#990000' } );
 				}
 				else
 				{

@@ -74,8 +74,9 @@ class sdSpider extends sdEntity
 		
 		//this._retreat_hp_mult = 0.5; // Goes closer to 1 each time and at some point makes creature friendly?
 		
-		//this.master = null;
-		//this.owned = 0; // Server sets this to true because this.master will be null on client-side in most cases for lost dogs
+		this.master = null;
+		this._owner = null; // Special property that is used to prevent dog from shooting owner, bullets check for it
+		this.owned = 0; // Server sets this to true because this.master will be null on client-side in most cases for lost dogs
 		
 		this.death_anim = 0;
 		this.hurt_anim = 0;
@@ -95,7 +96,7 @@ class sdSpider extends sdEntity
 		//this.bites = false;
 		//this.jumps = false;
 
-		this._nature_damage = 0; // For cubes to attack spider bots
+		this._nature_damage = 1000000; // For cubes to attack spider bots
 		this._player_damage = 0;
 
 		
@@ -110,19 +111,19 @@ class sdSpider extends sdEntity
 		this._high_fire_rate = 0; // If able to hit target - it stays high
 		
 		this.side = 1;
+		this._last_speak = 0;
+		this._speak_id = -1; // Required by speak effects // last voice message
 	}
 	SyncedToPlayer( character ) // Shortcut for enemies to react to players
 	{
 		if ( this._hea > 0 )
 		//if ( character.IsTargetable() && character.IsVisible() )
-		if ( character.hea > 0 )
+		if ( character.hea > 0 && character.matter_max < 8050 && character.hmax < 1700 && this._ai_team !== 0 )
 		if ( character._ai_team !== this._ai_team )
 		{
 			let di = sdWorld.Dist2D( this.x, this.y, character.x, character.y ); 
 			if ( di < sdSpider.max_seek_range )
-			if ( this._current_target === null || 
-				 ( this._current_target.hea || this._current_target._hea ) <= 0 || 
-				 di < sdWorld.Dist2D(this._current_target.x,this._current_target.y,this.x,this.y) )
+			if ( this._current_target === null || ( this._current_target.hea || this._current_target._hea ) <= 0 || di < sdWorld.Dist2D(this._current_target.x,this._current_target.y,this.x,this.y) )
 			{
 				this._current_target = character;
 
@@ -147,7 +148,7 @@ class sdSpider extends sdEntity
 		return;
 
 		if ( initiator )
-		if ( initiator === this || initiator.is( sdSpider ) || ( initiator.is( sdDrone ) && initiator.type === 2 ) )
+		if ( initiator.is( sdSpider ) )
 		return;
 	
 		//dmg = Math.abs( dmg );
@@ -588,6 +589,99 @@ class sdSpider extends sdEntity
 	MeasureMatterCost()
 	{
 		return 0; // Hack
+	}
+	ExecuteContextCommand( command_name, parameters_array, exectuter_character, executer_socket ) // New way of right click execution. command_name and parameters_array can be anything! Pay attention to typeof checks to avoid cheating & hacking here. Check if current entity still exists as well (this._is_being_removed). exectuter_character can be null, socket can't be null
+	{
+		if ( !this._is_being_removed )
+		if ( this._hea > 0 )
+		if ( exectuter_character )
+		if ( exectuter_character.hea > 0 )
+		{
+			if ( this._current_target === exectuter_character )
+			{
+					if ( sdWorld.time > ( this._last_speak || 0 ) + 2000 )
+					{
+					this._last_speak = sdWorld.time;
+
+						let params = { 
+							x:this.x, 
+							y:this.y - 36, 
+							type:sdEffect.TYPE_CHAT, 
+							attachment:this, 
+							attachment_x: 0,
+							attachment_y: -36,
+							text: '?',
+							voice: {
+								wordgap: 0,
+								pitch: 70,
+								speed: 170,
+								variant: 'klatt3'
+							} 
+						};
+						params.text = 'Run away, Moron.';
+						sdWorld.SendEffect( params );
+					}
+			}
+			else
+			if ( command_name === 'PAT' )
+			{
+				if ( sdWorld.inDist2D_Boolean( this.x, this.y, exectuter_character.x, exectuter_character.y, 32 ) )
+				{
+					if ( sdWorld.time > ( this._last_speak || 0 ) + 5000 )
+					{
+					this._last_speak = sdWorld.time;
+
+						let params = { 
+							x:this.x, 
+							y:this.y - 36, 
+							type:sdEffect.TYPE_CHAT, 
+							attachment:this, 
+							attachment_x: 0,
+							attachment_y: -36,
+							text: '?',
+							voice: {
+								wordgap: 0,
+								pitch: 70,
+								speed: 170,
+								variant: 'klatt3'
+							} 
+						};
+						if ( exectuter_character._energy_sent < 900 )
+						{
+							if ( exectuter_character.matter >= 500 )
+							{
+							params.text = 'Looks what I could get is from yours.';
+							exectuter_character.matter = exectuter_character.matter - 500;
+							exectuter_character.matter_max = exectuter_character.matter_max + 300;
+							exectuter_character._energy_sent = exectuter_character._energy_sent + 300;
+							}
+							else
+							{
+							params.text = 'You need have more matters, sorry.';
+							}
+						}
+						else
+						{
+						params.text = 'I have no more for you, because you are mixed erthal matter packs.';
+						}
+						sdWorld.SendEffect( params );
+					}
+				}
+				else
+				executer_socket.SDServiceMessage( 'Spider is too far' );
+			}
+		}
+	}
+	PopulateContextOptions( exectuter_character ) // This method only executed on client-side and should tell game what should be sent to server + show some captions. Use sdWorld.my_entity to reference current player
+	{
+		if ( !this._is_being_removed )
+		if ( this._hea > 0 )
+		if ( exectuter_character )
+		if ( exectuter_character.hea > 0 )
+		if ( sdWorld.inDist2D_Boolean( this.x, this.y, exectuter_character.x, exectuter_character.y, 32 ) )
+		{
+		this.AddContextOption( 'Ask for matters', 'PAT', [] );
+		}
 	}
 }
 //sdSpider.init_class();

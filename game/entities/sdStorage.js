@@ -13,7 +13,26 @@ import sdCrystal from './sdCrystal.js';
 import sdJunk from './sdJunk.js';
 import sdBarrel from './sdBarrel.js';
 import sdFaceCrab from './sdFaceCrab.js';
-
+import sdAmphid from './sdAmphid.js';
+import sdAsp from './sdAsp.js';
+import sdBadDog from './sdBadDog.js';
+import sdBall from './sdBall.js';
+import sdBiter from './sdBiter.js';
+import sdBomb from './sdBomb.js';
+import sdDrone from './sdDrone.js';
+import sdGrub from './sdGrub.js';
+import sdOctopus from './sdOctopus.js';
+import sdQuickie from './sdQuickie.js';
+import sdShark from './sdShark.js';
+import sdSlug from './sdSlug.js';
+import sdSpider from './sdSpider.js';
+import sdTutel from './sdTutel.js';
+import sdMimic from './sdMimic.js';
+import sdCube from './sdCube.js';
+import sdVirus from './sdVirus.js';
+import sdOverlord from './sdOverlord.js';
+import sdWorkbench from './sdWorkbench.js';
+import sdCharacter from './sdCharacter.js';
 
 class sdStorage extends sdEntity
 {
@@ -22,7 +41,7 @@ class sdStorage extends sdEntity
 		sdStorage.img_storage = sdWorld.CreateImageFromFile( 'storage_sheet' );
 
 		sdStorage.access_range = 64;
-		sdStorage.slots_tot = 6;
+		sdStorage.slots_tot = 10;
 		
 		sdStorage.TYPE_GUNS = 0;
 		sdStorage.TYPE_PORTAL = 1;
@@ -396,6 +415,25 @@ class sdStorage extends sdEntity
 					from_entity.type !== sdCrystal.TYPE_CRYSTAL_BIG 
 					&& 
 					from_entity.type !== sdCrystal.TYPE_CRYSTAL_CRAB_BIG 
+					&& 
+					from_entity.type !== sdCrystal.TYPE_CRYSTAL_GIANT 
+				) 
+
+				||
+				
+				( 
+					this.type === sdStorage.TYPE_CARGO && 
+					from_entity.is( sdCrystal ) && !from_entity.held_by // sdCrystals would be held by amplifiers and other things
+					&& 
+					from_entity.type !== sdCrystal.TYPE_CRYSTAL 
+					&& 
+					from_entity.type !== sdCrystal.TYPE_CRYSTAL_ARTIFICIAL
+					&& 
+					from_entity.type !== sdCrystal.TYPE_CRYSTAL_CORRUPTED
+					&& 
+					from_entity.type !== sdCrystal.TYPE_CRYSTAL_CRAB
+					&& 
+					from_entity.type !== sdCrystal.TYPE_CRYSTAL_GIANT 
 				) 
 
 				||
@@ -408,8 +446,20 @@ class sdStorage extends sdEntity
 					( 
 						from_entity.type === sdJunk.TYPE_ALIEN_BATTERY || 
 						from_entity.type === sdJunk.TYPE_LOST_CONTAINER || 
+						from_entity.type === sdJunk.TYPE_UNSTABLE_CUBE_CORPSE || 
+						from_entity.type === sdJunk.TYPE_ALIEN_ARTIFACT || 
 						from_entity.type === sdJunk.TYPE_FREEZE_BARREL 
 					)
+				) 
+
+				||
+
+				( 
+					this.type === sdStorage.TYPE_CARGO 
+					&& 
+					from_entity.is( sdJunk )
+					&& 
+					from_entity.type === sdJunk.TYPE_ADVANCED_MATTER_CONTAINER 
 				) 
 
 				||
@@ -429,6 +479,184 @@ class sdStorage extends sdEntity
 				||
 
 				( 
+					this.type === sdStorage.TYPE_CRYSTALS  && 
+					from_entity.is( sdAmphid )
+					&&
+					from_entity._hea > 0
+				) 
+
+				||
+
+				( 
+					this.type === sdStorage.TYPE_CRYSTALS  && 
+					from_entity.is( sdAsp )
+					&&
+					from_entity._hea > 0
+				) 
+
+				||
+
+				( 
+					this.type === sdStorage.TYPE_CRYSTALS  && 
+					from_entity.is( sdBiter )
+					&&
+					from_entity._hea > 0
+				) 
+
+				||
+
+				( 
+					( 
+						this.type === sdStorage.TYPE_CRYSTALS 
+						||
+						this.type === sdStorage.TYPE_CARGO 
+					) 
+					&& 
+					from_entity.is( sdDrone )
+					&&
+					from_entity._hea > 0
+				) 
+
+				||
+
+				( 
+					( 
+						this.type === sdStorage.TYPE_CRYSTALS 
+						||
+						this.type === sdStorage.TYPE_CARGO 
+					) 
+					&& 
+					from_entity.is( sdGrub )
+					&&
+					from_entity._hea > 0
+				) 
+
+				||
+
+				( 
+					( 
+						this.type === sdStorage.TYPE_CRYSTALS 
+						||
+						this.type === sdStorage.TYPE_CARGO 
+					) 
+					&& 
+					from_entity.is( sdOctopus )
+					&&
+					from_entity._hea > 0
+				) 
+
+				||
+
+				( 
+					this.type === sdStorage.TYPE_CRYSTALS && 
+					from_entity.is( sdQuickie )
+					&&
+					from_entity._hea > 0
+				) 
+
+				||
+
+				( 
+					this.type === sdStorage.TYPE_CRYSTALS && 
+					from_entity.is( sdShark )
+					&&
+					from_entity._hea > 0
+				) 
+
+				||
+
+				( 
+					this.type === sdStorage.TYPE_CRYSTALS && 
+					from_entity.is( sdSlug )
+					&&
+					from_entity._hea > 0
+				) 
+
+				||
+
+				( 
+					this.type === sdStorage.TYPE_CRYSTALS && 
+					from_entity.is( sdSpider )
+					&&
+					from_entity._hea > 0
+				) 
+
+				||
+
+				( 
+					this.type === sdStorage.TYPE_CARGO 
+					&& 
+					from_entity.is( sdTutel )
+					&&
+					from_entity._hea > 0
+				) 
+
+				||
+
+				( 
+					( 
+						this.type === sdStorage.TYPE_CRYSTALS 
+						||
+						this.type === sdStorage.TYPE_CARGO 
+					) 
+					&& 
+					from_entity.is( sdMimic )
+					&&
+					from_entity._hea > 0
+				) 
+
+				||
+
+				( 
+					this.type === sdStorage.TYPE_CARGO && 
+					from_entity.is( sdVirus )
+					&&
+					from_entity._hea > 0
+				) 
+
+				||
+
+				( 
+					this.type === sdStorage.TYPE_CARGO && 
+					from_entity.is( sdOverlord )
+				) 
+
+				||
+
+				( 
+					this.type === sdStorage.TYPE_CRYSTALS 
+					&& 
+					from_entity.is( sdCube )
+					&&
+					from_entity.kind !== 1
+					&&
+					from_entity.kind !== 2
+				) 
+
+				||
+
+				( 
+					this.type === sdStorage.TYPE_CARGO 
+					&& 
+					from_entity.is( sdCube )
+					&& 
+					( 
+					from_entity.kind === 1 || 
+					from_entity.kind === 2 
+					)
+				) 
+
+				||
+
+				( 
+					this.type === sdStorage.TYPE_CARGO 
+					&& 
+					from_entity.is( sdWorkbench )
+				) 
+
+				||
+
+				( 
 					this.type === sdStorage.TYPE_CRYSTALS && 
 					from_entity.is( sdBarrel )
 				) 
@@ -436,10 +664,19 @@ class sdStorage extends sdEntity
 				|| 
 				
 				( 
-					this.type === sdStorage.TYPE_CARGO && 
+					this.type === sdStorage.TYPE_CRYSTALS && 
 					from_entity !== this && 
 					from_entity.is( sdStorage ) && 
 					( from_entity.type === sdStorage.TYPE_GUNS || from_entity.type === sdStorage.TYPE_PORTAL ) 
+				) 
+
+				|| 
+				
+				( 
+					this.type === sdStorage.TYPE_CARGO && 
+					from_entity !== this && 
+					from_entity.is( sdStorage ) && 
+					( from_entity.type === sdStorage.TYPE_GUNS || from_entity.type === sdStorage.TYPE_PORTAL || from_entity.type === sdStorage.TYPE_CRYSTALS ) 
 				) 
 			)
 		{
@@ -476,6 +713,9 @@ class sdStorage extends sdEntity
 							if ( from_entity.type === sdJunk.TYPE_LOST_CONTAINER )
 							name = ( 'Lost particle container' );
 							else
+							if ( from_entity.type === sdJunk.TYPE_UNSTABLE_CUBE_CORPSE )
+							name = ( 'Unstable Cube Corpse' );
+							else
 							if ( from_entity.type === sdJunk.TYPE_FREEZE_BARREL )
 							name = ( 'Cryo-substance barrel' );
 					
@@ -495,7 +735,92 @@ class sdStorage extends sdEntity
 						{
 							is_armable = 1;
 							
-							name = 'Face crab';
+							name = 'Face Crab';
+						}
+						else
+						if ( from_entity.is( sdAmphid ) )
+						{
+							name = 'Amphid';
+						}
+						else
+						if ( from_entity.is( sdAsp ) )
+						{
+							name = 'Asp';
+						}
+						else
+						if ( from_entity.is( sdBadDog ) )
+						{
+							name = 'Bad Dog';
+						}
+						else
+						if ( from_entity.is( sdBiter ) )
+						{
+							name = 'Biter';
+						}
+						else
+						if ( from_entity.is( sdDrone ) )
+						{
+							name = 'Random Drone';
+						}
+						else
+						if ( from_entity.is( sdGrub ) )
+						{
+							name = 'Grub';
+						}
+						else
+						if ( from_entity.is( sdOctopus ) )
+						{
+							name = 'Octopus';
+						}
+						else
+						if ( from_entity.is( sdQuickie ) )
+						{
+							name = 'Quickie';
+						}
+						else
+						if ( from_entity.is( sdShark ) )
+						{
+							name = 'Shark';
+						}
+						else
+						if ( from_entity.is( sdSlug ) )
+						{
+							name = 'Slug';
+						}
+						else
+						if ( from_entity.is( sdSpider ) )
+						{
+							name = 'Erthal Tank';
+						}
+						else
+						if ( from_entity.is( sdTutel ) )
+						{
+							name = 'Tutel';
+						}
+						else
+						if ( from_entity.is( sdWorkbench ) )
+						{
+							name = 'WorkBench';
+						}
+						else
+						if ( from_entity.is( sdMimic ) )
+						{
+							name = 'Mimic';
+						}
+						else
+						if ( from_entity.is( sdCube ) )
+						{
+							name = 'Cube';
+						}
+						else
+						if ( from_entity.is( sdVirus ) )
+						{
+							name = 'Virus';
+						}
+						else
+						if ( from_entity.is( sdOverlord ) )
+						{
+							name = 'OverLord';
 						}
 						
 						
@@ -554,10 +879,10 @@ class sdStorage extends sdEntity
 
 			if ( this._stored_items[ slot ] !== null && this._stored_items[ slot ] !== undefined ) // Holey array recovery test
 			this._stored_items.splice( slot, 1 );
-		
+
 			if ( this.is_armable[ slot ] !== null && this.is_armable[ slot ] !== undefined ) // Holey array recovery test
 			this.is_armable.splice( slot, 1 );
-		
+
 			if ( this.stored_names[ slot ] !== null && this.stored_names[ slot ] !== undefined ) // Holey array recovery test
 			this.stored_names.splice( slot, 1 );
 

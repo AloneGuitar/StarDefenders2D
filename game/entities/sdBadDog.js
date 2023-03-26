@@ -77,6 +77,9 @@ class sdBadDog extends sdEntity
 		this._owner = null; // Special property that is used to prevent dog from shooting owner, bullets check for it
 		this.owned = 0; // Server sets this to true because this.master will be null on client-side in most cases for lost dogs
 		
+		this._nature_damage = 0;
+		this._player_damage = 0;
+
 		this.death_anim = 0;
 		
 		this.hurt_anim = 0;
@@ -134,7 +137,7 @@ class sdBadDog extends sdEntity
 		if ( this.hea > 0 )
 		if ( !this.master )
 		if ( character.IsTargetable() && character.IsVisible( this ) )
-		if ( character.hea > 0 )
+		if ( character.hmax < 2700 && character.matter_max < 13200 )
 		{
 			let di = sdWorld.Dist2D( this.x, this.y, character.x, character.y ); 
 			if ( di < sdBadDog.max_seek_range )
@@ -600,7 +603,7 @@ class sdBadDog extends sdEntity
 				let xx = from_entity.x + ( from_entity._hitbox_x1 + from_entity._hitbox_x2 ) / 2;
 				let yy = from_entity.y + ( from_entity._hitbox_y1 + from_entity._hitbox_y2 ) / 2;
 
-				if ( from_entity.IsPlayerClass() || this.master || this._current_target === from_entity )
+				if ( from_entity.IsPlayerClass() && from_entity.hmax < 1700 && from_entity.matter_max < 7200 || from_entity.GetClass() === 'sdAbomination' || from_entity.GetClass() === 'sdAmphid' || from_entity.GetClass() === 'sdAsp' || from_entity.GetClass() === 'sdBiter' || from_entity.GetClass() === 'sdBot' || from_entity.GetClass() === 'sdCube' || from_entity.GetClass() === 'sdDrone' || from_entity.GetClass() === 'sdEnemyMech' || from_entity.GetClass() === 'sdFaceCrab' || from_entity.GetClass() === 'sdGrub' || from_entity.GetClass() === 'sdMimic' || from_entity.GetClass() === 'sdOctopus' || from_entity.GetClass() === 'sdOverlord' || from_entity.GetClass() === 'sdQuickie' || from_entity.GetClass() === 'sdRoach' || from_entity.GetClass() === 'sdSandWorm' || from_entity.GetClass() === 'sdSetrDestroyer' || from_entity.GetClass() === 'sdSlug' || from_entity.GetClass() === 'sdSpider' || from_entity.GetClass() === 'sdTutel' || from_entity.GetClass() === 'sdVirus' || this.master || this._current_target === from_entity )
 				if ( from_entity.IsTargetable() )
 				{
 					this._last_bite = sdWorld.time;
@@ -788,10 +791,16 @@ class sdBadDog extends sdEntity
 			
 			if ( command_name === 'OWN' )
 			{
-				if ( exectuter_character._god )
+				if ( exectuter_character._god || exectuter_character.matter_max >= 13200 && exectuter_character.matter >= 500 )
 				{
 					this.master = exectuter_character;
 					this.SetTarget( null );
+					exectuter_character.matter -= 500;
+				}
+				else
+				{
+					executer_socket.SDServiceMessage( 'Not enough matter' );
+					return;
 				}
 			}
 			
@@ -906,7 +915,13 @@ class sdBadDog extends sdEntity
 			if ( exectuter_character._god )
 			if ( this.master !== exectuter_character )
 			{
-				this.AddContextOption( 'sudo own', 'OWN', [] );
+				this.AddContextOption( 'Sudo Own', 'OWN', [] );
+			}
+
+			if ( !exectuter_character._god && exectuter_character.matter_max >= 13200 )
+			if ( this.master !== exectuter_character )
+			{
+				this.AddContextOption( 'Sudo Own (500 matter)', 'OWN', [] );
 			}
 
 			if ( this.master )

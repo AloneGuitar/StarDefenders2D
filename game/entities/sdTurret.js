@@ -71,7 +71,6 @@ class sdTurret extends sdEntity
 			sdSlug, 
 			sdGrub, 
 			sdGuanako, 
-			sdShark, 
 			sdEnemyMech, 
 			sdDrone, 
 			sdBadDog, 
@@ -192,7 +191,6 @@ class sdTurret extends sdEntity
 		this._matter_max = params.matter_max || 20;
 		
 		this.lvl = 0;
-		
 		this._time_amplification = 0;
 		
 		this.SetMethod( 'ShootPossibilityFilter', this.ShootPossibilityFilter ); // Here it used for "this" binding so method can be passed to collision logic
@@ -238,7 +236,6 @@ class sdTurret extends sdEntity
 	onThink( GSPEED ) // Class-specific, if needed
 	{
 		GSPEED = sdGun.HandleTimeAmplification( this, GSPEED );
-		
 		let can_hibernate = false;
 		
 		if ( this._disabled_timeout > 0 )
@@ -255,10 +252,10 @@ class sdTurret extends sdEntity
 		{
 			can_hibernate = true;
 		}
-		
+
 		if ( this.fire_timer > 0 )
 		this.fire_timer = Math.max( 0, this.fire_timer - GSPEED );
-		
+
 		if ( sdWorld.is_server )
 		{
 			if ( this.matter > this.GetShootCost() || this.type === 1 )
@@ -518,16 +515,16 @@ class sdTurret extends sdEntity
 						this.WakeUpMatterSources();
 						
 						if ( this.kind === sdTurret.KIND_LASER || this.kind === sdTurret.KIND_RAPID_LASER )
-						sdSound.PlaySound({ name:'turret', x:this.x, y:this.y, volume:0.5, pitch: 1 / ( 1 + this.lvl / 3 ) });
+						sdSound.PlaySound({ name:'turret', x:this.x, y:this.y, volume:0.5, pitch: 1 / ( 1 + this.lvl / 5 ) });
 					
 						if ( this.kind === sdTurret.KIND_SNIPER )
-						sdSound.PlaySound({ name:'gun_sniper', x:this.x, y:this.y, volume:0.5, pitch: 1 / ( 1 + this.lvl / 3 ) });
+						sdSound.PlaySound({ name:'gun_sniper', x:this.x, y:this.y, volume:0.5, pitch: 1 / ( 1 + this.lvl / 5 ) });
 					
 						if ( this.kind === sdTurret.KIND_ROCKET )
-						sdSound.PlaySound({ name:sdGun.classes[ sdGun.CLASS_ROCKET ].sound, x:this.x, y:this.y, volume:0.5, pitch: 1 / ( 1 + this.lvl / 3 ) });
+						sdSound.PlaySound({ name:sdGun.classes[ sdGun.CLASS_ROCKET ].sound, x:this.x, y:this.y, volume:0.5, pitch: 1 / ( 1 + this.lvl / 5 ) });
 					
 						if ( this.kind === sdTurret.KIND_FREEZER )
-						sdSound.PlaySound({ name:'gun_spark', x:this.x, y:this.y, volume:0.5, pitch: 1 / ( 1 + this.lvl / 3 ) });
+						sdSound.PlaySound({ name:'gun_spark', x:this.x, y:this.y, volume:0.5, pitch: 1 / ( 1 + this.lvl / 5 ) });
 
 						let bullet_obj = new sdBullet({ x: this.x, y: this.y });
 
@@ -739,19 +736,19 @@ class sdTurret extends sdEntity
 	MeasureMatterCost()
 	{
 		if ( this.kind === sdTurret.KIND_LASER )
-		return ~~( 100 * sdWorld.damage_to_matter + 150 );
+		return ~~( 100 * sdWorld.damage_to_matter + 150 * ( this.type + 1 ) );
 		
 		if ( this.kind === sdTurret.KIND_ROCKET )
-		return ~~( 100 * sdWorld.damage_to_matter + 300 );
+		return ~~( 100 * sdWorld.damage_to_matter + 300 * ( this.type + 1 ) );
 
 		if ( this.kind === sdTurret.KIND_RAPID_LASER )
-		return ~~( 100 * sdWorld.damage_to_matter + 450 );
+		return ~~( 100 * sdWorld.damage_to_matter + 450 * ( this.type + 1 ) );
 
 		if ( this.kind === sdTurret.KIND_SNIPER )
-		return ~~( 100 * sdWorld.damage_to_matter + 600 );
+		return ~~( 100 * sdWorld.damage_to_matter + 600 * ( this.type + 1 ) );
 
 		if ( this.kind === sdTurret.KIND_FREEZER )
-		return ~~( 100 * sdWorld.damage_to_matter + 600 );
+		return ~~( 100 * sdWorld.damage_to_matter + 600 * ( this.type + 1 ) );
 	}
 	onRemove()
 	{
@@ -773,7 +770,7 @@ class sdTurret extends sdEntity
 			{
 				if ( command_name === 'UPGRADE' || command_name === 'UPGRADE_MAX' )
 				{
-					let upgrades_to_do = ( command_name === 'UPGRADE_MAX' ) ? 3 : 1;
+					let upgrades_to_do = ( command_name === 'UPGRADE_MAX' ) ? 5 : 1;
 					
 					let upgraded = false;
 					
@@ -781,7 +778,7 @@ class sdTurret extends sdEntity
 					{
 						upgrades_to_do--;
 						
-						if ( this.lvl < 3 )
+						if ( this.lvl < 5 )
 						{
 							if ( exectuter_character.matter >= 100 )
 							{
@@ -822,9 +819,9 @@ class sdTurret extends sdEntity
 		if ( exectuter_character.hea > 0 )
 		if ( sdWorld.inDist2D_Boolean( this.x, this.y, exectuter_character.x, exectuter_character.y, 128 ) )
 		{
-			if ( this.lvl < 3 )
+			if ( this.lvl < 5 )
 			{
-				this.AddContextOption( 'Upgrade damage to level 3 ('+ (3-this.lvl)*100 +' matter)', 'UPGRADE_MAX', [] );
+				this.AddContextOption( 'Upgrade damage to level 5 ('+ (5-this.lvl)*100 +' matter)', 'UPGRADE_MAX', [] );
 				this.AddContextOption( 'Upgrade damage (100 matter)', 'UPGRADE', [] );
 			}
 			else

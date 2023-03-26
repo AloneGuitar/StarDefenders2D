@@ -45,20 +45,20 @@ class sdEntity
 		sdEntity.HIBERSTATE_REMOVED = 2;
 		sdEntity.HIBERSTATE_HIBERNATED_NO_COLLISION_WAKEUP = 3; 
 		
-		sdEntity.SCORE_REWARD_EASY_MOB = 1;
-		sdEntity.SCORE_REWARD_AVERAGE_MOB = 3;
-		sdEntity.SCORE_REWARD_CHALLENGING_MOB = 5;
-		sdEntity.SCORE_REWARD_FREQUENTLY_LETHAL_MOB = 10;
-		sdEntity.SCORE_REWARD_BOSS = 30;
-		sdEntity.SCORE_REWARD_COMMON_TASK = 15;
-		sdEntity.SCORE_REWARD_TEDIOUS_TASK = 20;
-		sdEntity.SCORE_REWARD_BIG_EVENT_TASK = 50;
-		sdEntity.SCORE_REWARD_ADMIN_CRATE = 100000;
+		sdEntity.SCORE_REWARD_EASY_MOB = 2;
+		sdEntity.SCORE_REWARD_AVERAGE_MOB = 6;
+		sdEntity.SCORE_REWARD_CHALLENGING_MOB = 10;
+		sdEntity.SCORE_REWARD_FREQUENTLY_LETHAL_MOB = 20;
+		sdEntity.SCORE_REWARD_BOSS = 60;
+		sdEntity.SCORE_REWARD_COMMON_TASK = 30;
+		sdEntity.SCORE_REWARD_TEDIOUS_TASK = 40;
+		sdEntity.SCORE_REWARD_BIG_EVENT_TASK = 100;
+		sdEntity.SCORE_REWARD_ADMIN_CRATE = 100000000;
 		sdEntity.SCORE_REWARD_SCORE_SHARD = 1;
-		sdEntity.SCORE_REWARD_SCORE_MOP = 1;
-		sdEntity.SCORE_REWARD_BROKEN_5K_CRYSTAL = 5;
-		sdEntity.SCORE_REWARD_BROKEN_CRAB_CRYSTAL = 1;
-		sdEntity.SCORE_REWARD_BROKEN_BIG_CRAB_CRYSTAL = 3;
+		sdEntity.SCORE_REWARD_SCORE_MOP = 2;
+		sdEntity.SCORE_REWARD_BROKEN_5K_CRYSTAL = 10;
+		sdEntity.SCORE_REWARD_BROKEN_CRAB_CRYSTAL = 2;
+		sdEntity.SCORE_REWARD_BROKEN_BIG_CRAB_CRYSTAL = 6;
 		
 		/*sdEntity.MATTER_MODE_UNDECIDED = 0;
 		sdEntity.MATTER_MODE_NONE = 1;
@@ -97,7 +97,7 @@ class sdEntity
 		sdWorld.entity_classes_array = Object.values( sdWorld.entity_classes );
 		for ( let i = 0; i < sdWorld.entity_classes_array.length; i++ )
 		sdWorld.entity_classes_array[ i ].class_id = i;
-	
+
 		for ( let i = 0; i < sdWorld.entity_classes_array.length; i++ )
 		if ( sdWorld.entity_classes_array[ i ].init )
 		sdWorld.entity_classes_array[ i ].init();
@@ -888,7 +888,7 @@ class sdEntity
 		let skip_cell_scan = false;
 
 		sdWorld.last_hit_entity = null;
-		this._phys_last_rest_on = null; // Uncommented since it does not make much sense if it is never reset
+		this._phys_last_rest_on = null;
 		//this._phys_last_touch = null; Maybe it is best to just keep it, since movement and removal is tracked above
 		
 		/*if ( this._phys_last_rest_on )
@@ -1588,7 +1588,7 @@ class sdEntity
 						
 						this._phys_last_touch = best_ent;
 						
-						//this._phys_last_rest_on = best_ent; // Physics worked fine but it makes not much sense if we want to track whether entity stands on top of something for being able to walk
+						this._phys_last_rest_on = best_ent;
 						
 						// If lies on top
 						if ( best_ent )
@@ -4222,7 +4222,7 @@ class sdEntity
 					{
 						debugger;
 					}*/
-					
+
 					sdEntity.removed_entities_info.set( this._net_id, { entity: this, ttl: sdWorld.time + 10000 } );
 					//trace( 'deleting ' + this.GetClass() );
 				}

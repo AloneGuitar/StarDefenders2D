@@ -270,10 +270,16 @@ class sdCharacterRagdoll
 		let gun_offset_x = 0;
 		let gun_offset_y = 0;
 		let gun_offset_body_x = 0;
-		if ( this.character.gun_slot === 0 )
+		if ( this.character.gun_slot === 0 || this.character.gun_slot === -1 )
 		{
 			gun_offset_x += ( 1 - ( Math.cos( this.character.fire_anim / 5 * Math.PI ) * 0.5 + 0.5 ) ) * 3;
 			gun_offset_body_x += 1 - ( Math.cos( this.character.fire_anim / 5 * Math.PI ) * 0.5 + 0.5 );
+
+			if ( this.character.damage_mult >=2 )
+			{
+				gun_offset_x += ( 1 - ( Math.cos( this.character.fire_anim / 5 * Math.PI ) * 0.5 + 0.5 ) ) * 5;
+				gun_offset_body_x += ( 1 - ( Math.cos( this.character.fire_anim / 5 * Math.PI ) * 0.5 + 0.5 ) ) * 2;
+			}
 		}
 		else
 		{
@@ -314,6 +320,12 @@ class sdCharacterRagdoll
 		
 		// Body & head
 		this.MoveBone( this.torso, 13, 22 );
+
+		if ( this.character.anim_change === true && ( this.character.act_x === 0 || this.character.speed_up === true ) )
+		{
+		this.MoveBone( this.torso, 13, 22.75 );
+		}
+
 		let dx = -( this.chest._ty - this.character.look_y ) * this.character._side;
 		let dy = ( this.chest._tx - this.character.look_x ) * this.character._side;
 		let di = sdWorld.Dist2D_Vector( dx, dy );
@@ -402,15 +414,22 @@ class sdCharacterRagdoll
 		
 		
 		// Legs
-		let _anim_walk = Math.round( this.character._anim_walk / 10 * movement_discretion ) / movement_discretion * Math.PI * 2;
+		let _anim_walk = Math.round( this.character._anim_walk / 10 * movement_discretion ) / movement_discretion * Math.PI * 1;
 		
 		let walk_amplitude_x = 1.5;
+
 		let walk_amplitude_y = 0;
 		let _anim_walk_arms = 0;
 		
 			
 		let legs_x = 13;
 		let legs_y = 30;
+
+		if ( this.character.anim_change === true )
+		{
+		walk_amplitude_x = 3;
+		legs_x = 12.5;
+		}
 		
 		if ( !this.character.stands && this.character._crouch_intens <= 0.25 )
 		{
@@ -443,8 +462,21 @@ class sdCharacterRagdoll
 					walk_amplitude_x = this.character.act_x * this.character._side * Math.sin( _anim_walk ) * 5;
 					walk_amplitude_y = Math.cos( _anim_walk ) * 4;
 					legs_x -= 2.5;
+
+					_anim_walk_arms = Math.sin( _anim_walk + 0.2 ) * 6;
 					
-					_anim_walk_arms = Math.sin( _anim_walk + 0.2 ) * 1;
+					if ( this.character.speed_up === true && this.character.anim_change === true )
+					{
+						walk_amplitude_x = this.character.act_x * this.character._side * Math.sin( _anim_walk ) * 12;
+						walk_amplitude_y = Math.cos( _anim_walk ) * 6;
+						legs_x -= 3;
+						_anim_walk_arms = Math.sin( _anim_walk + 0.2 ) * 12;
+
+						if ( this.character.act_x === this.character._side && this.character.fist_change === true )
+						{
+						_anim_walk_arms = 12;
+						}
+					}
 				}
 			}
 		}
@@ -502,7 +534,7 @@ class sdCharacterRagdoll
 		
 		if ( this.character._inventory[ this.character.gun_slot ] || ( this.character.fire_anim > 0 && this.character.fire_anim < 5 ) )
 		{
-			let activation = Math.pow( this.character._weapon_draw_timer / sdCharacter.default_weapon_draw_time, 2 );
+			let activation = Math.pow( this.character._weapon_draw_timer / sdCharacter.default_weapon_draw_time, 1 );
 			let i_activation = 1 - activation;
 			
 			dx *= i_activation;
@@ -524,10 +556,19 @@ class sdCharacterRagdoll
 			this.MoveBoneRelative( this.hand1, 
 			this.chest._tx - _anim_walk_arms * scale, 
 			this.chest._ty + 6 * scale );
-
 			this.MoveBoneRelative( this.hand2, 
 			this.chest._tx + _anim_walk_arms * scale, 
 			this.chest._ty + 6 * scale );
+
+			if ( this.character.act_x !== 0 && this.character.act_x === this.character._side && this.character.fist_change === true && this.character.speed_up === true && this.character.anim_change === true )
+			{
+			this.MoveBoneRelative( this.hand1, 
+			this.chest._tx - _anim_walk_arms * scale * this.character._side * 10, 
+			this.chest._ty + 6 * scale );
+			this.MoveBoneRelative( this.hand2, 
+			this.chest._tx - _anim_walk_arms * scale * this.character._side * 10, 
+			this.chest._ty + 6 * scale );
+			}
 		}
 		
 		

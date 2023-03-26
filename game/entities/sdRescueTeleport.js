@@ -272,7 +272,7 @@ class sdRescueTeleport extends sdEntity
 	MeasureMatterCost()
 	{
 		if ( this.type === sdRescueTeleport.TYPE_INFINITE_RANGE )
-		return this._hmax * sdWorld.damage_to_matter + 2000;
+		return this._hmax * sdWorld.damage_to_matter + 3000;
 		else
 		return this._hmax * sdWorld.damage_to_matter + 200; // 1700
 	}
@@ -403,7 +403,7 @@ class sdRescueTeleport extends sdEntity
 		sdRescueTeleport.rescue_teleports.splice( i, 1 );
 	
 		if ( !sdWorld.is_server )
-		if ( this._net_id !== undefined ) // Was ever synced rather than just temporarily object for shope
+		if ( this._net_id !== undefined ) // Was ever synced rather than just temporarily object for shop
 		if ( this._broken )
 		{
 			sdWorld.BasicEntityBreakEffect( this, 3 );

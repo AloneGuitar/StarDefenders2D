@@ -98,8 +98,11 @@ class sdSandWorm extends sdEntity
 
 		this.scale = params.scale || Math.max( 0.6, Math.random() * 2 );
 
-		this._hmax = ( this.kind === sdSandWorm.KIND_COUNCIL_WORM ? 12 : this.kind === sdSandWorm.KIND_CORRUPTED_WORM ? 1.5 : 1 ) * 700 * Math.pow( this.scale, 2 );// Bigger worms = more health
+		this._hmax = ( this.kind === sdSandWorm.KIND_COUNCIL_WORM ? 60 : this.kind === sdSandWorm.KIND_CORRUPTED_WORM ? 1.5 : 1 ) * 700 * Math.pow( this.scale, 2 );// Bigger worms = more health
 		this._hea = this._hmax;
+
+		this._nature_damage = 1000000;
+		this._player_damage = 0;
 
 		this._regen_timeout = 0; // For council worm HP regen, for some reason it claims object is not extensible if placed in brackets below which check if the worm is council one.
 
@@ -138,9 +141,9 @@ class sdSandWorm extends sdEntity
 		if ( this.kind === sdSandWorm.KIND_COUNCIL_WORM )
 		{
 			this._regen_timeout = 0; // For HP regen
-			this.scale = 1;
+			this.scale = 4;
 		}
-		
+
 		this._can_spawn_more = true;
 	}
 	onBeforeRemove()
@@ -192,7 +195,6 @@ class sdSandWorm extends sdEntity
 		if ( this._hea > 0 )
 		if ( character.IsVisible() )
 		if ( character.hea > 0 )
-		if ( this.HasEnoughMatter( character ) )
 		{
 			let di = sdWorld.Dist2D( this.x, this.y, character.x, character.y ); 
 			if ( di < sdSandWorm.max_seek_range )
@@ -243,8 +245,6 @@ class sdSandWorm extends sdEntity
 		dmg = dmg * 0.05; // 95% damage reduction to body damage for council worms, they are sort of a boss after all
 		
 		if ( initiator )
-		//if ( !initiator.is( sdSandWorm ) )
-		if ( !initiator.is( sdCube ) )
 		head_entity._current_target = initiator;
 		
 		let this_was_alive = this._hea > 0;
@@ -359,7 +359,7 @@ class sdSandWorm extends sdEntity
 			this.remove();
 		}
 	}
-	get mass() { return 300 * this.scale; }
+	get mass() { return 120 * this.scale; }
 	Impulse( x, y )
 	{
 		this.sx += x / this.mass;
@@ -536,7 +536,6 @@ class sdSandWorm extends sdEntity
 
 					arr[ i ] = ent;
 				}
-
 				this._hea += sdSandWorm.head_bounds_health;
 				this._hmax += sdSandWorm.head_bounds_health;
 				this._can_spawn_more = false;
@@ -544,11 +543,11 @@ class sdSandWorm extends sdEntity
 			else
 			{
 				let head_entity = this.GetHeadEntity();
-		
+
 				if ( head_entity._hp_main > 0 )
 				{
 					head_entity._hp_main = Math.min( head_entity._hp_main, 0 ); // Part of the worm was likely removed somehow and pointer cleared
-					
+
 					let ptr = head_entity;
 					while ( ptr )
 					{
@@ -862,13 +861,12 @@ class sdSandWorm extends sdEntity
 
 			return false;
 		}
-		
 		if ( !hit_entity.hard_collision )
 		{
 			if ( hit_entity.is( sdRift ) )
 			return false;
 		}
-		
+
 		return true;
 
 	}
@@ -886,7 +884,8 @@ class sdSandWorm extends sdEntity
 			sdEntity.Tooltip( ctx, "Corrupted Worm" );
 
 			if ( this.kind === sdSandWorm.KIND_COUNCIL_WORM )
-			sdEntity.Tooltip( ctx, "Council Mecha Worm" );
+			sdEntity.Tooltip( ctx, "Council Mecha Worm", 0, -30 );
+			this.DrawHealthBar( ctx, undefined, 10 );
 		}
 	}
 	Draw( ctx, attached )
@@ -1010,7 +1009,7 @@ class sdSandWorm extends sdEntity
 				from_entity.DamageWithEffect( 300 * this.scale, this );
 				
 				if ( this.kind === sdSandWorm.KIND_CORRUPTED_WORM )
-				if ( from_entity.is( sdCharacter ) ) // Copy-pasted from sdBlock.CorruptAttack();
+				if ( from_entity.is( sdCharacter ) )
 				{
 					from_entity._sickness += 30;
 					from_entity._last_sickness_from_ent = this;
@@ -1046,7 +1045,7 @@ class sdSandWorm extends sdEntity
 				else*/
 				from_entity.DamageWithEffect( ( this.kind === sdSandWorm.KIND_SPIKY_WORM ? 5 : 1 ) * 20 * this.scale, this );
 				if ( this.kind === sdSandWorm.KIND_CORRUPTED_WORM )
-				if ( from_entity.is( sdCharacter ) ) // Copy-pasted from sdBlock.CorruptAttack();
+				if ( from_entity.is( sdCharacter ) )
 				{
 					from_entity._sickness += 30;
 					from_entity._last_sickness_from_ent = this;

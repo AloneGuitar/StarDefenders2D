@@ -1,6 +1,4 @@
 
-/* global sdShop */
-
 import sdWorld from '../sdWorld.js';
 import sdSound from '../sdSound.js';
 import sdEntity from './sdEntity.js';
@@ -17,42 +15,44 @@ class sdMatterAmplifier extends sdEntity
 		sdMatterAmplifier.img_matter_amplifier2 = sdWorld.CreateImageFromFile( 'matter_amplifier2' ); // 2nd variation
 		sdMatterAmplifier.img_matter_amplifier3 = sdWorld.CreateImageFromFile( 'matter_amplifier3' ); // 3rd variation
 		sdMatterAmplifier.img_matter_amplifier4 = sdWorld.CreateImageFromFile( 'matter_amplifier4' ); // 4th variation
+		sdMatterAmplifier.img_matter_amplifier5 = sdWorld.CreateImageFromFile( 'matter_amplifier5' );
 		sdMatterAmplifier.img_matter_amplifier_beam = sdWorld.CreateImageFromFile( 'matter_amplifier_beam' );
 		sdMatterAmplifier.img_matter_amplifier_beam2 = sdWorld.CreateImageFromFile( 'matter_amplifier_beam2' ); // 2nd variation
 		sdMatterAmplifier.img_matter_amplifier_beam3 = sdWorld.CreateImageFromFile( 'matter_amplifier_beam3' ); // 3rd variation
 		sdMatterAmplifier.img_matter_amplifier_beam4 = sdWorld.CreateImageFromFile( 'matter_amplifier_beam4' ); // 4th variation
+		sdMatterAmplifier.img_matter_amplifier_beam5 = sdWorld.CreateImageFromFile( 'matter_amplifier_beam5' );
 		sdMatterAmplifier.img_matter_amplifier_shield = sdWorld.CreateImageFromFile( 'matter_amplifier_shield' );
 		sdMatterAmplifier.img_matter_amplifier_shield2 = sdWorld.CreateImageFromFile( 'matter_amplifier_shield2' ); // 2nd variation
 		sdMatterAmplifier.img_matter_amplifier_shield3 = sdWorld.CreateImageFromFile( 'matter_amplifier_shield3' ); // 3rd variation
 		sdMatterAmplifier.img_matter_amplifier_shield4 = sdWorld.CreateImageFromFile( 'matter_amplifier_shield4' ); // 4th variation
-		//sdMatterAmplifier.img_matter_amplifier_empty = sdWorld.CreateImageFromFile( 'matter_amplifier_empty' );
-		
+		sdMatterAmplifier.img_matter_amplifier_shield5 = sdWorld.CreateImageFromFile( 'matter_amplifier_shield5' );
+
 		sdMatterAmplifier.relative_regen_amplification_to_crystals = 5;
-		
+
 		sdWorld.entity_classes[ this.name ] = this; // Register for object spawn
 	}
 	get hitbox_x1() { return -10; }
 	get hitbox_x2() { return 10; }
 	get hitbox_y1() { return ( this.crystal && this.shielded ) ? -10 : 7; }
 	get hitbox_y2() { return 14; }
-	
+
 	get spawn_align_x(){ return 8; };
 	get spawn_align_y(){ return 8; };
-	
+
 	get hard_collision() // For world geometry where players can walk
 	{ return true; }
-	
+
 	get is_static() // Static world objects like walls, creation and destruction events are handled manually. Do this._update_version++ to update these
 	{ return true; }
-	
+
 	RequireSpawnAlign()
 	{ return true; }
-	
+
 	getRequiredEntities() // Some static entities like sdCable do require connected entities to be synced or else pointers will never be resolved due to partial sync
 	{
 		if ( this.crystal )
 		return [ this.crystal ]; 
-		
+
 		return [];
 	}
 	GetAutoConnectedEntityForMatterFlow()
@@ -62,28 +62,18 @@ class sdMatterAmplifier extends sdEntity
 	constructor( params )
 	{
 		super( params );
-		
-		/*this.matter_max = 0;
-		this._last_matter_max = this.matter_max; // Change will cause hash update
-		this.matter = this.matter_max;
-		this.matter_regen = 0; // Matter regen rate taken from crystals that are put into amplifiers
-		this._last_sync_matter = this.matter;*/
-		
-		// Buffer for being able to give away matter from crystal
 		this._matter_max = 20;
 		this._matter = 0;
-		
 		this.crystal = null;
-		
 		this.multiplier = params.multiplier || 1; // Crystal regeneration multiplier, used for higher tier matter amplifiers. Only power of 2 values
 		this._hmax = 1;// = ( 160 + ( 160 * this.multiplier ) ) * 4; // Regular matter amplifier has 160 + 160 hp which is 320
 		this.UpdatePropertiesDueToUpgrade();
 		this._hea = this._hmax;
-		
+
 		this.shielded = false;
-		
+
 		this._ignore_pickup_tim = 0;
-		
+
 		this._regen_timeout = 0;
 	}
 	UpdatePropertiesDueToUpgrade()
@@ -92,7 +82,7 @@ class sdMatterAmplifier extends sdEntity
 	}
 	onSnapshotApplied() // To override
 	{
-		if ( this.multiplier === 3 )
+		if ( this.multiplier === 4 )
 		this.multiplier = 4;
 	}
 	Damage( dmg, initiator=null )
@@ -105,7 +95,6 @@ class sdMatterAmplifier extends sdEntity
 		this.SetHiberState( sdEntity.HIBERSTATE_ACTIVE );
 		
 		if ( this.shielded && this.crystal )
-		//if ( this.matter_max > 0 )
 		{
 			dmg *= 0.333;
 			sdSound.PlaySound({ name:'shield', x:this.x, y:this.y, volume:1 });
@@ -142,7 +131,7 @@ class sdMatterAmplifier extends sdEntity
 			ent.matter_max = snapshot.matter_max;
 			ent.matter = snapshot.matter;
 			ent.matter_regen = snapshot.matter_regen;
-			
+
 			sdEntity.entities.push( ent );
 		}
 	}
@@ -152,24 +141,14 @@ class sdMatterAmplifier extends sdEntity
 	}
 	onThink( GSPEED ) // Class-specific, if needed
 	{
-		/*if ( this._last_matter_max !== this.matter_max )
-		{
-			 // Change will cause hash update as matter_max value specifies hitbox size
-			this._last_matter_max = this.matter_max;
-			sdWorld.UpdateHashPosition( this, false );
-		}*/
-
-		//if ( this.multiplier > 4 ) // Revert old max amplifiers to current max, this can be commented out/deleted once it is applied to server and overrides old max amplifiers
-		//this.multiplier = 4;
-		
 		let can_hibernate1 = false;
 		let can_hibernate2 = false;
-		
+
 		if ( this._ignore_pickup_tim > 0 )
 		this._ignore_pickup_tim = Math.max( 0, this._ignore_pickup_tim - GSPEED );
 		else
 		can_hibernate1 = true;
-	
+
 		if ( this._regen_timeout > 0 )
 		this._regen_timeout -= GSPEED;
 		else
@@ -177,7 +156,7 @@ class sdMatterAmplifier extends sdEntity
 		this._hea = Math.min( this._hea + GSPEED, this._hmax );
 		else
 		can_hibernate2 = true;
-		
+
 		if ( this.crystal )
 		{
 			//this.MatterGlow( 0.01, 0, GSPEED );
@@ -187,48 +166,30 @@ class sdMatterAmplifier extends sdEntity
 			this.crystal.sx = 0;
 			this.crystal.sy = 0;
 		}
-		/*else
-		{
-			if ( this._hea >= this._hmax )
-			this.SetHiberState( sdEntity.HIBERSTATE_HIBERNATED );
-		}*/
-			
 		if ( can_hibernate1 && can_hibernate2 )
 		if ( sdWorld.is_server ) // Server-only. Clients will have to update hitbox
 		this.SetHiberState( sdEntity.HIBERSTATE_HIBERNATED_NO_COLLISION_WAKEUP );
-			
-		//if ( this.PrioritizeGivingMatterAway() )
-		//this.MatterGlow( 0.1, 0, GSPEED ); // 0 radius means only towards cables
-	
+
 	}
 	DrawHUD( ctx, attached ) // foreground layer
 	{
 		sdEntity.Tooltip( ctx, "Matter amplifier" );
-		
-		/*if ( this.matter_max === 0 )
-		sdEntity.Tooltip( ctx, "Matter amplifier (no crystal)" );
-		else
-		sdEntity.Tooltip( ctx, "Matter amplifier ( " + ~~(this.matter) + " / " + ~~(this.matter_max) + " ) (" + ~~(this.matter_regen ) + "%)" );*/
-		//sdEntity.Tooltip( ctx, "Matter amplifier ( " + ~~(this.matter) + " / " + ~~(this.matter_max) + " )" );
+
+		if ( this.multiplier === 1 )
+		sdEntity.Tooltip( ctx, T("Level 1"), 0, 5, '#66ff66' );
+		if ( this.multiplier === 2 )
+		sdEntity.Tooltip( ctx, T("Level 2"), 0, 5, '#66ff66' );
+		if ( this.multiplier === 4 )
+		sdEntity.Tooltip( ctx, T("Level 3"), 0, 5, '#66ff66' );
+		if ( this.multiplier === 8 )
+		sdEntity.Tooltip( ctx, T("Level 4"), 0, 5, '#66ff66' );
+		if ( this.multiplier === 16 )
+		sdEntity.Tooltip( ctx, T("Level 5"), 0, 5, '#66ff66' );
 	}
 	Draw( ctx, attached )
 	{
 		if ( this.crystal )
 		ctx.apply_shading = false;
-		
-		/*
-		ctx.drawImageFilterCache( sdMatterAmplifier.img_matter_amplifier_empty, - 16, - 16, 32,32 );
-		
-		//if ( this.matter_max > 40 )
-		//ctx.filter = 'hue-rotate('+( this.matter_max - 40 )+'deg)';
-	
-		ctx.filter = sdWorld.GetCrystalHue( this.matter_max );
-	
-		ctx.globalAlpha = this.matter / this.matter_max;
-		ctx.drawImageFilterCache( sdMatterAmplifier.img_matter_amplifier, - 16, - 16, 32,32 );
-
-		ctx.globalAlpha = 1;
-		ctx.filter = 'none';*/
 		
 		const offset_y = 2;
 			
@@ -250,6 +211,8 @@ class sdMatterAmplifier extends sdEntity
 			ctx.drawImageFilterCache( sdMatterAmplifier.img_matter_amplifier_beam3, - 16, - 16, 32,32 );
 			if ( this.multiplier === 8 )
 			ctx.drawImageFilterCache( sdMatterAmplifier.img_matter_amplifier_beam4, - 16, - 16, 32,32 );
+			if ( this.multiplier === 16 )
+			ctx.drawImageFilterCache( sdMatterAmplifier.img_matter_amplifier_beam5, - 16, - 16, 32,32 );
 			
 			if ( this.shielded )
 			{
@@ -262,6 +225,8 @@ class sdMatterAmplifier extends sdEntity
 				ctx.drawImageFilterCache( sdMatterAmplifier.img_matter_amplifier_shield3, - 16, - 16, 32,32 );
 				if ( this.multiplier === 8 )
 				ctx.drawImageFilterCache( sdMatterAmplifier.img_matter_amplifier_shield4, - 16, - 16, 32,32 );
+				if ( this.multiplier === 16 )
+				ctx.drawImageFilterCache( sdMatterAmplifier.img_matter_amplifier_shield5, - 16, - 16, 32,32 );
 			}
 		}
 		
@@ -274,6 +239,8 @@ class sdMatterAmplifier extends sdEntity
 		ctx.drawImageFilterCache( sdMatterAmplifier.img_matter_amplifier3, - 16, - 16, 32, 32 );
 		if ( this.multiplier === 8 )
 		ctx.drawImageFilterCache( sdMatterAmplifier.img_matter_amplifier4, - 16, - 16, 32, 32 );
+		if ( this.multiplier === 16 )
+		ctx.drawImageFilterCache( sdMatterAmplifier.img_matter_amplifier5, - 16, - 16, 32, 32 );
 	}
 	onBeforeRemove() // Right when .remove() is called for the first time. This method won't be altered by build tool spawn logic
 	{
@@ -376,18 +343,6 @@ class sdMatterAmplifier extends sdEntity
 		
 		return false;
 	}
-	/*HookAttempt() // true for allow. from_entity is sdBullet that is hook tracer
-	{
-		if ( !sdWorld.is_server )
-		return;
-	
-		if ( !this.shielded )
-		{
-			this.DropCrystal();
-		}
-		
-		return true;
-	}*/
 	onMovementInRange( from_entity )
 	{
 		if ( !sdWorld.is_server )

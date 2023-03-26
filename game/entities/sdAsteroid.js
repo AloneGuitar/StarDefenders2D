@@ -37,11 +37,11 @@ class sdAsteroid extends sdEntity
 		
 		this._max_build_tool_level_near = 0;
 
-		this.scale = Math.max( 0.8, Math.random() * 2 ); // Scale / size of the asteroid
+		this.scale = Math.max( 0.8, Math.random() * 4 ); // Scale / size of the asteroid
 		this._type = params._type || Math.random() < 0.2 ? 1 : 0;
 		this.landed = false;
 		
-		this._hmax = 60 * this.scale; // Asteroids that land need more HP to survive the "explosion" when they land
+		this._hmax = 240 * this.scale; // Asteroids that land need more HP to survive the "explosion" when they land
 		this._hea = this._hmax;
 		
 		this.sx = Math.random() * 12 - 6;
@@ -145,7 +145,7 @@ class sdAsteroid extends sdEntity
 			}
 		}
 	}
-	get mass() { return 80 * this.scale; }
+	get mass() { return 40 * this.scale; }
 	
 	get hard_collision() // For world geometry where players can walk
 	{ return this.landed; }

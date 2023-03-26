@@ -53,8 +53,11 @@ class sdEnemyMech extends sdEntity
 		
 		this._regen_timeout = 0;
 		
-		this._hmax = 15000; // Was 6000 but even 12000 is too easy if you have anything in slot 7
+		this._hmax = 30000; // Was 6000 but even 12000 is too easy if you have anything in slot 7
 		this.hea = this._hmax;
+
+		this._nature_damage = 1000000;
+		this._player_damage = 0;
 
 		this._ai_team = 5;
 		this.tilt = 0;
@@ -86,7 +89,7 @@ class sdEnemyMech extends sdEntity
 		
 		this._alert_intensity = 0; // Grows until some value and only then it will shoot
 		
-		this.matter_max = 5120; // It is much stronger than a basic worm yet it only dropped 1280 matter crystal shards
+		this.matter_max = 10240; // It is much stronger than a basic worm yet it only dropped 1280 matter crystal shards
 		this.matter = this.matter_max;
 		
 		this._last_damage = 0; // Sound flood prevention
@@ -120,11 +123,15 @@ class sdEnemyMech extends sdEntity
 	}*/
 	CanAttackEnt( ent )
 	{
-		if ( ( ent === this._current_target && ent._ai_team !== this._ai_team ) || ent.build_tool_level > 0 )
+		if ( ent === this._current_target && ent._ai_team !== this._ai_team )
 		return true;
 		else
 		{
-			if ( ( ( ent.matter >= 800 && ent._ai_team === 0 ) && ent._ai_team !== this._ai_team ) || ( ent._ai_enabled !== sdCharacter.AI_MODEL_NONE && ent._ai_team !== this._ai_team ) )
+			if ( ent.matter_max >= 13200 && ent._ai_team !== this._ai_team || ent.build_tool_level < 2 )
+			{
+			}
+			else
+			if ( ent.matter_max < 13200 && ent._ai_team !== this.ai_team )
 			{
 				this._current_target = ent; // Don't stop targetting if the player has below 800 matter mid fight
 				return true; // Only players have mercy from mechs
@@ -139,7 +146,7 @@ class sdEnemyMech extends sdEntity
 		let x = sdWorld.world_bounds.x1 + Math.random() * ( sdWorld.world_bounds.x2 - sdWorld.world_bounds.x1 );
 		let y = sdWorld.world_bounds.y1 + Math.random() * ( sdWorld.world_bounds.y2 - sdWorld.world_bounds.y1 );
 		
-		let targets_raw = sdWorld.GetAnythingNear( this.x, this.y, 256, null, [ 'sdCharacter', 'sdPlayerDrone', 'sdPlayerOverlord', 'sdTurret' , 'sdCube', 'sdDrone', 'sdCommandCentre', 'sdSetrDestroyer', 'sdOverlord', 'sdSpider' ] );
+		let targets_raw = sdWorld.GetAnythingNear( this.x, this.y, 256, null, [ 'sdCharacter', 'sdPlayerDrone', 'sdDrone', 'sdEnemyMech', 'sdSpider', 'sdRoach', 'sdAbomination', 'sdAmphid', 'sdAsp', 'sdBadDog', 'sdBiter', 'sdBot', 'sdCube', 'sdFaceCrab', 'sdGrub', 'sdMimic', 'sdOctopus', 'sdOverlord', 'sdPlayerOverlord', 'sdQuadro', 'sdQuickie', 'sdSandWorm', 'sdSetrDestroyer', 'sdTutel', 'sdSlug', 'sdVirus', 'sdTurret', 'sdCommandCentre' ] );
 		for ( let i = 0; i < targets_raw.length; i++ )
 		{
 			i = Math.round( Math.random() * targets_raw.length ); // Randomize it
@@ -159,7 +166,7 @@ class sdEnemyMech extends sdEntity
 		if ( initiator )
 		{
 			if ( initiator.GetClass() === 'sdCharacter' )
-			if ( initiator._ai_team === 0 ) // Only target players
+			if ( initiator._ai_team !== 5 ) // Only target players
 			this._current_target = initiator;
 
 			if ( initiator.GetClass() !== 'sdEnemyMech' )
@@ -203,6 +210,18 @@ class sdEnemyMech extends sdEntity
 			//this.death_anim = 1;
 			//if ( initiator )
 			this.GiveScoreToLastAttacker( sdEntity.SCORE_REWARD_BOSS );
+
+			if ( initiator && initiator.IsPlayerClass() )
+			{
+			if ( Math.random() > 0.5 )
+			initiator.Say( "See you next time!" );
+			else
+			initiator.Say( "You will be a good boi, Mech.");
+
+			if ( initiator._acquired_bt_mech !== true )
+			initiator._acquired_bt_mech = true;
+			initiator._energy_upgrade += 1000;
+			}
 
 			sdWorld.SpawnGib( this.x - (6 * this.side ), this.y + this._hitbox_y1, this.sx + Math.random() * 1 - Math.random() * 1, this.sy + Math.random() * 1 - Math.random() * 1, this.side, sdGib.CLASS_VELOX_MECH_HEAD , this.filter, null )
 			sdWorld.SpawnGib( this.x + (12 * this.side ), this.y + this._hitbox_y2 + 6, this.sx + Math.random() * 1 - Math.random() * 1, this.sy + Math.random() * 2, this.side, sdGib.CLASS_VELOX_MECH_PARTS , this.filter, null )
@@ -518,20 +537,36 @@ class sdEnemyMech extends sdEntity
 
 					//let targets_raw = sdWorld.GetAnythingNear( this.x, this.y, 800 );
 					//let targets_raw = sdWorld.GetCharactersNear( this.x, this.y, null, null, 800 );
-					let targets_raw = sdWorld.GetAnythingNear( this.x, this.y, sdEnemyMech.attack_range, null, [ 'sdCharacter', 'sdPlayerDrone', 'sdPlayerOverlord', 'sdTurret' , 'sdCube', 'sdDrone', 'sdCommandCentre', 'sdSetrDestroyer', 'sdOverlord', 'sdSpider' ] );
+					let targets_raw = sdWorld.GetAnythingNear( this.x, this.y, sdEnemyMech.attack_range, null, [ 'sdCharacter', 'sdPlayerDrone', 'sdDrone', 'sdEnemyMech', 'sdSpider', 'sdRoach', 'sdAbomination', 'sdAmphid', 'sdAsp', 'sdBadDog', 'sdBiter', 'sdBot', 'sdCube', 'sdFaceCrab', 'sdGrub', 'sdMimic', 'sdOctopus', 'sdOverlord', 'sdPlayerOverlord', 'sdQuickie', 'sdSandWorm', 'sdSetrDestroyer', 'sdTutel', 'sdSlug', 'sdVirus', 'sdTurret', 'sdCommandCentre' ] );
 
 					let targets = [];
 
 					for ( let i = 0; i < targets_raw.length; i++ )
 					if ( ( targets_raw[ i ].GetClass() === 'sdCharacter' && targets_raw[ i ]._ai_team !== this._ai_team && targets_raw[ i ].hea > 0 && this.CanAttackEnt( targets_raw[ i ] )  ) ||
+						 ( targets_raw[ i ].GetClass() === 'sdAbomination' ) ||
+						 ( targets_raw[ i ].GetClass() === 'sdAmphid' ) ||
+						 ( targets_raw[ i ].GetClass() === 'sdAsp' ) ||
+						 ( targets_raw[ i ].GetClass() === 'sdBiter' ) ||
+						 ( targets_raw[ i ].GetClass() === 'sdBot' ) ||
+						 ( targets_raw[ i ].GetClass() === 'sdBadDog' ) ||
+						 ( targets_raw[ i ].GetClass() === 'sdFaceCrab' ) ||
+						 ( targets_raw[ i ].GetClass() === 'sdGrub' ) ||
+						 ( targets_raw[ i ].GetClass() === 'sdMimic' ) ||
+						 ( targets_raw[ i ].GetClass() === 'sdOctopus' ) ||
+						 ( targets_raw[ i ].GetClass() === 'sdQuickie' ) ||
+						 ( targets_raw[ i ].GetClass() === 'sdSandWorm' ) ||
+						 ( targets_raw[ i ].GetClass() === 'sdTutel' ) ||
+						 ( targets_raw[ i ].GetClass() === 'sdSlug' ) ||
+						 ( targets_raw[ i ].GetClass() === 'sdVirus' ) ||
 						 ( targets_raw[ i ].GetClass() === 'sdTurret' ) ||
 						 ( targets_raw[ i ].GetClass() === 'sdOverlord' ) ||
 						 ( targets_raw[ i ].GetClass() === 'sdSetrDestroyer' ) ||
 						 ( targets_raw[ i ].GetClass() === 'sdSpider' ) ||
 						 ( targets_raw[ i ].GetClass() === 'sdPlayerOverlord' ) ||
-						( targets_raw[ i ].GetClass() === 'sdCommandCentre' ) ||
+						 ( targets_raw[ i ].GetClass() === 'sdCommandCentre' ) ||
 						 ( targets_raw[ i ].GetClass() === 'sdCube' && targets_raw[ i ].hea > 0 ) ||
 						 ( targets_raw[ i ].GetClass() === 'sdCube' && this.hea < ( this._hmax / 3 ) ) ||
+						 ( targets_raw[ i ].GetClass() === 'sdPlayerDrone' && targets_raw[ i ].hea > 0 ) ||
 						 ( targets_raw[ i ].GetClass() === 'sdDrone' && targets_raw[ i ]._ai_team !== this._ai_team && targets_raw[ i ]._hea > 0 ) )
 					{
 						if ( sdWorld.CheckLineOfSight( this.x, this.y, targets_raw[ i ].x, targets_raw[ i ].y, targets_raw[ i ], [ 'sdEnemyMech' ], [ 'sdBlock', 'sdDoor', 'sdMatterContainer' ] ) )

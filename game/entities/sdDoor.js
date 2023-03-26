@@ -10,6 +10,7 @@ import sdBaseShieldingUnit from './sdBaseShieldingUnit.js';
 import sdSensorArea from './sdSensorArea.js';
 import sdCharacter from './sdCharacter.js';
 import sdDrone from './sdDrone.js';
+import sdPlayerDrone from './sdPlayerDrone.js';
 
 
 import sdRenderer from '../client/sdRenderer.js';
@@ -201,7 +202,7 @@ class sdDoor extends sdEntity
 	{
 		//return this._hmax + ( 200 * this._reinforced_level ) * sdWorld.damage_to_matter + 20;
 		
-		return this._hmax * sdWorld.damage_to_matter * ( 1 + this._reinforced_level * 2 ) + 20;
+		return this._hmax * sdWorld.damage_to_matter * ( 1 + this._reinforced_level * 2 * ( this.open_type + 1 ) ) + 20;
 	}
 	Sound( s )
 	{
@@ -234,7 +235,7 @@ class sdDoor extends sdEntity
 			if ( this._entities_within_sensor_area.indexOf( from_entity ) === -1 )
 			if ( !from_entity.is_static && from_entity._net_id !== undefined )
 			//if ( from_entity.GetClass() === 'sdCharacter' || from_entity.GetClass() === 'sdDrone' ) // universal entities which have _ai_team variable
-			if ( from_entity.is( sdCharacter ) || from_entity.is( sdDrone ) ) // universal entities which have _ai_team variable
+			if ( from_entity.is( sdCharacter ) || from_entity.is( sdDrone ) || from_entity.is( sdPlayerDrone ) ) // universal entities which have _ai_team variable
 			if ( this._sensor_area )
 			if ( from_entity._ai_team === this._ai_team ) // Open only if it's appropriate faction
 			{

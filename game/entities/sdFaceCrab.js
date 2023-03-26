@@ -57,6 +57,9 @@ class sdFaceCrab extends sdEntity
 		this._hmax = 100;
 	
 		this._hea = this._hmax;
+
+		this._nature_damage = 1000000;
+		this._player_damage = 0;
 	
 		this.death_anim = 0;
 		

@@ -55,8 +55,20 @@ class sdPlayerDrone extends sdCharacter
             sdWorld.CreateImageFromFile( 'drone_robot30' ),
             sdWorld.CreateImageFromFile( 'drone_robot31' ),
             sdWorld.CreateImageFromFile( 'drone_robot32' ),
-        	sdWorld.CreateImageFromFile( 'drone_robot33' ),
-			sdWorld.CreateImageFromFile( 'drone_robot34' ),
+	sdWorld.CreateImageFromFile( 'drone_robot33' ),
+	sdWorld.CreateImageFromFile( 'drone_robot34' ),
+	sdWorld.CreateImageFromFile( 'drone_robot35' ),
+	sdWorld.CreateImageFromFile( 'drone_robot36' ),
+	sdWorld.CreateImageFromFile( 'drone_robot37' ),
+	sdWorld.CreateImageFromFile( 'drone_robot38' ),
+	sdWorld.CreateImageFromFile( 'drone_robot39' ),
+	sdWorld.CreateImageFromFile( 'drone_robot40' ),
+	sdWorld.CreateImageFromFile( 'drone_robot41' ),
+	sdWorld.CreateImageFromFile( 'drone_robot42' ),
+	sdWorld.CreateImageFromFile( 'drone_robot43' ),
+	sdWorld.CreateImageFromFile( 'drone_robot44' ),
+	sdWorld.CreateImageFromFile( 'drone_robot45' ),
+	sdWorld.CreateImageFromFile( 'drone_robot46' ),
 		];
 		
 		sdPlayerDrone.fake_bullet = {
@@ -80,6 +92,10 @@ class sdPlayerDrone extends sdCharacter
 	get hard_collision() // For world geometry where players can walk
 	{ return ( !this.driver_of ); }
 	
+	TogglePlayerGhosting() // part of ManagePlayerVehicleEntrance()
+	{
+	}
+
 	constructor( params )
 	{
 		super( params );
@@ -89,13 +105,11 @@ class sdPlayerDrone extends sdCharacter
 		
 		this.regen_timeout = 0;
 		
-		this.hmax = 100;
-		this.hea = this.hmax;
-		
-		this.matter_max = 100;
-		this.matter = 0;
-		
+		this.hea = 200;
+		this.hmax = 200;
 		this._matter_capacity_boosters_max = 0;
+		this.matter = 200;
+		this.matter_max = 200;
 		
 		this._jetpack_allowed = true; // For position correction tests
 		
@@ -118,7 +132,7 @@ class sdPlayerDrone extends sdCharacter
 	{
 		if ( sdWorld.server_config.LinkPlayerMatterCapacityToScore( this ) )
 		{
-			this.matter_max = Math.min( 100 + Math.max( 0, this._score * 20 ), 200 ) + this._matter_capacity_boosters;
+			this.matter_max = Math.min( 100 + Math.max( 0, this._score * 20 ), 1000 ) + this._matter_capacity_boosters + this._energy_upgrade;
 		}
 	}
 	
@@ -156,17 +170,19 @@ class sdPlayerDrone extends sdCharacter
 		this.hea -= dmg;
 		
 		this.hea = Math.min( this.hea, this.hmax ); // Prevent overhealing
-		
+
 		if ( this.hea > 0 )
 		{
 			if ( this.pain_anim <= 0 )
 			{
-				if ( this.helmet === 8 )
+				if ( this.helmet === 8 ||  this.helmet === 46 )
 				sdSound.PlaySound({ name:'cube_hurt', pitch: 1, x:this.x, y:this.y, volume:0.66 });
+				else
+				if ( this.helmet === 46 )
+				sdSound.PlaySound({ name:'enemy_mech_hurt', pitch: 0.5, x:this.x, y:this.y, volume:1 });
 				else
 				sdSound.PlaySound({ name:'spider_hurtC', x:this.x, y:this.y, volume: 1, pitch:1 });
 			}
-		
 			this.pain_anim = 5;
 			
 			this.death_anim = 0;
@@ -176,8 +192,11 @@ class sdPlayerDrone extends sdCharacter
 		
 		if ( this.hea <= 0 && was_alive )
 		{
-			if ( this.helmet === 8 )
+			if ( this.helmet === 8 || this.helmet === 46 )
 			sdSound.PlaySound({ name:'cube_offline', pitch:1, x:this.x, y:this.y, volume:1.5 });
+			else
+			if ( this.helmet === 46 )
+			sdSound.PlaySound({ name:'octopus_death', pitch:0.7, x:this.x, y:this.y, volume:1 });
 			else
 			sdSound.PlaySound({ name:'spider_deathC3', x:this.x, y:this.y, volume:1, pitch:2 });
 				
@@ -190,7 +209,7 @@ class sdPlayerDrone extends sdCharacter
 			sdWorld.server_config.onKill( this, initiator );
 		}
 		
-		if ( this.hea < -200 )
+		if ( this.hea < -400 )
 		{
 			//if ( this._broken )
 			sdWorld.BasicEntityBreakEffect( this, 25, 3, 0.75, 0.75 );
@@ -209,10 +228,6 @@ class sdPlayerDrone extends sdCharacter
 		this.sy += y / this.mass;
 	}
 	
-	TogglePlayerGhosting() // part of ManagePlayerVehicleEntrance()
-	{
-		// Disabled
-	}
 	onThink( GSPEED ) // Class-specific, if needed
 	{
 		this.ConnecgtedGodLogic( GSPEED );
@@ -221,7 +236,7 @@ class sdPlayerDrone extends sdCharacter
 		this._player_damage = sdWorld.MorphWithTimeScale( this._player_damage, 0, 0.9983, GSPEED );
 		
 		const matter_cost_4 = ( Math.abs( 100 * 1 * ( this.power_ef > 0 ? 2.5 : 1 ) ) * 1 + 30 ) * sdWorld.damage_to_matter;
-		const matter_cost_5 = 100;
+		const matter_cost_5 = 200;
 		const matter_cost_7 = 1;
 		const matter_cost_2 = 4;
 		
@@ -251,7 +266,7 @@ class sdPlayerDrone extends sdCharacter
 					owner:this,
 					color:'#FF6633' 
 				});
-				this.remove();
+				this.hea = -200;
 				return;
 			}
 		}
@@ -390,7 +405,7 @@ class sdPlayerDrone extends sdCharacter
 							if ( !this._is_being_removed )
 							if ( this._beep_charge >= 90 )
 							{
-								this.DamageWithEffect( this.hea * scale + 1 );
+								this.DamageWithEffect( this.hea * scale );
 								return;
 							}
 						}
@@ -402,16 +417,22 @@ class sdPlayerDrone extends sdCharacter
 
 						if ( mode === 2 )
 						{
-							if ( this.helmet === 8 )
+							if ( this.helmet === 8 || this.helmet === 46 )
 							sdSound.PlaySound({ name:'cube_attack', pitch: 0.66 / scale, x:this.x, y:this.y, volume:0.5 });
+							else
+							if ( this.helmet === 46 )
+							sdSound.PlaySound({ name:'overlord_cannon3', pitch: 1 / scale, x:this.x, y:this.y, volume:0.66 });
 							else
 							sdSound.PlaySound({ name:'cube_attack', x:this.x, y:this.y, volume:0.66, pitch: 2.2 / scale });
 						}
 						else
 						if ( mode === 4 )
 						{
-							if ( this.helmet === 8 )
+							if ( this.helmet === 8 || this.helmet === 46 )
 							sdSound.PlaySound({ name:'cube_attack', pitch: 0.5 / scale, x:this.x, y:this.y, volume:0.5 });
+							else
+							if ( this.helmet === 46 )
+							sdSound.PlaySound({ name:'overlord_cannon3', pitch: 2 / scale, x:this.x, y:this.y, volume:0.66 });
 							else
 							sdSound.PlaySound({ name:'cube_attack', x:this.x, y:this.y, volume:0.66, pitch: 2 / scale });
 						}
@@ -420,8 +441,11 @@ class sdPlayerDrone extends sdCharacter
 						sdSound.PlaySound({ name: sdGun.classes[ sdGun.CLASS_CABLE_TOOL ].sound, x:this.x, y:this.y, volume:0.66, pitch:sdGun.classes[ sdGun.CLASS_CABLE_TOOL ].sound_pitch });
 						else
 						{
-							if ( this.helmet === 8 )
+							if ( this.helmet === 8 || this.helmet === 46 )
 							sdSound.PlaySound({ name:'cube_attack', pitch: 1 / scale, x:this.x, y:this.y, volume:0.5 });
+							else
+							if ( this.helmet === 46 )
+							sdSound.PlaySound({ name:'overlord_cannon3', pitch: 3 / scale, x:this.x, y:this.y, volume:0.33 });
 							else
 							sdSound.PlaySound({ name:'cube_attack', x:this.x, y:this.y, volume:0.33, pitch:3 / scale });
 						}
@@ -446,7 +470,7 @@ class sdPlayerDrone extends sdCharacter
 							bullet_obj.sx = dx * 12;
 							bullet_obj.sy = dy * 12;
 
-							bullet_obj._damage = 10 * power * ( ( this.power_ef > 0 ) ? 2.5 : 1 ) * 1 * scale;
+							bullet_obj._damage = 10 * power * ( ( this.power_ef > 0 ) ? 2.5 : 1 ) * this._damage_mult * scale;
 
 
 							if ( mode === 7 )
@@ -599,7 +623,7 @@ class sdPlayerDrone extends sdCharacter
 		this.PositionUpdateAsDriver();
 		else
 		this.ApplyVelocityAndCollisions( GSPEED, 0, true );
-	
+
 		if ( sdWorld.is_server && !this._socket && this._phys_sleep <= 0 && !this.driver_of && this.hea > 0 && !this._dying && this.pain_anim <= 0 && this.death_anim <= 0 )
 		{
 			this.SetHiberState( sdEntity.HIBERSTATE_HIBERNATED );
@@ -624,15 +648,6 @@ class sdPlayerDrone extends sdCharacter
 			this._potential_vehicle = from_entity;
 		}
 	}
-	GetBleedEffect()
-	{
-		return sdEffect.TYPE_WALL_HIT;
-	}
-	GetBleedEffectFilter()
-	{
-		return '';
-	}
-	
 	Draw( ctx, attached )
 	{
 		if ( !attached )
@@ -661,7 +676,7 @@ class sdPlayerDrone extends sdCharacter
 	
 		//ctx.save();
 		{
-			if ( this.helmet !== 8 ) // Cube
+			if ( this.helmet !== 8 && this.helmet !== 46 && this.helmet !== 35 && this.helmet !== 36 && this.helmet !== 37 && this.helmet !== 39 && this.helmet !== 44 ) // Cube
 			{
 				if ( this.driver_of )
 				{
@@ -725,7 +740,7 @@ class sdPlayerDrone extends sdCharacter
 			}
 			else
 			{
-				if ( this.helmet === 8 )
+				if ( this.helmet === 8 || this.helmet === 46 )
 				{
 					ctx.filter = 'saturate(0) brightness(0.5)';
 					ctx.drawImageFilterCache( sdPlayerDrone.drone_helmets[ this.helmet ] || sdDrone.img_drone_robot, - 16, - 16, 32, 32 );
@@ -741,7 +756,7 @@ class sdPlayerDrone extends sdCharacter
 		{
 			ctx.translate( 0, 7 );
 			
-			if ( this.helmet !== 8 ) // Cube
+			if ( this.helmet !== 8 && this.helmet !== 46 && this.helmet !== 35 && this.helmet !== 36 && this.helmet !== 37 && this.helmet !== 39 && this.helmet !== 44 ) // Cube
 			{
 				if ( this.driver_of )
 				{

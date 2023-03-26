@@ -16,7 +16,9 @@ import sdJunk from './sdJunk.js';
 import sdLost from './sdLost.js';
 import sdStorage from './sdStorage.js';
 import sdAsteroid from './sdAsteroid.js';
+import sdBeamProjector from './sdBeamProjector.js';
 import sdBaseShieldingUnit from './sdBaseShieldingUnit.js';
+import sdFactions from './sdFactions.js';
 
 import sdTask from './sdTask.js';
 
@@ -40,8 +42,6 @@ class sdRift extends sdEntity
 	get hard_collision()
 	{ return false; }
 	
-	//IsBGEntity() // 1 for BG entities, should handle collisions separately
-	//{ return 1; }
 	
 	get is_static() // Static world objects like walls, creation and destruction events are handled manually. Do this._update_version++ to update these
 	{ return false; }
@@ -388,57 +388,7 @@ class sdRift extends sdEntity
 									{
 										character_entity.x = x;
 										character_entity.y = y;
-
-										//sdWorld.UpdateHashPosition( ent, false );
-										if ( Math.random() > ( 0.1 + ( ( this.hea / this.hmax )* 0.4 ) ) ) // Chances change as the portal machine has less health
-										{
-											sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_COUNCIL_BURST_RAIL }) );
-											character_entity._ai_gun_slot = 4;
-										}
-										else
-										{
-											sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_COUNCIL_PISTOL }) );
-											character_entity._ai_gun_slot = 1;
-										}
-										let robot_settings;
-										//if ( character_entity._ai_gun_slot === 2 )
-										robot_settings = {"hero_name":"Council Vanguard","color_bright":"#e1e100","color_dark":"#ffffff","color_bright3":"#ffff00","color_dark3":"#e1e1e1","color_visor":"#ffff00","color_suit":"#ffffff","color_suit2":"#e1e1e1","color_dark2":"#ffe100","color_shoes":"#e1e1e1","color_skin":"#ffffff","color_extra1":"#ffff00","helmet1":false,"helmet23":true,"body11":true,"legs8":true,"voice1":false,"voice2":false,"voice3":true,"voice4":false,"voice5":false,"voice6":false,"voice7":false,"voice8":true};
-
-										character_entity.sd_filter = sdWorld.ConvertPlayerDescriptionToSDFilter_v2( robot_settings );
-										character_entity._voice = sdWorld.ConvertPlayerDescriptionToVoice( robot_settings );
-										character_entity.helmet = sdWorld.ConvertPlayerDescriptionToHelmet( robot_settings );
-										character_entity.title = robot_settings.hero_name;
-										character_entity.body = sdWorld.ConvertPlayerDescriptionToBody( robot_settings );
-										character_entity.legs = sdWorld.ConvertPlayerDescriptionToLegs( robot_settings );
-										//if ( character_entity._ai_gun_slot === 4 || character_entity._ai_gun_slot === 1 )
-										{
-											character_entity.matter = 300;
-											character_entity.matter_max = 300; // Let player leech matter off the bodies
-
-											character_entity.hea = 1750;
-											character_entity.hmax = 1750;
-
-											//character_entity.armor = 1500;
-											//character_entity.armor_max = 1500;
-											//character_entity._armor_absorb_perc = 0.87; // 87% damage absorption, since armor will run out before just a little before health
-
-											//character_entity._damage_mult = 1; // Supposed to put up a challenge
-										}
-										character_entity._ai = { direction: ( x > ( sdWorld.world_bounds.x1 + sdWorld.world_bounds.x2 ) / 2 ) ? -1 : 1 };
-										//character_entity._ai_enabled = sdCharacter.AI_MODEL_AGGRESSIVE;
-											
-										character_entity._ai_level = 10;
-										
-										character_entity._matter_regeneration = 10 + character_entity._ai_level; // At least some ammo regen
-										character_entity._jetpack_allowed = true; // Jetpack
-										//character_entity._recoil_mult = 1 - ( 0.0055 * character_entity._ai_level ) ; // Small recoil reduction based on AI level
-										character_entity._jetpack_fuel_multiplier = 0.25; // Less fuel usage when jetpacking
-										character_entity._ai_team = 3; // AI team 3 is for the Council
-										character_entity._matter_regeneration_multiplier = 10; // Their matter regenerates 10 times faster than normal, unupgraded players
-										sdSound.PlaySound({ name:'teleport', x:character_entity.x, y:character_entity.y, pitch: 1, volume:1 });
-										character_entity._ai.next_action = 5;
-
-										sdWorld.SendEffect({ x:character_entity.x, y:character_entity.y, type:sdEffect.TYPE_TELEPORT, hue:170/*, filter:'hue-rotate(' + ~~( 170 ) + 'deg)'*/ });
+										sdFactions.SetHumanoidProperties( character_entity, sdFactions.FACTION_COUNCIL );
 
 										const logic = ()=>
 										{
@@ -613,6 +563,26 @@ class sdRift extends sdEntity
 		if ( this.type !== 2 && this.type !== 4 ) // The portal is not a "cube" one?
 		{
 			this.type = 2;
+			//this.GetFilterColor();
+			this._regen_timeout = 30 * 60 * 20; // 20 minutes until it starts regenerating
+			//this._update_version++;
+
+			sdWorld.SendEffect({ 
+				x:this.x, 
+				y:this.y, 
+				radius:30,
+				damage_scale: 0.01, // Just a decoration effect
+				type:sdEffect.TYPE_EXPLOSION, 
+				owner:this,
+				color:'#33FFFF' 
+			});
+
+			from_entity.remove();
+		}
+
+		if ( from_entity.is( sdBeamProjector ) )
+		{
+			this.type = 5;
 			//this.GetFilterColor();
 			this._regen_timeout = 30 * 60 * 20; // 20 minutes until it starts regenerating
 			//this._update_version++;

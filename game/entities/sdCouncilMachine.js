@@ -48,6 +48,9 @@ class sdCouncilMachine extends sdEntity
 		this.hmax = 6000;
 		this.hea = this.hmax;
 
+		this._nature_damage = 1000000;
+		this._player_damage = 0;
+
 		// Variables for Council portal machine
 		this.glow_animation = 0; // Glow animation for the bomb
 		this._glow_fade = 0; // Should the glow fade or not?
@@ -60,14 +63,6 @@ class sdCouncilMachine extends sdEntity
 		sdCouncilMachine.ents++;
 
 	}
-	/*GetBleedEffect()
-	{
-		return sdEffect.TYPE_BLOOD_GREEN;
-	}*/
-	/*GetBleedEffectFilter()
-	{
-		return this.filter;
-	}*/
 	Damage( dmg, initiator=null )
 	{
 		if ( !sdWorld.is_server )
@@ -278,7 +273,7 @@ class sdCouncilMachine extends sdEntity
 							mission: sdTask.MISSION_DESTROY_ENTITY,
 							difficulty: diff * sdTask.GetTaskDifficultyScaler(),
 							time_left: ( this.detonation_in - 30 * 2 ),
-							title: 'Destroy Council portal machine',
+							title: 'Destroy Council Portal Machine',
 							description: desc
 						});
 					}
@@ -303,8 +298,14 @@ class sdCouncilMachine extends sdEntity
 				// Spawn Council portal as punishment
 
 				setTimeout(()=>{//Just in case
-					let portal = new sdRift({x: this.x, y:this.y, type:5 });
+					let portal = new sdRift({x: this.x + 10, y:this.y + 10, type:5 });
 					sdEntity.entities.push( portal );
+					let portal2 = new sdRift({x: this.x + 10, y:this.y - 10, type:5 });
+					sdEntity.entities.push( portal2 );
+					let portal3 = new sdRift({x: this.x - 10, y:this.y + 10, type:5 });
+					sdEntity.entities.push( portal3 );
+					let portal4 = new sdRift({x: this.x - 10, y:this.y - 10, type:5 });
+					sdEntity.entities.push( portal4 );
 				}, 500 );
 
 				this.remove();
@@ -384,7 +385,6 @@ class sdCouncilMachine extends sdEntity
 								{
 									character_entity.x = x;
 									character_entity.y = y;
-
 									sdFactions.SetHumanoidProperties( character_entity, sdFactions.FACTION_COUNCIL );
 
 									const logic = ()=>

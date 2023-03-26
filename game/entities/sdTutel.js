@@ -7,7 +7,6 @@ import sdGun from './sdGun.js';
 import sdWater from './sdWater.js';
 import sdCharacter from './sdCharacter.js';
 import sdCom from './sdCom.js';
-import sdGuanako from './sdGuanako.js';
 
 
 class sdTutel extends sdEntity
@@ -49,6 +48,9 @@ class sdTutel extends sdEntity
 		
 		this.hmax = sdTutel.normal_max_health;
 		this._hea = this.hmax;
+
+		this._nature_damage = 1000000;
+		this._player_damage = 0;
 		
 		this.death_anim = 0;
 		
@@ -133,7 +135,7 @@ class sdTutel extends sdEntity
 	{
 		if ( this._hea > 0 )
 		if ( character.IsTargetable() && character.IsVisible( this ) )
-		if ( character.hea > 0 )
+		if ( character.hmax < 2700 && character.matter_max < 13200 )
 		if ( this._last_target_change < sdWorld.time - 2000 )
 		{
 			let di = sdWorld.Dist2D( this.x, this.y, character.x, character.y ); 
@@ -211,7 +213,7 @@ class sdTutel extends sdEntity
 		this.remove();
 	}
 	
-	get mass() { return 150 * this.hmax / sdTutel.normal_max_health; }
+	get mass() { return 100 * this.hmax / sdTutel.normal_max_health; }
 	Impulse( x, y )
 	{
 		this.sx += x / this.mass;
@@ -360,10 +362,11 @@ class sdTutel extends sdEntity
 				let xx = from_entity.x + ( from_entity._hitbox_x1 + from_entity._hitbox_x2 ) / 2;
 				let yy = from_entity.y + ( from_entity._hitbox_y1 + from_entity._hitbox_y2 ) / 2;
 				
-				if ( from_entity.IsPlayerClass() || from_entity.is( sdGuanako ) || from_entity === this._current_target )
+				if ( ( ( from_entity.GetClass() === 'sdCharacter' && from_entity.matter_max < 7200 && from_entity.hmax < 1700 || from_entity.GetClass() === 'sdAbomination' || from_entity.GetClass() === 'sdAmphid' || from_entity.GetClass() === 'sdBadDog' || from_entity.GetClass() === 'sdBiter' || from_entity.GetClass() === 'sdBot' || from_entity.GetClass() === 'sdCube' || from_entity.GetClass() === 'sdDrone' || from_entity.GetClass() === 'sdEnemyMech' || from_entity.GetClass() === 'sdFaceCrab' || from_entity.GetClass() === 'sdGrub' || from_entity.GetClass() === 'sdMimic' || from_entity.GetClass() === 'sdOctopus' || from_entity.GetClass() === 'sdOverlord' || from_entity.GetClass() === 'sdQuickie' || from_entity.GetClass() === 'sdRoach' || from_entity.GetClass() === 'sdSandWorm' || from_entity.GetClass() === 'sdSetrDestroyer' || from_entity.GetClass() === 'sdSlug' || from_entity.GetClass() === 'sdSpider' || from_entity.GetClass() === 'sdAsp' || from_entity.GetClass() === 'sdVirus' || this._current_target === from_entity ) && from_entity.IsVisible( this ) && ( from_entity.hea || from_entity._hea ) > 0 ) )
 				if ( from_entity.IsTargetable() )
 				if ( sdWorld.CheckLineOfSight( this.x, this.y, from_entity.x, from_entity.y, null, null, sdCom.com_creature_attack_unignored_classes ) )
 				{
+					this._current_target = from_entity;
 					from_entity.DamageWithEffect( 40 * this.hmax / sdTutel.normal_max_health, this );
 					
 					this.Grow( 15 );

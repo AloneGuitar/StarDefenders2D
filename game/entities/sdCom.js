@@ -17,13 +17,17 @@ class sdCom extends sdEntity
 	static init_class()
 	{
 		sdCom.img_com = sdWorld.CreateImageFromFile( 'com' );
-		sdCom.img_com_cyan = sdWorld.CreateImageFromFile( 'com_cyan' ); // Level 2
-		sdCom.img_com_darkblue = sdWorld.CreateImageFromFile( 'com_darkblue' ); // Level 3
-		sdCom.img_com_green = sdWorld.CreateImageFromFile( 'com_green' ); // Level 4
-		sdCom.img_com_yellow = sdWorld.CreateImageFromFile( 'com_yellow' ); // Level 5
-		sdCom.img_com_pink = sdWorld.CreateImageFromFile( 'com_pink' ); // Level 6
-		sdCom.img_com_red = sdWorld.CreateImageFromFile( 'com_red' ); // Level 7
-		sdCom.img_com_orange = sdWorld.CreateImageFromFile( 'com_orange' ); // Level 8
+		sdCom.img_com_grey = sdWorld.CreateImageFromFile( 'com_grey' ); // Level 2
+		sdCom.img_com_cyan = sdWorld.CreateImageFromFile( 'com_cyan' ); // Level 3
+		sdCom.img_com_darkblue = sdWorld.CreateImageFromFile( 'com_darkblue' ); // Level 4
+		sdCom.img_com_purple = sdWorld.CreateImageFromFile( 'com_purple' ); // Level 5
+		sdCom.img_com_green = sdWorld.CreateImageFromFile( 'com_green' ); // Level 6
+		sdCom.img_com_yellow = sdWorld.CreateImageFromFile( 'com_yellow' ); // Level 7
+		sdCom.img_com_pink = sdWorld.CreateImageFromFile( 'com_pink' ); // Level 8
+		sdCom.img_com_red = sdWorld.CreateImageFromFile( 'com_red' ); // Level 9
+		sdCom.img_com_orange = sdWorld.CreateImageFromFile( 'com_orange' ); // Level 10
+		sdCom.img_com_blood = sdWorld.CreateImageFromFile( 'com_blood' ); // Level 11
+		sdCom.img_com_rainbow = sdWorld.CreateImageFromFile( 'com_rainbow' ); // Level 12
 		
 		sdCom.action_range = 32; // How far character needs to stand in order to manipualte it
 		sdCom.action_range_command_centre = 64; // How far character needs to stand in order to manipualte it
@@ -43,10 +47,8 @@ class sdCom extends sdEntity
 		
 		sdCom.com_visibility_unignored_classes_plus_erthals = sdCom.com_visibility_unignored_classes.slice();
 		sdCom.com_visibility_unignored_classes_plus_erthals.push( 'sdSpider', 'sdDrone' ); // All drones, but this should be enough to check if player aims as current entity
-		
-		//sdCom.hacking_duration = 30 * 1; // Too quick
+
 		sdCom.hacking_duration = 30 * 30;
-		//sdCom.hacking_duration = 30 * 60 * 30;
 		
 		sdWorld.entity_classes[ this.name ] = this; // Register for object spawn
 	}
@@ -63,8 +65,7 @@ class sdCom extends sdEntity
 	
 	get title()
 	{
-		//return 'Communication node';
-		return 'Access management node';
+		return 'Communication node';
 	}
 	
 	//IsEarlyThreat() // Used during entity build & placement logic - basically turrets, barrels, bombs should have IsEarlyThreat as true or else players would be able to spawn turrets through closed doors & walls. Coms considered as threat as well because their spawn can cause damage to other players
@@ -82,7 +83,7 @@ class sdCom extends sdEntity
 		dmg = Math.abs( dmg );
 
 		this.SetHiberState( sdEntity.HIBERSTATE_ACTIVE );
-		
+
 		if ( this.hacking_left > 0 )
 		{
 			this.hacking_left = 0;
@@ -122,7 +123,7 @@ class sdCom extends sdEntity
 		}*/
 		this._matter = 0; // Just so it can transfer matter in cable network
 		this._matter_max = 20;
-		
+
 		this.hacking_left = 0; // High tier node can try hacking other nodes?
 		this._hacker = null;
 		this._hacking_timer_total = 0;
@@ -190,7 +191,7 @@ class sdCom extends sdEntity
 	onThink( GSPEED ) // Class-specific, if needed
 	{
 		this.MatterGlow( 0.1, 0, GSPEED ); // 0 radius means only towards cables
-		
+
 		if ( this.hacking_left > 0 )
 		{
 			if ( sdWorld.is_server && ( !this._hacker || this._hacker._is_being_removed || this._hacker.hea <= 0 || !sdWorld.inDist2D_Boolean( this._hacker.x, this._hacker.y, this.x, this.y, 64 ) ) )
@@ -203,25 +204,25 @@ class sdCom extends sdEntity
 			else
 			{
 				let old = this.hacking_left;
-				
+
 				this.hacking_left -= GSPEED;
-				
+
 				this._hacking_timer_total += GSPEED;
-				
+
 				if ( this.hacking_left <= 0 )
 				{
 					if ( sdWorld.is_server )
 					{
 						let near = this.GetHackablesNearby();
-							
-						let r = Math.random();	
-						
+
+						let r = Math.random();
+
 						if ( r > 0.0015 ) // 0.15 % chance
 						{
 							sdSound.PlaySound({ name:'ghost_stop', pitch: 0.5, x:this.x, y:this.y, volume:1 });
 							this.hacking_left = sdCom.hacking_duration;
 							this._update_version++;
-							
+
 							if ( r > 0.99 )
 							if ( this._hacker )
 							this._hacker.Say( sdWorld.GetAny([
@@ -269,25 +270,25 @@ class sdCom extends sdEntity
 									}
 
 									let hms = toHoursAndMinutes( Math.ceil( this._hacking_timer_total / 30 ) );
-									
+
 									let parts = [];// 'It took' ];
-									
+
 									if ( hms.h > 0 )
 									parts.push( '<' + hms.h + '> hour' + ( hms.h === 1 ? '' : 's' ) );
-									
+
 									if ( hms.m > 0 )
 									parts.push( '<' + hms.m + '> minute' + ( hms.m === 1 ? '' : 's' ) );
-									
+
 									if ( hms.s > 0 )
 									parts.push( '<' + hms.s + '> second' + ( hms.s === 1 ? '' : 's' ) );
-								
+
 									if ( parts.length > 1 )
 									{
 										parts.splice( parts.length - 1, 0, 'and' );
 									}
-									
+
 									let took = ' It took ' + parts.join(' ');
-									
+
 									this._hacker.Say( sdWorld.GetAny([
 											'Hey! Would you look at that?!' + took,
 											'It is open!' + took,
@@ -312,32 +313,29 @@ class sdCom extends sdEntity
 				}
 			}
 		}
-		
+
 		if ( this._regen_timeout > 0 )
 		this._regen_timeout -= GSPEED;
 		else
 		if ( this._hea < this._hmax )
 		this._hea = Math.min( this._hea + GSPEED, this._hmax );
 		else
-		//if ( this._matter < 0.05 || this._matter >= this._matter_max )
 		if ( this.hacking_left <= 0 )
 		this.SetHiberState( sdEntity.HIBERSTATE_HIBERNATED_NO_COLLISION_WAKEUP );
 	}
 	DrawHUD( ctx, attached ) // foreground layer
 	{
 		sdEntity.Tooltip( ctx, this.title );
-		
-		//this.DrawConnections( ctx );
-	
+
 		if ( this.hacking_left > 0 )
 		{
 			let c = 1 - this.hacking_left / sdCom.hacking_duration;
-			
+
 			let w = 16;
-			
+
 			ctx.fillStyle = '#000000';
 			ctx.fillRect( 0 - w / 2, 0 - 10, w, 3 );
-			
+
 			ctx.fillStyle = '#00aa00';
 			ctx.fillRect( 1 - w / 2, 1 - 10, ( w - 2 ) * Math.max( 0, c ), 1 );
 		}
@@ -365,26 +363,31 @@ class sdCom extends sdEntity
 		if ( this.variation === 0 )
 		ctx.drawImageFilterCache( sdCom.img_com, -16, -16, 32,32 );
 		if ( this.variation === 1 )
-		ctx.drawImageFilterCache( sdCom.img_com_cyan, -16, -16, 32,32 );
+		ctx.drawImageFilterCache( sdCom.img_com_grey, -16, -16, 32,32 );
 		if ( this.variation === 2 )
-		ctx.drawImageFilterCache( sdCom.img_com_darkblue, -16, -16, 32,32 );
+		ctx.drawImageFilterCache( sdCom.img_com_cyan, -16, -16, 32,32 );
 		if ( this.variation === 3 )
-		ctx.drawImageFilterCache( sdCom.img_com_green, -16, -16, 32,32 );
+		ctx.drawImageFilterCache( sdCom.img_com_darkblue, -16, -16, 32,32 );
 		if ( this.variation === 4 )
-		ctx.drawImageFilterCache( sdCom.img_com_yellow, -16, -16, 32,32 );
+		ctx.drawImageFilterCache( sdCom.img_com_purple, -16, -16, 32,32 );
 		if ( this.variation === 5 )
-		ctx.drawImageFilterCache( sdCom.img_com_pink, -16, -16, 32,32 );
+		ctx.drawImageFilterCache( sdCom.img_com_green, -16, -16, 32,32 );
 		if ( this.variation === 6 )
-		ctx.drawImageFilterCache( sdCom.img_com_red, -16, -16, 32,32 );
+		ctx.drawImageFilterCache( sdCom.img_com_yellow, -16, -16, 32,32 );
 		if ( this.variation === 7 )
+		ctx.drawImageFilterCache( sdCom.img_com_pink, -16, -16, 32,32 );
+		if ( this.variation === 8 )
+		ctx.drawImageFilterCache( sdCom.img_com_red, -16, -16, 32,32 );
+		if ( this.variation === 9 )
 		ctx.drawImageFilterCache( sdCom.img_com_orange, -16, -16, 32,32 );
+		if ( this.variation === 10 )
+		ctx.drawImageFilterCache( sdCom.img_com_blood, -16, -16, 32,32 );
+		if ( this.variation === 11 )
+		ctx.drawImageFilterCache( sdCom.img_com_rainbow, -16, -16, 32,32 );
 	}
 	MeasureMatterCost()
 	{
-		if ( this.variation >= 7 )
-		return 400;
-		
-		return 60;
+		return 60 * ( this.variation + 1 );
 	}
 	RequireSpawnAlign()
 	{ return false; }
@@ -392,12 +395,12 @@ class sdCom extends sdEntity
 	GetHackablesNearby( complain_as=null )
 	{
 		let near;
-		
-		
+
+
 		if ( !complain_as )
 		complain_as = this._hacker;
-		
-		
+
+
 		near = sdWorld.GetAnythingNear( this.x, this.y, 64 );
 		for ( let i = 0; i < near.length; i++ )
 		{
@@ -407,7 +410,7 @@ class sdCom extends sdEntity
 				near[ i ].hacking_left = 0;
 				near[ i ]._hacker = null;
 				near[ i ]._update_version++;
-				
+
 				if ( complain_as )
 				{
 					complain_as.Say( sdWorld.GetAny([
@@ -416,13 +419,13 @@ class sdCom extends sdEntity
 							'I\'d need to focus',
 							'Let\'s do one by one'
 					]));
-						
+
 					complain_as = null;
 				}
 			}
 		}
-		
-		
+
+
 		near = sdWorld.GetAnythingNear( this.x, this.y, 16 );
 		let connected = sdCable.GetConnectedEntities( this );
 		for ( let i = 0; i < near.length; i++ )
@@ -434,10 +437,9 @@ class sdCom extends sdEntity
 				continue;
 			}
 		}
-		
+
 		return near;
 	}
-	
 	
 	ExecuteContextCommand( command_name, parameters_array, exectuter_character, executer_socket ) // New way of right click execution. command_name and parameters_array can be anything! Pay attention to typeof checks to avoid cheating & hacking here. Check if current entity still exists as well (this._is_being_removed). exectuter_character can be null, socket can't be null
 	{
@@ -475,7 +477,7 @@ class sdCom extends sdEntity
 			else
 			if ( command_name === 'HACKING' )
 			{
-				if ( this.variation >= 7 )
+				if ( this.variation < 10 )
 				if ( this.hacking_left <= 0 )
 				if ( exectuter_character.build_tool_level >= 14 )
 				{
@@ -528,13 +530,13 @@ class sdCom extends sdEntity
 				this.AddContextOption( 'Subscribe myself to network', 'COM_SUB', [ sdWorld.my_entity.biometry ] );
 
 				if ( this.subscribers.indexOf( 'sdCharacter' ) === -1 )
-				this.AddContextOption( 'Subscribe all players', 'COM_SUB', [ 'sdCharacter' ] );
+				this.AddContextOption( 'Subscribe all Players', 'COM_SUB', [ 'sdCharacter' ] );
 
 				if ( this.subscribers.indexOf( 'sdPlayerDrone' ) === -1 )
-				this.AddContextOption( 'Subscribe all player drones', 'COM_SUB', [ 'sdPlayerDrone' ] );
+				this.AddContextOption( 'Subscribe all Player Drones', 'COM_SUB', [ 'sdPlayerDrone' ] );
 
 				if ( this.subscribers.indexOf( 'sdCrystal' ) === -1 )
-				this.AddContextOption( 'Subscribe all crystals', 'COM_SUB', [ 'sdCrystal' ] );
+				this.AddContextOption( 'Subscribe all Crystals', 'COM_SUB', [ 'sdCrystal' ] );
 
 				if ( this.subscribers.indexOf( 'sdCube' ) === -1 )
 				this.AddContextOption( 'Subscribe all Cubes', 'COM_SUB', [ 'sdCube' ] );
@@ -555,7 +557,10 @@ class sdCom extends sdEntity
 				this.AddContextOption( 'Subscribe projectiles', 'COM_SUB', [ 'sdBullet' ] );
 
 				if ( this.subscribers.indexOf( 'sdBot' ) === -1 )
-				this.AddContextOption( 'Subscribe bots', 'COM_SUB', [ 'sdBot' ] );
+				this.AddContextOption( 'Subscribe Bots', 'COM_SUB', [ 'sdBot' ] );
+
+				if ( this.subscribers.indexOf( 'sdPlayerOverlord' ) === -1 )
+				this.AddContextOption( 'Subscribe all Player Overlords', 'COM_SUB', [ 'sdPlayerOverlord' ] );
 
 				if ( this.subscribers.indexOf( '*' ) === -1 )
 				this.AddContextOption( 'Subscribe everything (for doors & teleports only)', 'COM_SUB', [ '*' ] );
@@ -570,8 +575,7 @@ class sdCom extends sdEntity
 				this.AddContextOption( 'Attack players through unprotected walls: Yes', 'ATTACK_THROUGH_WALLS', [ 0 ], true, { color:'#00ff00' } );
 				else
 				this.AddContextOption( 'Attack players through unprotected walls: No', 'ATTACK_THROUGH_WALLS', [ 1 ], true, { color:'#ff0000' } );
-			
-				if ( this.variation >= 7 )
+				if ( this.variation < 10 )
 				if ( this.hacking_left <= 0 )
 				if ( exectuter_character.build_tool_level >= 14 )
 				this.AddContextOption( 'Initiate hacking', 'HACKING', [ 1 ], true, { color:'#006600' } );

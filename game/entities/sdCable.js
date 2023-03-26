@@ -64,7 +64,8 @@ class sdCable extends sdEntity
 			'sdCube',
 			'sdCamera',
 			'sdBotFactory',
-			'sdBotCharger'
+			'sdBotCharger',
+			'sdButton',
 		];
 		
 		sdCable.empty_array = [];

@@ -49,7 +49,7 @@ class sdBiter extends sdEntity
 		
 		this._hmax = 60;
 		this._hea = this._hmax;
-		
+
 		this.death_anim = 0;
 		
 		this._current_target = null;
@@ -58,6 +58,9 @@ class sdBiter extends sdEntity
 		this._last_jump = sdWorld.time;
 		this._last_attack = sdWorld.time + 2000;
 		this._attacking = false;
+
+		this._nature_damage = 0;
+		this._player_damage = 0;
 		
 		this.side = 1;
 		
@@ -77,7 +80,6 @@ class sdBiter extends sdEntity
 	{
 		if ( this._hea > 0 )
 		if ( character.IsTargetable() && character.IsVisible() )
-		if ( character.hea > 0 )
 		{
 			let di = sdWorld.Dist2D( this.x, this.y, character.x, character.y ); 
 			if ( di < sdBiter.max_seek_range )
@@ -292,20 +294,21 @@ class sdBiter extends sdEntity
 					let xx = from_entity.x + ( from_entity._hitbox_x1 + from_entity._hitbox_x2 ) / 2;
 					let yy = from_entity.y + ( from_entity._hitbox_y1 + from_entity._hitbox_y2 ) / 2;
 					
-					if ( from_entity.IsPlayerClass() || this._current_target === from_entity )
+					if ( from_entity.GetClass() === 'sdCharacter' && from_entity.hmax < 1700 && from_entity.matter_max < 7200 || from_entity.GetClass() === 'sdAbomination' || from_entity.GetClass() === 'sdAmphid' || from_entity.GetClass() === 'sdBadDog' || from_entity.GetClass() === 'sdAsp' || from_entity.GetClass() === 'sdBot' || from_entity.GetClass() === 'sdCube' || from_entity.GetClass() === 'sdDrone' || from_entity.GetClass() === 'sdEnemyMech' || from_entity.GetClass() === 'sdFaceCrab' || from_entity.GetClass() === 'sdGrub' || from_entity.GetClass() === 'sdMimic' || from_entity.GetClass() === 'sdOctopus' || from_entity.GetClass() === 'sdOverlord' || from_entity.GetClass() === 'sdQuickie' || from_entity.GetClass() === 'sdRoach' || from_entity.GetClass() === 'sdSandWorm' || from_entity.GetClass() === 'sdSetrDestroyer' || from_entity.GetClass() === 'sdSlug' || from_entity.GetClass() === 'sdSpider' || from_entity.GetClass() === 'sdTutel' || from_entity.GetClass() === 'sdVirus' || this._current_target === from_entity )
 					if ( from_entity.IsTargetable() )
 					{
 						this._attacking = false;
+						this._current_target = from_entity;
 
 						from_entity.DamageWithEffect( 12, this );
 						from_entity.PlayDamageEffect( xx, yy );
 						
 						if ( from_entity.is( sdCharacter ) )
 						{
-							from_entity._sickness += 30;
-							from_entity._last_sickness_from_ent = this;
+						from_entity._sickness += 30;
+						from_entity._last_sickness_from_ent = this;
 						}
-						
+
 						this._hea = Math.min( this._hmax, this._hea + 15 );
 
 						this.attack_anim = 5;

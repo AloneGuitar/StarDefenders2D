@@ -15,7 +15,7 @@ class sdCommandCentre extends sdEntity
 {
 	static init_class()
 	{
-		sdCommandCentre.img_cc = sdWorld.CreateImageFromFile( 'command_centre' ); // New sprite by Flora
+		sdCommandCentre.img_cc = sdWorld.CreateImageFromFile( 'command_centre' );
 		
 		sdCommandCentre.centres = [];
 		
@@ -243,6 +243,16 @@ class sdCommandCentre extends sdEntity
 					template.description = 'Extract Virus entities by using a long range teleporter.';
 					template.lrtp_class_proprty_value_array = [ 'sdVirus' ];
 				}
+				if ( task === 10 )
+				{
+					num_ents = 1 + Math.round( Math.random() * 3 );
+					
+					difficulty_per_entity *= 1 / 2;
+					
+					template.title = 'Extract Overlords';
+					template.description = 'Extract Overlords by using a long range teleporter.';
+					template.lrtp_class_proprty_value_array = [ 'sdOverlord' ];
+				}
 				
 				template.similarity_hash = 'EXTRACT-' + template.lrtp_class_proprty_value_array.join('-'); // Prevent overriding - it will cause lrtp_class_proprty_value_array and title/desciption mismatch
 				template.difficulty = difficulty_per_entity * num_ents;
@@ -283,7 +293,7 @@ class sdCommandCentre extends sdEntity
 		if ( sdShop.isDrawing )
 		ctx.scale( 0.5,0.5 );
 	
-		ctx.drawImageFilterCache( sdCommandCentre.img_cc, -32, -16 - 32, 64,64 );
+		ctx.drawImageFilterCache( sdCommandCentre.img_cc, -32, -14 - 32, 64,64 );
 	}
 	DrawHUD( ctx, attached ) // foreground layer
 	{

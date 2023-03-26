@@ -39,12 +39,12 @@ import sdVirus from './sdVirus.js';
 import sdBG from './sdBG.js';
 import sdEnemyMech from './sdEnemyMech.js';
 import sdBadDog from './sdBadDog.js';
-import sdGuanako from './sdGuanako.js';
 import sdRift from './sdRift.js';
 import sdCrystal from './sdCrystal.js';
 import sdDrone from './sdDrone.js';
 import sdSpider from './sdSpider.js';
 import sdAmphid from './sdAmphid.js';
+import sdGuanako from './sdGuanako.js';
 import sdObelisk from './sdObelisk.js';
 import sdWater from './sdWater.js';
 import sdJunk from './sdJunk.js';
@@ -176,11 +176,11 @@ class sdWeather extends sdEntity
 		// "sdWorld.entity_classes.sdWeather.only_instance._max_ai_count = 16;"
 		// ^ this would change max humanoid AI count to 16, which is set to 8 by default.
 
-		this._max_ai_count = 8; //  Can be altered with onAfterSnapshotLoad inside sdServerConfig
-		this._max_velox_mech_count = 3;
-		this._max_setr_destroyer_count = 3;
+		this._max_ai_count = 32; //  Can be altered with onAfterSnapshotLoad inside sdServerConfig
+		this._max_velox_mech_count = 6;
+		this._max_setr_destroyer_count = 6;
 		this._max_drone_count = 40;
-		this._max_portal_count = 4;
+		this._max_portal_count = 8;
 
 		//
 		//
@@ -676,20 +676,7 @@ class sdWeather extends sdEntity
 	}
 	TraceDamagePossibleHere( x,y, steps_max=Infinity, sun_light_tracer=false )
 	{
-		const consider_sky_open_height = 200;
-		let space_until_premature_true = consider_sky_open_height;
-		
-		for ( 
-				var yy = y; 
-		
-				yy > sdWorld.world_bounds.y1 && 
-				steps_max > 0 && 
-				space_until_premature_true > 0; 
-				
-				yy -= 8, 
-				space_until_premature_true -= 8, 
-				steps_max-- 
-			)
+		for ( var yy = y; yy > sdWorld.world_bounds.y1 && steps_max > 0; yy -= 8, steps_max-- )
 		{
 			if ( sdWorld.CheckWallExists( x, yy, null, null, [ 'sdBlock', 'sdDoor', 'sdWater' ] ) )
 			{
@@ -703,11 +690,6 @@ class sdWeather extends sdEntity
 					}
 				}
 				return false;
-			}
-			
-			if ( sdWorld.CheckWallExists( x, yy, null, null, [ 'sdBG', 'sdTheatre' ] ) )
-			{
-				space_until_premature_true = consider_sky_open_height;
 			}
 		}
 
@@ -789,8 +771,10 @@ class sdWeather extends sdEntity
 					}
 					else
 					{
-						sdFactions.SetHumanoidProperties( character_entity, sdFactions.FACTION_FALKOK );
-						break;
+						{
+							sdFactions.SetHumanoidProperties( character_entity, sdFactions.FACTION_FALKOK );
+							break;
+						}
 					}
 				}
 
@@ -803,8 +787,8 @@ class sdWeather extends sdEntity
 
 				while ( instances < instances_tot && sdDrone.drones_tot < this._max_drone_count )
 				{
-					let drone_type = Math.random() < 0.2 ? 10 : 1;
-					let drone = new sdDrone({ x:0, y:0, type: drone_type, _ai_team: 1});
+
+					let drone = new sdDrone({ x:0, y:0 , _ai_team: 1});
 					//drone.type = ( Math.random() < 0.15 ) ? 3 : 1;
 
 					sdEntity.entities.push( drone );
@@ -831,6 +815,7 @@ class sdWeather extends sdEntity
 				});
 				//asp.sy += 10;
 				sdEntity.entities.push( asp );
+
 
 				if ( !asp.CanMoveWithoutOverlap( asp.x, asp.y, 0 ) )
 				{
@@ -860,8 +845,7 @@ class sdWeather extends sdEntity
 					while ( instances < instances_tot && sdDrone.drones_tot < this._max_drone_count )
 					{
 
-						let drone_type = Math.random() < 0.2 ? 10 : 1;
-						let drone = new sdDrone({ x:0, y:0, type: drone_type, _ai_team: 1});
+						let drone = new sdDrone({ x:0, y:0 , _ai_team: 1});
 						//drone.type = ( Math.random() < 0.15 ) ? 3 : 1;
 
 						sdEntity.entities.push( drone );
@@ -932,7 +916,7 @@ class sdWeather extends sdEntity
 		if ( r === 7 ) // Flying Mech event
 		{
 			let instances = 0;
-			let instances_tot = Math.ceil( ( Math.random() * sdWorld.GetPlayingPlayersCount() ) / 3 );
+			let instances_tot = Math.ceil( ( Math.random() * sdWorld.GetPlayingPlayersCount() ) / 6 );
 
 			let left_side = ( Math.random() < 0.5 );
 
@@ -965,10 +949,10 @@ class sdWeather extends sdEntity
 		if ( r === 9 ) // Spawn few sdBadDog-s somewhere on ground where players don't see them
 		{
 			sdWeather.SimpleSpawner({
-				
+
 				count: [ 1, 3 ],
 				class: sdBadDog
-				
+
 			});
 		}
 
@@ -996,10 +980,13 @@ class sdWeather extends sdEntity
 							if ( chance < 0.25 ) // 25% chance it's a "Cube" spawning portal ( 0 - 0.25 )
 							portal.type = 2;
 							else
-							if ( chance < 0.5 ) // 20% chance it's a "Asteroid" spawning portal ( 0.25 - 0.5 )
+							if ( chance < 0.4 ) // 20% chance it's a "Asteroid" spawning portal ( 0.25 - 0.5 )
 							portal.type = 3;
 							else
-							if ( chance < 0.6 ) // 10% chance it's a "Black hole" portal ( 0.5 - 0.6 )
+							if ( chance < 0.8 )
+							portal.type = 5;
+							else
+							if ( chance < 0.9 ) // 10% chance it's a "Black hole" portal ( 0.5 - 0.6 )
 							portal.type = 4;
 							else
 							portal.type = 1;
@@ -1144,26 +1131,27 @@ class sdWeather extends sdEntity
 
 				let left_side = ( Math.random() < 0.5 );
 
-					while ( robots < robots_tot && ais < this._max_ai_count )
+				while ( robots < robots_tot && ais < this._max_ai_count )
+				{
+
+				let character_entity = new sdCharacter({ x:0, y:0, _ai_enabled:sdCharacter.AI_MODEL_FALKOK });
+
+				sdEntity.entities.push( character_entity );
+
+				{
+					if ( !this.GetHumanoidSpawnLocation( character_entity ) )
 					{
-
-					let character_entity = new sdCharacter({ x:0, y:0, _ai_enabled:sdCharacter.AI_MODEL_FALKOK });
-
-					sdEntity.entities.push( character_entity );
-
-					{
-						if ( !this.GetHumanoidSpawnLocation( character_entity ) )
-						{
-							character_entity.remove();
-							character_entity._broken = false;
-							break;
-						}
-						else
-						{
-							sdFactions.SetHumanoidProperties( character_entity, sdFactions.FACTION_ERTHAL );
-							break;
-						}
+						character_entity.remove();
+						character_entity._broken = false;
+						break;
 					}
+					else
+					{
+						sdFactions.SetHumanoidProperties( character_entity, sdFactions.FACTION_FALKOK );
+
+					break;
+				}
+			}
 			robots++;
 			ais++;
 			//console.log('Erthal spawned!');
@@ -1173,7 +1161,7 @@ class sdWeather extends sdEntity
 		if ( r === 12 ) // Spawn an obelisk near ground where players don't see them
 		{
 			let instances = 1;
-			while ( instances > 0 && sdObelisk.obelisks_counter < 17 )
+			while ( instances > 0 && sdObelisk.obelisks_counter < 34 )
 			{
 
 				let obelisk = new sdObelisk({ x:0, y:0 });
@@ -1379,6 +1367,161 @@ class sdWeather extends sdEntity
 			else
 			this._time_until_event = Math.random() * 30 * 60 * 0; // Quickly switch to another event
 		}
+		if ( r === 17 )
+		{
+			let ais = 0;
+
+			for ( var i = 0; i < sdCharacter.characters.length; i++ )
+			if ( sdCharacter.characters[ i ].hea > 0 )
+			if ( !sdCharacter.characters[ i ]._is_being_removed )
+			if ( sdCharacter.characters[ i ]._ai )
+			if ( sdCharacter.characters[ i ]._ai_team === 0 )
+			{
+				ais++;
+			}
+
+			let instances = 0;
+			let instances_tot = 9 + ( ~~( Math.random() * 3 ) );
+
+			let left_side = ( Math.random() < 0.5 );
+
+			while ( instances < instances_tot && ais < this._max_ai_count )
+			{
+
+				let character_entity = new sdCharacter({ x:0, y:0, _ai_enabled:sdCharacter.AI_MODEL_TEAMMATE });
+
+				sdEntity.entities.push( character_entity );
+
+				{
+					if ( !this.GetHumanoidSpawnLocation( character_entity ) )
+					{
+						character_entity.remove();
+						character_entity._broken = false;
+						break;
+					}
+					else
+					{
+						{
+							if ( Math.random() < 0.5 )
+							{
+								if ( Math.random() < 0.3 )
+								{
+									sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_IRON_BULL_HANDCANNON }) );
+									character_entity._ai_gun_slot = 1;
+								}
+								else
+								{
+									if ( Math.random() < 0.4 )
+									{
+										sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_KIVORTEC_AVRS_P09 }) );
+										character_entity._ai_gun_slot = 4;
+									}
+									else
+									{
+										sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_PHASERCANNON_P03 }) );
+										character_entity._ai_gun_slot = 8;
+									}
+								}
+							}
+							else
+							{ 
+								if ( Math.random() < 0.9 )
+								{
+									if ( Math.random() < 0.6 )
+									{
+										sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_MISSLE_LAUNCHER_P07 }) );
+										character_entity._ai_gun_slot = 5;
+									}
+									else
+									{
+										sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_MMG_THE_RIPPER_T3 }) );
+										character_entity._ai_gun_slot = 2;
+									}
+								}
+								else
+								{
+									if ( Math.random() < 0.7 )
+									{
+										sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_MMG_THE_RIPPER_T2 }) );
+										character_entity._ai_gun_slot = 2;
+									}
+									else
+									{
+										sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_KVT_ASSAULT_RIFLE }) );
+										character_entity._ai_gun_slot = 2;
+									}
+								}
+							}
+							let sd_settings;
+							if ( character_entity._ai_gun_slot === 2 )
+							sd_settings = {"hero_name":"KVT Assault","color_bright":"#1a1a1a","color_dark":"#2b2b2b","color_bright3":"#141414","color_dark3":"#2b2b2b","color_visor":"#0fd8fc","color_suit":"#1a1a1a","color_suit2":"#1a1a1a","color_dark2":"#2b2b2b","color_shoes":"#141414","color_skin":"#141414","color_extra1":"#0fd8fc","helmet1":false,"helmet44":true,"body5":true,"legs79":true,"voice1":true,"voice3":false};
+							if ( character_entity._ai_gun_slot === 8 || character_entity._ai_gun_slot === 4 )
+							sd_settings = {"hero_name":"KVT Marksman","color_bright":"#1a1a1a","color_dark":"#2b2b2b","color_bright3":"#141414","color_dark3":"#2b2b2b","color_visor":"#0fd8fc","color_suit":"#1a1a1a","color_suit2":"#1a1a1a","color_dark2":"#2b2b2b","color_shoes":"#141414","color_skin":"#141414","color_extra1":"#0fd8fc","helmet1":false,"helmet30":true,"body84":true,"legs20":true,"voice1":true,"voice3":false};
+							if ( character_entity._ai_gun_slot === 5 )
+							sd_settings = {"hero_name":"KVT Rocketman","color_bright":"#1a1a1a","color_dark":"#2b2b2b","color_bright3":"#141414","color_dark3":"#2b2b2b","color_visor":"#0fd8fc","color_suit":"#1a1a1a","color_suit2":"#1a1a1a","color_dark2":"#2b2b2b","color_shoes":"#141414","color_skin":"#141414","color_extra1":"#0fd8fc","helmet1":false,"helmet47":true,"body76":true,"legs67":true,"voice1":true,"voice3":false};
+							if ( character_entity._ai_gun_slot === 1 )
+							sd_settings = {"hero_name":"KVT Captain","color_bright":"#1a1a1a","color_dark":"#2b2b2b","color_bright3":"#141414","color_dark3":"#2b2b2b","color_visor":"#0fd8fc","color_suit":"#1a1a1a","color_suit2":"#1a1a1a","color_dark2":"#2b2b2b","color_shoes":"#141414","color_skin":"#141414","color_extra1":"#0fd8fc","helmet1":false,"helmet51":true,"body51":true,"legs33":true,"voice1":true,"voice3":false};
+							character_entity.sd_filter = sdWorld.ConvertPlayerDescriptionToSDFilter_v2( sd_settings );
+							character_entity._voice = sdWorld.ConvertPlayerDescriptionToVoice( sd_settings );
+							character_entity.helmet = sdWorld.ConvertPlayerDescriptionToHelmet( sd_settings );
+							character_entity.body = sdWorld.ConvertPlayerDescriptionToBody( sd_settings );
+							character_entity.legs = sdWorld.ConvertPlayerDescriptionToLegs( sd_settings );
+							character_entity.title = sd_settings.hero_name;
+							if ( character_entity._ai_gun_slot === 2 )
+							{
+								character_entity.matter = 400;
+								character_entity.matter_max = 400;
+								character_entity.hea = 500;
+								character_entity.hmax = 500;
+								character_entity.armor = 450;
+								character_entity.armor_max = 450;
+								character_entity._armor_absorb_perc = 0.7;
+							}
+							if ( character_entity._ai_gun_slot === 5 )
+							{
+								character_entity.matter = 900;
+								character_entity.matter_max = 900;
+								character_entity.hea = 750;
+								character_entity.hmax = 750;
+								character_entity.armor = 600;
+								character_entity.armor_max = 600;
+								character_entity._armor_absorb_perc = 0.8;
+							}
+							if ( character_entity._ai_gun_slot === 8 || character_entity._ai_gun_slot === 4 )
+							{
+								character_entity.matter = 600;
+								character_entity.matter_max = 600;
+								character_entity.hea = 400;
+								character_entity.hmax = 400;
+								character_entity.armor = 300;
+								character_entity.armor_max = 300;
+								character_entity._armor_absorb_perc = 0.6;
+							}
+							if ( character_entity._ai_gun_slot === 1 )
+							{
+								character_entity.matter = 350;
+								character_entity.matter_max = 350;
+								character_entity.hea = 600;
+								character_entity.hmax = 600;
+								character_entity.armor = 500;
+								character_entity.armor_max = 500;
+								character_entity._armor_absorb_perc = 0.75;
+							}
+							character_entity._ai = { direction: ( character_entity.x > ( sdWorld.world_bounds.x1 + sdWorld.world_bounds.x2 ) / 2 ) ? -1 : 1 };
+							character_entity._ai_level = 7;
+							character_entity._matter_regeneration = 7;
+							character_entity._jetpack_allowed = true;
+							character_entity._jetpack_fuel_multiplier = 0.25;
+							character_entity._ai_team = 0;
+							character_entity._matter_regeneration_multiplier = 12;
+							break;
+						}
+					}
+				}
+				instances++;
+				ais++;
+			}
+		}
 		if ( r === sdWeather.EVENT_SARRORIANS ) // Sarrorian(?) faction spawn. Spawns humanoids and drones.
 		{
 			let ais = 0;
@@ -1404,29 +1547,32 @@ class sdWeather extends sdEntity
 			if ( Math.random() < ( percent / sdWorld.GetPlayingPlayersCount() ) ) // Spawn chance depends on RNG, chances increase if more players ( or all ) have at least 5 levels
 			{
 				let instances = 0;
-				let instances_tot = 3 + ( ~~( Math.random() * 3 ) );
+				let instances_tot = 9 + ( ~~( Math.random() * 3 ) );
 
 				let left_side = ( Math.random() < 0.5 );
 
 
-				while ( instances < instances_tot && ais < this._max_ai_count )
+			while ( instances < instances_tot && ais < this._max_ai_count )
+			{
+
+				let character_entity = new sdCharacter({ x:0, y:0, _ai_enabled:sdCharacter.AI_MODEL_FALKOK });
+
+				sdEntity.entities.push( character_entity );
+
 				{
-
-					let character_entity = new sdCharacter({ x:0, y:0, _ai_enabled:sdCharacter.AI_MODEL_FALKOK });
-
-					sdEntity.entities.push( character_entity );
-
+					if ( !this.GetHumanoidSpawnLocation( character_entity ) )
 					{
-						if ( !this.GetHumanoidSpawnLocation( character_entity ) )
+						character_entity.remove();
+						character_entity._broken = false;
+						break;
+					}
+					else
+					{
 						{
-							character_entity.remove();
-							character_entity._broken = false;
-							break;
-						}
-						else
-						{
-							sdFactions.SetHumanoidProperties( character_entity, sdFactions.FACTION_SARRORIAN );
-							break;
+								sdFactions.SetHumanoidProperties( character_entity, sdFactions.FACTION_SARRORIAN );
+
+								break;
+							}
 						}
 					}
 
@@ -1684,7 +1830,7 @@ class sdWeather extends sdEntity
 			if ( Math.random() < ( percent / sdWorld.GetPlayingPlayersCount() ) ) // Spawn chance depends on RNG, chances increase if more players ( or all ) have at least 5 levels
 			{
 				let instances = 0;
-				let instances_tot = 3 + ( ~~( Math.random() * 3 ) );
+				let instances_tot = 9 + ( ~~( Math.random() * 3 ) );
 
 				let left_side = ( Math.random() < 0.5 );
 				while ( instances < instances_tot && ais < this._max_ai_count )
@@ -1703,8 +1849,11 @@ class sdWeather extends sdEntity
 						}
 						else
 						{
-							sdFactions.SetHumanoidProperties( character_entity, sdFactions.FACTION_VELOX );
-							break;
+							{
+								sdFactions.SetHumanoidProperties( character_entity, sdFactions.FACTION_VELOX );
+
+								break;
+							}
 
 						}
 					}
@@ -1752,7 +1901,7 @@ class sdWeather extends sdEntity
 			if ( sdCharacter.characters[ i ]._ai )
 			if ( sdCharacter.characters[ i ]._ai_team === 0 || sdCharacter.characters[ i ]._ai_team === 6 )
 			{
-				if ( sdCharacter.characters[ i ].title === 'Star Defender' || sdCharacter.characters[ i ].title === 'Criminal Star Defender' )
+				if ( sdCharacter.characters[ i ].title === 'Star Defender' || sdCharacter.characters[ i ].title === 'Star Susanoo' )
 				ais++;
 
 				//Also alert players of other AI Star Defenders on the map which need addressing, otherwise they might be buried corpses somewhere forever
@@ -1787,10 +1936,10 @@ class sdWeather extends sdEntity
 							target: sdCharacter.characters[ i ],
 							//extract_target: 1, // This let's the game know that it needs to draw arrow towards target. Use only when actual entity, and not class ( Like in CC tasks) needs to be LRTP extracted.
 							mission: sdTask.MISSION_LRTP_EXTRACTION,
-							difficulty: 0.14,
+							difficulty: 1,
 							//lrtp_ents_needed: 1,
-							title: 'Arrest Star Defender',
-							description: 'It seems that one of criminals is nearby and needs to answer for their crimes. Arrest them and bring them to the mothership, even if it means bringing the dead body!'
+							title: 'Star Susanoo?',
+							description: 'Find him, and take him to the mothership by LRTP. Be careful! He is overpowered! Try to upgrade yourself when you are ready for searching overpowered one.'
 						});
 					}
 				}
@@ -1801,7 +1950,7 @@ class sdWeather extends sdEntity
 
 			let left_side = ( Math.random() < 0.5 );
 
-			while ( instances < instances_tot && ais < 4 ) // Only 4 of these task types are available at once
+			while ( instances < instances_tot && ais < 8 ) // Only 4 of these task types are available at once
 			{
 				let character_entity = new sdCharacter({ x:0, y:0, _ai_enabled: hostile ? sdCharacter.AI_MODEL_FALKOK : sdCharacter.AI_MODEL_TEAMMATE });
 
@@ -1812,83 +1961,124 @@ class sdWeather extends sdEntity
 					let tr = 1;
 					do
 					{
-						//if ( left_side )
-						//x = sdWorld.world_bounds.x1 + 16 + 16 * instances;
-						//else
-						//x = sdWorld.world_bounds.x2 - 16 - 16 * instances;
-
-						//y = sdWorld.world_bounds.y1 + Math.random() * ( sdWorld.world_bounds.y2 - sdWorld.world_bounds.y1 );
-
-
-						//if ( character_entity.CanMoveWithoutOverlap( x, y - 64, 0 ) ) // Make them spawn on surface more often when possible
-						//if ( character_entity.CanMoveWithoutOverlap( x, y, 0 ) )
-						//if ( !character_entity.CanMoveWithoutOverlap( x, y + 32, 0 ) )
-						//if ( sdWorld.last_hit_entity === null || ( sdWorld.last_hit_entity.GetClass() === 'sdBlock' && sdWorld.last_hit_entity.DoesRegenerate() ) ) // Only spawn on ground
-
 						if ( this.GetHumanoidSpawnLocation( character_entity ) )
 						{
-							//character_entity.x = x;
-							//character_entity.y = y;
 
 							//sdWorld.UpdateHashPosition( ent, false );
-							if ( Math.random() < 0.5 ) // Random gun given to Star Defender
+
+							if ( hostile )
 							{
-								if ( Math.random() < 0.2 )
+								if ( Math.random() < 0.5 )
 								{
-									sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_SNIPER }) );
-									character_entity._ai_gun_slot = 4;
+									if ( Math.random() < 0.2 )
+									{
+									sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_CUBE_SPEAR }) );
+									character_entity._ai_gun_slot = 0;
+									}
+									else
+									{
+									sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_FMECH_MINIGUN }) );
+									character_entity._ai_gun_slot = 2;
+									}
 								}
 								else
-								{
-									sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_SHOTGUN }) );
-									character_entity._ai_gun_slot = 3;
+								{ 
+									if ( Math.random() < 0.1 )
+									{
+									sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_SARRONIAN_FOCUS_BEAM }) );
+									character_entity._ai_gun_slot = 8;
+									}
+									else
+									{
+									sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_OVERLORD_BLASTER }) );
+									character_entity._ai_gun_slot = 8;
+									}
 								}
 							}
 							else
-							{ 
-								if ( Math.random() < 0.1 )
+							if ( Math.random() < 0.5 )
+							{
+								if ( Math.random() < 0.5 ) // Random gun given to Star Defender
 								{
-									sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_LMG }) );
-									character_entity._ai_gun_slot = 2;
+									if ( Math.random() < 0.2 )
+									{
+									sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_SNIPER }) );
+									character_entity._ai_gun_slot = 4;
+									}
+									else
+									{
+									sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_SHOTGUN }) );
+									character_entity._ai_gun_slot = 3;
+									}
 								}
 								else
-								{
+								{ 
+									if ( Math.random() < 0.1 )
+									{
+									sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_LMG }) );
+									character_entity._ai_gun_slot = 2;
+									}
+									else
+									{
 									sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_RIFLE }) );
 									character_entity._ai_gun_slot = 2;
+									}
 								}
 							}
 							let sd_settings;
 							if ( hostile )
-							sd_settings = {"hero_name":"Criminal Star Defender","color_bright":"#c0c0c0","color_dark":"#808080","color_bright3":"#c0c0c0","color_dark3":"#808080","color_visor":"#ff0000","color_suit":"#800000","color_suit2":"#800000","color_dark2":"#808080","color_shoes":"#000000","color_skin":"#808000","helmet1":true,"helmet2":false,"voice1":true,"voice2":false,"voice3":false,"voice4":false,"voice5":false,"voice6":false};
+							sd_settings = {"hero_name":"Star Susanoo","color_bright":"#c0c0c0","color_dark":"#808080","color_bright3":"#c0c0c0","color_dark3":"#808080","color_visor":"#0000ff","color_suit":"#000040","color_suit2":"#000040","color_dark2":"#808080","color_shoes":"#000000","color_skin":"#004040","helmet1":false,"helmet28":true,"body11":true,"legs65":true,"voice1":false,"voice2":false,"voice3":false,"voice4":false,"voice5":false,"voice6":false,"voice14":true};
 							else
 							sd_settings = {"hero_name":"Star Defender","color_bright":"#c0c0c0","color_dark":"#808080","color_bright3":"#c0c0c0","color_dark3":"#808080","color_visor":"#ff0000","color_suit":"#008000","color_suit2":"#008000","color_dark2":"#808080","color_shoes":"#000000","color_skin":"#808000","helmet1":true,"helmet2":false,"voice1":true,"voice2":false,"voice3":false,"voice4":false,"voice5":false,"voice6":false};
 							character_entity.sd_filter = sdWorld.ConvertPlayerDescriptionToSDFilter_v2( sd_settings );
 							character_entity._voice = sdWorld.ConvertPlayerDescriptionToVoice( sd_settings );
 							character_entity.helmet = sdWorld.ConvertPlayerDescriptionToHelmet( sd_settings );
+							character_entity.body = sdWorld.ConvertPlayerDescriptionToBody( sd_settings );
+							character_entity.legs = sdWorld.ConvertPlayerDescriptionToLegs( sd_settings );
 							character_entity.title = sd_settings.hero_name;
+							if ( hostile )
+							{
+							character_entity.matter = 800000;
+							character_entity.matter_max = 800000;
+
+							character_entity.hea = 44000;
+							character_entity.hmax = 44000;
+							character_entity.s = 150;
+
+							character_entity.armor = 5000;
+							character_entity.armor_max = 5000;
+							character_entity._armor_absorb_perc = 0.995;
+							character_entity._matter_regeneration = 1000;
+							character_entity._matter_regeneration_multiplier = 500;
+							character_entity._stability_recovery_multiplier = 1 + ( 3 / 10 );
+							character_entity.stability_upgrade = 25;
+							}
+							else
+							{
 							character_entity.matter = 185;
 							character_entity.matter_max = 185;
 
-							character_entity.hea = 250; // It is a star defender after all
+							character_entity.hea = 250;
 							character_entity.hmax = 250;
 
 							character_entity.armor = 500;
 							character_entity.armor_max = 500;
-							character_entity._armor_absorb_perc = 0.6; // 60% damage reduction
-							character_entity.armor_speed_reduction = 10; // Armor speed reduction, 10% for heavy armor
+							character_entity._armor_absorb_perc = 0.6;
+							character_entity.armor_speed_reduction = 10;
+							character_entity._matter_regeneration = 5;
+							character_entity._matter_regeneration_multiplier = 4;
+							}
 
 							//character_entity._damage_mult = 2;	
 							character_entity._ai = { direction: ( x > ( sdWorld.world_bounds.x1 + sdWorld.world_bounds.x2 ) / 2 ) ? -1 : 1 };
 										
 							character_entity._ai_level = 5;
 										
-							character_entity._matter_regeneration = 5; // At least some ammo regen
 							character_entity._jetpack_allowed = true; // Jetpack
 							//character_entity._recoil_mult = 1 - ( 0.0055 * 5 ) ; // Recoil reduction
 							character_entity._jetpack_fuel_multiplier = 0.25; // Less fuel usage when jetpacking
 							character_entity._ai_team = hostile ? 6 : 0; // AI team 6 is for Hostile Star Defenders, 0 is for normal Star Defenders
 							character_entity._allow_despawn = false;
-							character_entity._matter_regeneration_multiplier = 4; // Their matter regenerates 4 times faster than normal, unupgraded players
 							//character_entity._ai.next_action = 1;
 							break;
 						}
@@ -1915,10 +2105,10 @@ class sdWeather extends sdEntity
 						target: character_entity,
 						//extract_target: 1, // This let's the game know that it needs to draw arrow towards target. Use only when actual entity, and not class ( Like in CC tasks) needs to be LRTP extracted.
 						mission: sdTask.MISSION_LRTP_EXTRACTION,
-						difficulty: 0.14,
+						difficulty: 1,
 						//lrtp_ents_needed: 1,
-						title: 'Arrest Star Defender',
-						description: 'It seems that one of criminals is nearby and needs to answer for their crimes. Arrest them and bring them to the mothership, even if it means bringing the dead body!'
+						title: 'Star Susanoo?',
+						description: 'Find him, and take him to the mothership by LRTP. Be careful! He is overpowered! Try to upgrade yourself when you are ready for searching overpowered one.'
 					});
 				}
 				else
@@ -1963,29 +2153,32 @@ class sdWeather extends sdEntity
 			if ( Math.random() < ( percent / sdWorld.GetPlayingPlayersCount() ) ) // Spawn chance depends on RNG, chances increase if more players ( or all ) have at least 5 levels
 			{
 				let instances = 0;
-				let instances_tot = 3 + ( ~~( Math.random() * 3 ) );
+				let instances_tot = 9 + ( ~~( Math.random() * 3 ) );
 
 				let left_side = ( Math.random() < 0.5 );
 
 
-				while ( instances < instances_tot && ais < this._max_ai_count )
+			while ( instances < instances_tot && ais < this._max_ai_count )
+			{
+
+				let character_entity = new sdCharacter({ x:0, y:0, _ai_enabled:sdCharacter.AI_MODEL_FALKOK });
+
+				sdEntity.entities.push( character_entity );
+
 				{
-
-					let character_entity = new sdCharacter({ x:0, y:0, _ai_enabled:sdCharacter.AI_MODEL_FALKOK });
-
-					sdEntity.entities.push( character_entity );
-
+					if ( !this.GetHumanoidSpawnLocation( character_entity ) )
 					{
-						if ( !this.GetHumanoidSpawnLocation( character_entity ) )
+						character_entity.remove();
+						character_entity._broken = false;
+						break;
+					}
+					else
+					{
 						{
-							character_entity.remove();
-							character_entity._broken = false;
-							break;
-						}
-						else
-						{
-							sdFactions.SetHumanoidProperties( character_entity, sdFactions.FACTION_SETR );
-							break;
+								sdFactions.SetHumanoidProperties( character_entity, sdFactions.FACTION_SETR );
+
+								break;
+							}
 						}
 					}
 
@@ -2019,7 +2212,7 @@ class sdWeather extends sdEntity
 		if ( r === sdWeather.EVENT_SETR_DESTROYER ) // Setr Destroyer, basically alternate "flying mech"
 		{
 			let instances = 0;
-			let instances_tot = 1;
+			let instances_tot = 2;
 
 			let left_side = ( Math.random() < 0.5 );
 
@@ -2056,7 +2249,7 @@ class sdWeather extends sdEntity
 						mission: sdTask.MISSION_LRTP_EXTRACTION,
 						difficulty: 0.4,
 						//lrtp_ents_needed: 10240 + ( 2560 * player_count ), // 12300 matter requirement for 1 player, although progress counts for all players I think
-						lrtp_matter_capacity_needed: 10240 + ( 2560 * player_count ), // 12300 matter requirement for 1 player, although progress counts for all players I think
+						lrtp_matter_capacity_needed: 5120 + ( 2560 * player_count ), // 12300 matter requirement for 1 player, although progress counts for all players I think
 						title: 'Teleport crystals',
 						time_left: 30 * 60 * 30,
 						for_all_players: true, // This task lets everyone contribute towards it's completion
@@ -2232,7 +2425,7 @@ class sdWeather extends sdEntity
 			if ( Math.random() < chance )
 			{
 				let instances = 0;
-				let instances_tot = 1;
+				let instances_tot = 3;
 
 				while ( instances < instances_tot && sdCouncilMachine.ents < 1 )
 				{
@@ -2315,7 +2508,7 @@ class sdWeather extends sdEntity
 			}
 
 			let instances = 0;
-			let instances_tot = 5;
+			let instances_tot = 10;
 
 
 			while ( instances < instances_tot && ais < 1 ) // Capped to 1 on map, but will try to spawn it multiple times if it fails
@@ -2350,20 +2543,19 @@ class sdWeather extends sdEntity
 								character_entity.matter = 800;
 								character_entity.matter_max = 800;
 
-								character_entity.hea = 8500; // 105 so railgun requires at least headshot to kill and body shot won't cause bleeding
-								character_entity.hmax = 8500;
+								character_entity.hea = 10000;
+								character_entity.hmax = 10000;
 
-								//character_entity._damage_mult = 1 / 2.5; // 1 / 4 was too weak
+								character_entity._damage_mult = 1.5;
+								character_entity._stability_recovery_multiplier = 1 + ( 3 / 10 );
+								character_entity.stability_upgrade = 25;
 							}
 
 							character_entity._ai = { direction: ( character_entity.x > ( sdWorld.world_bounds.x1 + sdWorld.world_bounds.x2 ) / 2 ) ? -1 : 1 };
-										
 							character_entity._ai_level = 4;
 							character_entity._ai_gun_slot = -1;
-										
 							character_entity._matter_regeneration = 1 + character_entity._ai_level; // At least some ammo regen
 							character_entity._jetpack_allowed = true; // Jetpack
-							//character_entity._recoil_mult = 1 - ( 0.0055 * character_entity._ai_level ) ; // Small recoil reduction based on AI level
 							character_entity._jetpack_fuel_multiplier = 0.25; // Less fuel usage when jetpacking
 							character_entity._ai_team = 1; // AI team 1 is for Falkoks, preparation for future AI factions
 							character_entity._matter_regeneration_multiplier = 10; // Their matter regenerates 10 times faster than normal, unupgraded players
@@ -2396,29 +2588,32 @@ class sdWeather extends sdEntity
 
 			{
 				let instances = 0;
-				let instances_tot = 3 + ( ~~( Math.random() * 3 ) );
+				let instances_tot = 9 + ( ~~( Math.random() * 3 ) );
 
 				let left_side = ( Math.random() < 0.5 );
 
 
-				while ( instances < instances_tot && ais < this._max_ai_count )
+			while ( instances < instances_tot && ais < this._max_ai_count )
+			{
+
+				let character_entity = new sdCharacter({ x:0, y:0, _ai_enabled:sdCharacter.AI_MODEL_FALKOK });
+
+				sdEntity.entities.push( character_entity );
+
 				{
-
-					let character_entity = new sdCharacter({ x:0, y:0, _ai_enabled:sdCharacter.AI_MODEL_AGGRESSIVE });
-
-					sdEntity.entities.push( character_entity );
-
+					if ( !this.GetHumanoidSpawnLocation( character_entity ) )
 					{
-						if ( !this.GetHumanoidSpawnLocation( character_entity ) )
+						character_entity.remove();
+						character_entity._broken = false;
+						break;
+					}
+					else
+					{
 						{
-							character_entity.remove();
-							character_entity._broken = false;
-							break;
-						}
-						else
-						{
-							sdFactions.SetHumanoidProperties( character_entity, sdFactions.FACTION_TZYRG );
-							break;
+								sdFactions.SetHumanoidProperties( character_entity, sdFactions.FACTION_TZYRG );
+
+								break;
+							}
 						}
 					}
 
@@ -2530,10 +2725,10 @@ class sdWeather extends sdEntity
 		{
 			// TODO: Spawn their houses instead, later houses will spawn new guanakos
 			sdWeather.SimpleSpawner({
-				
+
 				count: [ 1, 2 ],
 				class: sdGuanako
-				
+
 			});
 		}
 		if ( r === sdWeather.EVENT_TZYRG_DEVICE ) // Spawn a Tzyrg device. When players find it they should destroy it ( Since they do stop earthquakes when they exist on the map )
@@ -2569,19 +2764,19 @@ class sdWeather extends sdEntity
 								y + ent._hitbox_y2 + 16, null, null, [ 'sdWater' ], null ) )
 						{
 							let di_allowed = true;
-									
+
 							for ( i = 0; i < sdWorld.sockets.length; i++ )
 							if ( sdWorld.sockets[ i ].character )
 							{
 								let di = sdWorld.Dist2D( sdWorld.sockets[ i ].character.x, sdWorld.sockets[ i ].character.y, x, y );
-										
+
 								if ( di < 500 )
 								{
 									di_allowed = false;
 									break;
 								}
 							}
-									
+
 							if ( di_allowed )
 							{
 								ent.x = x;
@@ -2589,7 +2784,7 @@ class sdWeather extends sdEntity
 								break;
 							}
 						}
-								
+
 
 
 						tr--;
@@ -2689,83 +2884,108 @@ class sdWeather extends sdEntity
 									character_entity.y = y;
 
 									//sdWorld.UpdateHashPosition( ent, false );
-									if ( Math.random() < 0.07 )
+							if ( Math.random() < 0.3 )
+							{
+								if ( Math.random() < 0.1 )
+								{
+									sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_F_HEAVY_RIFLE }) );
+									character_entity._ai_gun_slot = 2;
+									character_entity.s = 120;
+								}
+								else
+								{
+								if ( Math.random() < 0.2 )
 									{
-										if ( Math.random() < 0.2 )
-										{
-											sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_FALKOK_PSI_CUTTER }) );
-											character_entity._ai_gun_slot = 4;
-										}
-										else
-										{
-											sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_RAYGUN }) );
-											character_entity._ai_gun_slot = 3;
-										}
+										sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_FALKOK_PSI_CUTTER }) );
+										character_entity._ai_gun_slot = 4;
 									}
 									else
-									{ 
-										if ( Math.random() < 0.1 )
-										{
-											sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_F_MARKSMAN }) );
-											character_entity._ai_gun_slot = 2;
-										}
-										else
-										if ( Math.random() < 0.0025 ) // even at 1% it's still to common given the fact regular Falkoks die from anything
-										{
-											sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_F_HEAVY_RIFLE }) );
-											character_entity._ai_gun_slot = 2;
-										}
-										else
-										{
-											sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_FALKOK_RIFLE }) );
-											character_entity._ai_gun_slot = 2;
-										}
-									}
-									let falkok_settings;
-									if ( character_entity._ai_gun_slot === 2 )
-									falkok_settings = {"hero_name":"Falkok","color_bright":"#6b0000","color_dark":"#420000","color_bright3":"#6b0000","color_dark3":"#420000","color_visor":"#5577b9","color_suit":"#240000","color_suit2":"#2e0000","color_dark2":"#560101","color_shoes":"#000000","color_skin":"#240000","color_extra1":"#240000","helmet1":false,"helmet2":true,"body60":true,"legs60":true,"voice1":false,"voice2":false,"voice3":true,"voice4":false,"voice5":false,"voice6":true};
-									if ( character_entity._ai_gun_slot === 3 || character_entity._ai_gun_slot === 4 ) // If Falkok spawns with Raygun or PSI-Cutter, change their looks Phoenix Falkok
-									falkok_settings = {"hero_name":"Phoenix Falkok","color_bright":"#ffc800","color_dark":"#a37000","color_bright3":"#ffc800","color_dark3":"#a37000","color_visor":"#000000","color_suit":"#ffc800","color_suit2":"#ffc800","color_dark2":"#000000","color_shoes":"#a37000","color_skin":"#a37000","helmet1":false,"helmet12":true,"voice1":false,"voice2":false,"voice3":true,"voice4":false,"voice5":false,"voice6":true};
-
-									character_entity.sd_filter = sdWorld.ConvertPlayerDescriptionToSDFilter_v2( falkok_settings );
-									character_entity._voice = sdWorld.ConvertPlayerDescriptionToVoice( falkok_settings );
-									character_entity.helmet = sdWorld.ConvertPlayerDescriptionToHelmet( falkok_settings );
-									character_entity.body = sdWorld.ConvertPlayerDescriptionToBody( falkok_settings );
-									character_entity.legs = sdWorld.ConvertPlayerDescriptionToLegs( falkok_settings );
-									character_entity.title = falkok_settings.hero_name;
-									if ( character_entity._ai_gun_slot === 2 ) // If a regular falkok spawns
 									{
-										character_entity.matter = 85;
-										character_entity.matter_max = 85;
-
-										character_entity.hea = 125; // 105 so railgun requires at least headshot to kill and body shot won't cause bleeding
-										character_entity.hmax = 125;
-
-										//character_entity._damage_mult = 1 / 2.5; // 1 / 4 was too weak
+									sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_RAYGUN }) );
+									character_entity._ai_gun_slot = 3;
 									}
+								}
+							}
+							else
+							{ 
+								if ( Math.random() < 0.6 )
+								{
+									sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_F_MARKSMAN }) );
+									character_entity._ai_gun_slot = 2;
+								}
+								else
+								{
+									sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_FALKOK_RIFLE }) );
+									character_entity._ai_gun_slot = 2;
+								}
+							}
+							let falkok_settings;
+							if ( character_entity._ai_gun_slot === 2 )
+							falkok_settings = {"hero_name":"Falkok","color_bright":"#6b0000","color_dark":"#420000","color_bright3":"#6b0000","color_dark3":"#420000","color_visor":"#5577b9","color_suit":"#240000","color_suit2":"#2e0000","color_dark2":"#560101","color_shoes":"#000000","color_skin":"#240000","color_extra1":"#240000","helmet1":false,"helmet2":true,"body60":true,"legs60":true,"voice1":false,"voice2":false,"voice3":true,"voice4":false,"voice5":false,"voice6":true};
+							if ( character_entity._ai_gun_slot === 2 && character_entity.s === 120 )
+							falkok_settings = {"hero_name":"Heavy Falkok","color_bright":"#6b0000","color_dark":"#420000","color_bright3":"#6b0000","color_dark3":"#420000","color_visor":"#5577b9","color_suit":"#240000","color_suit2":"#2e0000","color_dark2":"#560101","color_shoes":"#000000","color_skin":"#240000","color_extra1":"#240000","helmet1":false,"helmet43":true,"body83":true,"legs16":true,"voice1":false,"voice2":false,"voice3":true,"voice4":false,"voice5":false,"voice6":true};
+							if ( character_entity._ai_gun_slot === 3 || character_entity._ai_gun_slot === 4 ) // If Falkok spawns with Raygun or PSI-Cutter, change their looks Phoenix Falkok
+							falkok_settings = {"hero_name":"Phoenix Falkok","color_bright":"#ffc800","color_dark":"#a37000","color_bright3":"#ffc800","color_dark3":"#a37000","color_visor":"#00234b","color_suit":"#ffc800","color_suit2":"#ffc800","color_dark2":"#a37000","color_shoes":"#ffc800","color_skin":"#a37000","color_extra1":"#00234b","helmet1":false,"helmet12":true,"body11":true,"legs37":true,"voice1":false,"voice2":false,"voice3":true,"voice4":false,"voice5":false,"voice6":true};
+							character_entity.sd_filter = sdWorld.ConvertPlayerDescriptionToSDFilter_v2( falkok_settings );
+							character_entity._voice = sdWorld.ConvertPlayerDescriptionToVoice( falkok_settings );
+							character_entity.helmet = sdWorld.ConvertPlayerDescriptionToHelmet( falkok_settings );
+							character_entity.body = sdWorld.ConvertPlayerDescriptionToBody( falkok_settings );
+							character_entity.legs = sdWorld.ConvertPlayerDescriptionToLegs( falkok_settings );
+							character_entity.title = falkok_settings.hero_name;
+								if ( character_entity._ai_gun_slot === 2 && character_entity.s === 100 ) // If a regular falkok spawns
+								{
+									character_entity.matter = 170;
+									character_entity.matter_max = 170;
 
-									if ( character_entity._ai_gun_slot === 3 || character_entity._ai_gun_slot === 4 ) // If a Phoenix Falkok spawns
-									{
-										character_entity.matter = 125;
-										character_entity.matter_max = 125;
+									character_entity.hea = 250; // 105 so railgun requires at least headshot to kill and body shot won't cause bleeding
+									character_entity.hmax = 250;
 
-										character_entity.hea = 250; // It is a stronger falkok after all, although revert changes if you want
-										character_entity.hmax = 250;
-
-										//character_entity._damage_mult = 1 / 1.5; // Rarer enemy therefore more of a threat?
-									}	
-									character_entity._ai = { direction: ( x > ( sdWorld.world_bounds.x1 + sdWorld.world_bounds.x2 ) / 2 ) ? -1 : 1 };
-									//character_entity._ai_enabled = sdCharacter.AI_MODEL_FALKOK;
-									character_entity._ai_level = Math.floor( 1 + Math.random() * 3 ); // AI Levels from 1 to 3
-
+									character_entity.armor = 100;
+									character_entity.armor_max = 100;
+									character_entity._armor_absorb_perc = 0.4;
+									character_entity._ai_level = Math.floor( Math.random() * 2 ); // Either 0 or 1
 									character_entity._matter_regeneration = 1 + character_entity._ai_level; // At least some ammo regen
-									character_entity._jetpack_allowed = true; // Jetpack
-									//character_entity._recoil_mult = 1 - ( 0.0055 * character_entity._ai_level ); // Small recoil reduction based on AI level
-									character_entity._jetpack_fuel_multiplier = 0.25; // Less fuel usage when jetpacking
-									character_entity._ai_team = 1; // AI team 1 is for Falkoks, preparation for future AI factions
 									character_entity._matter_regeneration_multiplier = 10; // Their matter regenerates 10 times faster than normal, unupgraded players
-									//this._invasion_spawns_con -= 1;
+								}
+								if ( character_entity._ai_gun_slot === 2 && character_entity.s === 120 )
+								{
+									character_entity.matter = 1080;
+									character_entity.matter_max = 1080;
 
+									character_entity.hea = 2420;
+									character_entity.hmax = 2420;
+
+									character_entity.armor = 1400;
+									character_entity.armor_max = 1400;
+									character_entity._armor_absorb_perc = 0.9;
+									character_entity._matter_regeneration = 15;
+									character_entity._matter_regeneration_multiplier = 20;
+									character_entity._ai_level = 10;
+								}
+
+								if ( character_entity._ai_gun_slot === 3 || character_entity._ai_gun_slot === 4 ) // If a Phoenix Falkok spawns
+								{
+									character_entity.matter = 1400;
+									character_entity.matter_max = 1400;
+	
+									character_entity.hea = 1150; // It is a stronger falkok after all, although revert changes if you want
+									character_entity.hmax = 1150;
+									character_entity.s = 110;
+
+									character_entity.armor = 860;
+									character_entity.armor_max = 860;
+									character_entity._armor_absorb_perc = 0.8;
+									character_entity._matter_regeneration = 20;
+									character_entity._matter_regeneration_multiplier = 30;
+									character_entity._ai_level = 15;
+								}
+								character_entity._ai = { direction: ( character_entity.x > ( sdWorld.world_bounds.x1 + sdWorld.world_bounds.x2 ) / 2 ) ? -1 : 1 };
+								//character_entity._ai_enabled = sdCharacter.AI_MODEL_FALKOK;
+
+								character_entity._jetpack_allowed = true; // Jetpack
+								//character_entity._recoil_mult = 1 - ( 0.0055 * character_entity._ai_level ) ; // Small recoil reduction based on AI level
+								character_entity._jetpack_fuel_multiplier = 0.25; // Less fuel usage when jetpacking
+								character_entity._ai_team = 1; // AI team 1 is for Falkoks, preparation for future AI factions
 									break;
 								}
 
@@ -3226,9 +3446,9 @@ class sdWeather extends sdEntity
 	{
 		if ( !params.count )
 		params.count = [ 1, 1 ];
-		
+
 		let instances = params.count[ 0 ] + ~~( Math.random() * ( params.count[ 1 ] - params.count[ 0 ] ) );
-		
+
 		while ( instances > 0 )
 		{
 

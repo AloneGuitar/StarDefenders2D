@@ -134,11 +134,18 @@ class sdMatterContainer extends sdEntity
 	{
 	//	return 0; // Hack
 		
-		//return this._hmax * sdWorld.damage_to_matter + this.matter;
+		if ( this.matter_max <= 2560 )
+		return this._hmax * sdWorld.damage_to_matter + this.matter_max;
 		if ( this.matter_max == 2560 )
-		return this._hmax * sdWorld.damage_to_matter + this.matter_max * 0.75;
+		return this._hmax * sdWorld.damage_to_matter + this.matter_max * 0.2;
 		if ( this.matter_max == 5120 )
 		return this._hmax * sdWorld.damage_to_matter + this.matter_max * 0.5;
+		if ( this.matter_max == 10240 )
+		return this._hmax * sdWorld.damage_to_matter + this.matter_max * 0.4;
+		if ( this.matter_max == 20480 )
+		return this._hmax * sdWorld.damage_to_matter + this.matter_max * 0.25;
+		if ( this.matter_max == 40960 )
+		return this._hmax * sdWorld.damage_to_matter + this.matter_max * 0.15;
 	}
 }
 //sdMatterContainer.init_class();

@@ -21,11 +21,6 @@ class sdBeamProjector extends sdEntity
 	{
 		sdBeamProjector.img_bp = sdWorld.CreateImageFromFile( 'sdBeamProjector' );
 
-		/*
-		sdBeamProjector.img_bp = sdWorld.CreateImageFromFile( 'beam_projector' );
-		sdBeamProjector.img_bp_working = sdWorld.CreateImageFromFile( 'beam_projector_working' );
-		sdBeamProjector.img_bp_blocked = sdWorld.CreateImageFromFile( 'beam_projector_blocked' );
-		*/
 		sdBeamProjector.img_crystal = sdWorld.CreateImageFromFile( 'crystal' );
 		
 		sdWorld.entity_classes[ this.name ] = this; // Register for object spawn
@@ -140,8 +135,9 @@ class sdBeamProjector extends sdEntity
 			gun = new sdGun({ x:x, y:y, class:sdGun.CLASS_BUILDTOOL_UPG });
 			gun.extra = 2;
 
-			//gun.sx = sx;
-			//gun.sy = sy;
+			if ( Math.random() < 0.4 )
+			gun = new sdGun({ x:x, y:y, class:sdGun.CLASS_PROJECTOR });
+
 			sdEntity.entities.push( gun );
 
 			}, 500 );
@@ -241,7 +237,6 @@ class sdBeamProjector extends sdEntity
 								{
 									character_entity.x = x;
 									character_entity.y = y;
-
 									sdFactions.SetHumanoidProperties( character_entity, sdFactions.FACTION_COUNCIL );
 
 									const logic = ()=>
@@ -276,8 +271,7 @@ class sdBeamProjector extends sdEntity
 									setTimeout(()=>
 									{
 										clearInterval( logic );
-							
-							
+
 										if ( !character_entity._is_being_removed )
 										{
 											sdSound.PlaySound({ name:'teleport', x:character_entity.x, y:character_entity.y, volume:0.5 });

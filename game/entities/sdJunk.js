@@ -83,6 +83,9 @@ class sdJunk extends sdEntity
 		let r = Math.random();
 		let t_s = 0;
 
+		if ( r < 0.1 )
+		t_s = sdJunk.TYPE_ALIEN_ARTIFACT;
+		else
 		if ( r < 0.25 )
 		t_s = sdJunk.TYPE_FREEZE_BARREL;
 		else
@@ -97,11 +100,11 @@ class sdJunk extends sdEntity
 		this.type = ( params.type !== undefined ) ? params.type : t_s;
 
 		if ( this.type === sdJunk.TYPE_ADVANCED_MATTER_CONTAINER ) // Task reward matter container
-		this.hmax = 4000;
+		this.hmax = 20000;
 		if ( this.type === sdJunk.TYPE_ERTHAL_DISTRESS_BEACON ) // Erthal distress beacon
-		this.hmax = 25000;
+		this.hmax = 100000;
 		if ( this.type === sdJunk.TYPE_COUNCIL_BOMB ) // Council bomb
-		this.hmax = 50000;
+		this.hmax = 200000;
 		if ( this.type === sdJunk.TYPE_PLANETARY_MATTER_DRAINER ) // Large anti-crystal
 		this.hmax = 10000;
 		else
@@ -109,7 +112,7 @@ class sdJunk extends sdEntity
 		this.hmax = 150;
 		else
 		if ( this.type === sdJunk.TYPE_UNSTABLE_CUBE_CORPSE || this.type === sdJunk.TYPE_ALIEN_ARTIFACT )
-		this.hmax = 500;
+		this.hmax = 1000;
 
 		// Variables for large anti-crystal
 		this._next_score_at = this.hmax; // To prevent spark or erthal blaster score abuse, score is now given to player on every 100+ damage.
@@ -127,7 +130,7 @@ class sdJunk extends sdEntity
 		this._max_damage_timer = 30; // Timer which resets max damage the Council bomb can recieve in a second ( counters barrel spam )
 		//
 		this.hea = this.hmax;
-		this.matter_max = this.type === sdJunk.TYPE_ADVANCED_MATTER_CONTAINER ? ( 5120 * 8 ) : 320;
+		this.matter_max = this.type === sdJunk.TYPE_ADVANCED_MATTER_CONTAINER ? ( 5120 * 64 ) : 320;
 		this.matter = this.matter_max;
 		this._damagable_in = sdWorld.time + 1500; // Copied from sdCrystal to prevent high ping players injure themselves, will only work for sdCharacter damage
 		this._spawn_ent_in = 60; // Used in Council Bomb, although could be used in other things
@@ -1134,7 +1137,9 @@ class sdJunk extends sdEntity
 	}
 	MeasureMatterCost()
 	{
-		return 0; // Hack
+		return (this.type +1) * 500; // Hack
+		if ( this.type === 2 )
+		return 7000; // Hack
 	}
 }
 //sdJunk.init_class();

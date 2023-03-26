@@ -101,7 +101,6 @@ class sdAsp extends sdEntity
 		
 		if ( this._hea > 0 )
 		if ( character.IsTargetable() && character.IsVisible() )
-		if ( ( character.hea || character._hea ) > 0 )
 		{
 			let di = sdWorld.Dist2D( this.x, this.y, character.x, character.y ); 
 			if ( di < sdAsp.max_seek_range )
@@ -142,7 +141,6 @@ class sdAsp extends sdEntity
 	
 		if ( initiator )
 		if ( !initiator.is( sdAsp ) )
-		if ( !initiator.is( sdCube ) )
 		this._current_target = initiator;
 	
 		dmg = Math.abs( dmg );
@@ -171,7 +169,7 @@ class sdAsp extends sdEntity
 		if ( this._hea < -this._hmax / 80 * 100 || ( this._hea < 0 && this._tier === 2 ) ) // used to be only " ||this._tier === 2 " which resulted in instant death for Crystal Asps, unintentional - Booraz
 		this.remove();
 	}
-	get mass() { return 300; }
+	get mass() { return 30; }
 	Impulse( x, y )
 	{
 		this.sx += x / this.mass;
@@ -309,9 +307,10 @@ class sdAsp extends sdEntity
 				{
 					from_entity = nears_raw[ i ];
 					
-					if ( ( ( from_entity.IsPlayerClass() || from_entity.GetClass() === 'sdBot' || from_entity.GetClass() === 'sdGuanako' || this._current_target === from_entity ) && from_entity.IsVisible( this ) && ( from_entity.hea || from_entity._hea ) > 0 ) )
+					if ( ( ( from_entity.GetClass() === 'sdCharacter' && from_entity.hmax < 1700 && from_entity.matter_max < 7200 || from_entity.GetClass() === 'sdAbomination' || from_entity.GetClass() === 'sdAmphid' || from_entity.GetClass() === 'sdBadDog' || from_entity.GetClass() === 'sdBiter' || from_entity.GetClass() === 'sdBot' || from_entity.GetClass() === 'sdCube' || from_entity.GetClass() === 'sdDrone' || from_entity.GetClass() === 'sdEnemyMech' || from_entity.GetClass() === 'sdFaceCrab' || from_entity.GetClass() === 'sdGrub' || from_entity.GetClass() === 'sdMimic' || from_entity.GetClass() === 'sdOctopus' || from_entity.GetClass() === 'sdOverlord' || from_entity.GetClass() === 'sdQuickie' || from_entity.GetClass() === 'sdRoach' || from_entity.GetClass() === 'sdSandWorm' || from_entity.GetClass() === 'sdSetrDestroyer' || from_entity.GetClass() === 'sdSlug' || from_entity.GetClass() === 'sdSpider' || from_entity.GetClass() === 'sdTutel' || from_entity.GetClass() === 'sdVirus' || this._current_target === from_entity ) && from_entity.IsVisible( this ) && ( from_entity.hea || from_entity._hea ) > 0 ) )
 					{
 						let rank = Math.random() * 0.1;
+						this._current_target = from_entity;
 						
 						nears.push( { ent: from_entity, rank: rank } );
 					}

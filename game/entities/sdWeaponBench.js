@@ -150,21 +150,24 @@ class sdWeaponBench extends sdEntity
 				//let ID_MAGAZINE = 2;
 		
 				let ID_DAMAGE_MULT = 7;
-				//let ID_FIRE_RATE = 8;
+				let ID_FIRE_RATE = 8;
 				let ID_RECOIL_SCALE = 9;
+				let ID_TEMPERATURE_APPLIED = 11;
 				let ID_DAMAGE_VALUE = 17;
 
 				if ( this.item0.extra[ ID_DAMAGE_VALUE ] )
-				sdEntity.TooltipUntranslated( ctx, T('Damage') + ': ' + Math.round( this.item0.extra[ ID_DAMAGE_VALUE ] * this.item0.extra[ ID_DAMAGE_MULT ] ), 0, -40, '#ffaaaa' );
+				sdEntity.TooltipUntranslated( ctx, T('Damage') + ': ' + Math.round( this.item0.extra[ ID_DAMAGE_VALUE ] * this.item0.extra[ ID_DAMAGE_MULT ] ), 0, -50, '#ffaaaa' );
 				if ( this.item0.extra[ ID_RECOIL_SCALE ] )
-				sdEntity.TooltipUntranslated( ctx, T('Recoil') + ': ' + Math.round( 100 * this.item0.extra[ ID_DAMAGE_MULT ] * this.item0.extra[ ID_RECOIL_SCALE ] ) + '%', 0, -30, '#ffffaa' );
+				sdEntity.TooltipUntranslated( ctx, T('Recoil') + ': ' + Math.round( 100 * this.item0.extra[ ID_DAMAGE_MULT ] * this.item0.extra[ ID_RECOIL_SCALE ] ) + '%', 0, -40, '#ffffaa' );
 				
-				let reload_time = sdGun.classes[ gun.class ].reload_time; // Best to keep it simple.
+				let reload_time = sdGun.classes[ gun.class ].reload_time * gun.extra[ ID_FIRE_RATE ]; // Best to keep it simple.
 				
 				if ( Math.round( reload_time / 30 * 1000 ) < 16 )
-				sdEntity.TooltipUntranslated( ctx, T('Cooldown') + ': ' + T('16ms (capped)'), 0, -20, '#aaffaa' );
+				sdEntity.TooltipUntranslated( ctx, T('Cooldown') + ': ' + T('16ms (capped)'), 0, -30, '#aaffaa' );
 				else
-				sdEntity.TooltipUntranslated( ctx, T('Cooldown') + ': ' + Math.round( reload_time / 30 * 1000 ) + 'ms', 0, -20, '#aaffaa' );
+				sdEntity.TooltipUntranslated( ctx, T('Cooldown') + ': ' + Math.round( reload_time / 30 * 1000 ) + 'ms', 0, -30, '#aaffaa' );
+			
+				sdEntity.TooltipUntranslated( ctx, T('Temperature') + ': ' + Math.round( this.item0.extra[ ID_TEMPERATURE_APPLIED ] ) + '°C', 0, -20, '#aaffff' );
 			
 				if ( this.item0.GetAmmoCapacity() !== -1 )
 				sdEntity.TooltipUntranslated( ctx, T('Magazine capacity') + ': ' + this.item0.GetAmmoCapacity(), 0, -10, '#ffffff' );
@@ -366,7 +369,7 @@ class sdWeaponBench extends sdEntity
 
 								exectuter_character.matter -= matter_cost;
 
-								this.item0._hea = 500;
+								this.item0._hea = 1000;
 
 								this.upgraded_dur = true;
 

@@ -130,7 +130,7 @@ class sdHover extends sdEntity
 
 		this.type = params.type || 0;
 		
-		this.hmax = ( this.type === 1 ? 1200 : this.type === 2 ? 2400 : this.type === 3 ? 300 : 600 ) * 4;
+		this.hmax = ( this.type === 1 ? 1200 : this.type === 2 ? 2400 : this.type === 3 ? 300 : 600 ) * 8;
 		this.hea = this.hmax;
 		
 		this._tilt = 0;
@@ -163,11 +163,11 @@ class sdHover extends sdEntity
 		this.driver4 = null; // passenger
 		this.driver5 = null; // passenger
 		
-		this.matter = 300; // Should be less that Hover cost
-		this.matter_max = ( this.type === sdHover.TYPE_FIGHTER_HOVER ? 2000 :
-			this.type === sdHover.TYPE_TANK ? 12000 :
-			this.type === sdHover.TYPE_BIKE ? 400 :
-			1000
+		this.matter = 800; // Should be less that Hover cost
+		this.matter_max = ( this.type === sdHover.TYPE_FIGHTER_HOVER ? 4000 :
+			this.type === sdHover.TYPE_TANK ? 24000 :
+			this.type === sdHover.TYPE_BIKE ? 800 :
+			2000
 		);
 	}
 	AddDriver( c )

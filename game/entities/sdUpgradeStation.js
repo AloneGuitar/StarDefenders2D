@@ -15,13 +15,13 @@ class sdUpgradeStation extends sdEntity
 {
 	static init_class()
 	{
-		sdUpgradeStation.img_us = sdWorld.CreateImageFromFile( 'upgrade_station' ); // Re-skin by Flora
+		sdUpgradeStation.img_us = sdWorld.CreateImageFromFile( 'upgrade_station' );
 		
 		sdWorld.entity_classes[ this.name ] = this; // Register for object spawn
 	}
 	get hitbox_x1() { return -10; }
-	get hitbox_x2() { return 15; }
-	get hitbox_y1() { return -2; }
+	get hitbox_x2() { return 8; }
+	get hitbox_y1() { return 2; }
 	get hitbox_y2() { return 16; }
 	
 	get hard_collision()
@@ -109,8 +109,13 @@ class sdUpgradeStation extends sdEntity
 			if ( this.level === 2 )
 			gun = new sdGun({ x:character.x, y:character.y, class:sdGun.CLASS_PISTOL_MK2 });
 			else
-			//if ( this.level === 3 )
+			if ( this.level === 3 )
 			gun = new sdGun({ x:character.x, y:character.y, class:sdGun.CLASS_SMG });
+			else
+			if ( this.level === 4 )
+			gun = new sdGun({ x:character.x, y:character.y, class:sdGun.CLASS_SMG_MK2 });
+			else
+			gun = new sdGun({ x:character.x, y:character.y, class:sdGun.CLASS_IRON_BULL_HANDCANNON });
 		
 			// Note: Missing level have caused gun to be undefined. Keep last level under else condition to avoid that.
 		
@@ -123,8 +128,16 @@ class sdUpgradeStation extends sdEntity
 			if ( this.level === 1 )
 			gun2 = new sdGun({ x:character.x, y:character.y, class:sdGun.CLASS_RIFLE });
 			else
-			//if ( this.level >= 2 )
+			if ( this.level === 2 )
 			gun2 = new sdGun({ x:character.x, y:character.y, class:sdGun.CLASS_LMG });
+			else
+			if ( this.level === 3 )
+			gun2 = new sdGun({ x:character.x, y:character.y, class:sdGun.CLASS_KVT_ASSAULT_RIFLE });
+			else
+			if ( this.level === 4 )
+			gun2 = new sdGun({ x:character.x, y:character.y, class:sdGun.CLASS_MMG_THE_RIPPER_T2 });
+			else
+			gun2 = new sdGun({ x:character.x, y:character.y, class:sdGun.CLASS_MMG_THE_RIPPER_T3 });
 		
 			gun2.sx = character.sx;
 			gun2.sy = character.sy;
@@ -132,11 +145,13 @@ class sdUpgradeStation extends sdEntity
 			
 			// --
 			
-			if ( this.level < 3 )
+			if ( this.level === 1 )
 			gun3 = new sdGun({ x:character.x, y:character.y, class:sdGun.CLASS_SHOTGUN });
-			//if ( this.level >= 3 )
 			else
+			if ( this.level === 2 )
 			gun3 = new sdGun({ x:character.x, y:character.y, class:sdGun.CLASS_SHOTGUN_MK2 });
+			else
+			gun3 = new sdGun({ x:character.x, y:character.y, class:sdGun.CLASS_TOPS_SHOTGUN });
 		
 			gun3.sx = character.sx;
 			gun3.sy = character.sy;
@@ -146,9 +161,11 @@ class sdUpgradeStation extends sdEntity
 
 			if ( this.level === 1 )
 			gun4 = new sdGun({ x:character.x, y:character.y, class:sdGun.CLASS_SWORD });
-			//if ( this.level >= 2 )
 			else
+			if ( this.level === 2 )
 			gun4 = new sdGun({ x:character.x, y:character.y, class:sdGun.CLASS_SABER });
+			else
+			gun4 = new sdGun({ x:character.x, y:character.y, class:sdGun.CLASS_ZAPPER });
 		
 			gun4.sx = character.sx;
 			gun4.sy = character.sy;

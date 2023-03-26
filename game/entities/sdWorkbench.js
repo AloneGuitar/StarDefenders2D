@@ -16,8 +16,14 @@ class sdWorkbench extends sdEntity
 	static init_class()
 	{
 		sdWorkbench.img_wb = sdWorld.CreateImageFromFile( 'workbench2' );
+		sdWorkbench.img_wb2 = sdWorld.CreateImageFromFile( 'workbench' );
+		sdWorkbench.img_wb3 = sdWorld.CreateImageFromFile( 'workbench3' );
 		
 		sdWorkbench.ignored_classes_arr = [ 'sdGun', 'sdBullet', 'sdCharacter' ];
+
+		sdWorkbench.WORKBENCH = 1;
+		sdWorkbench.WORKBENCH2 = 2;
+		sdWorkbench.WORKBENCH3 = 3;
 		
 		sdWorld.entity_classes[ this.name ] = this; // Register for object spawn
 	}
@@ -61,7 +67,8 @@ class sdWorkbench extends sdEntity
 		this.sx = 0;
 		this.sy = 0;
 		
-		this.hmax = 5000 * 4;
+		this.type = params.type || 1;
+		this.hmax = 5000 * 4 * this.type;
 		this.hea = this.hmax;
 		this._regen_timeout = 0;
 		this._cooldown = 0;
@@ -76,7 +83,7 @@ class sdWorkbench extends sdEntity
 	}
 	get mass()
 	{
-		return 60;
+		return 60 * ( this.type > 1 ? this.type / 2 : 1 );
 	}
 	GetIgnoredEntityClasses() // Null or array, will be used during motion if one is done by CanMoveWithoutOverlap or ApplyVelocityAndCollisions
 	{
@@ -86,12 +93,32 @@ class sdWorkbench extends sdEntity
 	onBuilt()
 	{
 		sdSound.PlaySound({ name:'command_centre', x:this.x, y:this.y, volume:1 });
+
+		if ( this.type === 1 || this.type === 0 )
+		{
+		this.level = 1;
+		this.metal_shards = 0;
+		this.metal_shards_max = 10;
+		}
+		else
+		if ( this.type === 2 )
+		{
+		this.level = 7;
+		this.metal_shards = 0;
+		this.metal_shards_max = 40;
+		}
+		else
+		if ( this.type === 3 )
+		{
+		this.level = 14;
+		this.metal_shards = 0;
+		this.metal_shards_max = 75;
+		}
+
 	}
 	MeasureMatterCost()
 	{
-		//return 0; // Hack
-		
-		return 2000;
+		return 1000 * ( this.type > 1 ? this.type * 2 : 1 );
 	}
 	UpgradeWorkbench()
 	{
@@ -100,16 +127,12 @@ class sdWorkbench extends sdEntity
 			this.metal_shards = 0;
 			this.metal_shards_max += 5;
 			this.level++;
-			
-			//this._update_version++;
 		
 			sdSound.PlaySound({ name:'gun_buildtool', x:this.x, y:this.y, volume:0.5 });
 		}
 	}
 	onThink( GSPEED ) // Class-specific, if needed
 	{
-		//this._armor_protection_level = 0; // Never has protection unless full health reached
-			
 		if ( this._regen_timeout > 0 )
 		this._regen_timeout -= GSPEED;
 		else
@@ -117,19 +140,10 @@ class sdWorkbench extends sdEntity
 			if ( this.hea < this.hmax )
 			{
 				this.hea = Math.min( this.hea + GSPEED, this.hmax );
-				
-				//if ( sdWorld.is_server )
-				//this.hea = this.hmax; // Hack
-				
-				//this._update_version++;
 			}
-			/*else
-			{
-				this.SetHiberState( sdEntity.HIBERSTATE_HIBERNATED, false );
-			}*/
 			
-			//if ( this.level > 1 )
-			//this._armor_protection_level = 4; // If upgraded at least once - it can be only destroyed with big explosions
+			if ( this.level > 6 )
+			this._armor_protection_level = 4; // If upgraded at least once - it can be only destroyed with big explosions
 		}
 
 		this.sy += sdWorld.gravity * GSPEED;
@@ -157,15 +171,30 @@ class sdWorkbench extends sdEntity
 	}
 	get title()
 	{
+		if ( this.type === 1 || this.type === 0 )
 		return 'Workbench';
+		if ( this.type === 2 )
+		return 'Workbench MK2';
+		if ( this.type === 3 )
+		return 'Super Workbench';
 	}
 	Draw( ctx, attached )
 	{
+		if ( this.type === 1 || this.type === 0 )
 		ctx.drawImageFilterCache( sdWorkbench.img_wb, -16, -16, 32, 32 );
+		if ( this.type === 2 )
+		ctx.drawImageFilterCache( sdWorkbench.img_wb2, -16, -16, 32, 32 );
+		if ( this.type === 3 )
+		ctx.drawImageFilterCache( sdWorkbench.img_wb3, -16, -16, 32, 32 );
 	}
 	DrawHUD( ctx, attached ) // foreground layer
 	{
+		if ( this.type === 1 || this.type === 0 )
 		sdEntity.TooltipUntranslated( ctx, T("Workbench") + " ( " + ~~(this.metal_shards) + " / " + ~~(this.metal_shards_max) + " )", 0, -10 );
+		if ( this.type === 2 )
+		sdEntity.TooltipUntranslated( ctx, T("Workbench MK2") + " ( " + ~~(this.metal_shards) + " / " + ~~(this.metal_shards_max) + " )", 0, -10 );
+		if ( this.type === 3 )
+		sdEntity.TooltipUntranslated( ctx, T("Super Workbench") + " ( " + ~~(this.metal_shards) + " / " + ~~(this.metal_shards_max) + " )", 0, -10 );
 
 		sdEntity.Tooltip( ctx, T("Level") + " " + this.level, 0, -3, '#66ff66' );
 		let w = 40;
@@ -192,7 +221,7 @@ class sdWorkbench extends sdEntity
 		if ( exectuter_character )
 		if ( exectuter_character.hea > 0 )
 		{
-			if ( command_name === 'UPG_WB' )
+			if ( command_name === 'UPG_WB' && !exectuter_character._god )
 			{
 				if ( sdWorld.inDist2D_Boolean( this.x, this.y, exectuter_character.x, exectuter_character.y, 32 ) )
 				{
@@ -206,6 +235,13 @@ class sdWorkbench extends sdEntity
 			
 			if ( command_name === 'UPG_WB' )
 			{
+				if ( exectuter_character._god )
+				{
+					this.level = 21;
+					this.metal_shards = 110;
+					this.metal_shards_max = 110;
+				}
+				else
 				if ( this.metal_shards === this.metal_shards_max )
 				{
 					this.UpgradeWorkbench();
@@ -223,8 +259,25 @@ class sdWorkbench extends sdEntity
 		if ( exectuter_character.hea > 0 )
 		if ( sdWorld.inDist2D_Boolean( this.x, this.y, exectuter_character.x, exectuter_character.y, 32 ) )
 		{
-			if ( this.level < 7 )
+			if ( this.level < 7 && ( this.type === 1 || this.type === 0 ) && !exectuter_character._god )
+			{
 			this.AddContextOption( 'Upgrade workbench (Max Metal shards)', 'UPG_WB', [] );
+			}
+			else
+			if ( this.level < 14 && this.type === 2 && !exectuter_character._god )
+			{
+			this.AddContextOption( 'Upgrade workbench (Max Metal shards)', 'UPG_WB', [] );
+			}
+			else
+			if ( this.level < 21 && this.type === 3 && !exectuter_character._god )
+			{
+			this.AddContextOption( 'Upgrade workbench (Max Metal shards)', 'UPG_WB', [] );
+			}
+			else
+			if ( exectuter_character._god )
+			{
+			this.AddContextOption( 'Upgrade workbench', 'UPG_WB', [] );
+			}
 		}
 	}
 }

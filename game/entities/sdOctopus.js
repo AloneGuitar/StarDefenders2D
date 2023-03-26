@@ -48,8 +48,11 @@ class sdOctopus extends sdEntity
 		this.sx = 0;
 		this.sy = 0;
 		
-		this._hmax = 1000; // Was 2000, but too boring to kill them
+		this._hmax = 2000; // Was 2000, but too boring to kill them
 		this._hea = this._hmax;
+
+		this._nature_damage = 1000000;
+		this._player_damage = 0;
 		
 		this.death_anim = 0;
 		
@@ -79,10 +82,6 @@ class sdOctopus extends sdEntity
 		this.hue = ~~( Math.random() * 360 );
 		//this.filter = 'hue-rotate(' + ~~( Math.random() * 360 ) + 'deg) saturate(0.5)';
 		this.filter = 'saturate(0.5)';
-	}
-	ExtraSerialzableFieldTest( prop )
-	{
-		return ( prop === '_consumed_guns_snapshots' );
 	}
 	SyncedToPlayer( character ) // Shortcut for enemies to react to players
 	{
@@ -364,21 +363,35 @@ class sdOctopus extends sdEntity
 						 ( from_entity.GetClass() === 'sdBlock' && ( !from_entity._natural || !from_entity.IsDefaultGround() ) ) ||
 						 from_entity.GetClass() === 'sdCom' ||
 						 from_entity.GetClass() === 'sdNode' ||
+						 from_entity.GetClass() === 'sdCube' ||
 						 from_entity.GetClass() === 'sdBot' ||
-						 from_entity.GetClass() === 'sdCrystal' ||
+						 from_entity.GetClass() === 'sdDrone' ||
+						 from_entity.GetClass() === 'sdEnemyMech' ||
+						 from_entity.GetClass() === 'sdSetrDestroyer' ||
+						 from_entity.GetClass() === 'sdAbomination' ||
+						 from_entity.GetClass() === 'sdAmphid' ||
+						 from_entity.GetClass() === 'sdAsp' ||
+						 from_entity.GetClass() === 'sdBiter' ||
+						 from_entity.GetClass() === 'sdFaceCrab' ||
+						 from_entity.GetClass() === 'sdMimic' ||
+						 from_entity.GetClass() === 'sdOverlord' ||
+						 from_entity.GetClass() === 'sdQuickie' ||
+						 from_entity.GetClass() === 'sdSandWorm' ||
+						 from_entity.GetClass() === 'sdSpider' ||
+						 from_entity.GetClass() === 'sdTutel' ||
+						 from_entity.GetClass() === 'sdDrone' ||
 						 from_entity.GetClass() === 'sdTurret' ||
 						 from_entity.GetClass() === 'sdDoor' ||
 						 from_entity.GetClass() === 'sdStorage' ||
 						 from_entity.GetClass() === 'sdConveyor' ||
-						 ( from_entity.GetClass() === 'sdBadDog' && from_entity.master ) ||
+						 from_entity.GetClass() === 'sdBadDog' ||
 						 from_entity.GetClass() === 'sdHover' ||
 						 from_entity.GetClass() === 'sdAntigravity' ||
 						 from_entity.GetClass() === 'sdMatterContainer' ||
 						 from_entity.GetClass() === 'sdCommandCentre' ||
-						 ( from_entity.GetClass() === 'sdGun' /*&& from_entity.class !== sdGun.CLASS_BUILD_TOOL && from_entity.class !== sdGun.CLASS_MEDIKIT && ( from_entity._held_by === null || from_entity._held_by.gun_slot === sdGun.classes[ from_entity.class ].slot )*/ ) || // Yes, held guns too, but only currently held guns. Except for build tool and medikit
+						 //( from_entity.GetClass() === 'sdGun' /*&& from_entity.class !== sdGun.CLASS_BUILD_TOOL && from_entity.class !== sdGun.CLASS_MEDIKIT && ( from_entity._held_by === null || from_entity._held_by.gun_slot === sdGun.classes[ from_entity.class ].slot )*/ ) || // Yes, held guns too, but only currently held guns. Except for build tool and medikit
 						 from_entity.GetClass() === 'sdTeleport' ||
 						 from_entity.GetClass() === 'sdVirus' ||
-						 from_entity.GetClass() === 'sdGuanako' ||
 						 ( typeof from_entity.hea !== 'undefined' && from_entity.hea <= 0 ) ||
 						 ( typeof from_entity._hea !== 'undefined' && from_entity._hea <= 0 ) ||
 						 from_entity === this._current_target )
