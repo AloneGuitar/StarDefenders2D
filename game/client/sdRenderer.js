@@ -157,7 +157,7 @@ class sdRenderer
 
 					sdRenderer.sky_gradient = sdRenderer.ctx.createLinearGradient( 0, 0, 0, sdRenderer.screen_height );
 					sdRenderer.sky_gradient.addColorStop( 0, '#cccccc' );
-					sdRenderer.sky_gradient.addColorStop( 1, '#FFFFFF' );
+					sdRenderer.sky_gradient.addColorStop( 1, '#ffffff' );
 				}
 			};
 			//window.onresize();
@@ -774,33 +774,13 @@ class sdRenderer
 						ctx.sun.intensity = sdWorld.MorphWithTimeScale( ctx.sun.intensity, ( 1 - ctx.globalAlpha * 0.5 ), 0.98, GSPEED );
 					}
 				}
-			
-				/*{
-					ctx.globalAlpha = 1;
-					
-					//ctx.drawImageFilterCache( sdRenderer.img_dark_lands, 0, 0, sdRenderer.screen_width, sdRenderer.screen_height );
-					//ctx.globalAlpha = 1; // Not sure if parallax stuff in front should be transparent during planet's daylight
-
-					//Parallax background
-					ctx.drawImageFilterCache( sdRenderer.img_dark_lands2, - sdRenderer.screen_width - ( ( sdWorld.camera.x / 2 ) % sdRenderer.screen_width ), sdRenderer.screen_height / 4 - ( ( sdWorld.camera.y / sdWorld.world_bounds.y2 ) * ( sdRenderer.screen_height ) ), sdRenderer.screen_width, sdRenderer.screen_height );
-					ctx.drawImageFilterCache( sdRenderer.img_dark_lands2, 0 - ( ( sdWorld.camera.x / 2 ) % sdRenderer.screen_width ), sdRenderer.screen_height / 4 - ( ( sdWorld.camera.y / sdWorld.world_bounds.y2 ) * ( sdRenderer.screen_height ) ), sdRenderer.screen_width, sdRenderer.screen_height );
-					ctx.drawImageFilterCache( sdRenderer.img_dark_lands2, sdRenderer.screen_width - ( ( sdWorld.camera.x / 2 ) % sdRenderer.screen_width ), sdRenderer.screen_height / 4 - ( ( sdWorld.camera.y / sdWorld.world_bounds.y2 ) * ( sdRenderer.screen_height ) ), sdRenderer.screen_width, sdRenderer.screen_height );
-
-					// Closer parallax background
-					ctx.drawImageFilterCache( sdRenderer.img_dark_lands3, - sdRenderer.screen_width - ( ( sdWorld.camera.x ) % sdRenderer.screen_width ), sdRenderer.screen_height / 2 - ( ( sdWorld.camera.y / sdWorld.world_bounds.y2 ) * ( sdRenderer.screen_height * 1.5 ) ), sdRenderer.screen_width, sdRenderer.screen_height * 2 );
-					ctx.drawImageFilterCache( sdRenderer.img_dark_lands3, 0 - ( ( sdWorld.camera.x ) % sdRenderer.screen_width ), sdRenderer.screen_height / 2 - ( ( sdWorld.camera.y / sdWorld.world_bounds.y2 ) * ( sdRenderer.screen_height * 1.5 ) ), sdRenderer.screen_width, sdRenderer.screen_height * 2 );
-					ctx.drawImageFilterCache( sdRenderer.img_dark_lands3, sdRenderer.screen_width - ( ( sdWorld.camera.x ) % sdRenderer.screen_width ), sdRenderer.screen_height / 2 - ( ( sdWorld.camera.y / sdWorld.world_bounds.y2 ) * ( sdRenderer.screen_height * 1.5 ) ), sdRenderer.screen_width, sdRenderer.screen_height * 2 );
-				}*/
 				
 				let current_camera_scale = ( sdWorld.camera.scale / 4.75 );
 				
 				let offset_scale = sdRenderer.screen_height / 400;
 				let w = offset_scale * 800 * current_camera_scale;
 				let h = offset_scale * 400 * current_camera_scale;
-				
-				
-				
-				
+
 				if ( sdRenderer.dark_lands_canvases )
 				for ( let i = 0; i < sdRenderer.dark_lands_colors.length; i++ )
 				{
@@ -898,10 +878,6 @@ class sdRenderer
 				
 				//ctx.camera_relative_world_scale = sdRenderer.distance_scale_background + sdRenderer.dark_lands_colors.length + 0.001;
 				
-				/*ctx.globalAlpha = Math.cos( sdWeather.only_instance.day_time / ( 30 * 60 * 24 ) * Math.PI * 2 ) * 0.5 + 0.5;
-				ctx.fillStyle = sdRenderer.sky_gradient;
-				ctx.fillRect( 0, 0, sdRenderer.screen_width, sdRenderer.screen_height );
-				*/
 				ctx.globalAlpha = 1; // Just in case
 				ctx.sd_hue_rotation = 0;
 			}
