@@ -6,13 +6,12 @@
 *
 {
     font-family: ui_font, Verdana;
-
-    cursor: url(/assets/cursor_2x.png), auto;
 }
 
 html, body
 {
     touch-action: none;
+    cursor: url(/assets/cursor_2x.png), auto;
 }
 
 canvas

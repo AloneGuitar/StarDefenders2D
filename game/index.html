@@ -519,7 +519,7 @@
 		<label for="start_with10">Sarronian</label>
 		<br>
 		<input type="checkbox" id="start_with11" value="0">
-		<label for="start_with11">Time Shifter</label>
+		<label for="start_with11">Giant</label>
 	    </div>
 	    
 	    <!--
@@ -1063,7 +1063,7 @@
 		<label for="helmet117">Phoenix Falkok Alt</label>
                 <br>
 		<input type="checkbox" id="helmet118" value="118">
-		<label for="helmet118">Cleaner</label>
+		<label for="helmet118">Spaghetti Alt</label>
                 <br>
 		<input type="checkbox" id="helmet119" value="119">
 		<label for="helmet119">Glass</label>
@@ -2147,6 +2147,7 @@
 		    delete ret.my_hash;
 		}
 		
+		if ( typeof sdTranslationManager !== 'undefined' )
 		sdTranslationManager.TranslateHTMLPage();
 		
 		return ret;
@@ -2263,6 +2264,45 @@
 		  console.log( 'Error occurred in recognition: ' + event.error );
 		  crashed = true;
 		};
+	    if ( document.location.hash === '#stream_logger' )
+	    {
+
+		let once = true;
+
+		function StreamLoggerAuto()
+		{
+		    if ( once )
+		    if ( typeof sdWorld !== 'undefined' )
+		    {
+			once = false;
+			globalThis.TestVoice( null, 'Hash tag detected - initiating stream logger mode. Have a nice day!' );
+		    }
+
+		    if ( typeof sdRenderer !== 'undefined' && sdRenderer.canvas.style.display === 'none' )
+		    {
+			if ( document.getElementById( 'entity4' ) )
+			{
+			    if ( document.getElementById( 'entity4' ).checked )
+			    {
+				if ( document.getElementById( 'volume1' ).checked )
+				{
+				    if ( socket.connected )
+				    {
+					document.getElementById( 'start_btn' ).click();
+				    }
+				}
+				else
+				document.getElementById( 'volume1' ).click();
+			    }
+			    else
+			    document.getElementById( 'entity4' ).click();
+			}
+		    }
+		    setTimeout( StreamLoggerAuto, 100 );
+		}
+
+		StreamLoggerAuto();
+	    }
 	    }
 	}
 	</script>

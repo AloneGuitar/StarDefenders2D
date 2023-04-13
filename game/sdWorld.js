@@ -37,6 +37,7 @@ import sdRescueTeleport from './entities/sdRescueTeleport.js';
 import sdCharacterRagdoll from './entities/sdCharacterRagdoll.js';
 import sdPlayerSpectator from './entities/sdPlayerSpectator.js';
 import sdBaseShieldingUnit from './entities/sdBaseShieldingUnit.js';
+//import sdSteeringWheel from './entities/sdSteeringWheel.js';
 
 
 import sdRenderer from './client/sdRenderer.js';
@@ -216,7 +217,7 @@ class sdWorld
 		Object.freeze( sdWorld.fake_empty_array );
 
 		sdWorld.fake_empty_cell = new Cell( null );
-		//Object.freeze( sdWorld.fake_empty_cell );
+		//Object.freeze( sdWorld.fake_empty_cell ); Bad because fake cell will be returned during snapshot generation for client - server has to mark empty cell as visited
 		Object.freeze( sdWorld.fake_empty_cell.arr );
 		/*
 		if ( typeof document !== 'undefined' ) // If server
@@ -475,6 +476,9 @@ class sdWorld
 		for ( let i in sdWorld.entity_classes )
 		{
 			let c = sdWorld.entity_classes[ i ];
+			
+			//trace( '_class === "'+c.prototype.constructor.name+'" for ',c );
+			
 			c._class = c.prototype.constructor.name;
 		}
 	}
@@ -828,6 +832,7 @@ class sdWorld
 			}
 			
 			let potential_crystal = ( ( y > from_y + 256 ) ? 'sdCrystal.deep' : 'sdCrystal' );
+			
 			if ( Math.random() < 0.2 )
 			{
 				if ( y > from_y + 256 )
@@ -1244,7 +1249,7 @@ class sdWorld
 			targets[ i ].DamageWithEffect( params.radius * 2 );*/
 			
 			if ( params.color === undefined )
-			throw new Error('Should not happen');
+			throw new Error('Attempted to create explosion without a color - this should not happen and params.color must be a HEX value');
 			
 			let initial_rand = Math.random() * Math.PI * 2;
 			let steps = Math.min( 50, Math.max( 16, params.radius / 70 * 50 ) );
@@ -1314,20 +1319,42 @@ class sdWorld
 						
 						let x = Math.floor( ( params.x + dx ) / 16 ) * 16;
 						let y = Math.floor( ( params.y + dy ) / 16 ) * 16;
-						let w = 16;
+						let w = 16; // Ignored so far
 						let h = 16;
 						
 						if ( sdArea.CheckPointDamageAllowed( x + w / 2, y + h / 2 ) )
+						{
+						
+							/*if ( y < bg.y )
 							{
+								trace( 'y', y, '->', bg.y );
+								y = bg.y;
+							}
+
+							if ( y + h > bg.y + bg.height )
+							{
+								trace( 'h', h, '->', bg.y + bg.height - y );
+								h = bg.y + bg.height - y;
+							}*/
+
 							let ent = new sdBloodDecal({
 								x: x,
 								y: y,
 								h: h,
+								//bg: bg,
+								//bg_relative_x: x - bg.x,
+								//bg_relative_y: y - bg.y,
 								effect_type: params.type,
 								filter: params.filter,
 								hue: params.hue
 							});
 							sdEntity.entities.push( ent );
+							//sdWorld.UpdateHashPosition( ent, false ); // Prevent inersection with other ones
+
+							/*if ( bg._decals === null )
+							bg._decals = [ ent._net_id ];
+							else
+							bg._decals.push( ent._net_id );*/
 						}
 					}
 				}
@@ -1605,6 +1632,7 @@ class sdWorld
 					
 					sdWorld.my_entity.look_x = sdWorld.camera.x;
 					sdWorld.my_entity.look_y = sdWorld.camera.y;
+
 					
 					if ( sdWorld.my_entity_upgrades_later_set_obj )
 					{
@@ -1692,6 +1720,13 @@ class sdWorld
 
 			if ( c === 'Crystal' )
 			{
+				/*sdCrystal.TYPE_CRYSTAL = 1;
+				sdCrystal.TYPE_CRYSTAL_BIG = 2;
+				sdCrystal.TYPE_CRYSTAL_CRAB = 3;
+				sdCrystal.TYPE_CRYSTAL_CORRUPTED = 4;
+				sdCrystal.TYPE_CRYSTAL_ARTIFICIAL = 5;
+				sdCrystal.TYPE_CRYSTAL_CRAB_BIG = 6;*/
+									
 				let matter_value = ( ent.is_big ? Math.round( ent.matter_max / 4 ) : ent.matter_max );
 
 				if ( matter_value < 1000 )
@@ -1996,7 +2031,7 @@ class sdWorld
 		x = ( sdWorld.FastFloor( y / CHUNK_SIZE ) ) * 4098 + sdWorld.FastFloor( x / CHUNK_SIZE );
 		
 		let arr = sdWorld.world_hash_positions.get( x );
-
+		
 		//if ( !sdWorld.world_hash_positions.has( x ) )
 		if ( arr === undefined )
 		{
@@ -2690,13 +2725,13 @@ class sdWorld
 						sdRenderer.ctx.camera.position.y = sdWorld.camera.y;
 						sdRenderer.ctx.camera.position.z = -811 / sdWorld.camera.scale;
 					}*/
+
 					if ( sdWorld.my_entity.is( sdPlayerSpectator ) )
 					{
 						sdWorld.my_entity.look_x = sdWorld.my_entity.x;
 						sdWorld.my_entity.look_y = sdWorld.my_entity.y;
 					}
 					else
-
 					if ( sdWorld.my_entity._frozen <= 0 )
 					//if ( sdWorld.my_entity.AllowClientSideState() )
 					{
@@ -2816,6 +2851,7 @@ class sdWorld
 		sdWater.GlobalThink( GSPEED );
 		sdRescueTeleport.GlobalThink( GSPEED );
 		sdBaseShieldingUnit.GlobalThink( GSPEED );
+		//sdSteeringWheel.GlobalThink( GSPEED );
 		
 		// Keep it last:
 		sdWorld.frame++;
@@ -3169,6 +3205,11 @@ class sdWorld
 			{
 				return 'brightness(0) drop-shadow(0px 0px '+( glow_radius_scale * 6 )+'px #000000'+glow_opacity_hex+')';
 			}
+			/*else
+			if ( v === 5120 * 8 ) // Task reward / Advanced matter container
+			{
+				return 'brightness(1) saturate(0) drop-shadow(0px 0px '+( glow_radius_scale * 6 )+'px #FFFFFF'+glow_opacity_hex+')';
+			}*/
 			else
 			if ( v === 5120 * 8 ) // new 2022
 			{
@@ -3419,22 +3460,22 @@ class sdWorld
 		sdWorld.ReplaceColorInSDFilter( ret, '#800000', '#000000' ); // hue +73 deg
 
 		if ( player_description['voice11'] )
-		sdWorld.ReplaceColorInSDFilter( ret, '#800000', '#00FFFF' ); // hue +73 deg
+		sdWorld.ReplaceColorInSDFilter( ret, '#800000', '#00FFFF' );
 
 		if ( player_description['voice12'] )
-		sdWorld.ReplaceColorInSDFilter( ret, '#800000', '#000000' ); // hue +73 deg
+		sdWorld.ReplaceColorInSDFilter( ret, '#800000', '#000000' );
 
 		if ( player_description['voice13'] )
-		sdWorld.ReplaceColorInSDFilter( ret, '#800000', '#00C000' ); // hue +73 deg
+		sdWorld.ReplaceColorInSDFilter( ret, '#800000', '#00C000' );
 
 		if ( player_description['voice15'] )
-		sdWorld.ReplaceColorInSDFilter( ret, '#800000', '#00FFFF' ); // hue +73 deg
+		sdWorld.ReplaceColorInSDFilter( ret, '#800000', '#00FFFF' );
 
 		if ( player_description['voice16'] )
-		sdWorld.ReplaceColorInSDFilter( ret, '#800000', '#00C000' ); // hue +73 deg
+		sdWorld.ReplaceColorInSDFilter( ret, '#800000', '#00C000' );
 
 		if ( player_description['voice17'] )
-		sdWorld.ReplaceColorInSDFilter( ret, '#800000', '#FFFF00' ); // hue +73 deg
+		sdWorld.ReplaceColorInSDFilter( ret, '#800000', '#FFFF00' );
 
 		return ret;
 	}
@@ -3476,28 +3517,26 @@ class sdWorld
 		sdWorld.ReplaceColorInSDFilter_v2( ret, '#800000', '#3e5ede', false ); 
 
 		if ( player_description['voice10'] ) // Silence
-		sdWorld.ReplaceColorInSDFilter_v2( ret, '#800000', '#000000', false ); // hue +73 deg
+		sdWorld.ReplaceColorInSDFilter_v2( ret, '#800000', '#000000', false );
 
 		if ( player_description['voice11'] )
-		sdWorld.ReplaceColorInSDFilter_v2( ret, '#800000', '#006480', false ); // hue +73 deg
+		sdWorld.ReplaceColorInSDFilter_v2( ret, '#800000', '#006480', false );
 
 		if ( player_description['voice12'] )
-		sdWorld.ReplaceColorInSDFilter_v2( ret, '#800000', '#000000', false ); // hue +73 deg
+		sdWorld.ReplaceColorInSDFilter_v2( ret, '#800000', '#000000', false );
 
 		if ( player_description['voice13'] )
-		sdWorld.ReplaceColorInSDFilter_v2( ret, '#800000', '#00C000', false ); // hue +73 deg
+		sdWorld.ReplaceColorInSDFilter_v2( ret, '#800000', '#00C000', false );
 
 		if ( player_description['voice15'] )
-		sdWorld.ReplaceColorInSDFilter_v2( ret, '#800000', '#00FFFF', false ); // hue +73 deg
+		sdWorld.ReplaceColorInSDFilter_v2( ret, '#800000', '#00FFFF', false );
 
 		if ( player_description['voice16'] )
-		sdWorld.ReplaceColorInSDFilter_v2( ret, '#800000', '#00C000', false ); // hue +73 deg
+		sdWorld.ReplaceColorInSDFilter_v2( ret, '#800000', '#00C000', false );
 
 		if ( player_description['voice17'] )
-		sdWorld.ReplaceColorInSDFilter_v2( ret, '#800000', '#FFFF00', false ); // hue +73 deg
+		sdWorld.ReplaceColorInSDFilter_v2( ret, '#800000', '#FFFF00', false );
 
-
-	
 		return ret;
 	}
 	
@@ -4016,7 +4055,7 @@ class sdWorld
 	static PlayAdAndStart( player_settings, button )
 	{
 		button.disabled = true; // Prevent double clicks while it might be loading ad
-
+		
 		adBreak({
 			type: 'preroll',  // ad shows at start of next level
 			name: 'game-started-ad',
@@ -4025,7 +4064,7 @@ class sdWorld
 				ForceProceedOnce();
 			}
 		});
-
+		
 		setTimeout( ()=>
 		{
 			if ( document.querySelectorAll('.adsbygoogle').length > 1 )
@@ -4034,9 +4073,9 @@ class sdWorld
 			}
 			else
 			ForceProceedOnce(); // Fallback
-
+			
 		}, 300 );
-
+		
 		let once = true;
 		function ForceProceedOnce()
 		{
@@ -4051,26 +4090,26 @@ class sdWorld
 	static Start( player_settings, full_reset=false, retry=0 )
 	{
 		sdSound.AllowSound();
-		
+
 		sdWorld.my_entity_net_id = undefined; // Reset...
-			
+
 		if ( !globalThis.connection_established && !sdWorld.is_singleplayer )
 		{
 			//alert('Connection is not open yet, for some reason...');
 			//console.log('Connection is not open yet, for some reason...');
-			
+
 			if ( retry < 3 )
 			setTimeout( ()=>{
-				
+
 				sdWorld.Start( player_settings, full_reset, retry+1 );
-				
+
 			}, 1000 );
 			else
 			{
 				alert('Connection is not open yet, for some reason...');
 				console.log('Connection is not open yet, for some reason...');
 			}
-			
+
 			return;
 		}
 		else
@@ -4083,7 +4122,8 @@ class sdWorld
 				{
 					return v?1:0;
 				};
-				sdRenderer.visual_settings = BoolToInt( player_settings['visuals1'] ) * 1 + BoolToInt( player_settings['visuals2'] ) * 2 + BoolToInt( player_settings['visuals3'] ) * 3 + BoolToInt( player_settings['visuals4'] ) * 4;
+
+				//sdRenderer.visual_settings = BoolToInt( player_settings['visuals1'] ) * 1 + BoolToInt( player_settings['visuals2'] ) * 2 + BoolToInt( player_settings['visuals3'] ) * 3 + BoolToInt( player_settings['visuals4'] ) * 4;
 				sdRenderer.InitVisuals();
 
 				sdRenderer.resolution_quality = BoolToInt( player_settings['density1'] ) * 1 + BoolToInt( player_settings['density2'] ) * 0.5 + BoolToInt( player_settings['density3'] ) * 0.25;
@@ -4094,11 +4134,30 @@ class sdWorld
 				sdWorld.client_side_censorship = player_settings['censorship1'] ? true : false;
 
 				sdWorld.soft_camera = player_settings['camera1'] ? true : false;
-
+				
 				sdWorld.show_videos = player_settings['censorship3'] ? false : true;
 
 				player_settings.full_reset = full_reset;
+				//player_settings.my_hash = [ Math.random(), Math.random(), Math.random(), Math.random(), Math.random() ].join(''); // Sort of password
+				//player_settings.my_net_id = undefined;
+				/*
+				try 
+				{
+					let v;
 
+					v = localStorage.getItem( 'my_hash' );
+					if ( v !== null )
+					player_settings.my_hash = v;
+					else
+					localStorage.setItem( 'my_hash', player_settings.my_hash );
+
+					//v = localStorage.getItem( 'my_net_id' );
+					//if ( v !== null )
+					//player_settings.my_net_id = v;
+
+				} catch(e){}*/
+
+				//if ( sdWorld.time > player_settings['last_local_time_start'] + 1000 * 60 * 60 * 8 )
 				if ( globalThis.will_play_startup_tune )
 				{
 					globalThis.will_play_startup_tune = false;
@@ -4114,7 +4173,6 @@ class sdWorld
 
 				sdWorld.GotoGame();
 			}
-
 	}
 	static GotoGame()
 	{
@@ -4291,6 +4349,13 @@ class sdWorld
 		ent.Draw( fake_ctx, false );
 		ent.DrawFG( fake_ctx, false );
 		
+		/*if ( output.length === 0 ) Something like held crystals
+		{
+			debugger;
+			ent.Draw( fake_ctx, false );
+			ent.DrawFG( fake_ctx, false );
+		}*/
+		
 		sdWorld.draw_methods_output_ptr = null;
 		
 		if ( despawn_ragdoll )
@@ -4457,6 +4522,10 @@ class Cell
 	{
 		this.arr = [];
 		this.hash = hash;
+		
+		//this.snapshot_scan_id = 0; // Used during snapshot scan to keep track of visited cells
+		
+		//this.length = null;
 		Object.seal( this );
 	}
 	/*get length()
