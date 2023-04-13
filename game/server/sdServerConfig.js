@@ -186,10 +186,10 @@ class sdServerConfigFull extends sdServerConfigShort
 		guns.push( sdGun.CLASS_PISTOL ),guns.push( sdGun.CLASS_LMG ),guns.push( sdGun.CLASS_ROCKET ),guns.push( sdGun.CLASS_LVL1_MEDIUM_ARMOR );
 		else
 		if ( player_settings.start_with2 )
-		guns.push( sdGun.CLASS_SWORD ),guns.push( sdGun.CLASS_NEEDLE ),guns.push( sdGun.CLASS_SPARK ), character_entity._damage_mult = 1.2, character_entity._upgrade_counters[ 'upgrade_damage' ] = 1, character_entity._upgrade_counters[ 'upgrade_invisibility' ] = 1, character_entity._ghost_allowed = true, character_entity.hmax = 200, character_entity.hea = 200;
+		guns.push( sdGun.CLASS_SWORD ),guns.push( sdGun.CLASS_NEEDLE ),guns.push( sdGun.CLASS_SPARK ), character_entity._damage_mult = 1.2, character_entity._upgrade_counters[ 'upgrade_damage' ] = 1, character_entity._upgrade_counters[ 'upgrade_invisibility' ] = 1, character_entity._ghost_allowed = true, character_entity.hmax = 200, character_entity.hea = 200, character_entity.iron_body = 2;
 		else
 		if ( player_settings.start_with3 )
-		guns.push( sdGun.CLASS_SHOVEL ),guns.push( sdGun.CLASS_SHOTGUN ),guns.push( sdGun.CLASS_GRENADE_LAUNCHER ), character_entity._matter_capacity_boosters = 8 * 45;
+		guns.push( sdGun.CLASS_SHOVEL ),guns.push( sdGun.CLASS_SHOTGUN ),guns.push( sdGun.CLASS_GRENADE_LAUNCHER ), character_entity._matter_capacity_boosters = 8 * 45, character_entity.iron_body = 1;
 		else
 		if ( player_settings.start_with4 )
 		guns.push( sdGun.CLASS_SNIPER ),guns.push( sdGun.CLASS_SMG ), character_entity._damage_mult = 1.4, character_entity._upgrade_counters[ 'upgrade_damage' ] = 2, character_entity._upgrade_counters[ 'upgrade_invisibility' ] = 1, character_entity._ghost_allowed = true, character_entity.hmax = 200, character_entity.hea = 200;
@@ -201,7 +201,7 @@ class sdServerConfigFull extends sdServerConfigShort
 		guns.push( sdGun.CLASS_TRIPLE_RAIL ),guns.push( sdGun.CLASS_RAIL_PISTOL ),guns.push( sdGun.CLASS_RAIL_SHOTGUN ), character_entity._jetpack_allowed = true, character_entity._upgrade_counters[ 'upgrade_jetpack' ] = 1, character_entity._matter_regeneration = 1, character_entity._upgrade_counters[ 'upgrade_matter_regeneration' ] = 1;
 		else
 		if ( player_settings.start_with7 )
-		guns.push( sdGun.CLASS_RAIL_CANNON ),guns.push( sdGun.CLASS_VELOX_PISTOL ),guns.push( sdGun.CLASS_VELOX_COMBAT_RIFLE ),character_entity.s = 110, character_entity._upgrade_counters[ 'upgrade_suit' ] = 1, character_entity.hmax = 450, character_entity.hea = 450, character_entity._upgrade_counters[ 'upgrade_jetpack_power' ] = 1, character_entity._jetpack_power = 1.5;
+		guns.push( sdGun.CLASS_RAIL_CANNON ),guns.push( sdGun.CLASS_VELOX_PISTOL ),guns.push( sdGun.CLASS_VELOX_COMBAT_RIFLE ),character_entity.s = 110, character_entity._upgrade_counters[ 'upgrade_suit' ] = 1, character_entity.hmax = 450, character_entity.hea = 450, character_entity._upgrade_counters[ 'upgrade_jetpack_power' ] = 1, character_entity._jetpack_power = 1.5, character_entity.iron_body = 2;
 		else
 		if ( player_settings.start_with8 )
 		guns.push( sdGun.CLASS_ERTHAL_BURST_RIFLE ),guns.push( sdGun.CLASS_ERTHAL_PLASMA_PISTOL ),guns.push( sdGun.CLASS_LVL1_HEAVY_ARMOR );
@@ -210,7 +210,7 @@ class sdServerConfigFull extends sdServerConfigShort
 		guns.push( sdGun.CLASS_SETR_PLASMA_SHOTGUN ),guns.push( sdGun.CLASS_LVL1_LIGHT_ARMOR ), character_entity._matter_capacity_boosters = 4 * 45, character_entity._damage_mult = 1.2, character_entity._upgrade_counters[ 'upgrade_damage' ] = 1, character_entity._upgrade_counters[ 'upgrade_stability_recovery' ] = 1, character_entity._stability_recovery_multiplier = 1 + ( 3 / character_entity._upgrade_counters[ 'upgrade_stability_recovery' ] );
 		else
 		if ( player_settings.start_with10 )
-		guns.push( sdGun.CLASS_ALIEN_ENERGY_RIFLE ),guns.push( sdGun.CLASS_LVL1_ARMOR_REGEN ),guns.push( sdGun.CLASS_LVL1_LIGHT_ARMOR ), character_entity._damage_mult = 1.2, character_entity._upgrade_counters[ 'upgrade_damage' ] = 1, character_entity._air_upgrade = 2, character_entity._upgrade_counters[ 'upgrade_oxygen_capacity' ] = 1;
+		guns.push( sdGun.CLASS_ALIEN_ENERGY_RIFLE ),guns.push( sdGun.CLASS_LVL1_ARMOR_REGEN ),guns.push( sdGun.CLASS_LVL1_LIGHT_ARMOR ), character_entity._damage_mult = 1.2, character_entity._upgrade_counters[ 'upgrade_damage' ] = 1, character_entity._air_upgrade = 2, character_entity._upgrade_counters[ 'upgrade_oxygen_capacity' ] = 1, character_entity.iron_body = 1;
 		else
 		if ( player_settings.start_with11 )
 		guns.push( sdGun.CLASS_LVL1_LIGHT_ARMOR ),character_entity.s = 111, character_entity._damage_mult = 1.2, character_entity._upgrade_counters[ 'upgrade_damage' ] = 1, character_entity._upgrade_counters[ 'upgrade_suit' ] = 1, character_entity.hmax = 650, character_entity.hea = 650, character_entity._matter_capacity_boosters = 4 * 45;
