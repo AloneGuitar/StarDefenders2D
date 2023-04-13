@@ -9,6 +9,7 @@
 import sdWorld from '../sdWorld.js';
 import sdEntity from './sdEntity.js';
 import sdCharacter from './sdCharacter.js';
+import sdGun from './sdGun.js';
 
 class sdCharacterRagdoll
 {
@@ -136,7 +137,7 @@ class sdCharacterRagdoll
 		{
 			let dx = this.character.x + ( this.character._hitbox_x1 + this.character._hitbox_x2 ) / 2;
 			let dy = this.character.y + ( this.character._hitbox_y1 + this.character._hitbox_y2 ) / 2;
-			
+
 			this.bones[ i ].x = dx + Math.random() - 0.5;
 			this.bones[ i ].y = dy + Math.random() - 0.5;
 		}
@@ -275,7 +276,7 @@ class sdCharacterRagdoll
 			gun_offset_x += ( 1 - ( Math.cos( this.character.fire_anim / 5 * Math.PI ) * 0.5 + 0.5 ) ) * 3;
 			gun_offset_body_x += 1 - ( Math.cos( this.character.fire_anim / 5 * Math.PI ) * 0.5 + 0.5 );
 
-			if ( this.character.damage_mult >=2 )
+			if ( this.character.damage_mult >= 1.9 )
 			{
 				gun_offset_x += ( 1 - ( Math.cos( this.character.fire_anim / 5 * Math.PI ) * 0.5 + 0.5 ) ) * 5;
 				gun_offset_body_x += ( 1 - ( Math.cos( this.character.fire_anim / 5 * Math.PI ) * 0.5 + 0.5 ) ) * 2;
@@ -324,6 +325,11 @@ class sdCharacterRagdoll
 		if ( this.character.anim_change === true && ( this.character.act_x === 0 || this.character.speed_up === true ) )
 		{
 		this.MoveBone( this.torso, 13, 22.75 );
+		}
+
+		if ( this.character.flying === true )
+		{
+		this.MoveBone( this.torso, 13, 21.75 );
 		}
 
 		let dx = -( this.chest._ty - this.character.look_y ) * this.character._side;
@@ -431,7 +437,7 @@ class sdCharacterRagdoll
 		legs_x = 12.5;
 		}
 		
-		if ( !this.character.stands && this.character._crouch_intens <= 0.25 )
+		if ( ( !this.character.stands && this.character._crouch_intens <= 0.25 ) && this.character.flying === false )
 		{
 			walk_amplitude_x = 4;
         
@@ -487,11 +493,13 @@ class sdCharacterRagdoll
 		this.MoveBone( this.toes2, legs_x - walk_amplitude_x + 2, legs_y - Math.max( 0, -walk_amplitude_y ) );
 		
 		let leg_len = 8;
+		if ( this.character.flying === true )
+		leg_len = 7.5;
 
 		this.RespectLength( this.torso, this.ankle1, 1, leg_len );
 		this.RespectLength( this.torso, this.ankle2, 1, leg_len );
 
-		if ( !this.character.stands || this.character.act_x !== 0 )
+		if ( ( !this.character.stands || this.character.act_x !== 0 ) && this.character.flying === false )
 		{
 			this.RespectLength( this.torso, this.toes1, 1, leg_len );
 			this.RespectLength( this.torso, this.toes2, 1, leg_len );
@@ -542,7 +550,7 @@ class sdCharacterRagdoll
 			
 			dx += -this.character._side * 0.3 * activation;
 			dy += 0.4 * activation;
-		
+
 			this.MoveBoneRelative( this.hand1, 
 			this.chest._tx + dx * ( 9 + gun_offset_x - reload ) * scale, 
 			this.chest._ty + dy * ( 9 + gun_offset_x - reload ) * scale );
@@ -550,6 +558,17 @@ class sdCharacterRagdoll
 			this.MoveBoneRelative( this.hand2, 
 			this.chest._tx + dx * ( 9 + gun_offset_x - 3 + reload ) * scale, 
 			this.chest._ty + dy * ( 9 + gun_offset_x - 3 + reload ) * scale + 2 * scale );
+
+			if ( reload <= 0 )
+			if ( this.character.anim_change !== true && this.character.matter_max >= 12000 && ( this.character.gun_slot === 1 || this.character.gun_slot === 6 || this.character.gun_slot === 7 || this.character.gun_slot === 9 || this.character.gun_slot === 0 ) && !sdGun.classes[ this.character._inventory[ this.character.gun_slot ].class ].is_giant )
+			{
+			this.MoveBoneRelative( this.hand1, 
+			this.chest._tx - _anim_walk_arms * scale, 
+			this.chest._ty + 6 * scale );
+			this.MoveBoneRelative( this.hand2, 
+			this.chest._tx + dx * ( 12 + gun_offset_x - 3 + reload ) * scale, 
+			this.chest._ty + dy * ( 12 + gun_offset_x - 3 + reload ) * scale + 2 * scale );
+			}
 		}
 		else
 		{
@@ -642,11 +661,6 @@ class sdCharacterRagdoll
 
 		for ( let i = 0; i < 2; i++ ) // A little bit more iterations
 		{
-			//this.RespectLength( this.torso, this.knee1, 4, 4 );
-			//this.RespectLength( this.torso, this.knee2, 4, 4 );
-			//this.RespectLength( this.ankle1, this.knee1, 4, 4 );
-			//this.RespectLength( this.ankle2, this.knee2, 4, 4 );
-
 			this.RespectLength( this.hand1, this.elbow1, 4, 6 );
 			this.RespectLength( this.hand2, this.elbow2, 4, 6 );
 			this.RespectLength( this.chest, this.elbow1, 2, 3 );

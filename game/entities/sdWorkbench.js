@@ -18,12 +18,16 @@ class sdWorkbench extends sdEntity
 		sdWorkbench.img_wb = sdWorld.CreateImageFromFile( 'workbench2' );
 		sdWorkbench.img_wb2 = sdWorld.CreateImageFromFile( 'workbench' );
 		sdWorkbench.img_wb3 = sdWorld.CreateImageFromFile( 'workbench3' );
+		sdWorkbench.img_wb4 = sdWorld.CreateImageFromFile( 'workbench4' );
+		sdWorkbench.img_wb5 = sdWorld.CreateImageFromFile( 'workbench5' );
 		
 		sdWorkbench.ignored_classes_arr = [ 'sdGun', 'sdBullet', 'sdCharacter' ];
 
 		sdWorkbench.WORKBENCH = 1;
 		sdWorkbench.WORKBENCH2 = 2;
 		sdWorkbench.WORKBENCH3 = 3;
+		sdWorkbench.WORKBENCH4 = 4;
+		sdWorkbench.WORKBENCH5 = 5;
 		
 		sdWorld.entity_classes[ this.name ] = this; // Register for object spawn
 	}
@@ -72,9 +76,6 @@ class sdWorkbench extends sdEntity
 		this.hea = this.hmax;
 		this._regen_timeout = 0;
 		this._cooldown = 0;
-		//this.matter_max = 5500;
-		//this.matter = 100;
-		//this.delay = 0;
 		this.level = 1;
 		this.metal_shards = 0;
 		this.metal_shards_max = 10;
@@ -110,9 +111,23 @@ class sdWorkbench extends sdEntity
 		else
 		if ( this.type === 3 )
 		{
-		this.level = 14;
+		this.level = 13;
 		this.metal_shards = 0;
-		this.metal_shards_max = 75;
+		this.metal_shards_max = 70;
+		}
+		else
+		if ( this.type === 4 )
+		{
+		this.level = 19;
+		this.metal_shards = 0;
+		this.metal_shards_max = 100;
+		}
+		else
+		if ( this.type === 5 )
+		{
+		this.level = 25;
+		this.metal_shards = 0;
+		this.metal_shards_max = 130;
 		}
 
 	}
@@ -186,15 +201,23 @@ class sdWorkbench extends sdEntity
 		ctx.drawImageFilterCache( sdWorkbench.img_wb2, -16, -16, 32, 32 );
 		if ( this.type === 3 )
 		ctx.drawImageFilterCache( sdWorkbench.img_wb3, -16, -16, 32, 32 );
+		if ( this.type === 4 )
+		ctx.drawImageFilterCache( sdWorkbench.img_wb4, -16, -16, 32, 32 );
+		if ( this.type === 5 )
+		ctx.drawImageFilterCache( sdWorkbench.img_wb5, -16, -16, 32, 32 );
 	}
 	DrawHUD( ctx, attached ) // foreground layer
 	{
 		if ( this.type === 1 || this.type === 0 )
 		sdEntity.TooltipUntranslated( ctx, T("Workbench") + " ( " + ~~(this.metal_shards) + " / " + ~~(this.metal_shards_max) + " )", 0, -10 );
 		if ( this.type === 2 )
-		sdEntity.TooltipUntranslated( ctx, T("Workbench MK2") + " ( " + ~~(this.metal_shards) + " / " + ~~(this.metal_shards_max) + " )", 0, -10 );
+		sdEntity.TooltipUntranslated( ctx, T("Work Table") + " ( " + ~~(this.metal_shards) + " / " + ~~(this.metal_shards_max) + " )", 0, -10 );
 		if ( this.type === 3 )
-		sdEntity.TooltipUntranslated( ctx, T("Super Workbench") + " ( " + ~~(this.metal_shards) + " / " + ~~(this.metal_shards_max) + " )", 0, -10 );
+		sdEntity.TooltipUntranslated( ctx, T("Workbench MK2") + " ( " + ~~(this.metal_shards) + " / " + ~~(this.metal_shards_max) + " )", 0, -10 );
+		if ( this.type === 4 )
+		sdEntity.TooltipUntranslated( ctx, T("Advanced Workbench") + " ( " + ~~(this.metal_shards) + " / " + ~~(this.metal_shards_max) + " )", 0, -10 );
+		if ( this.type === 5 )
+		sdEntity.TooltipUntranslated( ctx, T("KVT Workbench") + " ( " + ~~(this.metal_shards) + " / " + ~~(this.metal_shards_max) + " )", 0, -10 );
 
 		sdEntity.Tooltip( ctx, T("Level") + " " + this.level, 0, -3, '#66ff66' );
 		let w = 40;
@@ -237,9 +260,9 @@ class sdWorkbench extends sdEntity
 			{
 				if ( exectuter_character._god )
 				{
-					this.level = 21;
-					this.metal_shards = 110;
-					this.metal_shards_max = 110;
+					this.level = 31;
+					this.metal_shards = 160;
+					this.metal_shards_max = 160;
 				}
 				else
 				if ( this.metal_shards === this.metal_shards_max )
@@ -264,12 +287,22 @@ class sdWorkbench extends sdEntity
 			this.AddContextOption( 'Upgrade workbench (Max Metal shards)', 'UPG_WB', [] );
 			}
 			else
-			if ( this.level < 14 && this.type === 2 && !exectuter_character._god )
+			if ( this.level < 13 && this.type === 2 && !exectuter_character._god )
 			{
 			this.AddContextOption( 'Upgrade workbench (Max Metal shards)', 'UPG_WB', [] );
 			}
 			else
-			if ( this.level < 21 && this.type === 3 && !exectuter_character._god )
+			if ( this.level < 19 && this.type === 3 && !exectuter_character._god )
+			{
+			this.AddContextOption( 'Upgrade workbench (Max Metal shards)', 'UPG_WB', [] );
+			}
+			else
+			if ( this.level < 25 && this.type === 4 && !exectuter_character._god )
+			{
+			this.AddContextOption( 'Upgrade workbench (Max Metal shards)', 'UPG_WB', [] );
+			}
+			else
+			if ( this.level < 31 && this.type === 5 && !exectuter_character._god )
 			{
 			this.AddContextOption( 'Upgrade workbench (Max Metal shards)', 'UPG_WB', [] );
 			}

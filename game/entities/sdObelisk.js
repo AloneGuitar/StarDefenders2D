@@ -254,7 +254,7 @@ class sdObelisk extends sdEntity
 		{
 			ctx.drawImageFilterCache( sdObelisk.img_obelisk8, 0, 0, 64, 128, - 32, - 64, 64, 128 );
 			ctx.globalAlpha = this.glow_animation / 60;
-			ctx.filter = ' drop-shadow(0px 0px 12px #ff8c00)';
+			ctx.filter = ' drop-shadow(0px 0px 12px #000000)';
 			ctx.drawImageFilterCache( sdObelisk.img_obelisk8, 64, 0, 64, 128, - 32, - 64, 64, 128 );
 		}
 

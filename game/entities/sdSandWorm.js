@@ -101,9 +101,6 @@ class sdSandWorm extends sdEntity
 		this._hmax = ( this.kind === sdSandWorm.KIND_COUNCIL_WORM ? 60 : this.kind === sdSandWorm.KIND_CORRUPTED_WORM ? 1.5 : 1 ) * 700 * Math.pow( this.scale, 2 );// Bigger worms = more health
 		this._hea = this._hmax;
 
-		this._nature_damage = 1000000;
-		this._player_damage = 0;
-
 		this._regen_timeout = 0; // For council worm HP regen, for some reason it claims object is not extensible if placed in brackets below which check if the worm is council one.
 
 		this._spawn_wyrmhide_on_death = false; // Should this body part spawn Wyrmhide on death?

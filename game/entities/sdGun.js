@@ -667,14 +667,14 @@ class sdGun extends sdEntity
 		this.SetHiberState( sdEntity.HIBERSTATE_ACTIVE );
 		if ( this.class === sdGun.CLASS_CUSTOM_RIFLE )
 		{
-			if ( this._temperature_addition < 0 )
+			if ( this._temperature_addition < -800 )
 			{
-				this._temperature_addition = 0;
-				this.extra[ 11 ] = 0;
+				this._temperature_addition = -800;
+				this.extra[ 11 ] = -800;
 			}
-			if ( this.extra[ 7 ] > 3 )
+			if ( this.extra[ 7 ] > 5 )
 			{
-				this.extra[ 7 ] = 3;
+				this.extra[ 7 ] = 5;
 			}
 			if ( this.extra[ 9 ] > 2 )
 			{

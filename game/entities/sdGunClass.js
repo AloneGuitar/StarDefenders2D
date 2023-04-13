@@ -337,17 +337,38 @@ class sdGunClass
 					category: 'customize_properties',
 					action: ( gun, initiator=null )=> 
 					{ 
-						if ( gun.extra[ ID_DAMAGE_MULT ] < 3 )
-						{
-							gun.extra[ ID_DAMAGE_MULT ] += 0.05; // 5%
-							//gun.extra[ ID_RECOIL_SCALE ] *= 0.95; // 5%
-							UpdateCusomizableGunProperties( gun );
+						if ( initiator.matter_max > 14000 )
+						{ 
+							if ( gun.extra[ ID_DAMAGE_MULT ] < 5 )
+							{
+								gun.extra[ ID_DAMAGE_MULT ] += 0.05; // 5%
+								UpdateCusomizableGunProperties( gun );
+
+								if ( initiator )
+								if ( initiator._socket )
+								if ( gun.extra[ ID_DAMAGE_MULT ] > 3 )
+								initiator._socket.SDServiceMessage( 'Super Power!' );
+							}
+							else
+							{
+								if ( initiator )
+								if ( initiator._socket )
+								initiator._socket.SDServiceMessage( 'Limit has been reached.' );
+							}
 						}
 						else
-						{
-							if ( initiator )
-							if ( initiator._socket )
-							initiator._socket.SDServiceMessage( 'Limit has been reached.' );
+						{ 
+							if ( gun.extra[ ID_DAMAGE_MULT ] < 3 )
+							{
+								gun.extra[ ID_DAMAGE_MULT ] += 0.05; // 5%
+								UpdateCusomizableGunProperties( gun );
+							}
+							else
+							{
+								if ( initiator )
+								if ( initiator._socket )
+								initiator._socket.SDServiceMessage( 'Limit has been reached.' );
+							}
 						}
 					} 
 				} 
@@ -381,17 +402,39 @@ class sdGunClass
 					category: 'customize_properties',
 					action: ( gun, initiator=null )=> 
 					{ 
-						if ( gun.extra[ ID_TEMPERATURE_APPLIED ] < 1000 )
-						{
-							gun.extra[ ID_TEMPERATURE_APPLIED ] += 20;
-							UpdateCusomizableGunProperties( gun );
-						}
+						if ( initiator.matter_max > 14000 )
+						{ 
+							if ( gun.extra[ ID_TEMPERATURE_APPLIED ] < 2000 )
+							{
+								gun.extra[ ID_TEMPERATURE_APPLIED ] += 20;
+								UpdateCusomizableGunProperties( gun );
+
+								if ( initiator )
+								if ( initiator._socket )
+								if ( gun.extra[ ID_TEMPERATURE_APPLIED ] > 750 )
+								initiator._socket.SDServiceMessage( 'Super Power!' );
+							}
+							else
+							{
+								if ( initiator )
+								if ( initiator._socket )
+								initiator._socket.SDServiceMessage( 'Limit has been reached.' );
+							}
+						} 
 						else
-						{
-							if ( initiator )
-							if ( initiator._socket )
-							initiator._socket.SDServiceMessage( 'Limit has been reached.' );
-						}
+						{ 
+							if ( gun.extra[ ID_TEMPERATURE_APPLIED ] < 750 )
+							{
+								gun.extra[ ID_TEMPERATURE_APPLIED ] += 20;
+								UpdateCusomizableGunProperties( gun );
+							}
+							else
+							{
+								if ( initiator )
+								if ( initiator._socket )
+								initiator._socket.SDServiceMessage( 'Limit has been reached.' );
+							}
+						} 
 					} 
 				} 
 			);
@@ -402,16 +445,38 @@ class sdGunClass
 					category: 'customize_properties',
 					action: ( gun, initiator=null )=> 
 					{ 
-						if ( gun.extra[ ID_TEMPERATURE_APPLIED ] > -420 )
-						{
-							gun.extra[ ID_TEMPERATURE_APPLIED ] -= 20;
-							UpdateCusomizableGunProperties( gun );
+						if ( initiator.matter_max > 14000 )
+						{ 
+							if ( gun.extra[ ID_TEMPERATURE_APPLIED ] > -800 )
+							{
+								gun.extra[ ID_TEMPERATURE_APPLIED ] -= 20;
+								UpdateCusomizableGunProperties( gun );
+
+								if ( initiator )
+								if ( initiator._socket )
+								if ( gun.extra[ ID_TEMPERATURE_APPLIED ] < -420 )
+								initiator._socket.SDServiceMessage( 'Super Power!' );
+							}
+							else
+							{
+								if ( initiator )
+								if ( initiator._socket )
+								initiator._socket.SDServiceMessage( 'Limit has been reached.' );
+							}
 						}
 						else
-						{
-							if ( initiator )
-							if ( initiator._socket )
-							initiator._socket.SDServiceMessage( 'Limit has been reached.' );
+						{ 
+							if ( gun.extra[ ID_TEMPERATURE_APPLIED ] > -420 )
+							{
+								gun.extra[ ID_TEMPERATURE_APPLIED ] -= 20;
+								UpdateCusomizableGunProperties( gun );
+							}
+							else
+							{
+								if ( initiator )
+								if ( initiator._socket )
+								initiator._socket.SDServiceMessage( 'Limit has been reached.' );
+							}
 						}
 					} 
 				} 
@@ -423,8 +488,21 @@ class sdGunClass
 					category: 'customize_properties',
 					action: ( gun, initiator=null )=> 
 					{ 
-						gun.extra[ ID_FIRE_RATE ] = Math.max( 0.5, gun.extra[ ID_FIRE_RATE ] - 0.1 );
-						UpdateCusomizableGunProperties( gun );
+						if ( initiator.matter_max > 14000 )
+						{ 
+							gun.extra[ ID_FIRE_RATE ] = Math.max( 0.3, gun.extra[ ID_FIRE_RATE ] - 0.1 );
+							UpdateCusomizableGunProperties( gun );
+
+							if ( initiator )
+							if ( initiator._socket )
+							if ( gun.extra[ ID_FIRE_RATE ] < 0.5 );
+							initiator._socket.SDServiceMessage( 'Super Power!' );
+						} 
+						else
+						{ 
+							gun.extra[ ID_FIRE_RATE ] = Math.max( 0.5, gun.extra[ ID_FIRE_RATE ] - 0.1 );
+							UpdateCusomizableGunProperties( gun );
+						} 
 					} 
 				} 
 			);
@@ -542,17 +620,37 @@ class sdGunClass
 					category: 'customize_properties',
 					action: ( gun, initiator=null )=> 
 					{ 
-						if ( gun.extra[ ID_DAMAGE_MULT ] < 2 )
-						{
-							gun.extra[ ID_DAMAGE_MULT ] += 0.05; // 5%
-							//gun.extra[ ID_RECOIL_SCALE ] *= 0.95; // 5%
-							//UpdateCusomizableGunProperties( gun );
+						if ( initiator.matter_max > 14000 )
+						{ 
+							if ( gun.extra[ ID_DAMAGE_MULT ] < 4 )
+							{
+								gun.extra[ ID_DAMAGE_MULT ] += 0.05; // 5%
+
+								if ( initiator )
+								if ( initiator._socket )
+								if ( gun.extra[ ID_DAMAGE_MULT ] > 2 )
+								initiator._socket.SDServiceMessage( 'Super Power!' );
+							}
+							else
+							{
+								if ( initiator )
+								if ( initiator._socket )
+								initiator._socket.SDServiceMessage( 'Limit has been reached.' );
+							}
 						}
 						else
-						{
-							if ( initiator )
-							if ( initiator._socket )
-							initiator._socket.SDServiceMessage( 'Limit has been reached.' );
+						{ 
+							if ( gun.extra[ ID_DAMAGE_MULT ] < 2 )
+							{
+								gun.extra[ ID_DAMAGE_MULT ] += 0.05; // 5%
+								//UpdateCusomizableGunProperties( gun );
+							}
+							else
+							{
+								if ( initiator )
+								if ( initiator._socket )
+								initiator._socket.SDServiceMessage( 'Limit has been reached.' );
+							}
 						}
 					} 
 				} 
@@ -586,18 +684,40 @@ class sdGunClass
 					category: 'customize_properties',
 					action: ( gun, initiator=null )=> 
 					{ 
-						if ( gun.extra[ ID_TEMPERATURE_APPLIED ] < 500 )
-						{
-							gun.extra[ ID_TEMPERATURE_APPLIED ] += 20;
-							gun._temperature_addition = gun.extra[ ID_TEMPERATURE_APPLIED ];
-							//UpdateCusomizableGunProperties( gun );
-						}
+						if ( initiator.matter_max > 14000 )
+						{ 
+							if ( gun.extra[ ID_TEMPERATURE_APPLIED ] < 1000 )
+							{
+								gun.extra[ ID_TEMPERATURE_APPLIED ] += 20;
+								gun._temperature_addition = gun.extra[ ID_TEMPERATURE_APPLIED ];
+
+								if ( initiator )
+								if ( initiator._socket )
+								if ( gun.extra[ ID_TEMPERATURE_APPLIED ] > 500 )
+								initiator._socket.SDServiceMessage( 'Super Power!' );
+							}
+							else
+							{
+								if ( initiator )
+								if ( initiator._socket )
+								initiator._socket.SDServiceMessage( 'Limit has been reached.' );
+							}
+						} 
 						else
-						{
-							if ( initiator )
-							if ( initiator._socket )
-							initiator._socket.SDServiceMessage( 'Limit has been reached.' );
-						}
+						{ 
+							if ( gun.extra[ ID_TEMPERATURE_APPLIED ] < 500 )
+							{
+								gun.extra[ ID_TEMPERATURE_APPLIED ] += 20;
+								gun._temperature_addition = gun.extra[ ID_TEMPERATURE_APPLIED ];
+								//UpdateCusomizableGunProperties( gun );
+							}
+							else
+							{
+								if ( initiator )
+								if ( initiator._socket )
+								initiator._socket.SDServiceMessage( 'Limit has been reached.' );
+							}
+						} 
 					} 
 				} 
 			);
@@ -608,17 +728,39 @@ class sdGunClass
 					category: 'customize_properties',
 					action: ( gun, initiator=null )=> 
 					{ 
-						if ( gun.extra[ ID_TEMPERATURE_APPLIED ] > -140 )
-						{
-							gun.extra[ ID_TEMPERATURE_APPLIED ] -= 20;
-							gun._temperature_addition = gun.extra[ ID_TEMPERATURE_APPLIED ];
-							//UpdateCusomizableGunProperties( gun );
+						if ( initiator.matter_max > 14000 )
+						{ 
+							if ( gun.extra[ ID_TEMPERATURE_APPLIED ] > -500 )
+							{
+								gun.extra[ ID_TEMPERATURE_APPLIED ] -= 20;
+								gun._temperature_addition = gun.extra[ ID_TEMPERATURE_APPLIED ];
+
+								if ( initiator )
+								if ( initiator._socket )
+								if ( gun.extra[ ID_TEMPERATURE_APPLIED ] < -140 )
+								initiator._socket.SDServiceMessage( 'Super Power!' );
+							}
+							else
+							{
+								if ( initiator )
+								if ( initiator._socket )
+								initiator._socket.SDServiceMessage( 'Limit has been reached.' );
+							}
 						}
 						else
-						{
-							if ( initiator )
-							if ( initiator._socket )
-							initiator._socket.SDServiceMessage( 'Limit has been reached.' );
+						{ 
+							if ( gun.extra[ ID_TEMPERATURE_APPLIED ] > -140 )
+							{
+								gun.extra[ ID_TEMPERATURE_APPLIED ] -= 20;
+								gun._temperature_addition = gun.extra[ ID_TEMPERATURE_APPLIED ];
+								//UpdateCusomizableGunProperties( gun );
+							}
+							else
+							{
+								if ( initiator )
+								if ( initiator._socket )
+								initiator._socket.SDServiceMessage( 'Limit has been reached.' );
+							}
 						}
 					} 
 				} 
@@ -630,9 +772,21 @@ class sdGunClass
 					category: 'customize_properties',
 					action: ( gun, initiator=null )=> 
 					{ 
-						gun.extra[ ID_FIRE_RATE ] = Math.max( 0.5, gun.extra[ ID_FIRE_RATE ] - 0.1 );
-						gun._reload_time = sdGun.classes[ gun.class ].reload_time * gun.extra[ ID_FIRE_RATE ];
-						//UpdateCusomizableGunProperties( gun );
+						if ( initiator.matter_max > 14000 )
+						{ 
+							gun.extra[ ID_FIRE_RATE ] = Math.max( 0.3, gun.extra[ ID_FIRE_RATE ] - 0.1 );
+							gun._reload_time = sdGun.classes[ gun.class ].reload_time * gun.extra[ ID_FIRE_RATE ];
+
+							if ( initiator )
+							if ( initiator._socket )
+							if ( gun.extra[ ID_FIRE_RATE ] < 0.5 );
+							initiator._socket.SDServiceMessage( 'Super Power!' );
+						} 
+						else
+						{ 
+							gun.extra[ ID_FIRE_RATE ] = Math.max( 0.5, gun.extra[ ID_FIRE_RATE ] - 0.1 );
+							gun._reload_time = sdGun.classes[ gun.class ].reload_time * gun.extra[ ID_FIRE_RATE ];
+						} 
 					} 
 				} 
 			);
@@ -645,7 +799,6 @@ class sdGunClass
 					{ 
 						gun.extra[ ID_FIRE_RATE ] = Math.min( 10, gun.extra[ ID_FIRE_RATE ] + 0.1 );
 						gun._reload_time = sdGun.classes[ gun.class ].reload_time * gun.extra[ ID_FIRE_RATE ];
-						//UpdateCusomizableGunProperties( gun );
 					} 
 				} 
 			);
@@ -1215,8 +1368,8 @@ class sdGunClass
 			count: 1,
 			matter_cost: 300,
 			projectile_velocity: 16,
-			min_build_tool_level: 6,
-			min_workbench_level: 4,
+			min_build_tool_level: 19,
+			min_workbench_level: 7,
 			GetAmmoCost: ()=>
 			{
 				return 0;
@@ -1248,7 +1401,7 @@ class sdGunClass
 			count: 1,
 			projectile_properties: { _damage: 25, color:'#afdfff', _dirt_mult: -0.5 },
 			matter_cost: 40,
-			min_build_tool_level: 2,
+			min_build_tool_level: 4,
 			projectile_properties_dynamic: ( gun )=>{ 
 				
 				let obj = { color:'#afdfff', _dirt_mult: -0.5, _knock_scale: 0.01 * 8 * gun.extra[ ID_DAMAGE_MULT ] }; // Default value for _knock_scale
@@ -1289,9 +1442,9 @@ class sdGunClass
 			ammo_capacity: -1,// 10, // 3
 			count: 1,
 			projectile_properties: { _rail: true, _damage: 15, color: '#62c8f2'/*, _knock_scale:0.01 * 8*/ }, // 70
-			min_build_tool_level: 3,
-			min_workbench_level: 4,
-			matter_cost: 60,
+			min_build_tool_level: 15,
+			min_workbench_level: 7,
+			matter_cost: 160,
 			projectile_properties_dynamic: ( gun )=>{ 
 				
 				let obj = { _rail: true, color: '#62c8f2', _knock_scale: 0.01 * 8 * gun.extra[ ID_DAMAGE_MULT ] }; // Default value for _knock_scale
@@ -1442,9 +1595,9 @@ class sdGunClass
 			count: 1,
 			fire_type: 2,
 			projectile_properties: { _rail: true, _damage: 25, color: '#62c8f2'/*, _knock_scale:0.01 * 8*/ },
-			min_build_tool_level: 3,
-			min_workbench_level: 4,
-			matter_cost: 45,
+			min_build_tool_level: 13,
+			min_workbench_level: 7,
+			matter_cost: 145,
 			projectile_properties_dynamic: ( gun )=>{ 
 				
 				let obj = { _rail: true, color: '#62c8f2', _knock_scale: 0.01 * 8 * gun.extra[ ID_DAMAGE_MULT ] }; // Default value for _knock_scale
@@ -1500,8 +1653,8 @@ class sdGunClass
 			projectile_velocity: 14 * 2,
 			spread: 0.11, // 0.15,
 			projectile_properties: { _damage: 40, color: '#DDDDDD', penetrating: true }, // I nerfed it's damage from 45 to 40 but that's up to balancing decisions - Booraz149
-			min_workbench_level: 1,
-			min_build_tool_level: 2,
+			min_workbench_level: 3,
+			min_build_tool_level: 5,
 			matter_cost: 150,
 			projectile_properties_dynamic: ( gun )=>{ 
 				
@@ -1547,9 +1700,9 @@ class sdGunClass
 			count: 1,
 			projectile_velocity: 10 * 2,  // Slower bullet velocity than sniper but ricochet projectiles
 			projectile_properties: { _damage: 82, color:'#00ffff', model: 'f_psicutter_proj'/*, _knock_scale:0.01 * 8*/, penetrating: false, _bouncy: true },
-			min_workbench_level: 1,
+			min_workbench_level: 3,
 			matter_cost: 180,
-			min_build_tool_level: 2,
+			min_build_tool_level: 5,
 			projectile_properties_dynamic: ( gun )=>{ 
 				
 				let obj = { color:'#00ffff', model: 'f_psicutter_proj', penetrating: false, _bouncy: true ,_knock_scale: 0.01 * 8 * gun.extra[ ID_DAMAGE_MULT ] }; // Default value for _knock_scale
@@ -1593,9 +1746,9 @@ class sdGunClass
 			spread: 0.15,
 			count: 5,
 			projectile_properties: { _rail: true, _damage: 20, color: '#62c8f2'/*, _knock_scale:0.01 * 8*/ },
-			min_build_tool_level: 4,
-			min_workbench_level: 4,
-			matter_cost: 70,
+			min_build_tool_level: 7,
+			min_workbench_level: 14,
+			matter_cost: 170,
 			projectile_properties_dynamic: ( gun )=>{ 
 				
 				let obj = { _rail: true, color: '#62c8f2', _knock_scale: 0.01 * 8 * gun.extra[ ID_DAMAGE_MULT ] }; // Default value for _knock_scale
@@ -1643,8 +1796,9 @@ class sdGunClass
 			ammo_capacity: -1,
 			count: 1,
 			projectile_properties: { _rail: true, _rail_circled: true, _damage: 62, color: '#FF0000'/*, _knock_scale:0.01 * 8*/ },
-			matter_cost: 170,
-			min_workbench_level: 3,
+			matter_cost: 270,
+			min_build_tool_level: 18,
+			min_workbench_level: 6,
 			projectile_properties_dynamic: ( gun )=>{ 
 				
 				let obj = { _rail: true, _rail_circled: true, _damage: 62, color: '#FF0000' };
@@ -1688,8 +1842,8 @@ class sdGunClass
 			category: 'Other',
 			projectile_properties: { _damage: 0 },
 			matter_cost: 6500,
-			min_build_tool_level: 30,
-			min_workbench_level: 17,
+			min_build_tool_level: 50,
+			min_workbench_level: 19,
 			ignore_slot: true,
 			apply_shading: false,
 			onPickupAttempt: ( character, gun )=> // Cancels pickup and removes itself if player can pickup
@@ -2264,9 +2418,9 @@ class sdGunClass
 			ammo_capacity: -1,
 			count: 1,
 			projectile_velocity: 1 * 3.5,
-			min_build_tool_level: 10,
-			matter_cost: 2000,
-			min_workbench_level: 13,
+			min_build_tool_level: 17,
+			matter_cost: 3000,
+			min_workbench_level: 25,
 			projectile_properties: { _rail: true, _damage: -15, color: '#ff00ff',  _return_damage_to_owner:true },
 			projectile_properties_dynamic: ( gun )=>{ 
 				
@@ -2505,9 +2659,9 @@ class sdGunClass
 			count: 1,
 			projectile_velocity: 16,
 			category: 'Other',
-			matter_cost: 13250,
-			min_workbench_level: 21,
-			min_build_tool_level: 30,
+			matter_cost: 15050,
+			min_workbench_level: 31,
+			min_build_tool_level: 60,
 			GetAmmoCost: ( gun, shoot_from_scenario )=>
 			{
 				if ( shoot_from_scenario )
@@ -2697,8 +2851,8 @@ class sdGunClass
 			ammo_capacity: -1,
 			count: 0,
 			category: 'Other',
-			min_build_tool_level: 6,
-			min_workbench_level: 8,
+			min_build_tool_level: 26,
+			min_workbench_level: 18,
 			matter_cost: 400, // More DPS relative to stimpack
 			projectile_velocity: 16,
 			GetAmmoCost: ()=>
@@ -3082,10 +3236,10 @@ class sdGunClass
 			muzzle_x: null,
 			ammo_capacity: -1,
 			count: 0,
-			matter_cost: 1800,
+			matter_cost: 4800,
 			category: 'Other',
-			min_workbench_level: 12,
-			min_build_tool_level: 26,
+			min_workbench_level: 25,
+			min_build_tool_level: 36,
 			projectile_velocity: 16,
 			GetAmmoCost: ()=>
 			{
@@ -3291,8 +3445,8 @@ class sdGunClass
 			matter_cost: 200, // More DPS relative to stimpack
 			category: 'Other',
 			projectile_velocity: 16,
-			min_build_tool_level: 20,
-			min_workbench_level: 8,
+			min_build_tool_level: 30,
+			min_workbench_level: 18,
 			GetAmmoCost: ()=>
 			{
 				return 300;
@@ -3477,9 +3631,9 @@ class sdGunClass
 			ammo_capacity: 36,
 			count: 1,
 			spread: 0.01,
-			min_workbench_level: 2,
-			min_build_tool_level: 4,
-			matter_cost: 140,
+			min_workbench_level: 5,
+			min_build_tool_level: 14,
+			matter_cost: 340,
 			burst: 6, // Burst fire count
 			burst_reload: 24, // Burst fire reload, needed when giving burst fire
 			projectile_velocity: 18,
@@ -3524,9 +3678,9 @@ class sdGunClass
 			muzzle_x: 9,
 			ammo_capacity: 8,
 			count: 1,
-			min_workbench_level: 2,
-			min_build_tool_level: 8,
-			matter_cost: 220,
+			min_workbench_level: 6,
+			min_build_tool_level: 16,
+			matter_cost: 420,
 			projectile_velocity: 16,
 			fire_type: 2,
 			projectile_properties: { explosion_radius: 7, model: 'ball', _damage: 12, color:'#00aaff', _dirt_mult: 1 },
@@ -3573,9 +3727,9 @@ class sdGunClass
 			ammo_capacity: -1,
 			count: 1,
 			projectile_velocity: 16,
-			min_build_tool_level: 27,
-			matter_cost: 8200,
-			min_workbench_level: 19,
+			min_build_tool_level: 57,
+			matter_cost: 11200,
+			min_workbench_level: 30,
 			GetAmmoCost: ( gun, shoot_from_scenario )=>
 			{
 				if ( shoot_from_scenario )
@@ -3611,7 +3765,7 @@ class sdGunClass
 					if ( gun._held_by.matter >= 4 )
 					if ( gun._held_by._key_states.GetKey( 'Mouse1' ) )
 					{
-						gun._held_by._auto_shoot_in = ( gun._held_by.stim_ef > 0 ) ? ( 1 / ( 1 + gun._combo / 90 ) ) : ( 2 / ( 1 + gun._combo / 90 ) ); // Faster rate of fire when shooting more
+						gun._held_by._auto_shoot_in = ( gun._held_by.stim_ef > 0 ) ? ( gun.extra[ ID_FIRE_RATE ] / ( 1 + gun._combo / 90 ) ) : ( 2 * gun.extra[ ID_FIRE_RATE ] / ( 1 + gun._combo / 90 ) ); // Faster rate of fire when shooting more
 						gun._held_by.matter -= 4;
 						gun._combo_timer = 30;
 						if ( gun._combo < 60 )
@@ -3981,9 +4135,9 @@ class sdGunClass
 			ammo_capacity: -1,
 			count: 1,
 			spread: 0.05,
-			min_build_tool_level: 15,
-			matter_cost: 4700,
-			min_workbench_level: 11,
+			min_build_tool_level: 25,
+			matter_cost: 6700,
+			min_workbench_level: 20,
 			GetAmmoCost: ( gun, shoot_from_scenario )=>
 			{
 				if ( shoot_from_scenario )
@@ -4015,7 +4169,7 @@ class sdGunClass
 					if ( gun._held_by.matter >= 2 )
 					if ( gun._held_by._key_states.GetKey( 'Mouse1' ) )
 					{
-						gun._held_by._auto_shoot_in = ( gun._held_by.stim_ef > 0 ) ? 1 : 2;
+						gun._held_by._auto_shoot_in = ( gun._held_by.stim_ef > 0 ) ? gun.extra[ ID_FIRE_RATE ] : 2 * gun.extra[ ID_FIRE_RATE ];
 						gun._held_by.matter -= 2; // Was 3. It is not that strong to drain matter that fast
 					}
 				}
@@ -4070,9 +4224,9 @@ class sdGunClass
 			ammo_capacity: -1,
 			count: 1,
 			is_sword: true,
-			min_build_tool_level: 18,
-			matter_cost: 3740,
-			min_workbench_level: 9,
+			min_build_tool_level: 28,
+			matter_cost: 5740,
+			min_workbench_level: 19,
 			projectile_velocity: 37,
 			GetAmmoCost: ()=>
 			{
@@ -4142,9 +4296,9 @@ class sdGunClass
 			ammo_capacity: -1,
 			spread: 0.01,
 			count: 1,
-			min_build_tool_level: 27,
+			min_build_tool_level: 57,
 			matter_cost: 6400,
-			min_workbench_level: 21,
+			min_workbench_level: 31,
 			//fire_type: 2,
 			projectile_velocity: sdGun.default_projectile_velocity * 1.5,
 			projectile_properties: { _damage: 30, color:'ffff00' },
@@ -4191,9 +4345,9 @@ class sdGunClass
 			burst_reload: 45,
 			count: 1,
 			projectile_properties: { _rail: true, _damage: 28, color: '#ffff00'/*, _knock_scale:0.01 * 8*/ }, // 84 when all 3 bursts land
-			min_build_tool_level: 27,
+			min_build_tool_level: 57,
 			matter_cost: 6600,
-			min_workbench_level: 21,
+			min_workbench_level: 31,
 			projectile_properties_dynamic: ( gun )=>{ 
 				
 				let obj = { _rail: true, color: '#ffff00' };
@@ -4747,9 +4901,9 @@ class sdGunClass
 			image_firing: sdWorld.CreateImageFromFile( 'overlord_blaster_fire' ),
 			ammo_capacity: -1,
 			count: 1,
-			min_build_tool_level: 12,
-			matter_cost: 4200,
-			min_workbench_level: 8,
+			min_build_tool_level: 42,
+			matter_cost: 7200,
+			min_workbench_level: 24,
 			projectile_velocity: 12,
 			projectile_properties: {explosion_radius: 9, model: 'blaster_proj', _damage: 0, color:'#ff00aa',},
 			projectile_properties_dynamic: ( gun )=>{ 
@@ -4796,9 +4950,9 @@ class sdGunClass
 			ammo_capacity: 20,
 			count: 1,
 			fire_type: 2,
-			min_build_tool_level: 8,
+			min_build_tool_level: 28,
 			matter_cost: 550,
-			min_workbench_level: 5,
+			min_workbench_level: 8,
 			projectile_velocity: sdGun.default_projectile_velocity * 1.7,
 			projectile_properties: { _damage: 72, color: '#33ffff', penetrating: true, _dirt_mult: -0.5 },
 			projectile_properties_dynamic: ( gun )=>{ 
@@ -4842,9 +4996,9 @@ class sdGunClass
 			ammo_capacity: 20,
 			count: 3,
 			spread: 0.13,
-			min_build_tool_level: 7,
+			min_build_tool_level: 27,
 			matter_cost: 520,
-			min_workbench_level: 5,
+			min_workbench_level: 7,
 			projectile_properties: { _damage: 25 },
 			projectile_properties_dynamic: ( gun )=>{ 
 				
@@ -4919,9 +5073,9 @@ class sdGunClass
 			is_sword: true,
 			projectile_velocity: 20,
 			category: 'Other',
-			matter_cost: 13250,
-			min_workbench_level: 21,
-			min_build_tool_level: 30,
+			matter_cost: 15050,
+			min_workbench_level: 31,
+			min_build_tool_level: 60,
 			GetAmmoCost: ( gun, shoot_from_scenario )=>
 			{
 				if ( shoot_from_scenario )
@@ -5000,9 +5154,9 @@ class sdGunClass
 			count: 0,
 			projectile_velocity: 16,
 			category: 'Other',
-			min_build_tool_level: 25,
-			matter_cost: 4000,
-			min_workbench_level: 14,
+			min_build_tool_level: 45,
+			matter_cost: 8000,
+			min_workbench_level: 24,
 			GetAmmoCost: ()=>
 			{
 				return 400;
@@ -5141,9 +5295,9 @@ class sdGunClass
 			ammo_capacity: 10,
 			count: 4,
 			spread: 0.13,
-			min_build_tool_level: 7,
-			matter_cost: 270,
-			min_workbench_level: 3,
+			min_build_tool_level: 14,
+			matter_cost: 570,
+			min_workbench_level: 6,
 			projectile_velocity: 16,
 			projectile_properties: { explosion_radius: 10, model: 'ball', _damage: 5, color:'#0000c8', _dirt_mult: 1 },
 			projectile_properties_dynamic: ( gun )=>{ 
@@ -5190,9 +5344,9 @@ class sdGunClass
 			spread: 0.05,
 			projectile_velocity: 14,
 			count: 1,
-			min_build_tool_level: 14,
-			matter_cost: 2960,
-			min_workbench_level: 11,
+			min_build_tool_level: 28,
+			matter_cost: 5960,
+			min_workbench_level: 22,
 			projectile_properties: { time_left: 30, explosion_radius: 19, model: 'rocket_proj', _damage: 16 * 3, color:sdEffect.default_explosion_color, ac:0.4, _homing: true, _homing_mult: 0.02, _vehicle_mult:sdGun.default_vehicle_mult_bonus, _dirt_mult: 2 },
 			projectile_properties_dynamic: ( gun )=>{ 
 				
@@ -5238,9 +5392,9 @@ class sdGunClass
 			count: 1,
 			projectile_velocity: 16,
 			category: 'Other',
-			min_build_tool_level: 30,
-			matter_cost: 11500,
-			min_workbench_level: 18,
+			min_build_tool_level: 60,
+			matter_cost: 13500,
+			min_workbench_level: 28,
 			allow_aim_assist: false,
 			projectile_properties: { _rail: true, time_left: 0, _damage: 1, color: '#ffffff'},
 			GetAmmoCost: ()=>
@@ -5419,7 +5573,7 @@ class sdGunClass
 			muzzle_x: 7,
 			matter_cost: 500,
 			
-			ammo_capacity: 60,
+			ammo_capacity: 30,
 			ammo_capacity_dynamic: ( gun )=>
 			{
 				let capacity = sdGun.classes[ gun.class ].parts_magazine[ gun.extra[ ID_MAGAZINE ] ].capacity;
@@ -5484,20 +5638,23 @@ class sdGunClass
 				{ w:3, h:1, title:'Small' },
 				{ w:5, h:2, title:'Bulky' },
 				{ w:5, h:1, title:'Longer' },
-				{ w:5, h:2, title:'Larger' }
+				{ w:5, h:2, title:'Larger' },
+				{ w:6, h:2, title:'Easily' }
 			],
 			parts_stock: [
 				{ title:'Rifle' },
 				{ title:'Longer' },
 				{ title:'MP' },
-				{ title:'Holey large' }
+				{ title:'Holey large' },
+				{ title:'Marksman' }
 			],
 			parts_magazine: [
 				{ title:'Small', capacity: 36, rate: 1 },
 				{ title:'Box', capacity: 44, rate: 0.75 },
 				{ title:'Assault', capacity: 52, rate: 0.75 },
-				{ title:'Chain', capacity: 100, rate: 0.5 },
-				{ title:'Boxed chain', capacity: 200, rate: 0.5 }
+				{ title:'Chain', capacity: 100, rate: 0.6 },
+				{ title:'Boxed chain', capacity: 200, rate: 0.6 },
+				{ title:'Heavy Box', capacity: 400, rate: 0.45 }
 			],
 			parts_barrel: [
 				// W offsets muzzle, H offsets under barrel part
@@ -5520,7 +5677,9 @@ class sdGunClass
 				{ title:'Laser' },
 				{ title:'Grenade launcher' },
 				{ title:'Some mount thing 2' },
-				{ title:'Forward dot' }
+				{ title:'Forward dot' },
+				{ title:'Plasma launcher' },
+				{ title:'None' }
 			],
 			parts_muzzle: [
 				// W is offset for muzzle flash, H is vertical offset
@@ -5532,13 +5691,17 @@ class sdGunClass
 				{ w: 3, h: 0, title:'Mountable' },
 				{ w: 3, h: 0, title:'Bulky' },
 				{ w: 2, h: 1, title:'Energy shooter' },
-				{ w: 2, h: 1, title:'Energy shooter 2' }
+				{ w: 2, h: 1, title:'Energy shooter 2' },
+				{ w: 3, h: 1, title:'Energy shooter 3' },
+				{ w: 6, h: 0, title:'Energy shooter 3' }
 			],
 			parts_scope: [
 				{ title:'Reflex' },
 				{ title:'Merged scope' },
 				{ title:'Tiny scope' },
-				{ title:'Sniper scope' }
+				{ title:'Sniper scope' },
+				{ title:'GRU Only' },
+				{ title:'None' }
 			],
 			
 			onMade: ( gun, params )=> // Should not make new entities, assume gun might be instantly removed once made
@@ -5847,9 +6010,9 @@ class sdGunClass
 			count: 1,
 			is_sword: true,
 			projectile_velocity: 16 * 1.5,
-			min_build_tool_level: 30,
-			matter_cost: 12500,
-			min_workbench_level: 19,
+			min_build_tool_level: 60,
+			matter_cost: 14500,
+			min_workbench_level: 30,
 			onShootAttempt: ( gun, shoot_from_scenario )=>
 			{
 				if ( sdWorld.is_server )
@@ -6078,9 +6241,9 @@ class sdGunClass
 			ammo_capacity: -1,
 			spread: 0.03,
 			count: 2,
-			min_build_tool_level: 28,
+			min_build_tool_level: 58,
 			matter_cost: 6800,
-			min_workbench_level: 21,
+			min_workbench_level: 31,
 			//fire_type: 2,
 			projectile_velocity: sdGun.default_projectile_velocity * 1.5,
 			GetAmmoCost: ( gun, shoot_from_scenario )=>
@@ -6114,7 +6277,7 @@ class sdGunClass
 					if ( gun._held_by.matter >= 4 )
 					if ( gun._held_by._key_states.GetKey( 'Mouse1' ) )
 					{
-						gun._held_by._auto_shoot_in = ( gun._held_by.stim_ef > 0 ) ? ( 7 / ( 1 + gun._combo / 10 ) ) : ( 14 / ( 1 + gun._combo / 10 ) ); // Faster rate of fire when shooting more
+						gun._held_by._auto_shoot_in = ( ( gun._held_by.stim_ef > 0 ) ? ( 7 / ( 1 + gun._combo / 10 ) ) : ( 14 / ( 1 + gun._combo / 10 ) ) ) * gun.extra[ ID_FIRE_RATE ]; // Faster rate of fire when shooting more
 						gun._held_by.matter -= 4;
 						gun._combo_timer = 16;
 						if ( gun._combo < 10 )
@@ -6373,9 +6536,9 @@ class sdGunClass
 			muzzle_x: 7,
 			ammo_capacity: -1,
 			count: 1,
-			min_build_tool_level: 23,
+			min_build_tool_level: 43,
 			matter_cost: 10200,
-			min_workbench_level: 16,
+			min_workbench_level: 26,
 			GetAmmoCost: ( gun, shoot_from_scenario )=>
 			{
 				if ( shoot_from_scenario )
@@ -6411,7 +6574,7 @@ class sdGunClass
 					if ( gun._held_by.matter >= 6 )
 					if ( gun._held_by._key_states.GetKey( 'Mouse1' ) )
 					{
-						gun._held_by._auto_shoot_in = ( gun._held_by.stim_ef > 0 ) ? ( 1 / ( 1 + gun._combo / 60 ) ) : ( 2 / ( 1 + gun._combo / 60 ) ); // Faster rate of fire when shooting more
+						gun._held_by._auto_shoot_in = ( gun._held_by.stim_ef > 0 ) ? ( gun.extra[ ID_FIRE_RATE ] / ( 1 + gun._combo / 60 ) ) : ( 2 * gun.extra[ ID_FIRE_RATE ] / ( 1 + gun._combo / 60 ) ); // Faster rate of fire when shooting more
 						gun._held_by.matter -= 6;
 						gun._combo_timer = 90;
 						if ( gun._combo < 45 )
@@ -6502,9 +6665,11 @@ class sdGunClass
 			muzzle_x: 8,
 			ammo_capacity: -1,
 			count: 1,
-			matter_cost: 1000,
+			category: 'Other',
+			matter_cost: 10000,
 			projectile_velocity: 10,
-			spawnable: false,
+			min_build_tool_level: 30,
+			min_workbench_level: 21,
 			GetAmmoCost: ( gun, shoot_from_scenario )=>
 			{
 				return 300;
@@ -6552,22 +6717,27 @@ class sdGunClass
 					}
 				}
 			},
-			upgrades: AppendBasicCubeGunRecolorUpgrades( [] )
+			upgrades: AddRecolorsFromColorAndCost( [], '#6199ff', 15, 'main energy color' )
 		};
 
 		const illusion_reaction = ( bullet, target_entity )=>
 		{
 			if ( target_entity )
 			if ( bullet._owner )
+			if ( !bullet._is_being_removed )
 			{
+				let owner = bullet._owner;
+
+				bullet.remove();
+
 				let ent2 = sdLost.CreateLostCopy( target_entity, target_entity.title || null, sdLost.FILTER_NONE );
 
-				if ( bullet._owner.side < 0 )
-				ent2.x = bullet._owner.x + bullet._owner._hitbox_x1 - ent2._hitbox_x2;
+				if ( owner._side < 0 )
+				ent2.x = owner.x + owner._hitbox_x1 - ent2._hitbox_x2;
 				else
-				ent2.x = bullet._owner.x + bullet._owner._hitbox_x2 - ent2._hitbox_x1;
+				ent2.x = owner.x + owner._hitbox_x2 - ent2._hitbox_x1;
 
-				ent2.y = bullet._owner.y + bullet._owner._hitbox_y2 - ent2._hitbox_y2;
+				ent2.y = owner.y + owner._hitbox_y2 - ent2._hitbox_y2;
 
 				ent2.s = false;
 				ent2.m = 30;
@@ -6579,16 +6749,17 @@ class sdGunClass
 			image: sdWorld.CreateImageFromFile( 'illusion_maker' ),
 			sound_pitch: 6,
 			sound: 'supercharge_combined2_part2',
-
 			title: 'Illusion maker',
 			slot: 7,
 			reload_time: 90,
 			muzzle_x: 8,
 			ammo_capacity: -1,
 			count: 1,
-			matter_cost: 1000,
+			category: 'Other',
+			matter_cost: 5000,
 			projectile_velocity: 10,
-			spawnable: false,
+			min_build_tool_level: 35,
+			min_workbench_level: 23,
 			GetAmmoCost: ( gun, shoot_from_scenario )=>
 			{
 				return 600;
@@ -6605,7 +6776,7 @@ class sdGunClass
 				_custom_target_reaction: illusion_reaction,
 				_custom_target_reaction_protected: illusion_reaction
 			},
-			upgrades: AppendBasicCubeGunRecolorUpgrades( [] )
+			upgrades: AddRecolorsFromColorAndCost( [], '#ff0000', 15, 'main energy color' )
 		};
 		sdGun.classes[ sdGun.CLASS_LVL4_LIGHT_ARMOR = 1001 ] = 
 		{
@@ -6625,7 +6796,7 @@ class sdGunClass
 			{ 
 				if ( character.armor_max < 600 )
 				{
-					if ( character.ApplyArmor({ armor: 600, _armor_absorb_perc: 0.6, armor_speed_reduction: 0 }) )
+					if ( character.ApplyArmor({ armor: 600, _armor_absorb_perc: 0.45, armor_speed_reduction: 0 }) )
 					gun.remove();
 				}
 				else
@@ -6656,7 +6827,7 @@ class sdGunClass
 			{ 
 				if ( character.armor_max < 700 )
 				{
-					if ( character.ApplyArmor({ armor: 700, _armor_absorb_perc: 0.7, armor_speed_reduction: 5 }) )
+					if ( character.ApplyArmor({ armor: 700, _armor_absorb_perc: 0.55, armor_speed_reduction: 5 }) )
 					gun.remove();
 				}
 				else
@@ -6687,7 +6858,7 @@ class sdGunClass
 			{ 
 				if ( character.armor_max < 800 )
 				{
-					if ( character.ApplyArmor({ armor: 800, _armor_absorb_perc: 0.8, armor_speed_reduction: 10 }) )
+					if ( character.ApplyArmor({ armor: 800, _armor_absorb_perc: 0.65, armor_speed_reduction: 10 }) )
 					gun.remove();
 				}
 				else
@@ -6719,7 +6890,7 @@ class sdGunClass
 			{ 
 				if ( character.armor_max < 1000 )
 				{
-					if ( character.ApplyArmor({ armor: 1000, _armor_absorb_perc: 0.9, armor_speed_reduction: 0 }) )
+					if ( character.ApplyArmor({ armor: 1000, _armor_absorb_perc: 0.8, armor_speed_reduction: 0 }) )
 					gun.remove();
 				}
 				else
@@ -6751,7 +6922,7 @@ class sdGunClass
 			{ 
 				if ( character.armor_max < 1500 )
 				{
-					if ( character.ApplyArmor({ armor: 1500, _armor_absorb_perc: 0.94, armor_speed_reduction: 0 }) )
+					if ( character.ApplyArmor({ armor: 1500, _armor_absorb_perc: 0.85, armor_speed_reduction: 0 }) )
 					gun.remove();
 				}
 				else
@@ -6783,7 +6954,7 @@ class sdGunClass
 			{ 
 				if ( character.armor_max < 2000 )
 				{
-					if ( character.ApplyArmor({ armor: 2000, _armor_absorb_perc: 0.98, armor_speed_reduction: 0 }) )
+					if ( character.ApplyArmor({ armor: 2000, _armor_absorb_perc: 0.9, armor_speed_reduction: 0 }) )
 					gun.remove();
 				}
 				else
@@ -6838,11 +7009,11 @@ class sdGunClass
 			min_build_tool_level: 4,
 			matter_cost: 100,
 			projectile_velocity: sdGun.default_projectile_velocity * 1.5,
-			projectile_properties: {_damage: 47, _dirt_mult: -0.5 },
+			projectile_properties: {_damage: 47, _dirt_mult: -0.5, penetrating: true },
 			projectile_properties_dynamic: ( gun )=>
 			{ 
 				
-				let obj = { _dirt_mult: -0.5 };
+				let obj = { _dirt_mult: -0.5, penetrating: true };
 				obj._knock_scale = 0.01 * 8 * gun.extra[ ID_DAMAGE_MULT ];
 				obj._damage = gun.extra[ ID_DAMAGE_VALUE ]; // Damage value is set onMade
 				obj._damage *= gun.extra[ ID_DAMAGE_MULT ];
@@ -6882,9 +7053,9 @@ class sdGunClass
 			spread: 0.01,
 			projectile_velocity: 30,
 			projectile_properties: { _rail: true, _damage: 34, color:'#ffff00'/*, _knock_scale:0.01 * 8*/  },
-			min_build_tool_level: 27,
+			min_build_tool_level: 57,
 			matter_cost: 6500,
-			min_workbench_level: 21,
+			min_workbench_level: 31,
 			projectile_properties_dynamic: ( gun )=>{ 
 				
 				let obj = { _rail: true, color: '#ffff00' };
@@ -6925,14 +7096,14 @@ class sdGunClass
 			muzzle_x: 10,
 			ammo_capacity: 60,
 			count: 1,
-			matter_cost: 230,
+			matter_cost: 930,
 			projectile_velocity: sdGun.default_projectile_velocity * 1.3,
-			min_workbench_level: 6,
-			min_build_tool_level: 13,
-			projectile_properties: { _damage: 32, _dirt_mult: -0.5, color: '#ff0000' },
+			min_workbench_level: 20,
+			min_build_tool_level: 36,
+			projectile_properties: { _damage: 32, _dirt_mult: -0.5, color: '#ff0000', penetrating: true },
 			projectile_properties_dynamic: ( gun )=>{ 
 				
-				let obj = { _dirt_mult: -0.5, color: '#ff0000' };
+				let obj = { _dirt_mult: -0.5, color: '#ff0000', penetrating: true };
 				obj._knock_scale = 0.01 * 8 * gun.extra[ ID_DAMAGE_MULT ];
 				obj._damage = gun.extra[ ID_DAMAGE_VALUE ]; // Damage value is set onMade
 				obj._damage *= gun.extra[ ID_DAMAGE_MULT ];
@@ -6973,9 +7144,9 @@ class sdGunClass
 			spread: 0.01,
 			projectile_velocity: 30,
 			projectile_properties: { _rail: true, _damage: 60, color:'#ff0000'/*, _knock_scale:0.01 * 8*/  },
-			min_build_tool_level: 15,
-			matter_cost: 370,
-			min_workbench_level: 2,
+			min_build_tool_level: 35,
+			matter_cost: 670,
+			min_workbench_level: 11,
 			projectile_properties_dynamic: ( gun )=>{ 
 				
 				let obj = { _rail: true, color: '#ff0000' };
@@ -7018,9 +7189,9 @@ class sdGunClass
 			spread: 0.01,
 			projectile_velocity: 30,
 			projectile_properties: { _rail: true, _damage: 150, color:'#ffff00'/*, _knock_scale:0.01 * 8*/ , explosion_radius: 30 },
-			min_build_tool_level: 30,
-			matter_cost: 12700,
-			min_workbench_level: 21,
+			min_build_tool_level: 60,
+			matter_cost: 14700,
+			min_workbench_level: 31,
 			GetAmmoCost: ( gun, shoot_from_scenario )=>
 			{
 				return 0;
@@ -7029,11 +7200,11 @@ class sdGunClass
 			{
 				if ( gun._held_by )
 				if ( gun._held_by.IsPlayerClass() )
-				if ( gun._held_by.hea > 750 * gun.extra[ ID_DAMAGE_MULT ] + 50 )
+				if ( gun._held_by.hea > 500 * gun.extra[ ID_DAMAGE_MULT ] + 50 )
 				{
-					gun._held_by.hea -= 750 * gun.extra[ ID_DAMAGE_MULT ];
+					gun._held_by.hea -= 500 * gun.extra[ ID_DAMAGE_MULT ];
 					gun._held_by.DamageWithEffect( 1, null );
-					gun._held_by.matter -= 1000;
+					gun._held_by.matter -= 3000;
 				}
 				else
 				{
@@ -7249,9 +7420,9 @@ class sdGunClass
 			count: 1,
 			is_giant: true,
 			is_sword: true,
-			min_build_tool_level: 30,
-			matter_cost: 12920,
-			min_workbench_level: 20,
+			min_build_tool_level: 60,
+			matter_cost: 14920,
+			min_workbench_level: 30,
 			projectile_velocity: 37,
 			GetAmmoCost: ()=>
 			{
@@ -7320,9 +7491,9 @@ class sdGunClass
 			spread: 0.025,
 			projectile_velocity: 9.5 * 2,
 			count: 1,
-			min_build_tool_level: 16,
-			matter_cost: 6130,
-			min_workbench_level: 13,
+			min_build_tool_level: 46,
+			matter_cost: 9130,
+			min_workbench_level: 24,
 			onShootAttempt: ( gun, shoot_from_scenario )=>
 			{
 				if ( !shoot_from_scenario )
@@ -7340,7 +7511,7 @@ class sdGunClass
 					sdSound.PlaySound({ name: 'gun_pistol', x:gun.x, y:gun.y, volume: 0.5, pitch: 1.75 });
 					if ( gun._held_by._key_states.GetKey( 'Mouse1' ) )
 					{
-						gun._held_by._auto_shoot_in = ( gun._held_by.stim_ef > 0 ) ? 1 : 2;
+						gun._held_by._auto_shoot_in = ( gun._held_by.stim_ef > 0 ) ? gun.extra[ ID_FIRE_RATE ] : 2 * gun.extra[ ID_FIRE_RATE ];
 					}
 				}
 				return true;
@@ -7384,9 +7555,9 @@ class sdGunClass
 			count: 0,
 			is_build_gun: true,
 			allow_aim_assist: false,
-			min_workbench_level: 15,
-			min_build_tool_level: 26,
-			matter_cost: 470,
+			min_workbench_level: 25,
+			min_build_tool_level: 56,
+			matter_cost: 3150,
 			projectile_properties: { _damage: 0, time_left: 0 },
 			upgrades: AddRecolorsFromColorAndCost( [], '#ff0000', 15 )
 		};
@@ -7409,9 +7580,9 @@ class sdGunClass
 			count: 1,
 			burst: 3,
 			burst_reload: 35,
-			min_build_tool_level: 21,
-			min_workbench_level: 17,
-			matter_cost: 3740,
+			min_build_tool_level: 41,
+			min_workbench_level: 22,
+			matter_cost: 4040,
 			projectile_properties: { time_left: 60, explosion_radius: 18, model: 'mini_rocket', _damage: 2, color: '#00aaff', ac:0.1, _homing: true, _homing_mult: 0.015, _vehicle_mult:sdGun.default_vehicle_mult_bonus, _dirt_mult: 0.5 },
 			projectile_properties_dynamic: ( gun )=>{ 
 				
@@ -7716,6 +7887,227 @@ class sdGunClass
 			{
 				let remover_sd_filter = sdWorld.CreateSDFilter();
 				sdWorld.ReplaceColorInSDFilter_v2( remover_sd_filter, '#abcbf4', '#aaaaaa' );
+				
+				gun.sd_filter = remover_sd_filter;
+			}
+		};
+		sdGun.classes[ sdGun.CLASS_IRONF = 1116 ] = 
+		{
+			image: sdWorld.CreateImageFromFile( 'sword' ),
+			title: 'Iron Fists',
+			image_no_matter: sdWorld.CreateImageFromFile( 'sword_disabled' ),
+			slot: 0,
+			reload_time: 8,
+			muzzle_x: null,
+			ammo_capacity: -1,
+			count: 1,
+			projectile_velocity: 16 * 1.2,
+			spawnable: false,
+			projectile_properties: { time_left: 1, _damage: 75, color: 'transparent', _knock_scale:0.6 }
+		};
+		const illusion_reaction2 = ( bullet, target_entity )=>
+		{
+			if ( target_entity )
+			if ( bullet._owner )
+			if ( !bullet._is_being_removed )
+			{
+				let owner = bullet._owner;
+
+				bullet.remove();
+
+				let ent2 = sdLost.CreateLostCopy( target_entity, target_entity.title || null, sdLost.FILTER_GOLDEN );
+
+				if ( owner._side < 0 )
+				ent2.x = owner.x + owner._hitbox_x1 - ent2._hitbox_x2;
+				else
+				ent2.x = owner.x + owner._hitbox_x2 - ent2._hitbox_x1;
+
+				ent2.y = owner.y + owner._hitbox_y2 - ent2._hitbox_y2;
+
+				ent2.s = false;
+				ent2.m = 30;
+			}
+		};
+
+		sdGun.classes[ sdGun.CLASS_ILLUSION_MAKER2 = 1117 ] = 
+		{
+			image: sdWorld.CreateImageFromFile( 'illusion_maker' ),
+			sound_pitch: 6,
+			sound: 'supercharge_combined2_part2',
+			title: 'Illusion maker Golden',
+			slot: 7,
+			reload_time: 90,
+			muzzle_x: 8,
+			ammo_capacity: -1,
+			count: 1,
+			category: 'Other',
+			matter_cost: 6000,
+			projectile_velocity: 10,
+			min_build_tool_level: 50,
+			min_workbench_level: 30,
+			GetAmmoCost: ( gun, shoot_from_scenario )=>
+			{
+				return 600;
+			},
+
+			projectile_properties: { 
+				model: 'ball_circle', 
+				_damage: 0, 
+				color:'#ffff00',
+				time_left: 10, 
+				_hittable_by_bullets: false,
+				_custom_target_reaction: illusion_reaction2,
+				_custom_target_reaction_protected: illusion_reaction2
+			},
+			upgrades: AddRecolorsFromColorAndCost( [], '#ff0000', 15, 'main energy color' )
+		};
+		const illusion_reaction3 = ( bullet, target_entity )=>
+		{
+			if ( target_entity )
+			if ( bullet._owner )
+			if ( !bullet._is_being_removed )
+			{
+				let owner = bullet._owner;
+
+				bullet.remove();
+
+				let ent2 = sdLost.CreateLostCopy( target_entity, target_entity.title || null, sdLost.FILTER_WHITE );
+
+				if ( owner._side < 0 )
+				ent2.x = owner.x + owner._hitbox_x1 - ent2._hitbox_x2;
+				else
+				ent2.x = owner.x + owner._hitbox_x2 - ent2._hitbox_x1;
+
+				ent2.y = owner.y + owner._hitbox_y2 - ent2._hitbox_y2;
+
+				ent2.s = false;
+				ent2.m = 30;
+			}
+		};
+
+		sdGun.classes[ sdGun.CLASS_ILLUSION_MAKER3 = 1118 ] = 
+		{
+			image: sdWorld.CreateImageFromFile( 'illusion_maker' ),
+			sound_pitch: 6,
+			sound: 'supercharge_combined2_part2',
+			title: 'Illusion maker White',
+			slot: 7,
+			reload_time: 90,
+			muzzle_x: 8,
+			ammo_capacity: -1,
+			count: 1,
+			category: 'Other',
+			matter_cost: 6000,
+			projectile_velocity: 10,
+			min_build_tool_level: 50,
+			min_workbench_level: 30,
+			GetAmmoCost: ( gun, shoot_from_scenario )=>
+			{
+				return 600;
+			},
+
+			projectile_properties: { 
+				//explosion_radius: 10, 
+				model: 'ball_circle', 
+				_damage: 0, 
+				color:'#ffffff',
+				time_left: 10, 
+				_hittable_by_bullets: false,
+				//_return_damage_to_owner:true,
+				_custom_target_reaction: illusion_reaction3,
+				_custom_target_reaction_protected: illusion_reaction3
+			},
+			upgrades: AddRecolorsFromColorAndCost( [], '#ff0000', 15, 'main energy color' )
+		};
+		sdGun.classes[ sdGun.CLASS_ADMIN_CRYSTAL = 1119 ] = 
+		{
+			image: sdWorld.CreateImageFromFile( 'shark' ),
+			sound: 'gun_defibrillator',
+			title: 'Admin tool for Crystal',
+			sound_pitch: 2,
+			slot: 5,
+			reload_time: 2,
+			muzzle_x: null,
+			ammo_capacity: -1,
+			count: 1,
+			matter_cost: Infinity,
+			projectile_velocity: 16,
+			spawnable: false,
+			projectile_properties: { _rail: true, time_left: 30, _damage: 1, color: '#ffffff', _reinforced_level:Infinity, _armor_penetration_level:Infinity, _admin_picker:true, _custom_target_reaction:( bullet, target_entity )=>
+				{
+					if ( target_entity.GetClass() === 'sdCrystal' )
+					{
+						target_entity.matter_regen = 10000;
+						target_entity._hmax = 800000;
+						target_entity._hea = 800000;
+					}
+				}
+			},
+			onMade: ( gun )=>
+			{
+				let remover_sd_filter = sdWorld.CreateSDFilter();
+				sdWorld.ReplaceColorInSDFilter_v2( remover_sd_filter, '#abcbf4', '#ffffff' );
+				
+				gun.sd_filter = remover_sd_filter;
+			}
+		};
+		sdGun.classes[ sdGun.CLASS_ADMIN_GOD = 1120 ] = 
+		{
+			image: sdWorld.CreateImageFromFile( 'shark' ),
+			sound: 'gun_defibrillator',
+			title: 'Admin tool for God Entity',
+			sound_pitch: 2,
+			slot: 6,
+			reload_time: 2,
+			muzzle_x: null,
+			ammo_capacity: -1,
+			count: 1,
+			matter_cost: Infinity,
+			projectile_velocity: 16,
+			spawnable: false,
+			projectile_properties: { _rail: true, time_left: 30, _damage: 1, color: '#ffffff', _reinforced_level:Infinity, _armor_penetration_level:Infinity, _admin_picker:true, _custom_target_reaction:( bullet, target_entity )=>
+				{
+					if ( bullet._owner )
+					{
+						if ( bullet._owner._god )
+						{
+							if ( target_entity._hmax <= 100000 )
+							{
+							target_entity._hmax = 100000;
+							target_entity._hea = 100000;
+							}
+							else
+							if ( target_entity.hmax <= 100000 )
+							{
+							target_entity.hmax = 100000;
+							target_entity.hea = 100000;
+							}
+							else
+							if ( target_entity.hea <= target_entity.hmax )
+							{
+							target_entity.hea = target_entity.hmax;
+							}
+							else
+							if ( target_entity._hea <= target_entity._hmax )
+							{
+							target_entity._hea = target_entity._hmax;
+							}
+						}
+						else
+						if ( bullet._owner.IsPlayerClass() )
+						{
+							// Remove if used by non-admin
+							if ( bullet._owner._inventory[ bullet._owner.gun_slot ] )
+							if ( sdGun.classes[ bullet._owner._inventory[ bullet._owner.gun_slot ].class ].projectile_properties._admin_picker )
+							bullet._owner._inventory[ bullet._owner.gun_slot ].remove();
+						}
+					}
+				}
+			},
+			onMade: ( gun )=>
+			{
+				let remover_sd_filter = sdWorld.CreateSDFilter();
+				sdWorld.ReplaceColorInSDFilter_v2( remover_sd_filter, '#abcbf4', '#770077' );
 				
 				gun.sd_filter = remover_sd_filter;
 			}

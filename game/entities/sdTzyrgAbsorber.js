@@ -44,7 +44,7 @@ class sdTzyrgAbsorber extends sdEntity
 		this.sx = 0;
 		this.sy = 0;
 
-		this.hmax = 7500;
+		this.hmax = 75000;
 		this.hea = this.hmax;
 		//this.detonation_in = params.detonation_in || 30 * 60 * 15; // 15 minutes until the bomb explodes
 		this._spawn_timer = 30 * 60 * 5; // Spawn Tzyrgs timer
@@ -125,6 +125,7 @@ class sdTzyrgAbsorber extends sdEntity
 			else
 			{
 				for ( let i = 0; i < sdWorld.sockets.length; i++ ) // Let players know that it needs to be destroyed
+				if ( sdWorld.sockets[ i ].character )
 				{
 					let di = sdWorld.Dist2D( this.x, this.y, sdWorld.sockets[ i ].character.x, sdWorld.sockets[ i ].character.y );
 					if ( di < 600 )

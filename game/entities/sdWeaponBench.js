@@ -162,11 +162,13 @@ class sdWeaponBench extends sdEntity
 				
 				let reload_time = sdGun.classes[ gun.class ].reload_time * gun.extra[ ID_FIRE_RATE ]; // Best to keep it simple.
 				
+				if ( this.item0.extra[ ID_FIRE_RATE ] )
 				if ( Math.round( reload_time / 30 * 1000 ) < 16 )
 				sdEntity.TooltipUntranslated( ctx, T('Cooldown') + ': ' + T('16ms (capped)'), 0, -30, '#aaffaa' );
 				else
 				sdEntity.TooltipUntranslated( ctx, T('Cooldown') + ': ' + Math.round( reload_time / 30 * 1000 ) + 'ms', 0, -30, '#aaffaa' );
 			
+				if ( this.item0.extra[ ID_TEMPERATURE_APPLIED ] )
 				sdEntity.TooltipUntranslated( ctx, T('Temperature') + ': ' + Math.round( this.item0.extra[ ID_TEMPERATURE_APPLIED ] ) + '°C', 0, -20, '#aaffff' );
 			
 				if ( this.item0.GetAmmoCapacity() !== -1 )

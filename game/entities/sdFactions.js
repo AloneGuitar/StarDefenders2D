@@ -84,7 +84,7 @@ class sdFactions extends sdEntity
 
 				character_entity.armor = 100;
 				character_entity.armor_max = 100;
-				character_entity._armor_absorb_perc = 0.4;
+				character_entity._armor_absorb_perc = 0.1;
 				character_entity._ai_level = Math.floor( Math.random() * 2 ); // Either 0 or 1
 				character_entity._matter_regeneration = 1 + character_entity._ai_level; // At least some ammo regen
 				character_entity._matter_regeneration_multiplier = 10; // Their matter regenerates 10 times faster than normal, unupgraded players
@@ -99,7 +99,7 @@ class sdFactions extends sdEntity
 
 				character_entity.armor = 1400;
 				character_entity.armor_max = 1400;
-				character_entity._armor_absorb_perc = 0.85;
+				character_entity._armor_absorb_perc = 0.55;
 				character_entity._matter_regeneration = 15;
 				character_entity._matter_regeneration_multiplier = 20;
 				character_entity._damage_mult = 1.5;
@@ -118,9 +118,10 @@ class sdFactions extends sdEntity
 
 				character_entity.armor = 860;
 				character_entity.armor_max = 860;
-				character_entity._armor_absorb_perc = 0.8;
+				character_entity._armor_absorb_perc = 0.3;
 				character_entity._matter_regeneration = 20;
 				character_entity._matter_regeneration_multiplier = 30;
+				character_entity._damage_mult = 2;
 				character_entity._ai_level = 15;
 				character_entity._damage_mult = 2;
 				character_entity.stability_upgrade = 3;
@@ -152,7 +153,7 @@ class sdFactions extends sdEntity
 				if ( character_entity._ai_gun_slot === 2 || character_entity._ai_gun_slot === 1 )
 				character_settings = {"hero_name":"Erthal","color_bright":"#37a2ff","color_dark":"#000000","color_bright3":"#464646","color_dark3":"#000000","color_visor":"#1664a8","color_suit":"#464646","color_suit2":"#000000","color_dark2":"#464646","color_shoes":"#000000","color_skin":"#1665a8","color_extra1":"#464646","helmet1":false,"helmet4":true,"body3":true,"legs3":true,"voice1":false,"voice2":false,"voice3":true,"voice4":false,"voice5":false,"voice6":false,"voice7":true};
 				if ( character_entity._ai_gun_slot === 5 )
-				character_settings = {"hero_name":"Erthal Warrior","color_bright":"#37a2ff","color_dark":"#000000","color_bright3":"#464646","color_dark3":"#000000","color_visor":"#1664a8","color_suit":"#464646","color_suit2":"#000000","color_dark2":"#464646","color_shoes":"#000000","color_skin":"#1665a8","color_extra1":"#464646","helmet1":false,"helmet122":true,"body91":true,"legs91":true,"voice1":false,"voice2":false,"voice3":true,"voice4":false,"voice5":false,"voice6":false,"voice7":true};
+				character_settings = {"hero_name":"Erthal Brutal Destroyer","color_bright":"#37a2ff","color_dark":"#000000","color_bright3":"#464646","color_dark3":"#000000","color_visor":"#1664a8","color_suit":"#464646","color_suit2":"#000000","color_dark2":"#464646","color_shoes":"#000000","color_skin":"#1665a8","color_extra1":"#464646","helmet1":false,"helmet122":true,"body91":true,"legs91":true,"voice1":false,"voice2":false,"voice3":true,"voice4":false,"voice5":false,"voice6":false,"voice7":true};
 				if ( character_entity._ai_gun_slot === 2 || character_entity._ai_gun_slot === 1 )
 				{
 					character_entity.matter = 150;
@@ -163,27 +164,27 @@ class sdFactions extends sdEntity
 
 					character_entity.armor = 500;
 					character_entity.armor_max = 500;
-					character_entity._armor_absorb_perc = 0.75; // 75% damage absorption, since armor will run out before health, they effectively have 750 health
+					character_entity._armor_absorb_perc = 0.2; // 75% damage absorption, since armor will run out before health, they effectively have 750 health
 					character_entity._ai_level = 4;
 					character_entity._matter_regeneration = 1 + character_entity._ai_level; // At least some ammo regen
 					character_entity._matter_regeneration_multiplier = 10; // Their matter regenerates 10 times faster than normal, unupgraded players
 				}
 				if ( character_entity._ai_gun_slot === 5 )
 				{
-					character_entity.matter = 600;
-					character_entity.matter_max = 600;
+					character_entity.matter = 2000;
+					character_entity.matter_max = 2000;
 
 					character_entity.hea = 4200;
 					character_entity.hmax = 4200;
 
 					character_entity.armor = 2000;
 					character_entity.armor_max = 2000;
-					character_entity._armor_absorb_perc = 0.9;
+					character_entity._armor_absorb_perc = 0.75;
 					character_entity._ai_level = 10;
 					character_entity._matter_regeneration = 20;
 					character_entity._matter_regeneration_multiplier = 40;
-					character_entity._damage_mult = 2;
-					character_entity.s = 130;
+					character_entity._damage_mult = 3;
+					character_entity.s = 140;
 					character_entity.armor_speed_reduction = 30;
 					character_entity.speed_up = true;
 					character_entity._stability_recovery_multiplier = 1 + ( 3 / 15 );
@@ -199,11 +200,11 @@ class sdFactions extends sdEntity
 
 		if ( faction === sdFactions.FACTION_COUNCIL )
 		{
-			if ( Math.random() < 0.2 )
+			if ( Math.random() < 0.3 )
 			{
-				if ( Math.random() < 0.1 )
+				if ( Math.random() < 0.2 )
 				{
-					if ( Math.random() < 0.05 )
+					if ( Math.random() < 0.1 )
 					{
 						sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_COUNCIL_SNIPER }) );
 						character_entity._ai_gun_slot = 4;
@@ -211,15 +212,15 @@ class sdFactions extends sdEntity
 					}
 					else
 					{
-						sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_COUNCIL_SHOTGUN }) );
-						character_entity._ai_gun_slot = 3;
+						sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_COUNCIL_BURST }) );
+						character_entity._ai_gun_slot = 1;
 						character_entity.stability_upgrade = 10;
 					}
 				}
 				else
 				{
-					sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_COUNCIL_BURST }) );
-					character_entity._ai_gun_slot = 1;
+					sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_COUNCIL_SHOTGUN }) );
+					character_entity._ai_gun_slot = 3;
 					character_entity.stability_upgrade = 10;
 				}
 			}
@@ -252,8 +253,8 @@ class sdFactions extends sdEntity
 
 				character_entity.armor = 1500;
 				character_entity.armor_max = 1500;
-				character_entity._armor_absorb_perc = 0.87; // 87% damage absorption, since armor will run out before just a little before health
-				character_entity._ai_level = 10;
+				character_entity._armor_absorb_perc = 0.4; // 87% damage absorption, since armor will run out before just a little before health
+				character_entity._damage_mult = 1.5;
 				character_entity._matter_regeneration = 10 + character_entity._ai_level; // At least some ammo regen
 				character_entity._matter_regeneration_multiplier = 10; // Their matter regenerates 10 times faster than normal, unupgraded players
 				character_entity._damage_mult = 1.5;
@@ -268,7 +269,8 @@ class sdFactions extends sdEntity
 
 				character_entity.armor = 2000;
 				character_entity.armor_max = 2000;
-				character_entity._armor_absorb_perc = 0.9;
+				character_entity._armor_absorb_perc = 0.5;
+				character_entity._damage_mult = 2;
 				character_entity._matter_regeneration = 20;
 				character_entity._matter_regeneration_multiplier = 20;
 				character_entity._damage_mult = 2;
@@ -324,7 +326,7 @@ class sdFactions extends sdEntity
 
 				character_entity.armor = 150;
 				character_entity.armor_max = 150;
-				character_entity._armor_absorb_perc = 0.7;
+				character_entity._armor_absorb_perc = 0.2;
 
 				character_entity._matter_regeneration = 10; // increased alongside matter regen multiplier to allow them to efficiently use the Gauss cannon.
 				character_entity._matter_regeneration_multiplier = 25; // Their matter regenerates 25 times faster than normal, unupgraded players
@@ -339,7 +341,7 @@ class sdFactions extends sdEntity
 
 				character_entity.armor = 2050;
 				character_entity.armor_max = 2050;
-				character_entity._armor_absorb_perc = 0.95;
+				character_entity._armor_absorb_perc = 0.55;
 
 				character_entity._matter_regeneration = 20;
 				character_entity._matter_regeneration_multiplier = 50;
@@ -406,7 +408,7 @@ class sdFactions extends sdEntity
 
 				character_entity.armor = 500;
 				character_entity.armor_max = 500;
-				character_entity._armor_absorb_perc = 0.75;
+				character_entity._armor_absorb_perc = 0.2;
 
 				character_entity._matter_regeneration = 5; // At least some ammo regen
 				character_entity._matter_regeneration_multiplier = 10; // Their matter regenerates 10 times faster than normal, unupgraded players
@@ -421,7 +423,8 @@ class sdFactions extends sdEntity
 				character_entity.s = 110; // tougher so bigger target
 				character_entity.armor = 1750;
 				character_entity.armor_max = 1750;
-				character_entity._armor_absorb_perc = 0.87; // 97% damage absorption, since armor will run out before health, they effectively have 2000 health
+				character_entity._armor_absorb_perc = 0.45; // 97% damage absorption, since armor will run out before health, they effectively have 2000 health
+				character_entity._damage_mult = 1.2;
 
 				character_entity._matter_regeneration = 5;
 				character_entity._matter_regeneration_multiplier = 10;
@@ -437,7 +440,8 @@ class sdFactions extends sdEntity
 
 				character_entity.armor = 2000;
 				character_entity.armor_max = 2000;
-				character_entity._armor_absorb_perc = 0.9;
+				character_entity._armor_absorb_perc = 0.65;
+				character_entity._damage_mult = 1.5;
 				character_entity._matter_regeneration = 25;
 				character_entity._matter_regeneration_multiplier = 50;
 				character_entity._recoil_mult = 0.7;
@@ -478,7 +482,7 @@ class sdFactions extends sdEntity
 
 				character_entity.armor = 350;
 				character_entity.armor_max = 350;
-				character_entity._armor_absorb_perc = 0.7; // 70% damage absorption
+				character_entity._armor_absorb_perc = 0.1; // 70% damage absorption
 				character_entity._matter_regeneration = 6; // At least some ammo regen
 				character_entity._matter_regeneration_multiplier = 10; // Their matter regenerates 10 times faster than normal, unupgraded players
 			}
@@ -492,12 +496,12 @@ class sdFactions extends sdEntity
 
 				character_entity.armor = 1500;
 				character_entity.armor_max = 1500;
-				character_entity._armor_absorb_perc = 0.85;
+				character_entity._armor_absorb_perc = 0.5;
 				character_entity.s = 110;
 				character_entity._matter_regeneration = 10;
 				character_entity._matter_regeneration_multiplier = 20;
 				character_entity.stability_upgrade = 3;
-				character_entity._damage_mult = 1.5;
+				character_entity._damage_mult = 2;
 			}
 
 			character_entity._ai = { direction: ( character_entity.x > ( sdWorld.world_bounds.x1 + sdWorld.world_bounds.x2 ) / 2 ) ? -1 : 1 };
@@ -543,7 +547,7 @@ class sdFactions extends sdEntity
 
 				character_entity.armor = 150;
 				character_entity.armor_max = 150;
-				character_entity._armor_absorb_perc = 0.7; // 70% damage absorption
+				character_entity._armor_absorb_perc = 0.1; // 70% damage absorption
 				character_entity._matter_regeneration = 5; // At least some ammo regen
 				character_entity._matter_regeneration_multiplier = 10; // Their matter regenerates 10 times faster than normal, unupgraded players
 			}
@@ -557,11 +561,11 @@ class sdFactions extends sdEntity
 
 				character_entity.armor = 800;
 				character_entity.armor_max = 800;
-				character_entity._armor_absorb_perc = 0.85;
+				character_entity._armor_absorb_perc = 0.4;
 				character_entity._matter_regeneration = 15;
 				character_entity._matter_regeneration_multiplier = 30;
 				character_entity.stability_upgrade = 1;
-				character_entity._damage_mult = 1.2;
+				character_entity._damage_mult = 1.4;
 			}
 			character_entity._ai = { direction: ( character_entity.x > ( sdWorld.world_bounds.x1 + sdWorld.world_bounds.x2 ) / 2 ) ? -1 : 1 };
 			character_entity._ai_level = Math.floor( 1 + Math.random() * 2 ); // AI Levels
@@ -646,7 +650,7 @@ class sdFactions extends sdEntity
 				character_entity.hmax = 500;
 				character_entity.armor = 450;
 				character_entity.armor_max = 450;
-				character_entity._armor_absorb_perc = 0.7;
+				character_entity._armor_absorb_perc = 0.3;
 			}
 			if ( character_entity._ai_gun_slot === 5 || character_entity.stability_upgrade === 1 )
 			{
@@ -656,8 +660,9 @@ class sdFactions extends sdEntity
 				character_entity.hmax = 750;
 				character_entity.armor = 600;
 				character_entity.armor_max = 600;
-				character_entity._armor_absorb_perc = 0.8;
+				character_entity._armor_absorb_perc = 0.65;
 				character_entity.stability_upgrade = 1;
+				character_entity._damage_mult = 1.5;
 				character_entity.s = 110;
 			}
 			if ( character_entity._ai_gun_slot === 8 || character_entity._ai_gun_slot === 4 )
@@ -668,7 +673,7 @@ class sdFactions extends sdEntity
 				character_entity.hmax = 400;
 				character_entity.armor = 300;
 				character_entity.armor_max = 300;
-				character_entity._armor_absorb_perc = 0.6;
+				character_entity._armor_absorb_perc = 0.2;
 				character_entity.speed_up = true;
 			}
 			if ( character_entity._ai_gun_slot === 1 )
@@ -679,7 +684,7 @@ class sdFactions extends sdEntity
 				character_entity.hmax = 600;
 				character_entity.armor = 500;
 				character_entity.armor_max = 500;
-				character_entity._armor_absorb_perc = 0.75;
+				character_entity._armor_absorb_perc = 0.4;
 			}
 			character_entity._ai = { direction: ( character_entity.x > ( sdWorld.world_bounds.x1 + sdWorld.world_bounds.x2 ) / 2 ) ? -1 : 1 };
 			character_entity._ai_level = 7;

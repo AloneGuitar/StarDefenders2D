@@ -51,16 +51,7 @@ class sdLost extends sdEntity
 			 ( !ent._hard_collision && ( ent.is( sdFaceCrab ) || ( ent.is( sdGun ) && ent.class !== sdGun.CLASS_CRYSTAL_SHARD && ent.class !== sdGun.CLASS_SCORE_SHARD ) || is_dead ) ) ) // Not for BG entities
 		if ( ent.IsBGEntity() === 0 ) // Not for BG entities
 		if ( ent.IsTargetable() )
-		//if ( !ent.is( sdCharacter ) || !ent._god ) Should be handled by impossibility of damage
-		//if ( ent.IsTargetable() || is_dead )
 		{
-			/*if ( ( typeof ent._armor_protection_level === 'undefined' || bullet._armor_penetration_level >= ent._armor_protection_level ) &&
-				 ( typeof ent._reinforced_level === 'undefined' || bullet._reinforced_level >= ent._reinforced_level ) )
-			{
-				
-			}
-			else
-			return;*/
 		
 			let hea = ( ent._hea || ent.hea || 0 );
 			
@@ -71,7 +62,7 @@ class sdLost extends sdEntity
 			if ( ent._is_being_removed )
 			return;
 		
-			let mult = hea - hea2;
+			let mult = hea + hea2;
 			
 			if ( mult <= 0 )
 			return;
@@ -96,26 +87,6 @@ class sdLost extends sdEntity
 				if ( ent.is( sdMatterAmplifier ) )
 				ent.DropCrystal();
 
-				/*if ( ent.is( sdCharacter ) )
-				{
-					if ( !ent._ragdoll )
-					{
-						ent._ragdoll = new sdCharacterRagdoll( ent );
-
-						if ( ent.hea > 0 )
-						{
-							ent._ragdoll.AliveUpdate();
-						}
-						else
-						{
-							ent._ragdoll.AliveUpdate();
-							for ( let i = 0; i < 90; i++ )
-							ent._ragdoll.Think( 1 );
-						}
-					}
-				}*/
-				
-				
 				sdLost.entities_and_affection.delete( ent );
 
 				let title = ent.title || null;
@@ -137,11 +108,6 @@ class sdLost extends sdEntity
 						if ( sdWorld.server_config.onKill )
 						sdWorld.server_config.onKill( ent, bullet ? bullet._owner : null );
 					}
-					
-					/*if ( ent._ragdoll )
-					{
-						ent._ragdoll.Delete(); // Or lese crash if this happens at the same time when snapshot is saved
-					}*/
 				}
 				
 				
@@ -236,9 +202,6 @@ class sdLost extends sdEntity
 	{
 		return this.d3d;
 	}
-	/* Causes client-side falling through unsynced ground, probably bad thing to do and it won't be complex entity after sdSnapPack is added
-	get is_static() // Static world objects like walls, creation and destruction events are handled manually. Do this._update_version++ to update these
-	{ return true; }*/
 	
 	constructor( params )
 	{
@@ -275,13 +238,9 @@ class sdLost extends sdEntity
 		
 		this.awake = 1; // For client sync
 		
-		//if ( this.s )
 		{
 			this._update_version = 0; // sdEntity constructor won't make this property during snapshot load since it is dynamic
-			//this._update_version++;
 		}
-		
-		//console.log( 'this._matter_max = ',this._matter_max );
 	}
 	ExtraSerialzableFieldTest( prop )
 	{		
@@ -355,8 +314,6 @@ class sdLost extends sdEntity
 				this.ApplyVelocityAndCollisions( GSPEED, 0, true );
 			}
 
-			//this._matter = Math.min( this._matter_max, this._matter + GSPEED * 0.001 * this._matter_max / 80 );
-			//this.MatterGlow( 0.01, 30, GSPEED );
 			if ( this._phys_sleep <= 0 )
 			{
 				if ( sdWorld.is_server )
@@ -375,14 +332,9 @@ class sdLost extends sdEntity
 		}
 		else
 		{
-			//this.awake = 0;
 			this.SetHiberState( sdEntity.HIBERSTATE_HIBERNATED_NO_COLLISION_WAKEUP );
 		}
 	}
-	/*DrawHUD( ctx, attached ) // foreground layer
-	{
-		sdEntity.Tooltip( ctx, "Lost" );
-	}*/
 	DrawHUD( ctx, attached ) // foreground layer
 	{
 		if ( this.t )
@@ -397,23 +349,6 @@ class sdLost extends sdEntity
 	Draw( ctx, attached )
 	{
 		ctx.apply_shading = false;
-
-		/*ctx.drawImageFilterCache( sdLost.img_crystal_empty, - 16, - 16, 32,32 );
-		
-		ctx.filter = sdWorld.GetCrystalHue( this._matter_max );
-
-		if ( this._matter_max === sdLost.anticrystal_value )
-		ctx.globalAlpha = 0.8 + Math.sin( sdWorld.time / 3000 ) * 0.1;
-		else
-		ctx.globalAlpha = this._matter / this._matter_max;
-		
-		ctx.drawImageFilterCache( sdLost.img_crystal, - 16, - 16, 32,32 );
-		
-		ctx.globalAlpha = 1;
-		ctx.filter = 'none';*/
-		
-		//ctx.filter = 'contrast(0.8) sepia(1) hue-rotate(10deg) saturate(16)';
-		//ctx.globalAlpha = 0.8;
 		
 		ctx.filter = sdLost.filters[ this.f ];
 		ctx.globalAlpha = 0.8;
@@ -425,19 +360,10 @@ class sdLost extends sdEntity
 	}
 	onRemove() // Class-specific, if needed
 	{
-		/*if ( this._hea <= 0 ) // In else case it was just removed (not best way to check)
-		{
-			sdWorld.DropShards( this.x, this.y, this.sx, this.sy, 
-				Math.ceil( Math.max( 5, this._matter / this._matter_max * 40 / sdWorld.crystal_shard_value * 0.5 ) ),
-				this._matter_max / 40
-			);
-		}*/
 	}
 	MeasureMatterCost()
 	{
 		return 0; // Hack
-		
-		//return this._hmax * sdWorld.damage_to_matter + this._matter;
 	}
 }
 //sdLost.init_class();

@@ -210,8 +210,8 @@ class sdGrass extends sdEntity
 		{
 			let coefficient = ( sdGrass.heights[ this.variation ] / 27 );
 			
-			if ( from_entity.matter_regen < 400 )
-			from_entity.matter_regen = Math.min( from_entity.matter_regen + 8 * coefficient, 400 );
+			if ( from_entity.matter_regen < 1200 )
+			from_entity.matter_regen = Math.min( from_entity.matter_regen + 8 * coefficient, 1200 );
 		
 			from_entity._hea = Math.min( from_entity._hea + 10 * coefficient, from_entity._hmax );
 			

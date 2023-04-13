@@ -642,7 +642,7 @@ class sdDrone extends sdEntity
 				{
 					this._last_attack = sdWorld.time; // So it is not so much calc intensive
 
-					let nears_raw = sdWorld.GetAnythingNear( this.x, this.y, 240, null, [ 'sdCharacter', 'sdPlayerDrone', 'sdDrone', 'sdEnemyMech', 'sdSpider', 'sdGuanako' ] );
+					let nears_raw = sdWorld.GetAnythingNear( this.x, this.y, 240, null, [ 'sdCharacter', 'sdPlayerDrone', 'sdDrone', 'sdEnemyMech', 'sdSpider', 'sdGuanako', 'sdAbomination', 'sdAsp', 'sdAmphid', 'sdBadDog', 'sdBiter', 'sdBot', 'sdCouncilMachine', 'sdCube', 'sdFaceCrab', 'sdGrub', 'sdJunk', 'sdOctopus', 'sdOverlord', 'sdPlayerOverlord', 'sdQuickie', 'sdRoach', 'sdSandWorm', 'sdSetrDestroyer', 'sdSlug', 'sdTutel', 'sdTzyrgAbsorber', 'sdVirus' ] );
 					let from_entity;
 
 					let nears = [];
@@ -652,7 +652,7 @@ class sdDrone extends sdEntity
 
 						let rank = Math.random() * 0.1;
 
-						if ( ( ( from_entity.IsPlayerClass() && from_entity._ai_team !== this._ai_team || this._current_target === from_entity ) && ( from_entity.hea || from_entity._hea ) > 0 ) )
+						if ( ( from_entity.GetClass() === 'sdCharacter' && from_entity._ai_team !== this._ai_team ) && ( from_entity.hea || from_entity._hea ) > 0 )
 						{
 							nears.push( { ent: from_entity, rank: rank, ignore_line_of_sight: false } );
 						}
@@ -668,7 +668,103 @@ class sdDrone extends sdEntity
 						{
 							nears.push( { ent: from_entity, rank: rank, ignore_line_of_sight: false } );
 						}
-						if ( from_entity.GetClass() === 'sdGuanako' && from_entity._ai_team !== this._ai_team )
+						if ( from_entity.GetClass() === 'sdSetrDestroyer' && from_entity._ai_team !== this._ai_team )
+						{
+							nears.push( { ent: from_entity, rank: rank, ignore_line_of_sight: false } );
+						}
+						if ( from_entity.GetClass() === 'sdGuanako' )
+						{
+							nears.push( { ent: from_entity, rank: rank, ignore_line_of_sight: false } );
+						}
+						if ( from_entity.GetClass() === 'sdAbomination' )
+						{
+							nears.push( { ent: from_entity, rank: rank, ignore_line_of_sight: false } );
+						}
+						if ( from_entity.GetClass() === 'sdAsp' )
+						{
+							nears.push( { ent: from_entity, rank: rank, ignore_line_of_sight: false } );
+						}
+						if ( from_entity.GetClass() === 'sdAmphid' )
+						{
+							nears.push( { ent: from_entity, rank: rank, ignore_line_of_sight: false } );
+						}
+						if ( from_entity.GetClass() === 'sdBadDog' )
+						{
+							nears.push( { ent: from_entity, rank: rank, ignore_line_of_sight: false } );
+						}
+						if ( from_entity.GetClass() === 'sdBiter' )
+						{
+							nears.push( { ent: from_entity, rank: rank, ignore_line_of_sight: false } );
+						}
+						if ( from_entity.GetClass() === 'sdBot' )
+						{
+							nears.push( { ent: from_entity, rank: rank, ignore_line_of_sight: false } );
+						}
+						if ( from_entity.GetClass() === 'sdCouncilMachine' && this._ai_team !== 3 )
+						{
+							nears.push( { ent: from_entity, rank: rank, ignore_line_of_sight: false } );
+						}
+						if ( from_entity.GetClass() === 'sdCube' )
+						{
+							nears.push( { ent: from_entity, rank: rank, ignore_line_of_sight: false } );
+						}
+						if ( from_entity.GetClass() === 'sdFaceCrab' )
+						{
+							nears.push( { ent: from_entity, rank: rank, ignore_line_of_sight: false } );
+						}
+						if ( from_entity.GetClass() === 'sdGrub' )
+						{
+							nears.push( { ent: from_entity, rank: rank, ignore_line_of_sight: false } );
+						}
+						if ( from_entity.GetClass() === 'sdJunk' && this._ai_team !== 2 && from_entity.type === sdJunk.TYPE_ERTHAL_DISTRESS_BEACON )
+						{
+							nears.push( { ent: from_entity, rank: rank, ignore_line_of_sight: false } );
+						}
+						if ( from_entity.GetClass() === 'sdJunk' && this._ai_team !== 3 && from_entity.type === sdJunk.TYPE_COUNCIL_BOMB  )
+						{
+							nears.push( { ent: from_entity, rank: rank, ignore_line_of_sight: false } );
+						}
+						if ( from_entity.GetClass() === 'sdJunk' && from_entity.type === sdJunk.TYPE_PLANETARY_MATTER_DRAINER  )
+						{
+							nears.push( { ent: from_entity, rank: rank, ignore_line_of_sight: false } );
+						}
+						if ( from_entity.GetClass() === 'sdOctopus' )
+						{
+							nears.push( { ent: from_entity, rank: rank, ignore_line_of_sight: false } );
+						}
+						if ( from_entity.GetClass() === 'sdOverlord' )
+						{
+							nears.push( { ent: from_entity, rank: rank, ignore_line_of_sight: false } );
+						}
+						if ( from_entity.GetClass() === 'sdPlayerOverlord' )
+						{
+							nears.push( { ent: from_entity, rank: rank, ignore_line_of_sight: false } );
+						}
+						if ( from_entity.GetClass() === 'sdQuickie' )
+						{
+							nears.push( { ent: from_entity, rank: rank, ignore_line_of_sight: false } );
+						}
+						if ( from_entity.GetClass() === 'sdRoach' )
+						{
+							nears.push( { ent: from_entity, rank: rank, ignore_line_of_sight: false } );
+						}
+						if ( from_entity.GetClass() === 'sdSandworm' && from_entity.kind !== sdSandWorm.KIND_COUNCIL_WORM && this._ai_team !== 3 )
+						{
+							nears.push( { ent: from_entity, rank: rank, ignore_line_of_sight: false } );
+						}
+						if ( from_entity.GetClass() === 'sdSlug' )
+						{
+							nears.push( { ent: from_entity, rank: rank, ignore_line_of_sight: false } );
+						}
+						if ( from_entity.GetClass() === 'sdTutel' )
+						{
+							nears.push( { ent: from_entity, rank: rank, ignore_line_of_sight: false } );
+						}
+						if ( from_entity.GetClass() === 'sdVirus' )
+						{
+							nears.push( { ent: from_entity, rank: rank, ignore_line_of_sight: false } );
+						}
+						if ( from_entity.GetClass() === 'sdTzyrgAbsorber' && this._ai_team !== 8 )
 						{
 							nears.push( { ent: from_entity, rank: rank, ignore_line_of_sight: false } );
 						}

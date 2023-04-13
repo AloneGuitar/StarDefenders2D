@@ -181,7 +181,7 @@ class sdCharacter extends sdEntity
 			sdWorld.CreateImageFromFile( 'helmet_fixer' ), // by LordBored
 			sdWorld.CreateImageFromFile( 'helmet_fixer2' ), // by LordBored
 			sdWorld.CreateImageFromFile( 'helmet_phfalkok2' ),
-			sdWorld.CreateImageFromFile( 'helmet_cleaner' ),
+			sdWorld.CreateImageFromFile( 'helmet_spaghetti2' ),
 			sdWorld.CreateImageFromFile( 'helmet_glass' ),
 			sdWorld.CreateImageFromFile( 'helmet_interceptor' ),
 			sdWorld.CreateImageFromFile( 'helmet_medic' ),
@@ -530,7 +530,7 @@ class sdCharacter extends sdEntity
 			let old_matter_max = this.matter_max;
 
 			if ( this.matter_max <= 13250 )
-			this.matter_max = Math.min( 75 + Math.max( 0, this._score * 20 ), 2750 ) + this._matter_capacity_boosters + this._energy_upgrade + this._energy_sent;
+			this.matter_max = Math.min( 75 + Math.max( 0, this._score * 20 ), 3650 ) + this._matter_capacity_boosters + this._energy_upgrade + this._energy_sent;
 			
 			// Keep matter multiplied when low score or else it feels like matter gets removed
 			if ( this._score < 100 )
@@ -877,11 +877,14 @@ class sdCharacter extends sdEntity
 		this._stability_recovery_multiplier = 1; // How fast does the character recover after stability damage?
 		this.workbench_level = 0; // Stand near workbench to unlock some workbench build stuff
 		this.speed_up = false;
+		this.faster_fist = false;
+		this.iron_fist = false;
+		this.iron_body = 0;
 		this._task_reward_counter = 0;
 
 		this._score_to_level = 50;// How much score is needed to level up character?
 		this._score_to_level_additive = 50; // How much score it increases to level up next level
-		this._max_level = 30; // Current maximum level for players to reach
+		this._max_level = 60; // Current maximum level for players to reach
 
 		this._acquired_bt_mech = false;
 		//this._acquired_bt_rift = false; // Has the character picked up build tool upgrade that the portals drop?
@@ -938,7 +941,7 @@ class sdCharacter extends sdEntity
 		this.matter_max = sdCharacter.starter_matter;
 		
 		this._matter_capacity_boosters = 0; // Cube shards are increasing this value
-		this._matter_capacity_boosters_max = 20 * 45;
+		this._matter_capacity_boosters_max = 40 * 45;
 		this._energy_upgrade = 0;
 		this._energy_sent = 0;
 		
@@ -1203,27 +1206,44 @@ class sdCharacter extends sdEntity
 						if ( this.fire_anim <= 0 )
 						{
 							this.fire_anim = 7.5;
+							if ( this.faster_fist === true && this.fist_change === false && this.anim_change === true )
+							{
+							this.fire_anim = 2.0;
+							}
+							else
+							if ( this.faster_fist === true && this.fist_change === true )
+							{
+							this.fire_anim = 5.0;
+							}
 
 							if ( sdWorld.is_server )
 							{
 							let _class = sdGun.CLASS_FISTS;
 
-								if ( this._damage_mult >= 1.1 && this._damage_mult < 1.5 && this.fist_change === true )
+							if ( this.fist_change === true )
+							{
+								if ( this._damage_mult >= 1.1 && this._damage_mult < 1.5 )
 								{
 								_class = sdGun.CLASS_SWORD;
 								}
 								else
-								if ( this._damage_mult >= 1.5 && this._damage_mult < 1.9 && this.fist_change === true )
+								if ( this._damage_mult >= 1.5 && this._damage_mult < 1.9 )
 								{
 								_class = sdGun.CLASS_SABER;
 								}
 								else
-								if ( this._damage_mult >= 1.9 && this.fist_change === true )
+								if ( this._damage_mult >= 1.9 )
 								{
 								_class = sdGun.CLASS_ZAPPER;
 								}
-								else
-								_class = sdGun.CLASS_FISTS;
+							}
+							else
+							if ( this.fist_change === false && this.iron_fist === true )
+							{
+							_class = sdGun.CLASS_IRONF;
+							}
+							else
+							_class = sdGun.CLASS_FISTS;
 
 								if ( !offset )
 								offset = this.GetBulletSpawnOffset();
@@ -1256,13 +1276,9 @@ class sdCharacter extends sdEntity
 
 								bullet_obj._damage *= ( this.s * this._damage_mult / 100 );
 
-								//if ( this._ai_team === 1 || this.s > 249 )
-								//if ( this.title === 'Falkonian Sword Bot' )
-								//bullet_obj._damage = (this.s * this._damage_mult); // Falkonian sword bot should be lethal at close range.
-
 				if ( this.matter >= 5 )
 				{
-				if ( sdWorld.inDist2D_Boolean( this.x, this.y, this.look_x, this.look_y, 600 ) && this._energy_upgrade >= 8690 && this._damage_mult >= 1.9 && this._matter_capacity_boosters >= 900 && this._energy_sent >= 900 && this.fist_change === true )
+				if ( sdWorld.inDist2D_Boolean( this.x, this.y, this.look_x, this.look_y, 600 ) && this.matter_max >= 13200 && this._damage_mult >= 1.9 && this.fist_change === true )
 				{
 					let damage_value = bullet_obj._damage * 2;
 
@@ -2304,8 +2320,8 @@ class sdCharacter extends sdEntity
 				}
 			}
 			
-			
-			if ( this.hea < -800 )
+			let lostchar = -this.hmax * 2
+			if ( this.hea < lostchar )
 			{
 				//if ( this.death_anim <= sdCharacter.disowned_body_ttl )
 				{
@@ -2401,7 +2417,13 @@ class sdCharacter extends sdEntity
 		}
 	}
 	
-	get mass() { return 80 * this.s / 100; }
+	get mass()
+	{
+	if ( this.stability_upgrade > 0 )
+	return 80 * ( this.stability_upgrade / 2 ) * this.s / 100;
+	else
+	return 80 * this.s / 100;
+	}
 	Impulse( x, y )
 	{
 		this.sx += x / this.mass;
@@ -2411,10 +2433,6 @@ class sdCharacter extends sdEntity
 		this.DamageStability( di * sdCharacter.stability_damage_from_velocity_changes_scale );
 		
 		this.ApplyServerSidePositionAndVelocity( false, x / this.mass, y / this.mass );
-		
-		/*this.sx += x * 0.1;
-		this.sy += y * 0.1;
-		this.ApplyServerSidePositionAndVelocity( false, x * 0.1, y * 0.1 );*/
 	}
 	
 	UseServerCollisions()
@@ -3109,13 +3127,6 @@ class sdCharacter extends sdEntity
 		
 		this._nature_damage = sdWorld.MorphWithTimeScale( this._nature_damage, 0, 0.9983, GSPEED );
 		this._player_damage = sdWorld.MorphWithTimeScale( this._player_damage, 0, 0.9983, GSPEED );
-		/*
-		if ( this._score >= this._score_to_level && this.build_tool_level < this._max_level )
-		{
-			this.build_tool_level++;
-			this._score_to_level_additive = this._score_to_level_additive * 1.04;
-			this._score_to_level = this._score_to_level + this._score_to_level_additive;
-		}*/
 		
 		if ( this.hea <= 0 )
 		{
@@ -3234,14 +3245,6 @@ class sdCharacter extends sdEntity
 
 			if ( sdWorld.is_server )
 			{
-				/*if ( this._wb_timer > 0 && this.workbench_level > 0 )
-				if ( this.sx !== 0 || this.sy !== 0 ) // Do not affect timer unless player is moving, a circumvent solution for static players at workbench
-				this._wb_timer -= GSPEED;
-				if ( this._wb_timer <= 0 && this.workbench_level > 0 )
-				this.workbench_level = 0;*/
-
-				//this._task_reward_counter = Math.min(1, this._task_reward_counter + GSPEED / 1800 ); // For testing
-
 				if ( this._task_reward_counter >= sdTask.reward_claim_task_amount ) // was 1 but players told me it takes too long
 				sdTask.MakeSureCharacterHasTask({ 
 					similarity_hash:'CLAIM_REWARD-'+this._net_id, 
@@ -3250,12 +3253,21 @@ class sdCharacter extends sdEntity
 				});
 			}
 
-			//let offset = this.GetBulletSpawnOffset();
+			if ( this.s === 140 && this.hea <= 2400 && this.hmax === 4200 )
+			{
+			this._damage_mult = 3.5;
+			};
+			if ( this.s === 120 && this.hea <= 1000 && this.hmax === 1600 )
+			{
+			this.stability_upgrade = 25;
+			this._damage_mult = 2.5;
+			};
+			if ( this.s === 110 && this.hea <= 700 && this.hmax === 1200 )
+			{
+			this.stability_upgrade = 25;
+			this._damage_mult = 4;
+			};
 
-			//this._an = -Math.PI / 2 - Math.atan2( this.y + offset.y - this.look_y, this.x + offset.x - this.look_x );
-			
-			
-			
 			this.ReloadAndCombatLogic( GSPEED );
 
 			if ( this.matter < this._matter_regeneration * 20 )
@@ -3271,84 +3283,7 @@ class sdCharacter extends sdEntity
 			
 			this.DropWeaponLogic( GSPEED );
 			this.WeaponSwitchLogic( GSPEED );
-			
-			/*if ( this._auto_shoot_in <= 0 )
-			{
-				if ( this._key_states.GetKey( 'KeyV' ) )
-				{
-					this._key_states.SetKey( 'KeyV', 0 ); // So sword is not dropped all the time
 
-					if ( this._inventory[ this.gun_slot ] )
-					{
-						if ( sdGun.classes[ this._inventory[ this.gun_slot ].class ] )
-						if ( sdGun.classes[ this._inventory[ this.gun_slot ].class ].is_sword )
-						{
-							this._inventory[ this.gun_slot ].dangerous = true;
-							this._inventory[ this.gun_slot ]._dangerous_from = this;
-
-							if ( sdGun.classes[ this._inventory[ this.gun_slot ].class ].sound )
-							sdSound.PlaySound({ name:sdGun.classes[ this._inventory[ this.gun_slot ].class ].sound, x:this.x, y:this.y, volume: 0.5 * ( sdGun.classes[ this._inventory[ this.gun_slot ].class ].sound_volume || 1 ), pitch: 0.8 * ( sdGun.classes[ this._inventory[ this.gun_slot ].class ].sound_pitch || 1 ) });
-						}
-						
-						this.DropWeapon( this.gun_slot );
-
-						this.gun_slot = 0;
-						if ( sdWorld.my_entity === this )
-						sdWorld.PreventCharacterPropertySyncForAWhile( 'gun_slot' );
-						
-						if ( this.reload_anim > 0 )
-						this.reload_anim = 0;
-						
-						this._weapon_draw_timer = sdCharacter.default_weapon_draw_time;
-					}
-				}
-
-				if ( this._key_states.GetKey( 'KeyQ' ) )
-				{
-					if ( !this._q_held )
-					{
-						this._q_held = true;
-
-						let b = this._backup_slot;
-						if ( !this._inventory[ b ] )
-						b = 0;
-
-						this._backup_slot = this.gun_slot;
-						this.gun_slot = b;
-						if ( sdWorld.my_entity === this )
-						sdWorld.PreventCharacterPropertySyncForAWhile( 'gun_slot' );
-
-						if ( this.reload_anim > 0 )
-						this.reload_anim = 0;
-						
-						this._weapon_draw_timer = sdCharacter.default_weapon_draw_time;
-					}
-				}
-				else
-				{
-					this._q_held = false;
-					for ( var i = 0; i < 10; i++ )
-					if ( this._inventory[ i ] || i === 0 )
-					if ( this._key_states.GetKey( 'Digit' + i ) || ( i === 0 && this._key_states.GetKey( 'Backquote' ) ) )
-					{
-						if ( this.gun_slot !== i )
-						{
-							this._backup_slot = this.gun_slot;
-							this.gun_slot = i;
-							if ( sdWorld.my_entity === this )
-							sdWorld.PreventCharacterPropertySyncForAWhile( 'gun_slot' );
-
-							if ( this.reload_anim > 0 )
-							this.reload_anim = 0;
-						
-							this._weapon_draw_timer = sdCharacter.default_weapon_draw_time;
-						}
-						break;
-					}
-				}
-			}*/
-			
-		
 			this._side = ( this.x < this.look_x ) ? 1 : -1;
 		}
 	
@@ -3359,10 +3294,6 @@ class sdCharacter extends sdEntity
 		
 		if ( this.stability < 50 )
 		act_y_or_unstable = 1;
-	
-	
-		//let new_x = this.x + this.sx * GSPEED;
-		//let new_y = this.y + this.sy * GSPEED;
 		
 		let speed_scale = 1 * ( 1 - ( this.armor_speed_reduction / 100 ) );
 		
@@ -3381,9 +3312,6 @@ class sdCharacter extends sdEntity
 		}
 
 		let walk_speed_scale = speed_scale;
-		
-		//let leg_height;
-		//let new_leg_height;
 		
 		if ( act_y_or_unstable )
 		walk_speed_scale *= 0.5;
@@ -3432,11 +3360,6 @@ class sdCharacter extends sdEntity
 		{
 			//leg_height = new_leg_height = this._hitbox_y2; // Fake-ish outdated value since there is no crouch
 		}
-		
-		//this._hitbox_y2 = new_leg_height; // Prevent short-term stucking in ground
-		
-		//leg_height		*= 0.3 + Math.abs( Math.cos( this.tilt / 100 ) ) * 0.7;
-		//new_leg_height  *= 0.3 + Math.abs( Math.cos( this.tilt / 100 ) ) * 0.7;
 	
 		let last_ledge_holding = this._ledge_holding;
 	 
@@ -4432,13 +4355,6 @@ class sdCharacter extends sdEntity
 			{
 				this._potential_vehicle = from_entity;
 			}
-			/*else
-			if ( from_entity.is( sdWorkbench ) )
-			{
-				this.workbench_level = from_entity.level;
-				this._wb_timer = 15;
-				//console.log( from_entity.GetClass(), this.workbench_level, this._wb_timer, sdWorld.is_server );
-			}*/
 		}
 	}
 	
@@ -4447,12 +4363,19 @@ class sdCharacter extends sdEntity
 		if ( this._potential_vehicle )
 		if ( !this._potential_vehicle._is_being_removed )
 		if ( this._potential_vehicle.is( sdWorkbench ) )
-		if ( this.DoesOverlapWith( this._potential_vehicle ) && this._potential_vehicle.level > this.workbench_level )
 		{
-			return this._potential_vehicle.level;
+			if ( this.DoesOverlapWith( this._potential_vehicle ) && this._potential_vehicle.level > 0 && this._potential_vehicle.level > this.workbench_level )
+			{
+				return this._potential_vehicle.level;
+			}
+			else
+			if ( this.workbench_level > 0 )
+			{
+				return this.workbench_level;
+			}
 		}
 		
-		return this.workbench_level;
+		return 0;
 	}
 	
 	DrawHUD( ctx, attached ) // foreground layer
@@ -4902,11 +4825,23 @@ class sdCharacter extends sdEntity
 			ctx.fillText( 'Connection problem', 0, -25 - 5, 50 );
 		}
 		
-		//ctx.filter = this.filter;
 		ctx.sd_filter = this.sd_filter;
+
+		if ( ( this.s === 140 && this.hea <= 2400 && this.hmax === 4200 ) || ( this.anim_change === true && this.iron_fist === true && this.iron_body === 0 ) )
+		{
+		ctx.filter = 'grayscale(1) hue-rotate(140deg) brightness(0.4) contrast(1.5) saturate(10) drop-shadow(0px 0px 1px #101874)';
+		}
+		if ( ( this.s === 120 && this.hea <= 1000 && this.hmax === 1600 ) || ( this.anim_change === true && this.iron_fist === true && this.iron_body === 1 ) )
+		{
+		ctx.filter = 'sepia(1) hue-rotate(-60deg) brightness(2) contrast(1.5) saturate(15) drop-shadow(0px 0px 1px #ffff00)';
+		}
+		if ( ( this.s === 110 && this.hea <= 700 && this.hmax === 1200 ) || ( this.anim_change === true && this.iron_fist === true && this.iron_body === 2 ) )
+		{
+		ctx.filter = 'sepia(1) hue-rotate(-30deg) brightness(0.5) contrast(1.5) saturate(10) drop-shadow(0px 0px 1px #ff0000)';
+		}
 		
 		if ( this.stim_ef > 0 && ( ( sdWorld.time ) % 1000 < 500 || this.stim_ef > 30 * 3 ) )
-		ctx.filter = 'sepia(1) hue-rotate(-50deg) contrast(0.8) saturate(7) drop-shadow(0px 0px 1px #ff0000)';
+		ctx.filter = 'sepia(1) hue-rotate(-30deg) contrast(0.8) saturate(8) drop-shadow(0px 0px 1px #ff0000)';
 	
 		if ( this.power_ef > 0 && ( ( sdWorld.time + 100 ) % 1000 < 500 || this.power_ef > 30 * 3 ) )
 		ctx.filter = 'sepia(1) hue-rotate(140deg) contrast(0.8) saturate(7) drop-shadow(0px 0px 1px #33ffff)';

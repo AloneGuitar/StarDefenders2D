@@ -199,9 +199,8 @@ class sdBullet extends sdEntity
 		sdWorld.SendEffect({ 
 			x:this.x, 
 			y:this.y, 
-			radius:this.explosion_radius * ( this._owner && this._owner._damage_mult > 1.2 ? this._owner._damage_mult * 0.8 : 1 ), 
-			damage_scale: ( this._owner && this._owner.IsPlayerClass() ? this._owner._damage_mult * 2 : 2 ), 
-			//damage_scale: 2, 
+			radius:this.explosion_radius * ( this._owner && this._owner._damage_mult > 1.2 ? this._owner._damage_mult * 0.8 : 1 ) * ( this._owner && this._owner.power_ef > 0 ? 1.5 : 1 ),
+			damage_scale: ( this._owner && this._owner.IsPlayerClass() ? this._owner._damage_mult * 2 : 2 ),
 			type:sdEffect.TYPE_EXPLOSION,
 			armor_penetration_level: this._armor_penetration_level,
 			owner:this._owner,

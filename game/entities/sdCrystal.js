@@ -378,6 +378,11 @@ class sdCrystal extends sdEntity
 				{
 					reward_amount = 0;
 				}
+				else
+				if ( this.matter_regen >= 1200 )
+				{
+					reward_amount = 0;
+				}
 				
 				reward_amount = ~~( reward_amount );
 		

@@ -48,7 +48,7 @@ class sdOctopus extends sdEntity
 		this.sx = 0;
 		this.sy = 0;
 		
-		this._hmax = 2000; // Was 2000, but too boring to kill them
+		this._hmax = 1000; // Was 2000, but too boring to kill them
 		this._hea = this._hmax;
 
 		this._nature_damage = 1000000;

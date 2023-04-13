@@ -886,13 +886,14 @@ class sdCube extends sdEntity
 						else
 						{
 							if ( ( target.IsPlayerClass() && target.hea > 0 && !sdCube.IsTargetFriendly( target ) ) ||
-								 ( target.GetClass() === 'sdTurret' && !sdCube.IsTargetFriendly( target ) ) || 
-								 ( target.GetClass() === 'sdEnemyMech' && target.hea > 0  && !sdCube.IsTargetFriendly( target ) ) ||
-								 ( target.GetClass() === 'sdBot' && target.hea > 0  && !sdCube.IsTargetFriendly( target ) ) ||
-								 ( target.GetClass() === 'sdSpider' && target._hea > 0  && !sdCube.IsTargetFriendly( target ) ) ||
-								 ( target.GetClass() === 'sdDrone' && target._hea > 0  && !sdCube.IsTargetFriendly( target ) ) ||
-								 ( target.GetClass() === 'sdOverlord' && target.hea > 0  && !sdCube.IsTargetFriendly( target ) ) ||
-								 ( target.GetClass() === 'sdSetrDestroyer' && target.hea > 0  && !sdCube.IsTargetFriendly( target ) ) )
+								 ( target.GetClass() === 'sdTurret' ) || 
+								 ( target.GetClass() === 'sdEnemyMech' && target.hea > 0 ) ||
+								 ( target.GetClass() === 'sdBot' && target.hea > 0 ) ||
+								 ( target.GetClass() === 'sdSpider' && target._hea > 0 ) ||
+								 ( target.GetClass() === 'sdCharacter' && target._hea > 0  && !sdCube.IsTargetFriendly( target ) ) ||
+								 ( target.GetClass() === 'sdDrone' && target._hea > 0 ) ||
+								 ( target.GetClass() === 'sdOverlord' && target.hea > 0 ) ||
+								 ( target.GetClass() === 'sdSetrDestroyer' && target.hea > 0 ) )
 							{
 								if ( 
 										sdWorld.CheckLineOfSight( this.x, this.y, target.x, target.y, target, [ 'sdCube' ], [ 'sdBlock', 'sdDoor', 'sdMatterContainer', 'sdMatterAmplifier' ] ) 
