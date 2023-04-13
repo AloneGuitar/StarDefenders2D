@@ -1623,7 +1623,7 @@ io.on( 'connection', ( socket )=>
 	
 	socket.emit( 'INIT', 
 	{
-		game_title: sdWorld.server_config.game_title || 'Star Defenders',
+		game_title: sdWorld.server_config.game_title || 'Lore of Star Susanoos',
 		backgroundColor: sdWorld.server_config.backgroundColor || '',
 		supported_languages: sdWorld.server_config.supported_languages || []
 	});
