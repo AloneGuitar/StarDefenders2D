@@ -36,6 +36,8 @@ class sdRenderer
 		sdRenderer.img_sun = sdWorld.CreateImageFromFile( 'sun' );
 		
 		sdRenderer.ad_happens = false;
+
+		sdRenderer.line_of_sight_mode = true;
 	
 		sdRenderer.distance_scale_background = 1.4; // 1.2
 		sdRenderer.distance_scale_in_world = 1; // Can be altered with .CameraDistanceScale3D
@@ -446,7 +448,7 @@ class sdRenderer
 		sdRenderer.dark_lands_width = 800;
 		
 		sdRenderer.visibility_falloff = 64; // 32
-		sdRenderer.visibility_extra = 32; // 32
+		sdRenderer.visibility_extra = 0; // 32
 		
 		sdRenderer.last_render = sdWorld.time;
 		
@@ -484,7 +486,7 @@ class sdRenderer
 					
 						ctx2.scale( image_scale, image_scale );
 						ctx2.filter = 'saturate(0) brightness(3)';
-						ctx2.fillStyle = ctx2.createPattern( sdBlock.img_ground88, "repeat" );
+						ctx2.fillStyle = ctx2.createPattern( img_ground88, "repeat" );
 						ctx2.fillRect( 0, 0, sdRenderer.dark_lands_width / image_scale, 400 / image_scale );
 
 						ctx2.filter = 'none';
@@ -1063,7 +1065,8 @@ class sdRenderer
 								( 
 									sdWorld.my_entity === e || 
 									sdWorld.my_entity.driver_of === e || 
-									sdWorld.my_entity._god 
+									//sdWorld.my_entity._god ||
+									!sdRenderer.line_of_sight_mode
 								) 
 							) 
 						)
@@ -1227,13 +1230,14 @@ class sdRenderer
 				}
 			}
 			
-			
-			ctx.apply_shading = false;
-			// Line of sight take 2
-			sdRenderer.DrawLineOfSightShading( ctx, ms_since_last_render );
-			
-			ctx.apply_shading = true;
-			
+			if ( sdRenderer.line_of_sight_mode )
+			{
+				ctx.apply_shading = false;
+				// Line of sight take 2
+				sdRenderer.DrawLineOfSightShading( ctx, ms_since_last_render );
+
+				ctx.apply_shading = true;
+			}
 			
 			
 			
@@ -1495,7 +1499,8 @@ class sdRenderer
 			if ( sdWorld.my_entity )
 			if ( sdRenderer.UseCrosshair() )
 			{
-				if ( sdWorld.my_entity._inventory[ sdWorld.my_entity.gun_slot ] &&
+				if ( !sdWorld.my_entity._is_being_removed && 
+					 sdWorld.my_entity._inventory[ sdWorld.my_entity.gun_slot ] &&
 					 sdGun.classes[ sdWorld.my_entity._inventory[ sdWorld.my_entity.gun_slot ].class ] &&
 					 sdGun.classes[ sdWorld.my_entity._inventory[ sdWorld.my_entity.gun_slot ].class ].is_build_gun )
 				{
@@ -1552,6 +1557,10 @@ class sdRenderer
 		if ( sdWorld.my_entity && show_hud )
 		{
 			let scale = ( 0.3 + 0.7 * sdRenderer.resolution_quality );
+
+			let leaderboard_width = 200 * scale;
+			if ( sdWorld.mouse_screen_x > sdRenderer.screen_width - leaderboard_width && sdWorld.mouse_screen_y < 20 + 20 * sdWorld.leaders.length * scale + 5 + 5 )
+			leaderboard_width = 400;
 			
 			ctx.font = 11*scale + "px Verdana";
 			
@@ -1560,7 +1569,7 @@ class sdRenderer
 			ctx.fillRect( 5, 5, 445 * scale, 17 );
 			
 			if ( sdRenderer.show_leader_board === 1 || sdRenderer.show_leader_board === 2 )
-			ctx.fillRect( sdRenderer.screen_width - 200 * scale - 5, 5, 200 * scale, 20 + 20 * sdWorld.leaders.length * scale + 5 );
+			ctx.fillRect( sdRenderer.screen_width - leaderboard_width - 5, 5, leaderboard_width, 20 + 20 * sdWorld.leaders.length * scale + 5 );
 			
 			{
 				let i = 0;
@@ -1720,11 +1729,11 @@ class sdRenderer
 			if ( sdRenderer.show_leader_board === 1 || sdRenderer.show_leader_board === 2 )
 			{
 				ctx.fillStyle = '#AAAAAA';
-				ctx.fillText( T("Leaderboard") + ":", sdRenderer.screen_width - 200 * scale - 5 + 5, 20 );
+				ctx.fillText( T("Leaderboard") + ":", sdRenderer.screen_width - leaderboard_width - 5 + 5, 20 );
 
 				ctx.textAlign = 'right';
 				ctx.fillStyle = '#AAAAAA';
-				ctx.fillText( globalThis.players_playing+ T(" alive"), sdRenderer.screen_width - 5 - 5, 20 );
+				ctx.fillText( globalThis.players_playing + T(" alive"), sdRenderer.screen_width - 5 - 5, 20 );
 
 				//for ( var i = 0; i < sdWorld.leaders.length; i++ )
 				for ( var i = 0; i < sdWorld.leaders.length; i++ )
@@ -1745,9 +1754,9 @@ class sdRenderer
 					ctx.fillStyle = '#666666';
 				
 					if ( sdWorld.client_side_censorship && sdWorld.leaders[ i ].name_censored )
-					ctx.fillText( (i+1)+". " + ( ( i < sdWorld.leaders.length ) ? T('Censored Defender') : '' ), sdRenderer.screen_width - 200 * scale - 5 + 5, 20 + ( i + 1 ) * 20 * scale );
+					ctx.fillText( (i+1)+". " + ( ( i < sdWorld.leaders.length ) ? T('Censored Defender') : '' ), sdRenderer.screen_width - leaderboard_width - 5 + 5, 20 + ( i + 1 ) * 20 * scale );
 					else
-					ctx.fillText( (i+1)+". " + ( ( i < sdWorld.leaders.length ) ? sdWorld.leaders[ i ].name : '' ), sdRenderer.screen_width - 200 * scale - 5 + 5, 20 + ( i + 1 ) * 20 * scale );
+					ctx.fillText( (i+1)+". " + ( ( i < sdWorld.leaders.length ) ? sdWorld.leaders[ i ].name : '' ), sdRenderer.screen_width - leaderboard_width - 5 + 5, 20 + ( i + 1 ) * 20 * scale );
 
 					ctx.fillStyle = main_color;
 
@@ -1991,9 +2000,19 @@ class sdRenderer
 				xx = sdWorld.my_entity.x;
 				yy = sdWorld.my_entity.y + ( sdWorld.my_entity._hitbox_y1 + sdWorld.my_entity._hitbox_y2 ) / 2;
 				
-				if ( sdWorld.my_entity._god )
+				//if ( sdWorld.my_entity._god || !sdRenderer.line_of_sight_mode )
+				if ( !sdRenderer.line_of_sight_mode )
 				{
 					darkest_alpha = 0.6;
+				}
+
+				if ( sdWorld.my_entity.iron_fist )
+				{
+					darkest_alpha = 0.6;
+				}
+				if ( sdWorld.my_entity._god )
+				{
+					darkest_alpha = 0;
 				}
 			}
 			else
@@ -2056,6 +2075,133 @@ class sdRenderer
 			}
 		}
 		ctx.z_offset = z_offset_old;
+	}
+
+	static _ColorUpdate( color_hex )
+	{
+		let p = document.getElementById( 'ingame_color_picker' );
+		p.value = color_hex;
+	}
+	static _SetupColorPickerSettings()
+	{
+		let p = document.getElementById( 'ingame_color_picker' );
+
+		Coloris({ 
+			alpha: false, 
+			wrap: false,
+			themeMode: 'dark', 
+			el: '.ingame_color_picker', 
+			swatches: p.swatches, 
+			onChange: sdRenderer._ColorUpdate,
+			closeButton: true
+		});
+	}
+	static GetColorPickerValue( current_css_color='#ff0000', callback=null ) // Test: document.onmousedown = ( e )=>{ if ( e.which === 1 ) sdRenderer.GetColorPickerValue(); }
+	{
+		let p = document.getElementById( 'ingame_color_picker' );
+
+		function PushColor( color_hex )
+		{
+			if ( !p.swatches )
+			{
+				p.swatches = [
+					'#00fff6',
+					'#ffff00',
+					'#dddddd',
+					'#ff00ff',
+
+					'#fb6464',
+					'#31ff6b',
+					'#213eec',
+					'#434447',
+					'#ffa2e1'
+				];
+			}
+
+			if ( p.swatches.indexOf( color_hex ) === -1 )
+			{
+				p.swatches.push( color_hex );
+
+				if ( p.swatches.length > 32 )
+				p.swatches.shift();
+			}
+		}
+
+		p.value = current_css_color;
+		PushColor( current_css_color );
+
+		p.style.left = sdWorld.mouse_screen_x + 'px';
+		p.style.top = sdWorld.mouse_screen_y + 'px';
+
+		sdRenderer._SetupColorPickerSettings();
+
+		p.click();
+
+		let picker = document.getElementById( 'clr-picker' );
+
+		function CancelPicker()
+		{
+			p.removeEventListener( 'close', CancelPicker );
+			window.removeEventListener( 'mousedown', WindowClose );
+			sdRenderer.canvas.removeEventListener( 'mousedown', WindowClose );
+
+			p.blur();
+
+			//trace( 'p.value = ' + p.value );
+
+			if ( callback )
+			{
+				PushColor( p.value );
+				callback( p.value );
+			}
+		}
+
+		function WindowClose( e )
+		{
+			if ( picker.contains( e.target ) )
+			return;
+
+			e.preventDefault();
+			e.stopPropagation();
+
+			Coloris.close();
+		}
+
+		setTimeout( ()=>
+		{
+			p.addEventListener( 'close', CancelPicker );
+			window.addEventListener( 'mousedown', WindowClose );
+			sdRenderer.canvas.addEventListener( 'mousedown', WindowClose );
+		}, 0 );
+
+		/*let p = document.getElementById( 'ingame_color_picker' );
+		//p.onchange = 
+		//p.onblur = null;
+		
+		p.style.left = sdWorld.mouse_screen_x + 'px';
+		p.style.top = sdWorld.mouse_screen_y + 'px';
+		
+		p.focus();
+		p.value = current_css_color;
+		p.click();
+		
+		p.value = '#00ff00';
+		p.onchange = ( e )=>
+		{
+			p.onchange = null;
+			//p.onblur = null;
+	
+			trace( e, p.value );
+			
+			if ( callback )
+			callback( p.value );
+		};*/
+
+		/*setTimeout(()=>{
+			
+			p.onblur = p.onchange;
+			
+		},0);*/
 	}
 }
 //sdRenderer.init_class();
