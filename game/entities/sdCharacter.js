@@ -43,134 +43,147 @@ class sdCharacter extends sdEntity
 		
 		sdCharacter.stability_damage_from_damage_scale = 1.25;
 		sdCharacter.stability_damage_from_velocity_changes_scale = 128 / 6;
-		// Add new values at the end
-		sdCharacter.img_helmets = [
-			null,
-			sdWorld.CreateImageFromFile( 'helmets/helmet_star_defender' ), // EG
-			sdWorld.CreateImageFromFile( 'helmets/helmet_falkok' ), // EG
-			sdWorld.CreateImageFromFile( 'helmets/helmet_eyes' ), // EG
-			sdWorld.CreateImageFromFile( 'helmets/helmet_dino' ), // EG
-			sdWorld.CreateImageFromFile( 'helmets/helmet_v' ), // EG
-			sdWorld.CreateImageFromFile( 'helmets/helmet_open' ), // EG
-			sdWorld.CreateImageFromFile( 'helmets/helmet_cs' ), // idea by butorinoks77, rework by Eric Gurt
-			sdWorld.CreateImageFromFile( 'helmets/helmet_grub' ), // idea by butorinoks77, rework by Eric Gurt
-			sdWorld.CreateImageFromFile( 'helmets/helmet_crow' ), // by butorinoks77
-			sdWorld.CreateImageFromFile( 'helmets/helmet_scope' ), // by butorinoks77, remake by GPU
-			sdWorld.CreateImageFromFile( 'helmets/helmet_crusader' ), // by xXRedXAssassinXx
-			sdWorld.CreateImageFromFile( 'helmets/helmet_phfalkok' ), // by Booraz149
-			sdWorld.CreateImageFromFile( 'helmets/helmet_aero' ), // // original by LordBored, remake by LazyRain
-			sdWorld.CreateImageFromFile( 'helmets/helmet_scout' ), // by Ghost581, original name was "Observer"
-			sdWorld.CreateImageFromFile( 'helmets/helmet_heavy' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_shade' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_plasmator' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_arbiter' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_pilot' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_guardian' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_vanquisher' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_glory' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_scion' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_varia' ), // by Silk1
-			sdWorld.CreateImageFromFile( 'helmets/helmet_array' ), // original by Silk1
-			sdWorld.CreateImageFromFile( 'helmets/helmet_nova' ), // by LazyRain
-			sdWorld.CreateImageFromFile( 'helmets/helmet_igris' ), // by Silk1
-			sdWorld.CreateImageFromFile( 'helmets/helmet_ace' ), // by Silk1
-			sdWorld.CreateImageFromFile( 'helmets/helmet_alpha' ), // by Silk1
-			sdWorld.CreateImageFromFile( 'helmets/helmet_templar' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_dragon' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_agilus' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_biohazard' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_bulwark' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_engineer' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_forge' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_harbinger' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_legate' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_lifter' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_omega' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_protector' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_reaper' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_researcher' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_supreme' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_spire' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_walker' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_acolyte' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_archangel' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_assault' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_beast' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_colonel' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_cyber' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_destiny' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_duality' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_flame' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_hatred' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_hunter' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_judicator' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_marauder' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_medic2' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_overseer' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_shocktrooper' ), // by GPU
-			sdWorld.CreateImageFromFile( 'helmets/helmet_starfarer' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_stream' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_synth' ), // by GPU
-			sdWorld.CreateImageFromFile( 'helmets/helmet_warden' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_warlord' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_sentinel' ), // by Ghost581
-			sdWorld.CreateImageFromFile( 'helmets/helmet_skeleton' ), // by Silk1
-			sdWorld.CreateImageFromFile( 'helmets/helmet_rose' ), // by Silk1
-			sdWorld.CreateImageFromFile( 'helmets/helmet_avre' ), // by Silk1
-			sdWorld.CreateImageFromFile( 'helmets/helmet_spaghetti' ), // by Silk1
-			sdWorld.CreateImageFromFile( 'helmets/helmet_tacticalSD' ), // by The_Commander
-			sdWorld.CreateImageFromFile( 'helmets/helmet_vengeance' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_sovereign' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_oxide' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_mythic' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_outcast' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_angel' ), // by LazyRain
-			sdWorld.CreateImageFromFile( 'helmets/helmet_split_visor' ), // by LazyRain
-			sdWorld.CreateImageFromFile( 'helmets/helmet_soldier_rig' ), // by LazyRain
-			sdWorld.CreateImageFromFile( 'helmets/helmet_witch' ), // by LazyRain
-			sdWorld.CreateImageFromFile( 'helmets/helmet_modeus' ), // by LazyRain
-			sdWorld.CreateImageFromFile( 'helmets/helmet_pepe' ), // by LazyRain
-			sdWorld.CreateImageFromFile( 'helmets/helmet_santa' ), // by LazyRain
-			sdWorld.CreateImageFromFile( 'helmets/helmet_velox' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_apex' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_advisor' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_paradigm' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_sync' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_legend' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_duster' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_vengeance2' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_bulwark2' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_empyrean' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_council' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_androidSD' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_androidSD2' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_assassin' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_automata' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_automata2' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_blackguard' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_duelist' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_monolith' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_reaper2' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_assassin2' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_specialist' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_spectre' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_storm' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_swole' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_terminus' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_titan' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_terminus2' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_versatile' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_fixer' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_fixer2' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmets/helmet_phfalkok2' ),
-			sdWorld.CreateImageFromFile( 'helmets/helmet_spaghetti2' ),
-			sdWorld.CreateImageFromFile( 'helmets/helmet_glass' ),
-			sdWorld.CreateImageFromFile( 'helmets/helmet_interceptor' ),
-			sdWorld.CreateImageFromFile( 'helmets/helmet_medic' ),
-			sdWorld.CreateImageFromFile( 'helmets/helmet_erthal' ),
-			sdWorld.CreateImageFromFile( 'helmets/helmet_milk' )
-			// Note: Commas -> , are important since it all is just a big Array: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array
+		// Add new values at the end. This list will be automatically sorted
+		sdCharacter.helmet_file_names_with_actual_names = [
+			{ file:'', name:'' }, // Should be kept like this
+			{ file:'helmets/helmet_star_defender', name:'Star Defender' }, // by Eric Gurt
+			{ file:'helmets/helmet_falkok', name:'Falkok' }, // by Eric Gurt
+			{ file:'helmets/helmet_eyes', name:'Eyes' }, // by Eric Gurt
+			{ file:'helmets/helmet_dino', name:'Dino' }, // by Eric Gurt
+			{ file:'helmets/helmet_v', name:'V' }, // by Eric Gurt
+			{ file:'helmets/helmet_open', name:'Open' }, // by Eric Gurt
+			{ file:'helmets/helmet_cs', name:'CS' }, //  idea by butorinoks77, rework by Eric Gurt
+			{ file:'helmets/helmet_grub', name:'Grub' }, //  idea by butorinoks77, rework by Eric Gurt
+			{ file:'helmets/helmet_crow', name:'Crow' }, //  by butorinoks77
+			{ file:'helmets/helmet_scope', name:'Scope' }, //  by butorinoks77, remake by GPU
+			{ file:'helmets/helmet_crusader', name:'Crusader' }, //  by xXRedXAssassinXx
+			{ file:'helmets/helmet_phfalkok', name:'Phoenix Falkok' }, //  by Booraz149
+			{ file:'helmets/helmet_aero', name:'Aero' }, //  original by LordBored, remake by LazyRain
+			{ file:'helmets/helmet_scout', name:'Scout' }, //  by Ghost581, original name was "Observer"
+			{ file:'helmets/helmet_heavy', name:'Heavy' }, //  by LordBored
+			{ file:'helmets/helmet_shade', name:'Shade' }, //  by LordBored
+			{ file:'helmets/helmet_plasmator', name:'Plasmator' }, //  by LordBored
+			{ file:'helmets/helmet_arbiter', name:'Arbiter' }, //  by LordBored
+			{ file:'helmets/helmet_pilot', name:'Pilot' }, //  by LordBored
+			{ file:'helmets/helmet_guardian', name:'Guardian' }, //  by LordBored
+			{ file:'helmets/helmet_vanquisher', name:'Vanquisher' }, //  by LordBored
+			{ file:'helmets/helmet_glory', name:'Glory' }, //  by LordBored
+			{ file:'helmets/helmet_scion', name:'Scion' }, //  by LordBored
+			{ file:'helmets/helmet_varia', name:'Varia' }, //  by Silk1
+			{ file:'helmets/helmet_array', name:'Array' }, //  original by Silk1
+			{ file:'helmets/helmet_nova', name:'Nova' }, //  by LazyRain
+			{ file:'helmets/helmet_igris', name:'Igris' }, //  by Silk1
+			{ file:'helmets/helmet_ace', name:'Ace' }, //  by Silk1
+			{ file:'helmets/helmet_alpha', name:'Alpha' }, //  by Silk1
+			{ file:'helmets/helmet_templar', name:'Templar' }, //  by LordBored
+			{ file:'helmets/helmet_dragon', name:'Dragon' }, //  by LordBored
+			{ file:'helmets/helmet_agilus', name:'Agilus' }, //  by LordBored
+			{ file:'helmets/helmet_biohazard', name:'Biohazard' }, //  by LordBored
+			{ file:'helmets/helmet_bulwark', name:'Bulwark' }, //  by LordBored
+			{ file:'helmets/helmet_engineer', name:'Engineer' }, //  by LordBored
+			{ file:'helmets/helmet_forge', name:'Forge' }, //  by LordBored
+			{ file:'helmets/helmet_harbinger', name:'Harbinger' }, //  by LordBored
+			{ file:'helmets/helmet_legate', name:'Legate' }, //  by LordBored
+			{ file:'helmets/helmet_lifter', name:'Lifter' }, //  by LordBored
+			{ file:'helmets/helmet_omega', name:'Omega' }, //  by LordBored
+			{ file:'helmets/helmet_protector', name:'Protector' }, //  by LordBored
+			{ file:'helmets/helmet_reaper', name:'Reaper' }, //  by LordBored
+			{ file:'helmets/helmet_researcher', name:'Researcher' }, //  by LordBored
+			{ file:'helmets/helmet_supreme', name:'Supreme' }, //  by LordBored
+			{ file:'helmets/helmet_spire', name:'Spire' }, //  by LordBored
+			{ file:'helmets/helmet_walker', name:'Walker' }, //  by LordBored
+			{ file:'helmets/helmet_acolyte', name:'Acolyte' }, //  by LordBored
+			{ file:'helmets/helmet_archangel', name:'Archangel' }, //  by LordBored
+			{ file:'helmets/helmet_assault', name:'Assault' }, //  by LordBored
+			{ file:'helmets/helmet_beast', name:'Beast' }, //  by LordBored
+			{ file:'helmets/helmet_colonel', name:'Colonel' }, //  by LordBored
+			{ file:'helmets/helmet_cyber', name:'Cyber' }, //  by LordBored
+			{ file:'helmets/helmet_destiny', name:'Destiny' }, //  by LordBored
+			{ file:'helmets/helmet_duality', name:'Duality' }, //  by LordBored
+			{ file:'helmets/helmet_flame', name:'Flame' }, //  by LordBored
+			{ file:'helmets/helmet_hatred', name:'Hatred' }, //  by LordBored
+			{ file:'helmets/helmet_hunter', name:'Hunter' }, //  by LordBored
+			{ file:'helmets/helmet_judicator', name:'Judicator' }, //  by LordBored
+			{ file:'helmets/helmet_marauder', name:'Marauder' }, //  by LordBored
+			{ file:'helmets/helmet_medic2', name:'Medic' }, //  by LordBored
+			{ file:'helmets/helmet_overseer', name:'Overseer' }, //  by LordBored
+			{ file:'helmets/helmet_shocktrooper', name:'Shocktrooper' }, //  by GPU
+			{ file:'helmets/helmet_starfarer', name:'Starfarer' }, //  by LordBored
+			{ file:'helmets/helmet_stream', name:'Stream' }, //  by LordBored
+			{ file:'helmets/helmet_synth', name:'Synth' }, //  by GPU
+			{ file:'helmets/helmet_warden', name:'Warden' }, //  by LordBored
+			{ file:'helmets/helmet_warlord', name:'Warlord' }, //  by LordBored
+			{ file:'helmets/helmet_sentinel', name:'Sentinel' }, //  by Ghost581
+			{ file:'helmets/helmet_skeleton', name:'Skeleton' }, //  by Silk1
+			{ file:'helmets/helmet_rose', name:'Rose' }, //  by Silk1
+			{ file:'helmets/helmet_avre', name:'Avre' }, //  by Silk1
+			{ file:'helmets/helmet_spaghetti', name:'Spaghetti' }, //  by Silk1
+			{ file:'helmets/helmet_tacticalSD', name:'Tactical Star Defender' }, //  by The_Commander
+			{ file:'helmets/helmet_vengeance', name:'Vengeance' }, //  by LordBored
+			{ file:'helmets/helmet_sovereign', name:'Sovereign' }, //  by LordBored
+			{ file:'helmets/helmet_oxide', name:'Oxide' }, //  by LordBored
+			{ file:'helmets/helmet_mythic', name:'Mythic' }, //  by LordBored
+			{ file:'helmets/helmet_outcast', name:'Outcast' }, //  by LordBored
+			{ file:'helmets/helmet_angel', name:'Angel' }, //  by LazyRain
+			{ file:'helmets/helmet_split_visor', name:'Split visor' }, //  by LazyRain
+			{ file:'helmets/helmet_soldier_rig', name:'Soldier RIG' }, //  by LazyRain
+			{ file:'helmets/helmet_witch', name:'Witch' }, //  by LazyRain
+			{ file:'helmets/helmet_modeus', name:'Modeus' }, //  by LazyRain
+			{ file:'helmets/helmet_pepe', name:'Pepe' }, //  by LazyRain
+			{ file:'helmets/helmet_santa', name:'Santa' }, //  by LazyRain
+			{ file:'helmets/helmet_velox', name:'Velox' }, //  by LordBored
+			{ file:'helmets/helmet_apex', name:'Apex' }, //  by LordBored
+			{ file:'helmets/helmet_advisor', name:'Advisor' }, //  by LordBored
+			{ file:'helmets/helmet_paradigm', name:'Paradigm' }, //  by LordBored
+			{ file:'helmets/helmet_sync', name:'Sync' }, //  by LordBored
+			{ file:'helmets/helmet_legend', name:'Legend' }, //  by LordBored
+			{ file:'helmets/helmet_duster', name:'SD Duster' }, //  by LordBored
+			{ file:'helmets/helmet_vengeance2', name:'Vengeance Alt' }, //  by LordBored
+			{ file:'helmets/helmet_bulwark2', name:'Bulwark Alt' }, //  by LordBored
+			{ file:'helmets/helmet_empyrean', name:'Empyrean' }, //  by LordBored
+			{ file:'helmets/helmet_council', name:'Council' }, //  by LordBored
+			{ file:'helmets/helmet_androidSD', name:'Android' }, //  by LordBored
+			{ file:'helmets/helmet_androidSD2', name:'Android Alt' }, //  by LordBored
+			{ file:'helmets/helmet_assassin', name:'Assassin' }, //  by LordBored
+			{ file:'helmets/helmet_automata', name:'Automata' }, //  by LordBored
+			{ file:'helmets/helmet_automata2', name:'Automata Alt' }, //  by LordBored
+			{ file:'helmets/helmet_blackguard', name:'Blackguard' }, //  by LordBored
+			{ file:'helmets/helmet_duelist', name:'Duelist' }, //  by LordBored
+			{ file:'helmets/helmet_monolith', name:'Monolith' }, //  by LordBored
+			{ file:'helmets/helmet_reaper2', name:'Reaper Alt' }, //  by LordBored
+			{ file:'helmets/helmet_assassin2', name:'Assassin Alt' }, //  by LordBored
+			{ file:'helmets/helmet_specialist', name:'Specialist' }, //  by LordBored
+			{ file:'helmets/helmet_spectre', name:'Spectre' }, //  by LordBored
+			{ file:'helmets/helmet_storm', name:'Storm' }, //  by LordBored
+			{ file:'helmets/helmet_swole', name:'Swole' }, //  by LordBored
+			{ file:'helmets/helmet_terminus', name:'Terminus' }, //  by LordBored
+			{ file:'helmets/helmet_titan', name:'Titan' }, //  by LordBored
+			{ file:'helmets/helmet_terminus2', name:'Terminus Alt' }, //  by LordBored
+			{ file:'helmets/helmet_versatile', name:'Versatile' }, //  by LordBored
+			{ file:'helmets/helmet_fixer', name:'Fixer' }, //  by LordBored
+			{ file:'helmets/helmet_fixer2', name:'Fixer Alt' }, //  by LordBored
+			{ file:'helmets/helmet_phfalkok2', name:'Phoenix Falkok Alt' }, //  by Booarz
+			{ file:'helmets/helmet_cleaner', name:'Cleaner' }, //  forgot the name...
+			{ file:'helmets/helmet_glass', name:'Glass' },
+			{ file:'helmets/helmet_interceptor', name:'Interceptor' },
+			{ file:'helmets/helmet_medic', name:'Medic Alt' },
+			{ file:'helmets/helmet_erthal', name:'Brutal Dragon' },
+			{ file:'helmets/helmet_milk', name:'White Liuqid' },
+
+			// Add new values at the end
+			// Note: Commas -> , are important since this is just a big Array: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array
+			// Note: Never insert values in the middle as it will cause existing skins to break
 		];
+		sdCharacter.img_helmets = []; // Actual images, indices will match with array above
+		for ( let i = 0; i < sdCharacter.helmet_file_names_with_actual_names.length; i++ )
+		{
+			if ( sdCharacter.helmet_file_names_with_actual_names[ i ] )
+			sdCharacter.helmet_file_names_with_actual_names[ i ].id = i;
+
+			sdCharacter.img_helmets[ i ] = ( sdCharacter.helmet_file_names_with_actual_names[ i ].file !== '' ) ?
+				sdWorld.CreateImageFromFile( sdCharacter.helmet_file_names_with_actual_names[ i ].file ) :
+				null;
+		}
 		
 		sdCharacter.skin_part_indices = {
 			body_lower: 0,
@@ -182,104 +195,114 @@ class sdCharacter extends sdEntity
 			feet: 6,
 			head: 7
 		};
-		sdCharacter.skins = [
-			null,
-			sdWorld.CreateImageFromFile( 'skins/star_defender' ),
-			sdWorld.CreateImageFromFile( 'skins/heavy' ),
-			sdWorld.CreateImageFromFile( 'skins/tech' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/templar' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/inferno' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/kevlar' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/shade' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/afterburn' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/vanquisher' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/glory' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/scion' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/varia' ), // by Silk1 
-			sdWorld.CreateImageFromFile( 'skins/array' ), // original by Silk1
-			sdWorld.CreateImageFromFile( 'skins/nova' ), // by LazyRain
-			sdWorld.CreateImageFromFile( 'skins/igris' ), // by Silk1
-			sdWorld.CreateImageFromFile( 'skins/alpha' ), // by Silk1
-			sdWorld.CreateImageFromFile( 'skins/agilus' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/biohazard' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/bulwark' ), // by LordBor
-			sdWorld.CreateImageFromFile( 'skins/engineer' ), // by LordBoreded
-			sdWorld.CreateImageFromFile( 'skins/forge' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/harbinger' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/legate' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/lifter' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/omega' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/protector' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/reaper' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/researcher' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/spire' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/supreme' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/walker' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/castellan' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/empyrean2' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/jumper' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/matrix' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/runner' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/sovereign' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/wyvern' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/sentinel' ), // by Ghost581
-			sdWorld.CreateImageFromFile( 'skins/skeleton' ), // by Silk1
-			sdWorld.CreateImageFromFile( 'skins/rose' ), // by Silk1
-			sdWorld.CreateImageFromFile( 'skins/avre' ), // by Silk1
-			sdWorld.CreateImageFromFile( 'skins/spaghetti' ), // by Silk1
-			sdWorld.CreateImageFromFile( 'skins/trooper' ), // by AlbanianTrooper
-			sdWorld.CreateImageFromFile( 'skins/vengeance' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/arbiter' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/ranger' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/oxide' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/survivor' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/mythic' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/outcast' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/amogus' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/angel' ), // by LazyRain
-			sdWorld.CreateImageFromFile( 'skins/split_visor' ), // by LazyRain
-			sdWorld.CreateImageFromFile( 'skins/legless' ), // by LazyRain
-			sdWorld.CreateImageFromFile( 'skins/soldier_rig' ), // by LazyRain
-			sdWorld.CreateImageFromFile( 'skins/witch' ), // by LazyRain
-			sdWorld.CreateImageFromFile( 'skins/modeus' ), // by LazyRain
-			sdWorld.CreateImageFromFile( 'skins/velox' ), // by Booraz149
-			sdWorld.CreateImageFromFile( 'skins/falkok' ), // by Ghost581
-			sdWorld.CreateImageFromFile( 'skins/apex' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/advisor' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/paradigm' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/sync' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/duster' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/vengeance2' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/bulwark2' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/council' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/androidSD' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/androidSD2' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/assassin' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/automata' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/automata2' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/blackguard' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/duelist' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/monolith' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/specialist' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/spectre' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/storm' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/stream' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/swole' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/terminus' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/titan' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/versatile' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/versatile2' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/warlord' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/fixer' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'skins/afterburn2' ),
-			sdWorld.CreateImageFromFile( 'skins/council2' ),
-			sdWorld.CreateImageFromFile( 'skins/glass' ),
-			sdWorld.CreateImageFromFile( 'skins/erthal' ),
-			sdWorld.CreateImageFromFile( 'skins/milk' )
+		sdCharacter.skin_file_names_with_actual_names = [
+			{ file:'', name:'' }, // Should be kept like this
+			{ file:'skins/star_defender', name:'Star Defender' }, // by Eric Gurt
+			{ file:'skins/heavy', name:'Heavy' }, // by Eric Gurt
+			{ file:'skins/tech', name:'Tech' }, // by LordBored
+			{ file:'skins/templar', name:'Templar' }, // by LordBored
+			{ file:'skins/inferno', name:'Inferno' }, // by LordBored
+			{ file:'skins/kevlar', name:'Kevlar' }, // by LordBored
+			{ file:'skins/shade', name:'Shade' }, // by LordBored
+			{ file:'skins/afterburn', name:'Afterburn' }, // by LordBored
+			{ file:'skins/vanquisher', name:'Vanquisher' }, // by LordBored
+			{ file:'skins/glory', name:'Glory' }, // by LordBored
+			{ file:'skins/scion', name:'Scion' }, // by LordBored
+			{ file:'skins/varia', name:'Varia' }, // by Silk1 
+			{ file:'skins/array', name:'Array' }, // original by Silk1
+			{ file:'skins/nova', name:'Nova' }, // by LazyRain
+			{ file:'skins/igris', name:'Igris' }, // by Silk1
+			{ file:'skins/alpha', name:'Alpha' }, // by Silk1
+			{ file:'skins/agilus', name:'Agilus' }, // by LordBored
+			{ file:'skins/biohazard', name:'Biohazard' }, // by LordBored
+			{ file:'skins/bulwark', name:'Bulwark' }, // by LordBored
+			{ file:'skins/engineer', name:'Engineer' }, // by LordBored
+			{ file:'skins/forge', name:'Forge' }, // by LordBored
+			{ file:'skins/harbinger', name:'Harbinger' }, // by LordBored
+			{ file:'skins/legate', name:'Legate' }, // by LordBored
+			{ file:'skins/lifter', name:'Lifter' }, // by LordBored
+			{ file:'skins/omega', name:'Omega' }, // by LordBored
+			{ file:'skins/protector', name:'Protector' }, // by LordBored
+			{ file:'skins/reaper', name:'Reaper' }, // by LordBored
+			{ file:'skins/researcher', name:'Researcher' }, // by LordBored
+			{ file:'skins/spire', name:'Spire' }, // by LordBored
+			{ file:'skins/supreme', name:'Supreme' }, // by LordBored
+			{ file:'skins/walker', name:'Walker' }, // by LordBored
+			{ file:'skins/castellan', name:'Castellan' }, // by LordBored
+			{ file:'skins/empyrean2', name:'Empyrean' }, // by LordBored
+			{ file:'skins/jumper', name:'Jumper' }, // by LordBored
+			{ file:'skins/matrix', name:'Matrix' }, // by LordBored
+			{ file:'skins/runner', name:'Runner' }, // by LordBored
+			{ file:'skins/sovereign', name:'Sovereign' }, // by LordBored
+			{ file:'skins/wyvern', name:'Wyvern' }, // by LordBored
+			{ file:'skins/sentinel', name:'Sentinel' }, // by Ghost581
+			{ file:'skins/skeleton', name:'Skeleton' }, // by Silk1
+			{ file:'skins/rose', name:'Rose' }, // by Silk1
+			{ file:'skins/avre', name:'Avre' }, // by Silk1
+			{ file:'skins/spaghetti', name:'Spaghetti' }, // by Silk1
+			{ file:'skins/trooper', name:'Trooper' }, // by AlbanianTrooper
+			{ file:'skins/vengeance', name:'Vengeance' }, // by LordBored
+			{ file:'skins/arbiter', name:'Arbiter' }, // by LordBored
+			{ file:'skins/ranger', name:'Ranger' }, // by LordBored
+			{ file:'skins/oxide', name:'Oxide' }, // by LordBored
+			{ file:'skins/survivor', name:'Survivor' }, // by LordBored
+			{ file:'skins/mythic', name:'Mythic' }, // by LordBored
+			{ file:'skins/outcast', name:'Outcast' }, // by LordBored
+			{ file:'skins/amogus', name:'Amogus' }, // by LordBored
+			{ file:'skins/angel', name:'Angel' }, // by LazyRain
+			{ file:'skins/split_visor', name:'Split visor' }, // by LazyRain
+			{ file:'skins/legless', name:'Legless' }, // by LazyRain
+			{ file:'skins/soldier_rig', name:'Soldier RIG' }, // by LazyRain
+			{ file:'skins/witch', name:'Witch' }, // by LazyRain
+			{ file:'skins/modeus', name:'Modeus' }, // by LazyRain
+			{ file:'skins/velox', name:'Velox' }, // by Booraz149
+			{ file:'skins/falkok', name:'Falkok' }, // by Ghost581
+			{ file:'skins/apex', name:'Apex' }, // by LordBored
+			{ file:'skins/advisor', name:'Advisor' }, // by LordBored
+			{ file:'skins/paradigm', name:'Paradigm' }, // by LordBored
+			{ file:'skins/sync', name:'Sync' }, // by LordBored
+			{ file:'skins/duster', name:'SD Duster' }, // by LordBored
+			{ file:'skins/vengeance2', name:'Vengeance Alt' }, // by LordBored
+			{ file:'skins/bulwark2', name:'Bulwark Alt' }, // by LordBored
+			{ file:'skins/council', name:'Council' }, // by LordBored
+			{ file:'skins/androidSD', name:'Android' }, // by LordBored
+			{ file:'skins/androidSD2', name:'Android Alt' }, // by LordBored
+			{ file:'skins/assassin', name:'Assassin' }, // by LordBored
+			{ file:'skins/automata', name:'Automata' }, // by LordBored
+			{ file:'skins/automata2', name:'Automata Alt' }, // by LordBored
+			{ file:'skins/blackguard', name:'Blackguard' }, // by LordBored
+			{ file:'skins/duelist', name:'Duelist' }, // by LordBored
+			{ file:'skins/monolith', name:'Monolith' }, // by LordBored
+			{ file:'skins/specialist', name:'Specialist' }, // by LordBored
+			{ file:'skins/spectre', name:'Spectre' }, // by LordBored
+			{ file:'skins/storm', name:'Storm' }, // by LordBored
+			{ file:'skins/stream', name:'Stream' }, // by LordBored
+			{ file:'skins/swole', name:'Swole' }, // by LordBored
+			{ file:'skins/terminus', name:'Terminus' }, // by LordBored
+			{ file:'skins/titan', name:'Titan' }, // by LordBored
+			{ file:'skins/versatile', name:'Versatile' }, // by LordBored
+			{ file:'skins/versatile2', name:'Versatile Alt' }, // by LordBored
+			{ file:'skins/warlord', name:'Warlord' }, // by LordBored
+			{ file:'skins/fixer', name:'Fixer' }, // by LordBored
+			{ file:'skins/afterburn2', name:'Afterburn Alt' },
+			{ file:'skins/council2', name:'Council Alt' },
+			{ file:'skins/glass', name:'Glass' },
+			{ file:'skins/erthal', name:'Brutal Dragon' },
+			{ file:'skins/milk', name:'White Liuqid' },
 		];
+		sdCharacter.skins = [];
+		for ( let i = 0; i < sdCharacter.skin_file_names_with_actual_names.length; i++ )
+		{
+			if ( sdCharacter.skin_file_names_with_actual_names[ i ] )
+			sdCharacter.skin_file_names_with_actual_names[ i ].id = i;
+
+			sdCharacter.skins[ i ] = ( sdCharacter.skin_file_names_with_actual_names[ i ].file !== '' ) ?
+				sdWorld.CreateImageFromFile( sdCharacter.skin_file_names_with_actual_names[ i ].file ) :
+				null;
+		}
 		
 		// x y rotation, for images below
-		sdCharacter.head_pos = {
+		/*sdCharacter.head_pos = {
 			img_body_idle: [ 14, 11, 0 ],
 			img_body_armed: [ 14, 11, 0 ],
 			img_body_fire1: [ 13, 11, 0 ],
@@ -295,7 +318,7 @@ class sdCharacter extends sdEntity
 			img_death2: [ 9, 18, -90 ],
 			img_death3: [ 6, 28, -90 ],
 			img_death4: [ 6, 29, -90 ]
-		};
+		};*/
 		
 		sdCharacter.AI_MODEL_NONE = 0;
 		sdCharacter.AI_MODEL_FALKOK = 1;
@@ -400,7 +423,7 @@ class sdCharacter extends sdEntity
 			source_y_offset = 0;
 		}
 		
-		if ( frame !== undefined )
+		/*if ( frame !== undefined )
 		{
 			ctx.save();
 
@@ -418,7 +441,7 @@ class sdCharacter extends sdEntity
 
 			ctx.restore();
 		}
-		else
+		else*/
 		ctx.drawImageFilterCache( sdCharacter.img_helmets[ this.helmet ], source_x_offset,source_y_offset,32,32, - 16, - 16, 32,32 );
 	}
 	
