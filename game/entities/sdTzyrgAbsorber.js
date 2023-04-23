@@ -25,6 +25,8 @@ class sdTzyrgAbsorber extends sdEntity
 	{
 		sdTzyrgAbsorber.img_absorber = sdWorld.CreateImageFromFile( 'tzyrg_quake_absorber' );
 
+		sdTzyrgAbsorber.effect_radius = 800;
+
 		sdTzyrgAbsorber.absorbers = [];
 	
 		sdWorld.entity_classes[ this.name ] = this; // Register for object spawn

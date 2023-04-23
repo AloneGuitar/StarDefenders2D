@@ -260,9 +260,9 @@ class sdWorkbench extends sdEntity
 			{
 				if ( exectuter_character._god )
 				{
-					this.level = 31;
-					this.metal_shards = 160;
-					this.metal_shards_max = 160;
+					this.level = 32;
+					this.metal_shards = 165;
+					this.metal_shards_max = 165;
 				}
 				else
 				if ( this.metal_shards === this.metal_shards_max )
@@ -271,6 +271,18 @@ class sdWorkbench extends sdEntity
 				}
 				else
 				executer_socket.SDServiceMessage( 'Not enough metal shards are stored inside' );
+			}
+
+			if ( command_name === 'UPG_WB2' )
+			{
+				if ( exectuter_character.matter > 20000 )
+				{
+					this.UpgradeWorkbench();
+					this.metal_shards = this.metal_shards_max;
+					exectuter_character.matter = exectuter_character.matter - 20000;
+				}
+				else
+				executer_socket.SDServiceMessage( 'Not enough matters' );
 			}
 		}
 	}
@@ -305,6 +317,11 @@ class sdWorkbench extends sdEntity
 			if ( this.level < 31 && this.type === 5 && !exectuter_character._god )
 			{
 			this.AddContextOption( 'Upgrade workbench (Max Metal shards)', 'UPG_WB', [] );
+			}
+			else
+			if ( this.level === 31 && this.type === 5 && !exectuter_character._god )
+			{
+			this.AddContextOption( 'Upgrade workbench (Matter 20000)', 'UPG_WB2', [] );
 			}
 			else
 			if ( exectuter_character._god )
