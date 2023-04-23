@@ -9,29 +9,6 @@ import sdWater from './sdWater.js';
 import sdBlock from './sdBlock.js';
 import sdCharacter from './sdCharacter.js';
 import sdCom from './sdCom.js';
-import sdAbomination from './sdAbomination.js';
-import sdAsp from './sdAsp.js';
-import sdBadDog from './sdBadDog.js';
-import sdBiter from './sdBiter.js';
-import sdBot from './sdBot.js';
-import sdCube from './sdCube.js';
-import sdDrone from './sdDrone.js';
-import sdPlayerDrone from './sdPlayerDrone.js';
-import sdEnemyMech from './sdEnemyMech.js';
-import sdFaceCrab from './sdFaceCrab.js';
-import sdGrub from './sdGrub.js';
-import sdMimic from './sdMimic.js';
-import sdRoach from './sdRoach.js';
-import sdOctopus from './sdOctopus.js';
-import sdOverlord from './sdOverlord.js';
-import sdPlayerOverlord from './sdPlayerOverlord.js';
-import sdQuickie from './sdQuickie.js';
-import sdSandWorm from './sdSandWorm.js';
-import sdSlug from './sdSlug.js';
-import sdSetrDestroyer from './sdSetrDestroyer.js';
-import sdSpider from './sdSpider.js';
-import sdTutel from './sdTutel.js';
-import sdVirus from './sdVirus.js';
 
 
 class sdAmphid extends sdEntity
@@ -77,9 +54,6 @@ class sdAmphid extends sdEntity
 		
 		this.hmax = 120;
 		this._hea = this.hmax;
-
-		this._nature_damage = 1000000;
-		this._player_damage = 0;
 
 		this.death_anim = 0;
 		this._anim_shift = Math.random() * 1600;
@@ -306,7 +280,7 @@ class sdAmphid extends sdEntity
 				let xx = from_entity.x + ( from_entity._hitbox_x1 + from_entity._hitbox_x2 ) / 2;
 				let yy = from_entity.y + ( from_entity._hitbox_y1 + from_entity._hitbox_y2 ) / 2;
 				
-				if ( from_entity.is( sdCharacter ) || from_entity.is( sdAbomination ) || from_entity.is( sdAsp ) || from_entity.is( sdBadDog ) || from_entity.is( sdBiter ) || from_entity.is( sdBot ) || from_entity.is( sdCube ) || from_entity.is( sdDrone ) || from_entity.is( sdPlayerDrone ) || from_entity.is( sdEnemyMech ) || from_entity.is( sdFaceCrab ) || from_entity.is( sdGrub ) || from_entity.is( sdMimic ) || from_entity.is( sdOctopus ) || from_entity.is( sdOverlord ) || from_entity.is( sdPlayerOverlord ) || from_entity.is( sdQuickie ) || from_entity.is( sdRoach ) || from_entity.is( sdSandWorm ) || from_entity.is( sdSetrDestroyer ) || from_entity.is( sdSlug ) || from_entity.is( sdSpider ) || from_entity.is( sdTutel ) || from_entity.is( sdVirus ) || from_entity === this._current_target )
+				if ( from_entity.is( sdCharacter ) || from_entity === this._current_target )
 				if ( from_entity.IsTargetable() )
 				if ( sdWorld.CheckLineOfSight( this.x, this.y, from_entity.x, from_entity.y, null, null, sdCom.com_creature_attack_unignored_classes ) )
 				{

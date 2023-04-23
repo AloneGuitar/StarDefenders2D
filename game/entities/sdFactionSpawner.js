@@ -28,6 +28,7 @@ class sdFactionSpawner extends sdEntity
 		sdFactionSpawner.img_falkok_spawner6 = sdWorld.CreateImageFromFile( 'falkok_teleporter6' );
 		sdFactionSpawner.img_falkok_spawner7 = sdWorld.CreateImageFromFile( 'falkok_teleporter7' );
 		sdFactionSpawner.img_falkok_spawner8 = sdWorld.CreateImageFromFile( 'falkok_teleporter8' );
+		sdFactionSpawner.img_falkok_spawner9 = sdWorld.CreateImageFromFile( 'falkok_teleporter9' );
 
 		sdFactionSpawner.falkok_spawners = 0;
 		sdFactionSpawner.sarrorian_spawners = 0;
@@ -38,6 +39,7 @@ class sdFactionSpawner extends sdEntity
 		sdFactionSpawner.erthal_spawners = 0;
 		sdFactionSpawner.kvt_spawners = 0;
 		sdFactionSpawner.sd_spawners = 0;
+		sdFactionSpawner.shurg_spawners = 0;
 
 		sdFactionSpawner.FALKOK_SPAWNER = 1;
 		sdFactionSpawner.SARRORIAN_SPAWNER = 4;
@@ -46,8 +48,9 @@ class sdFactionSpawner extends sdEntity
 		sdFactionSpawner.VELOX_SPAWNER = 5;
 		sdFactionSpawner.SETR_SPAWNER = 7;
 		sdFactionSpawner.ERTHAL_SPAWNER = 2;
-		sdFactionSpawner.KVT_SPAWNER = 9;
+		sdFactionSpawner.KVT_SPAWNER = 11;
 		sdFactionSpawner.SD_SPAWNER = 10;
+		sdFactionSpawner.SHURG_SPAWNER = 9;
 	
 		sdWorld.entity_classes[ this.name ] = this; // Register for object spawn
 	}
@@ -89,6 +92,8 @@ class sdFactionSpawner extends sdEntity
 		sdFactionSpawner.kvt_spawners++;
 		if ( this.type === sdFactionSpawner.SD_SPAWNER )
 		sdFactionSpawner.sd_spawners++;
+		if ( this.type === sdFactionSpawner.SHURG_SPAWNER )
+		sdFactionSpawner.shurg_spawners++;
 	}
 
 	get is_static() // Static world objects like walls, creation and destruction events are handled manually. Do this._update_version++ to update these
@@ -246,6 +251,25 @@ class sdFactionSpawner extends sdEntity
 					}
 				}
 			}
+
+			if ( this.type === sdFactionSpawner.SHURG_SPAWNER && ais < sdWorld.entity_classes.sdWeather.only_instance._max_ai_count )
+			{
+				sdSound.PlaySound({ name:'teleport', x:this.x, y:this.y, pitch: 1, volume:1 });
+				sdWorld.SendEffect({ x:this.x, y:this.y, type:sdEffect.TYPE_TELEPORT, filter:'hue-rotate(' + ~~( 170 ) + 'deg)' });
+				this._next_spawn_in = 30 * 15;
+				{
+					let character_entity = new sdCharacter({ x:this.x, y:this.y - 8, _ai_enabled:sdCharacter.AI_MODEL_FALKOK });
+					sdEntity.entities.push( character_entity );
+					{
+						{	
+							{
+								sdFactions.SetHumanoidProperties( character_entity, sdFactions.FACTION_SHURG );
+							}
+						}
+					}
+				}
+			}
+
 			if ( this.type === sdFactionSpawner.KVT_SPAWNER && ais < sdWorld.entity_classes.sdWeather.only_instance._max_ai_count )
 			{
 				sdSound.PlaySound({ name:'teleport', x:this.x, y:this.y, pitch: 1, volume:1 });
@@ -301,6 +325,8 @@ class sdFactionSpawner extends sdEntity
 		sdEntity.Tooltip( ctx, "KVT teleporter" );
 		if ( this.type === sdFactionSpawner.SD_SPAWNER )
 		sdEntity.Tooltip( ctx, "Star Defender teleporter" );
+		if ( this.type === sdFactionSpawner.SHURG_SPAWNER )
+		sdEntity.Tooltip( ctx, "Shurg teleporter" );
 	
 	}
 	Draw( ctx, attached )
@@ -340,6 +366,10 @@ class sdFactionSpawner extends sdEntity
 		{
 			ctx.drawImageFilterCache( sdFactionSpawner.img_falkok_spawner8, - 24, - 16, 48,32 );
 		}
+		if ( this.type === sdFactionSpawner.SHURG_SPAWNER )
+		{
+			ctx.drawImageFilterCache( sdFactionSpawner.img_falkok_spawner9, - 24, - 16, 48,32 );
+		}
 
 		ctx.globalAlpha = 1;
 		ctx.filter = 'none';
@@ -366,34 +396,39 @@ class sdFactionSpawner extends sdEntity
 		sdFactionSpawner.kvt_spawners--;
 		if ( this.type === sdFactionSpawner.SD_SPAWNER )
 		sdFactionSpawner.sd_spawners--;
+		if ( this.type === sdFactionSpawner.SHURG_SPAWNER )
+		sdFactionSpawner.shurg_spawners--;
 
 		sdWorld.BasicEntityBreakEffect( this, 10 );
 	}
 	MeasureMatterCost()
 	{
 		if ( this.type === 8 )
-		return 8750; // Hack
+		return 18500; // Hack
 		else
 		if ( this.type === 1 )
-		return 9000; // Hack
+		return 18750; // Hack
 		else
 		if ( this.type === 2 )
-		return 9250; // Hack
+		return 19250; // Hack
 		else
 		if ( this.type === 7 )
-		return 9500; // Hack
+		return 19500; // Hack
 		else
 		if ( this.type === 4 )
-		return 9750; // Hack
+		return 19750; // Hack
 		else
 		if ( this.type === 5 )
-		return 10000; // Hack
+		return 20000; // Hack
 		else
 		if ( this.type === 9 )
-		return 10250; // Hack
+		return 19000; // Hack
+		else
+		if ( this.type === 11 )
+		return 20250; // Hack
 		else
 		if ( this.type === 10 )
-		return 9000; // Hack
+		return 19000; // Hack
 	}
 }
 //sdFactionSpawner.init_class();

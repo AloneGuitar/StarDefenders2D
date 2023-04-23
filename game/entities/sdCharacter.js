@@ -1,13 +1,7 @@
-
 /* global Infinity, globalThis, meSpeak, FakeCanvasContext, sdRenderer, sdModeration */
-
-//const sdEntity = module.exports.sdEntity;
-
 import sdWorld from '../sdWorld.js';
 import sdSound from '../sdSound.js';
 import sdKeyStates from '../sdKeyStates.js';
-
-
 import sdEntity from './sdEntity.js';
 import sdGun from './sdGun.js';
 import sdEffect from './sdEffect.js';
@@ -31,18 +25,13 @@ import sdLost from './sdLost.js';
 import sdWeather from './sdWeather.js';
 import sdBaseShieldingUnit from './sdBaseShieldingUnit.js';
 import sdWeaponBench from './sdWeaponBench.js';
-//import sdPlayerDrone from './sdPlayerDrone.js';
-
 import sdTask from './sdTask.js';
 import sdStatusEffect from './sdStatusEffect.js';
-
 import sdCharacterRagdoll from './sdCharacterRagdoll.js';
 import sdTimer from './sdTimer.js';
 import sdMimic from './sdMimic.js';
-
+import sdShurgConverter from './sdShurgConverter.js';
 import sdShop from '../client/sdShop.js';
-
-//const sdEntity = require( __dirname + '/sdEntity.js'); 
 
 class sdCharacter extends sdEntity
 {
@@ -54,139 +43,132 @@ class sdCharacter extends sdEntity
 		
 		sdCharacter.stability_damage_from_damage_scale = 1.25;
 		sdCharacter.stability_damage_from_velocity_changes_scale = 128 / 6;
-		/*
-		sdCharacter.img_legs_idle = sdWorld.CreateImageFromFile( 'legs_idle' );
-		sdCharacter.img_legs_walk1 = sdWorld.CreateImageFromFile( 'legs_walk1' );
-		sdCharacter.img_legs_walk2 = sdWorld.CreateImageFromFile( 'legs_walk2' );
-		sdCharacter.img_legs_crouch = sdWorld.CreateImageFromFile( 'legs_crouch' );
-		sdCharacter.img_legs_crouch_walk1 = sdWorld.CreateImageFromFile( 'legs_crouch_walk1' );
-		*/
 		// Add new values at the end
 		sdCharacter.img_helmets = [
 			null,
-			sdWorld.CreateImageFromFile( 'helmet_star_defender' ), // EG
-			sdWorld.CreateImageFromFile( 'helmet_falkok' ), // EG
-			sdWorld.CreateImageFromFile( 'helmet_eyes' ), // EG
-			sdWorld.CreateImageFromFile( 'helmet_dino' ), // EG
-			sdWorld.CreateImageFromFile( 'helmet_v' ), // EG
-			sdWorld.CreateImageFromFile( 'helmet_open' ), // EG
-			sdWorld.CreateImageFromFile( 'helmet_cs' ), // idea by butorinoks77, rework by Eric Gurt
-			sdWorld.CreateImageFromFile( 'helmet_grub' ), // idea by butorinoks77, rework by Eric Gurt
-			sdWorld.CreateImageFromFile( 'helmet_crow' ), // by butorinoks77
-			sdWorld.CreateImageFromFile( 'helmet_scope' ), // by butorinoks77, remake by GPU
-			sdWorld.CreateImageFromFile( 'helmet_crusader' ), // by xXRedXAssassinXx
-			sdWorld.CreateImageFromFile( 'helmet_phfalkok' ), // by Booraz149
-			sdWorld.CreateImageFromFile( 'helmet_aero' ), // // original by LordBored, remake by LazyRain
-			sdWorld.CreateImageFromFile( 'helmet_scout' ), // by Ghost581, original name was "Observer"
-			sdWorld.CreateImageFromFile( 'helmet_heavy' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_shade' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_plasmator' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_arbiter' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_pilot' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_guardian' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_vanquisher' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_glory' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_scion' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_varia' ), // by Silk1
-			sdWorld.CreateImageFromFile( 'helmet_array' ), // original by Silk1
-			sdWorld.CreateImageFromFile( 'helmet_nova' ), // by LazyRain
-			sdWorld.CreateImageFromFile( 'helmet_igris' ), // by Silk1
-			sdWorld.CreateImageFromFile( 'helmet_ace' ), // by Silk1
-			sdWorld.CreateImageFromFile( 'helmet_alpha' ), // by Silk1
-			sdWorld.CreateImageFromFile( 'helmet_templar' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_dragon' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_agilus' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_biohazard' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_bulwark' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_engineer' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_forge' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_harbinger' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_legate' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_lifter' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_omega' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_protector' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_reaper' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_researcher' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_supreme' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_spire' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_walker' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_acolyte' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_archangel' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_assault' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_beast' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_colonel' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_cyber' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_destiny' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_duality' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_flame' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_hatred' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_hunter' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_judicator' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_marauder' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_medic2' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_overseer' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_shocktrooper' ), // by GPU
-			sdWorld.CreateImageFromFile( 'helmet_starfarer' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_stream' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_synth' ), // by GPU
-			sdWorld.CreateImageFromFile( 'helmet_warden' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_warlord' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_sentinel' ), // by Ghost581
-			sdWorld.CreateImageFromFile( 'helmet_skeleton' ), // by Silk1
-			sdWorld.CreateImageFromFile( 'helmet_rose' ), // by Silk1
-			sdWorld.CreateImageFromFile( 'helmet_avre' ), // by Silk1
-			sdWorld.CreateImageFromFile( 'helmet_spaghetti' ), // by Silk1
-			sdWorld.CreateImageFromFile( 'helmet_tacticalSD' ), // by The_Commander
-			sdWorld.CreateImageFromFile( 'helmet_vengeance' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_sovereign' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_oxide' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_mythic' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_outcast' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_angel' ), // by LazyRain
-			sdWorld.CreateImageFromFile( 'helmet_split_visor' ), // by LazyRain
-			sdWorld.CreateImageFromFile( 'helmet_soldier_rig' ), // by LazyRain
-			sdWorld.CreateImageFromFile( 'helmet_witch' ), // by LazyRain
-			sdWorld.CreateImageFromFile( 'helmet_modeus' ), // by LazyRain
-			sdWorld.CreateImageFromFile( 'helmet_pepe' ), // by LazyRain
-			sdWorld.CreateImageFromFile( 'helmet_santa' ), // by LazyRain
-			sdWorld.CreateImageFromFile( 'helmet_velox' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_apex' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_advisor' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_paradigm' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_sync' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_legend' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_duster' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_vengeance2' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_bulwark2' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_empyrean' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_council' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_androidSD' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_androidSD2' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_assassin' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_automata' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_automata2' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_blackguard' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_duelist' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_monolith' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_reaper2' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_assassin2' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_specialist' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_spectre' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_storm' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_swole' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_terminus' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_titan' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_terminus2' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_versatile' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_fixer' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_fixer2' ), // by LordBored
-			sdWorld.CreateImageFromFile( 'helmet_phfalkok2' ),
-			sdWorld.CreateImageFromFile( 'helmet_spaghetti2' ),
-			sdWorld.CreateImageFromFile( 'helmet_glass' ),
-			sdWorld.CreateImageFromFile( 'helmet_interceptor' ),
-			sdWorld.CreateImageFromFile( 'helmet_medic' ),
-			sdWorld.CreateImageFromFile( 'helmet_erthal' ),
-			sdWorld.CreateImageFromFile( 'helmet_milk' )
+			sdWorld.CreateImageFromFile( 'helmets/helmet_star_defender' ), // EG
+			sdWorld.CreateImageFromFile( 'helmets/helmet_falkok' ), // EG
+			sdWorld.CreateImageFromFile( 'helmets/helmet_eyes' ), // EG
+			sdWorld.CreateImageFromFile( 'helmets/helmet_dino' ), // EG
+			sdWorld.CreateImageFromFile( 'helmets/helmet_v' ), // EG
+			sdWorld.CreateImageFromFile( 'helmets/helmet_open' ), // EG
+			sdWorld.CreateImageFromFile( 'helmets/helmet_cs' ), // idea by butorinoks77, rework by Eric Gurt
+			sdWorld.CreateImageFromFile( 'helmets/helmet_grub' ), // idea by butorinoks77, rework by Eric Gurt
+			sdWorld.CreateImageFromFile( 'helmets/helmet_crow' ), // by butorinoks77
+			sdWorld.CreateImageFromFile( 'helmets/helmet_scope' ), // by butorinoks77, remake by GPU
+			sdWorld.CreateImageFromFile( 'helmets/helmet_crusader' ), // by xXRedXAssassinXx
+			sdWorld.CreateImageFromFile( 'helmets/helmet_phfalkok' ), // by Booraz149
+			sdWorld.CreateImageFromFile( 'helmets/helmet_aero' ), // // original by LordBored, remake by LazyRain
+			sdWorld.CreateImageFromFile( 'helmets/helmet_scout' ), // by Ghost581, original name was "Observer"
+			sdWorld.CreateImageFromFile( 'helmets/helmet_heavy' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_shade' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_plasmator' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_arbiter' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_pilot' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_guardian' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_vanquisher' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_glory' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_scion' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_varia' ), // by Silk1
+			sdWorld.CreateImageFromFile( 'helmets/helmet_array' ), // original by Silk1
+			sdWorld.CreateImageFromFile( 'helmets/helmet_nova' ), // by LazyRain
+			sdWorld.CreateImageFromFile( 'helmets/helmet_igris' ), // by Silk1
+			sdWorld.CreateImageFromFile( 'helmets/helmet_ace' ), // by Silk1
+			sdWorld.CreateImageFromFile( 'helmets/helmet_alpha' ), // by Silk1
+			sdWorld.CreateImageFromFile( 'helmets/helmet_templar' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_dragon' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_agilus' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_biohazard' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_bulwark' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_engineer' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_forge' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_harbinger' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_legate' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_lifter' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_omega' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_protector' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_reaper' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_researcher' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_supreme' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_spire' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_walker' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_acolyte' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_archangel' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_assault' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_beast' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_colonel' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_cyber' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_destiny' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_duality' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_flame' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_hatred' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_hunter' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_judicator' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_marauder' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_medic2' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_overseer' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_shocktrooper' ), // by GPU
+			sdWorld.CreateImageFromFile( 'helmets/helmet_starfarer' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_stream' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_synth' ), // by GPU
+			sdWorld.CreateImageFromFile( 'helmets/helmet_warden' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_warlord' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_sentinel' ), // by Ghost581
+			sdWorld.CreateImageFromFile( 'helmets/helmet_skeleton' ), // by Silk1
+			sdWorld.CreateImageFromFile( 'helmets/helmet_rose' ), // by Silk1
+			sdWorld.CreateImageFromFile( 'helmets/helmet_avre' ), // by Silk1
+			sdWorld.CreateImageFromFile( 'helmets/helmet_spaghetti' ), // by Silk1
+			sdWorld.CreateImageFromFile( 'helmets/helmet_tacticalSD' ), // by The_Commander
+			sdWorld.CreateImageFromFile( 'helmets/helmet_vengeance' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_sovereign' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_oxide' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_mythic' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_outcast' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_angel' ), // by LazyRain
+			sdWorld.CreateImageFromFile( 'helmets/helmet_split_visor' ), // by LazyRain
+			sdWorld.CreateImageFromFile( 'helmets/helmet_soldier_rig' ), // by LazyRain
+			sdWorld.CreateImageFromFile( 'helmets/helmet_witch' ), // by LazyRain
+			sdWorld.CreateImageFromFile( 'helmets/helmet_modeus' ), // by LazyRain
+			sdWorld.CreateImageFromFile( 'helmets/helmet_pepe' ), // by LazyRain
+			sdWorld.CreateImageFromFile( 'helmets/helmet_santa' ), // by LazyRain
+			sdWorld.CreateImageFromFile( 'helmets/helmet_velox' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_apex' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_advisor' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_paradigm' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_sync' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_legend' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_duster' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_vengeance2' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_bulwark2' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_empyrean' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_council' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_androidSD' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_androidSD2' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_assassin' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_automata' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_automata2' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_blackguard' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_duelist' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_monolith' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_reaper2' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_assassin2' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_specialist' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_spectre' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_storm' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_swole' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_terminus' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_titan' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_terminus2' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_versatile' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_fixer' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_fixer2' ), // by LordBored
+			sdWorld.CreateImageFromFile( 'helmets/helmet_phfalkok2' ),
+			sdWorld.CreateImageFromFile( 'helmets/helmet_spaghetti2' ),
+			sdWorld.CreateImageFromFile( 'helmets/helmet_glass' ),
+			sdWorld.CreateImageFromFile( 'helmets/helmet_interceptor' ),
+			sdWorld.CreateImageFromFile( 'helmets/helmet_medic' ),
+			sdWorld.CreateImageFromFile( 'helmets/helmet_erthal' ),
+			sdWorld.CreateImageFromFile( 'helmets/helmet_milk' )
 			// Note: Commas -> , are important since it all is just a big Array: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array
 		];
 		
@@ -324,23 +306,7 @@ class sdCharacter extends sdEntity
 		sdCharacter.AI_MODEL_DISTANT = 6; // // Has the AI try to retreat from their target and maintain distance between them.
 		
 		sdCharacter.ghost_breath_delay = 10 * 30;
-		/*
-		sdCharacter.img_body_idle = sdWorld.CreateImageFromFile( 'body_idle' );
-		sdCharacter.img_body_armed = sdWorld.CreateImageFromFile( 'body_armed' );
-		sdCharacter.img_body_fire1 = sdWorld.CreateImageFromFile( 'body_fire1' );
-		sdCharacter.img_body_fire2 = sdWorld.CreateImageFromFile( 'body_fire2' );
-		sdCharacter.img_body_melee1 = sdWorld.CreateImageFromFile( 'body_melee1' );
-		sdCharacter.img_body_melee2 = sdWorld.CreateImageFromFile( 'body_melee2' );
-		sdCharacter.img_body_reload1 = sdWorld.CreateImageFromFile( 'body_reload1' );
-		sdCharacter.img_body_reload2 = sdWorld.CreateImageFromFile( 'body_reload2' );
-		sdCharacter.img_body_hurt = sdWorld.CreateImageFromFile( 'body_hurt' );
-		
-		sdCharacter.img_death1 = sdWorld.CreateImageFromFile( 'death1' );
-		sdCharacter.img_death2 = sdWorld.CreateImageFromFile( 'death2' );
-		sdCharacter.img_death3 = sdWorld.CreateImageFromFile( 'death3' );
-		sdCharacter.img_death4 = sdWorld.CreateImageFromFile( 'death4' );
-		//sdCharacter.img_death4_visor_tint = sdWorld.CreateImageFromFile( 'death4_visor_tint' );
-		*/
+
 		sdCharacter.img_jetpack = sdWorld.CreateImageFromFile( 'jetpack_sheet' ); // Sprite sheet by Molis
 
 		sdCharacter.air_max = 30 * 30; // 30 sec
@@ -529,8 +495,8 @@ class sdCharacter extends sdEntity
 		{
 			let old_matter_max = this.matter_max;
 
-			if ( this.matter_max <= 13250 )
-			this.matter_max = Math.min( 75 + Math.max( 0, this._score * 20 ), 3650 ) + this._matter_capacity_boosters + this._energy_upgrade + this._energy_sent;
+			if ( this.matter_max <= 25650 )
+			this.matter_max = Math.min( 75 + Math.max( 0, this._score * 20 ), 3650 ) + this._matter_capacity_boosters + this._energy_upgrade + this._energy_sent + this._energy_steal;
 			
 			// Keep matter multiplied when low score or else it feels like matter gets removed
 			if ( this._score < 100 )
@@ -887,6 +853,7 @@ class sdCharacter extends sdEntity
 		this._max_level = 60; // Current maximum level for players to reach
 
 		this._acquired_bt_mech = false;
+		this._acquired_bt_setr = false;
 		//this._acquired_bt_rift = false; // Has the character picked up build tool upgrade that the portals drop?
 		//this._acquired_bt_score = false; // Has the character reached over 5000 score?
 		this._acquired_bt_projector = false; // Has the character picked up build tool upgrade that the dark matter beam projectors drop?
@@ -898,7 +865,7 @@ class sdCharacter extends sdEntity
 		this._last_e_state = 0; // For E key taps to activate ghosting
 		this._last_fire_state = 0; // For semi auto weaponry
 		
-		this._respawn_protection = 0; // Given after long-range teleported. Also on resque teleporting
+		this._respawn_protection = 0; // Given after long-range teleported. Also on resque teleporting // Also prevents player from shooting
 		
 		this._upgrade_counters = {}; // key = upgrade
 		
@@ -944,6 +911,7 @@ class sdCharacter extends sdEntity
 		this._matter_capacity_boosters_max = 40 * 45;
 		this._energy_upgrade = 0;
 		this._energy_sent = 0;
+		this._energy_steal = 0;
 		
 		this.stim_ef = 0; // Stimpack effect
 		this.power_ef = 0; // Damage multiplication effect
@@ -977,7 +945,9 @@ class sdCharacter extends sdEntity
 				EnforceChangeLog( this, '_ragdoll' );
 			}*/
 		}
-		
+
+		this._allow_self_talk = true;
+
 		this._has_rtp_in_range = false; // Updated only when socket is connected. Also measures matter. Works only when hints are working"
 
 		this._voice_channel = sdSound.CreateSoundChannel( this );
@@ -1045,8 +1015,8 @@ class sdCharacter extends sdEntity
 				let will_fire = will_throw_grenade || this._key_states.GetKey( 'Mouse1' );
 				let shoot_from_scenario = false;
 
-				if ( will_fire )
-				this._respawn_protection = 0;
+				//if ( will_fire )
+				//this._respawn_protection = 0;
 
 				if ( this._weapon_draw_timer > 0 )
 				will_fire = false;
@@ -1059,6 +1029,13 @@ class sdCharacter extends sdEntity
 						will_fire = true;
 						shoot_from_scenario = true;
 					}
+				}
+
+				if ( this._respawn_protection > 0 )
+				{
+					will_throw_grenade = false;
+					will_fire = false;
+					shoot_from_scenario = false;
 				}
 
 				if ( will_fire )
@@ -1116,7 +1093,7 @@ class sdCharacter extends sdEntity
 							_class = sdGun.CLASS_CUBE_SPEAR;
 							}
 							else
-							if ( this._god && this._damage_mult >= 1.5 )
+							if ( ( this._god && this._damage_mult >= 1.5 ) || this.anim_change && this.iron_fist && this.matter_max > 20000 )
 							{
 							_class = sdGun.CLASS_LOST_CONVERTER;
 							}
@@ -1442,7 +1419,7 @@ class sdCharacter extends sdEntity
 	{
 		if ( this._auto_shoot_in <= 0 )
 		{
-			if ( this._key_states.GetKey( 'KeyV' ) )
+			if ( this._key_states.GetKey( 'KeyV' ) && !this.driver_of )
 			{
 				this._key_states.SetKey( 'KeyV', 0 ); // So sword is not dropped all the time
 
@@ -1543,9 +1520,7 @@ class sdCharacter extends sdEntity
 	
 	IsVisible( observer_character ) // Can be used to hide guns that are held, they will not be synced this way
 	{
-		if ( observer_character )
-		if ( observer_character.IsPlayerClass() )
-		if ( observer_character._god )
+		if ( !this.ghosting )
 		return true;
 		
 		if ( this.driver_of )
@@ -1553,14 +1528,16 @@ class sdCharacter extends sdEntity
 		if ( this.driver_of.VehicleHidesDrivers() )
 		if ( !this.driver_of.IsVisible( observer_character ) )
 		return false;
+
+		if ( observer_character )
+		if ( observer_character.IsPlayerClass() )
+		if ( observer_character._god )
+		return true;
 		
 		//if ( !observer_character || !observer_character.is( sdCharacter ) )
 		if ( !observer_character || typeof observer_character._socket === 'undefined' ) // Let player-controlled drones see players in NCZ
 		if ( !sdArea.CheckPointDamageAllowed( this.x, this.y ) )
 		return false;
-		
-		if ( !this.ghosting )
-		return true;
 	
 		if ( this.flying || this.hea <= 0 || ( this.fire_anim > 0 && this.gun_slot !== 0 && this.gun_slot !== -1 ) || this.pain_anim > 0 || this._auto_shoot_in > 0 || this.time_ef > 0 )
 		return true;
@@ -1573,13 +1550,7 @@ class sdCharacter extends sdEntity
 			if ( sdWorld.Dist2D( px, py, this.x, this.y ) < 16 )
 			return true;
 		}
-		
-		if ( observer_character )
-		if ( sdWorld.GetComsNear( this.x, this.y, null, observer_character._net_id ).length > 0 )
-		{
-			return true;
-		}
-		
+
 		return false;
 	}
 	
@@ -1696,6 +1667,11 @@ class sdCharacter extends sdEntity
 
 	InstallUpgrade( upgrade_name ) // Ignores upper limit condition. Upgrades better be revertable and resistent to multiple calls within same level as new level
 	{
+		if ( ( this._upgrade_counters[ upgrade_name ] || 0 ) + 1 > sdShop.upgrades[ upgrade_name ].max_level )
+		{
+			return;
+		}
+
 		var upgrade_obj = sdShop.upgrades[ upgrade_name ];
 		
 		if ( typeof this._upgrade_counters[ upgrade_name ] === 'undefined' )
@@ -1745,7 +1721,7 @@ class sdCharacter extends sdEntity
 			this.DamageStability( vel * sdCharacter.stability_damage_from_velocity_changes_scale );
 		}
 	}
-	AttemptTeleportOut( from_ent=null )
+	AttemptTeleportOut( from_ent=null, lost_effect=false )
 	{
 		if ( from_ent )
 		if ( from_ent._is_being_removed )
@@ -1789,6 +1765,8 @@ class sdCharacter extends sdEntity
 				if ( di > sdRescueTeleport.max_short_range_distance ) // 1200 units
 				close_enough = false;
 			}*/
+
+			if ( !lost_effect || t.IsCloner() )
 			if ( close_enough )
 			if ( t._owner === this || t.owner_biometry === this.biometry )
 			if ( t.delay <= 0 )
@@ -1796,7 +1774,8 @@ class sdCharacter extends sdEntity
 			if ( t.matter >= tele_cost ) // Has enough matter for this kind of teleport out
 			if ( !t._is_being_removed )
 			//if ( this.CanMoveWithoutOverlap( t.x, t.y + t._hitbox_y1 - this._hitbox_y2 - 1, 0 ) && sdWorld.CheckLineOfSight( t.x - t._hitbox_x1, t.y + t._hitbox_y1 - this._hitbox_y2 - 1, t.x + t._hitbox_x1, t.y + t._hitbox_y1 - this._hitbox_y2 - 12, this ) ) // Make sure it isn't blocked by anything
-			if ( sdWorld.CheckLineOfSight( t.x - t._hitbox_x1, t.y + t._hitbox_y1 - this._hitbox_y2 - 1, t.x + t._hitbox_x1, t.y + t._hitbox_y1 - this._hitbox_y2 - 12, t, null, sdCom.com_vision_blocking_classes ) ) // Could be better. Should allow cases of storages and crystals on top of RTP
+			//if ( sdWorld.CheckLineOfSight( t.x - t._hitbox_x1, t.y + t._hitbox_y1 - this._hitbox_y2 - 1, t.x + t._hitbox_x1, t.y + t._hitbox_y1 - this._hitbox_y2 - 12, t, null, sdCom.com_vision_blocking_classes ) ) // Could be better. Should allow cases of storages and crystals on top of RTP
+			if ( t.GetRTPPotentialPlayerPlacementTestResult( this ) )
 			{
 				let di = sdWorld.Dist2D( this.x, this.y, t.x, t.y );
 				if ( 
@@ -1816,9 +1795,11 @@ class sdCharacter extends sdEntity
 		{
 			if ( this.driver_of )
 			{
-				this.driver_of.ExcludeDriver( this );
+				this.driver_of.ExcludeDriver( this, true );
 			}
-			
+
+			let is_cloner = best_t.IsCloner();
+
 			this._auto_shoot_in = 0; // Cancel lost particle converter-like guns from being shot
 			
 			// Create temporary copy just for visuals
@@ -1833,56 +1814,9 @@ class sdCharacter extends sdEntity
 			copy_ent._my_hash = undefined;
 			copy_ent.matter = 0;
 			copy_ent.biometry = -2;
-			
+
 			copy_ent.death_anim = sdCharacter.disowned_body_ttl - 2480 / 1000 * 30; // Vanishing opacity
-			
-			//if ( this.death_anim > sdCharacter.disowned_body_ttl - 30 )
-			//ctx.globalAlpha = 0.5;
-			
-			sdSound.PlaySound({ name:'rescue_teleport_fake_death2', x:copy_ent.x, y:copy_ent.y, volume:2 });
-			//setTimeout(()=>
-			//{
-			
-				// Turn white
-				let new_sd_filter_s = '';
 
-				let reference_sd_filter = copy_ent.sd_filter || sdWorld.CreateSDFilter();
-
-				while ( new_sd_filter_s.length < reference_sd_filter.s.length )
-				{
-					new_sd_filter_s += reference_sd_filter.s.substring( new_sd_filter_s.length, new_sd_filter_s.length + 6 );
-					new_sd_filter_s += 'ffffff';
-				}
-				
-				copy_ent.sd_filter = { s: new_sd_filter_s };
-				
-				/*copy_ent.sd_filter = Object.assign( {}, copy_ent.sd_filter );
-				for ( let r in copy_ent.sd_filter )
-				{
-					copy_ent.sd_filter[ r ] = Object.assign( {}, copy_ent.sd_filter[ r ] );
-					for ( let g in copy_ent.sd_filter[ r ] )
-					{
-						copy_ent.sd_filter[ r ][ g ] = Object.assign( {}, copy_ent.sd_filter[ r ][ g ] );
-						for ( let b in copy_ent.sd_filter[ r ][ g ] )
-						{
-							copy_ent.sd_filter[ r ][ g ][ b ] = [ 255, 255, 255 ];
-						}
-					}
-				}*/
-				//copy_ent.remove();
-			//}, 3000 );
-			//console.log( 'side', copy_ent._side );
-			//EnforceChangeLog( copy_ent, '_side' );
-			setTimeout(()=>
-			{
-				//console.log( 'side', copy_ent._side );
-				//sdSound.PlaySound({ name:'teleport', x:copy_ent.x, y:copy_ent.y, volume:0.5 });
-				copy_ent.remove();
-			}, 2480 );
-			
-			//this.hook_x = 0;
-			//this.hook_y = 0;
-			
 			if ( this.hook_relative_to )
 			{
 				sdSound.PlaySound({ name:'world_hit', x:this.x, y:this.y, volume:1, pitch:2 });
@@ -1890,15 +1824,12 @@ class sdCharacter extends sdEntity
 				this.hook_len = -1;
 			}
 
-			//sdSound.PlaySound({ name:'teleport', x:this.x, y:this.y, volume:0.5 });
-			sdSound.PlaySound({ name:'teleport', x:best_t.x, y:best_t.y, volume:0.5 });
-			
 			this.x = best_t.x;
 			this.y = best_t.y + best_t._hitbox_y1 - this._hitbox_y2;
-			
-			sdWorld.SendEffect({ x:this.x + (this.hitbox_x1+this.hitbox_x2)/2, y:this.y + (this.hitbox_y1+this.hitbox_y2)/2, type:sdEffect.TYPE_TELEPORT });
-			
-			this.SetHiberState( sdEntity.HIBERSTATE_ACTIVE );
+
+			let stack = globalThis.getStackTrace();
+			let x_expected = this.x;
+			let y_expected = this.y;
 
 			this.sx = 0;
 			this.sy = 0;
@@ -1909,41 +1840,82 @@ class sdCharacter extends sdEntity
 
 			this.hea = Math.max( this.hea, 30 );
 			
+			this.SetHiberState( sdEntity.HIBERSTATE_ACTIVE );
+
+			this._sickness = 0;
+			this._frozen = 0; // For some reason does not always happen...
+			
+			this.stability = 100;
+			
+			this._respawn_protection = 30;
+			
+			if ( !is_cloner )
+			{
+				sdSound.PlaySound({ name:'rescue_teleport_fake_death2', x:copy_ent.x, y:copy_ent.y, volume:2 });
+
+				let new_sd_filter_s = '';
+				let reference_sd_filter = copy_ent.sd_filter || sdWorld.CreateSDFilter();
+
+				while ( new_sd_filter_s.length < reference_sd_filter.s.length )
+				{
+					new_sd_filter_s += reference_sd_filter.s.substring( new_sd_filter_s.length, new_sd_filter_s.length + 6 );
+					new_sd_filter_s += 'ffffff';
+				}
+
+				copy_ent.sd_filter = { s: new_sd_filter_s };
+
+				setTimeout(()=>
+				{
+					copy_ent.remove();
+				}, 2480 );
+
+				sdSound.PlaySound({ name:'teleport', x:best_t.x, y:best_t.y, volume:0.5 });
+
+				sdWorld.SendEffect({ x:this.x + (this.hitbox_x1+this.hitbox_x2)/2, y:this.y + (this.hitbox_y1+this.hitbox_y2)/2, type:sdEffect.TYPE_TELEPORT });
+			}
+			else
+			{
+				best_t.AddDriver( this, true );
+			}
+
 			sdStatusEffect.PerformActionOnStatusEffectsOf( this, ( status_effect )=>
 			{
 				if ( sdStatusEffect.types[ status_effect.type ] )
 				if ( sdStatusEffect.types[ status_effect.type ].remove_on_rescue_teleport_use )
 				status_effect.remove();
 			});
-			this._sickness = 0;
-			this._frozen = 0; // For some reason does not always happen...
-			//this._sickness /= 4;
-			
-			this.stability = 100;
-			
-			this._respawn_protection = 30;
-			
-			//best_t.SetDelay( sdRescueTeleport.delay_2nd ); // 5 minutes
+
 			best_t.SetDelay( sdRescueTeleport.delay_simple );
 
-			/*let tele_cost = best_t.type === sdRescueTeleport.TYPE_INFINITE_RANGE ? sdRescueTeleport.max_matter : sdRescueTeleport.max_matter_short; // Adjust matter cost depending on RTP type
-
-			if ( !this.is( sdCharacter ) )
-			tele_cost = 100;*/
-																			
 			let tele_cost = best_t.GetRTPMatterCost( this );
-		
+
+			if ( !is_cloner ) // Cloners lose matter over time
 			best_t.matter -= tele_cost;
 			
 			best_t.WakeUpMatterSources();
-			
-			
+
+			//best_t._rescuing_from_lost_effect = lost_effect; Always true now
+
+			if ( lost_effect )
+			{
+				if ( this.workbench_level <= 12 )
+				{
+					for ( var i = 0; i < this._inventory.length; i++ )
+					{
+						let gun = this._inventory[ i ];
+						if ( gun )
+						{
+							this.DropWeapon( i );
+							gun.remove();
+						}
+					}
+				}
+
+				this._nature_damage = 0;
+				this._player_damage = 0;
+			}
+
 			this.ApplyServerSidePositionAndVelocity( true, 0, 0 );
-			
-			
-			let stack = globalThis.getStackTrace();
-			let x_expected = this.x;
-			let y_expected = this.y;
 			
 			// Detect improper movement while RTP-ing
 			setTimeout( ()=>
@@ -1955,6 +1927,7 @@ class sdCharacter extends sdEntity
 				}
 			}, 0 );
 			
+			if ( !lost_effect )
 			setTimeout( ()=>
 			{
 				if ( this.hea > 0 )
@@ -2031,7 +2004,11 @@ class sdCharacter extends sdEntity
 		if ( this._socket ) // No disconnected gods
 		if ( dmg > 0 )
 		return;
-		
+
+		// No healing for frozen players - prevent cube & freezing turret traps
+		if ( this._frozen > 0 )
+		dmg = Math.abs( dmg );
+
 		dmg /= this.s / 100 ;
 		
 		// For onDamage logic that exists in default config
@@ -2040,7 +2017,15 @@ class sdCharacter extends sdEntity
 	
 		if ( initiator === this )
 		initiator = null;
-			
+
+		if ( dmg > 0 )
+		if ( initiator && initiator !== this && ( initiator.cc_id !== this.cc_id || this.cc_id === 0 ) ) // Allow PvP damage scale for non-teammates only
+		if ( ( this._my_hash !== undefined || this._socket || this.title === 'Player from the shop' ) && 
+		     ( initiator._my_hash !== undefined || initiator._socket || initiator.title === 'Player from the shop' ) ) // Both are real players or at least test dummie from the shop
+		{
+			dmg *= sdWorld.server_config.player_vs_player_damage_scale;
+		}
+
 		let was_alive = ( this.hea > 0 );
 	
 		//for ( var i = 0; i < this._listeners.DAMAGE.length; i++ )
@@ -2265,7 +2250,7 @@ class sdCharacter extends sdEntity
 				if ( was_alive )
 				//if ( dmg > 1 )
 				{
-					if ( this.pain_anim <= 0 )
+					if ( this.pain_anim <= 0 && !this.iron_fist )
 					{
 						if ( this._voice.variant === 'croak' && this._voice.speed === 140 )
 						{
@@ -3062,7 +3047,11 @@ class sdCharacter extends sdEntity
 				if ( this._potential_vehicle && ( this._potential_vehicle.hea || this._potential_vehicle._hea ) > 0 && !this._potential_vehicle._is_being_removed && sdWorld.inDist2D_Boolean( this.x, this.y, this._potential_vehicle.x, this._potential_vehicle.y, sdCom.vehicle_entrance_radius ) )
 				{
 					this._potential_vehicle.AddDriver( this );
-					
+
+					if ( this._potential_vehicle.IsFakeVehicleForEKeyUsage() )
+					{
+					}
+					else
 					if ( this.driver_of === null ) // Vehicles did not allow entrance. Doing it like this because sdWorkBench is also a vehicle now which is why it is able to give extra build options. It had issue with preventing ghost mode near work benches
 					this.TogglePlayerGhosting();
 				}
@@ -3270,14 +3259,14 @@ class sdCharacter extends sdEntity
 
 			this.ReloadAndCombatLogic( GSPEED );
 
-			if ( this.matter < this._matter_regeneration * 20 )
+			if ( this.matter < ( ( this._matter_regeneration * 20 ) + ( this._energy_sent * 2 ) + this._energy_steal ) )
 			if ( !this.ghosting )
 			{
 				if ( sdWorld.is_server )
 				if ( this.matter < this.matter_max ) // Character cannot store or regenerate more matter than what it can contain
 				{
 					//this.matter += 1 / 30 * GSPEED;
-					this.matter = Math.min( this.matter_max, this._matter_regeneration * 20, this.matter + ( 1 * this._matter_regeneration_multiplier ) / 30 * GSPEED );
+					this.matter = Math.min( this.matter_max, ( this._matter_regeneration * 20 ) + ( this._energy_sent * 2 ) + this._energy_steal, this.matter + this._matter_regeneration_multiplier * ( ( this._energy_sent + this._energy_steal + 100 ) / 100 ) / 30 * GSPEED );
 				}
 			}			
 			
@@ -3397,7 +3386,7 @@ class sdCharacter extends sdEntity
 				this.act_y = 0;
 			}*/
 
-			if ( this.hea > 0 && ( this._key_states.GetKey( 'Mouse2' ) || this._key_states.GetKey( 'KeyC' ) ) && this._hook_allowed )
+			if ( this.hea > 0 && ( !this.driver_of || this.hook_relative_to ) && ( this._key_states.GetKey( 'Mouse2' ) || this._key_states.GetKey( 'KeyC' ) ) && this._hook_allowed )
 			{
 				if ( this._hook_once )
 				{
@@ -3694,7 +3683,7 @@ class sdCharacter extends sdEntity
 		
 		this._in_water = in_water;
 		
-		if ( this._key_states.GetKey( 'KeyX' ) || ( in_water && !this._can_breathe ) )
+		if ( ( this._key_states.GetKey( 'KeyX' ) && !this.driver_of ) || ( in_water && !this._can_breathe ) )
 		{
 			//this.tilt_speed += this.act_x * 1 * GSPEED;
 			
@@ -3791,7 +3780,29 @@ class sdCharacter extends sdEntity
 			//this._last_act_y = this.act_y;
 		}
 		
-		let can_breathe = ( sdWeather.only_instance.air > 0 ) || ( this.driver_of && this.driver_of.VehicleHidesDrivers() ) || ( this._score < 100 );
+		let can_breathe;
+		if ( ( sdWeather.only_instance.air > 0 ) || ( this.driver_of && this.driver_of.VehicleHidesDrivers() ) || ( this._score < 100 ) )
+		{
+			if ( sdShurgConverter.converters.length <= 0 )
+			can_breathe = true;
+			else
+			{
+				let near_converter = false;
+				for ( let i = 0; i < sdShurgConverter.converters.length; i++ )
+				{
+					let e = sdShurgConverter.converters[ i ];
+					if ( sdWorld.inDist2D_Boolean( this.x, this.y, e.x, e.y, 400 ) )
+					{
+						near_converter = true;
+						break;
+					}
+				}
+				if ( near_converter )
+				can_breathe = false; // I've gone rusty with my coding again - Booraz149
+				else
+				can_breathe = true;
+			}
+		}
 		
 		if ( !can_breathe )
 		{
@@ -3808,7 +3819,18 @@ class sdCharacter extends sdEntity
 				}
 			}
 		}
-		
+
+		let out_of_bounds = false;
+
+		//if ( !sdWorld.inDist2D_Boolean( 0,0, this.x, this.y, sdWorld.server_config.open_world_max_distance_from_zero_coordinates ) )
+		if ( Math.abs( this.x ) > sdWorld.server_config.open_world_max_distance_from_zero_coordinates_x ||
+			 this.y < sdWorld.server_config.open_world_max_distance_from_zero_coordinates_y_min ||
+			 this.y > sdWorld.server_config.open_world_max_distance_from_zero_coordinates_y_max )
+		{
+			can_breathe = false;
+			out_of_bounds = true;
+		}
+
 		/*if ( this._key_states.GetKey( 'KeyA' ) )
 		{
 			trace( { stands:this.stands, stands_on:this._stands_on, sx:this.sx, GSPEED:GSPEED } );
@@ -3944,17 +3966,17 @@ class sdCharacter extends sdEntity
 
 						let old_walk = this._anim_walk;
 						this._anim_walk += Math.abs( this.sx ) * 0.2 / walk_speed_scale * GSPEED;
-
+						let moving_walk = this._anim_walk;
 
 						if ( this.anim_change === true )
 						this._anim_walk += Math.abs( this.sx ) * 0.04 / walk_speed_scale * GSPEED;
 
-						if ( old_walk < 5 && this._anim_walk >= 5 )
+						if ( ( old_walk < 10 && this._anim_walk >= 10 ) || ( old_walk < 20 && this._anim_walk >= 20 ) )
 						if ( !this.ghosting )
 						if ( this._crouch_intens < 0.5 )
 						sdSound.PlaySound({ name:'player_step', x:this.x, y:this.y, volume:0.25, _server_allowed:true });
 
-						if ( this._anim_walk > 10 )
+						if ( this._anim_walk > 20 )
 						this._anim_walk = 0;
 					}
 				}
@@ -4012,13 +4034,44 @@ class sdCharacter extends sdEntity
 				
 				//if ( this.air < 0.5 )
 				if ( !in_water )
-				sdTask.MakeSureCharacterHasTask({ 
-						similarity_hash:'NO-AIR-HINT', 
-						executer: this,
-						mission: sdTask.MISSION_GAMEPLAY_HINT,
-						title: 'No oxygen',
-						description: 'Enter vehicle or stay near charged and activated Base Shielding Unit.'
-					});
+				{
+					if ( sdWorld.is_server )
+					{
+						if ( out_of_bounds )
+						sdTask.MakeSureCharacterHasTask({ 
+								similarity_hash:'NO-AIR-HINT', 
+								executer: this,
+								mission: sdTask.MISSION_GAMEPLAY_HINT,
+								title: 'Out of playable area',
+								description: 'You have left the allowed playable area - there is no oxygen here (even near base shielding units or in vehicles).'
+						});
+						else
+						sdTask.MakeSureCharacterHasTask({ 
+								similarity_hash:'NO-AIR-HINT', 
+								executer: this,
+								mission: sdTask.MISSION_GAMEPLAY_HINT,
+								title: 'No oxygen',
+								description: 'Enter vehicle or stay near charged and activated Base Shielding Unit.'
+						});
+					}
+
+					if ( this.air < sdCharacter.air_max * 0.666 || out_of_bounds )
+					if ( this._last_damage_upg_complain < sdWorld.time - 1000 * 10 )
+					{
+						this._last_damage_upg_complain = sdWorld.time;
+
+						switch ( ~~( Math.random() * 7 ) )
+						{
+							case 0: this.Say( 'I can\'t breathe here', true, false, true ); break;
+							case 1: this.Say( 'Running low on oxygen', true, false, true ); break;
+							case 2: this.Say( 'No oxygen', true, false, true ); break;
+							case 3: this.Say( 'Watch out for oxygen', true, false, true ); break;
+							case 4: this.Say( 'I really should not be out there', true, false, true ); break;
+							case 5: this.Say( 'Can\'t... breathe...', true, false, true ); break;
+							case 6: this.Say( 'There is no air', true, false, true ); break;
+						}
+					}
+				}
 			}
 			else
 			{
@@ -4550,10 +4603,19 @@ class sdCharacter extends sdEntity
 		
 		if ( sdWorld.Dist2D( this.x, this.y, this._build_params.x, this._build_params.y ) < 64 || this._god )
 		{
-			if ( this.stands || this._in_water || this.flying || ( this.hook_relative_to && sdWorld.Dist2D_Vector( this.sx, this.sy ) < 2 ) || this._god )
 			{
-				//if ( fake_ent.CanMoveWithoutOverlap( fake_ent.x, fake_ent.y, 0.00001 ) ) // Very small so entity's velocity can be enough to escape this overlap
-				if ( fake_ent.CanMoveWithoutOverlap( fake_ent.x, fake_ent.y, 0 ) )
+				// This is used to make it include sdButton-s when putting new sdButtons on top
+				const custom_filtering_method = ( e )=>
+				{
+					if ( !fake_ent._hard_collision ) 
+					{
+						return true;
+					}
+
+					return e._hard_collision;
+				};
+
+				if ( fake_ent.CanMoveWithoutOverlap( fake_ent.x, fake_ent.y, 0, custom_filtering_method ) )
 				{
 					if ( fake_ent.IsEarlyThreat() )
 					//if ( fake_ent.is( sdTurret ) || fake_ent.is( sdCom ) || fake_ent.is( sdBarrel ) || fake_ent.is( sdBomb ) || ( fake_ent.is( sdBlock ) && fake_ent.material === sdBlock.MATERIAL_SHARP ) )
@@ -4682,19 +4744,6 @@ class sdCharacter extends sdEntity
 					
 				}
 			}
-			else
-			{
-				switch ( ~~( Math.random() * 6 ) )
-				{
-					case 0: sdCharacter.last_build_deny_reason = 'I\'d need to stand on something or use jetpack or grappling hook'; break;
-					case 1: sdCharacter.last_build_deny_reason = 'Need to stand'; break;
-					case 2: sdCharacter.last_build_deny_reason = 'Can\'t build mid-air'; break;
-					case 3: sdCharacter.last_build_deny_reason = 'Maybe if I was using jetpack'; break;
-					case 4: sdCharacter.last_build_deny_reason = 'Maybe if I was using grappling hook'; break;
-					case 5: sdCharacter.last_build_deny_reason = 'Maybe if I was swimming right now'; break;
-					case 5: sdCharacter.last_build_deny_reason = 'Maybe if I was able to stand'; break;
-				}
-			}
 		}
 		else
 		{
@@ -4757,6 +4806,12 @@ class sdCharacter extends sdEntity
 
 			if ( fake_ent.owner !== undefined )
 			fake_ent.owner = this;
+
+			if ( fake_ent.owner_biometry !== undefined )
+			fake_ent.owner_biometry = this.biometry;
+
+			if ( fake_ent._owner_biometry !== undefined )
+			fake_ent._owner_biometry = this.biometry;
 
 			/*if ( fake_ent._hmax !== undefined )
 			fake_ent._hmax *= this._build_hp_mult; // Source of price to go up
@@ -5136,7 +5191,97 @@ class sdCharacter extends sdEntity
 			ctx.drawImageFilterCache( sdCharacter.img_teammate, - 16, - 16 - 32 + this._crouch_intens * 6, 32,32 );
 		}
 	}
-	
+
+	ManualRTPSequence( kill=false )
+	{
+		let character = this;
+
+		let was_god = character._god;
+
+		character._god = false;
+
+		if ( character.hea > 0 )
+		{
+			function Proceed()
+			{
+				if ( character._is_being_removed )
+				return;
+
+				if ( character.GetClass() === 'sdPlayerSpectator' ) // If player is using overlord, despawn it instantly.
+				{
+					character.remove();
+					return;
+				}
+
+				if ( character.GetClass() === 'sdPlayerOverlord' ) // If player is using overlord, despawn it instantly.
+				{
+					character.remove();
+					return;
+				}
+
+				if ( kill )
+				character.Damage( character.hea, null, false, false ); // dmg, initiator=null, headshot=false, affects_armor=true
+				else
+				{
+					if ( !character.AttemptTeleportOut( null, false ) )
+					{
+						character.Say( [ 'Jokes on you! I don\'t have any Rescue Teleport nearby', 'I\'d have to build Rescue Teleport or Rescue Cloner', 'Huh? It does not work...' ][ ~~( Math.random() * 3 ) ], false, false, true );
+					}
+				}
+			}
+
+			if ( character._score < 30 || was_god || !sdRescueTeleport.players_can_build_rtps )
+			{
+				Proceed();
+			}
+			else
+			{
+				character.Say( [ 'Emergency RTP - activate!' ][ ~~( Math.random() * 1 ) ], false, false, true );
+
+				setTimeout( ()=>
+				{
+					if ( character._is_being_removed )
+					return;
+
+					if ( character._frozen >= 1 )
+					{
+						character.Say( [ 'Uh... I\'m frozen', 'Frozen...', 'A bit cold out there' ][ ~~( Math.random() * 3 ) ], false, false, true );
+						return;
+					}
+
+					if ( character.driver_of )
+					if ( character.driver_of.is( sdRescueTeleport ) )
+					{
+						// Likely a cloner... RTP-int out of it will move player outside of a vehicle and call the remove() on him... Bad
+						character.Say( [ 
+							'Yeah, I\'m kind of already here', 
+							'I\'m literally disassembled', 
+							'I should wait until this thing prints me my skin first - should be more comformatable wearing suit then',
+							'Does anyone have area amplifier by any chance?',
+							'I used to think that I hate waiting. But can I hate anything if my brain is still being printed?',
+							'Time flies by when don\'t have anything to feel it',
+							'Wait... How can I talk?',
+							'"Weep-woop-weep-woop... Weep"'
+						][ ~~( Math.random() * 8 ) ], false, false, true );
+						return;
+					}
+
+					if ( character._has_rtp_in_range || !kill )
+					Proceed();
+					else
+					{
+						character.Say( [ 'Oh wait!..', 'Uh...', 'Damn', 'Well...', '...but do I have RTP?', 'RIP', 'Where is my RTP by the way?', '...but have I charged the batteries?' ][ ~~( Math.random() * 8 ) ], false, false, true );
+						setTimeout( ()=>
+						{
+							Proceed();
+						}, 2000 );
+					}
+
+				}, 2000 );
+			}
+		}
+	}
+
 	AllowContextCommandsInRestirectedAreas( exectuter_character, executer_socket ) // exectuter_character can be null
 	{
 		return true;
@@ -5210,7 +5355,14 @@ class sdCharacter extends sdEntity
 			
 			//if ( exectuter_character ) 
 			//if ( exectuter_character.hea > 0 ) 
+
+			if ( exectuter_character === this )
 			{
+				if ( command_name === 'RTP' )
+				{
+					this.ManualRTPSequence( false );
+				}
+
 				if ( command_name === 'EMOTE' )
 				{
 					if ( parameters_array[ 0 ] === 'HEARTS' )
@@ -5270,20 +5422,67 @@ class sdCharacter extends sdEntity
 						exectuter_character.anim_change = false;
 					}
 				}
-			}
 
-			if ( command_name === 'CC_SET_SPAWN' )
-			{
-				if ( exectuter_character )
-				if ( exectuter_character.cc )
-				if ( this.cc === exectuter_character.cc )
+				if ( command_name === 'CC_SET_SPAWN' )
 				{
-					if ( exectuter_character._cc_rank < this._cc_rank || exectuter_character === this )
+					if ( exectuter_character )
+					if ( exectuter_character.cc )
+					if ( this.cc === exectuter_character.cc )
 					{
-						exectuter_character.cc.KickNetID( this, true );
+						if ( exectuter_character._cc_rank < this._cc_rank || exectuter_character === this )
+						{
+							exectuter_character.cc.KickNetID( this, true );
+						}
+						else
+						executer_socket.SDServiceMessage( 'Not enough rights to kick user' );
 					}
-					else
-					executer_socket.SDServiceMessage( 'Not enough rights to kick user' );
+				}
+
+				if ( command_name === 'TOGGLE_LRTP_NAV' )
+				{
+					const sdLongRangeTeleport = sdWorld.entity_classes.sdLongRangeTeleport;
+
+					let had_tasks = false;
+					sdTask.PerformActionOnTasksOf( this, ( task )=>
+					{
+						if ( task.mission === sdTask.MISSION_TRACK_ENTITY )
+						if ( task._target.is( sdLongRangeTeleport ) )
+						if ( task._target.is_server_teleport )
+						{
+							had_tasks = true;
+							task.remove();
+						}
+					});
+					if ( !had_tasks )
+					{
+						for ( let i = 0; i < sdLongRangeTeleport.long_range_teleports.length; i++ )
+						if ( sdLongRangeTeleport.long_range_teleports[ i ].is_server_teleport )
+						{
+							let e = sdLongRangeTeleport.long_range_teleports[ i ];
+
+							sdTask.MakeSureCharacterHasTask({ 
+								similarity_hash:'TRACK-LRTP'+e._net_id, 
+								executer: exectuter_character,
+								target: e,
+								mission: sdTask.MISSION_TRACK_ENTITY,
+
+								title: 'Long-range teleport navigation is enabled',
+								description: 'You can toggle it in your character\'s context menu (or press Esc).'
+							});
+						}
+					}
+				}
+
+				if ( command_name === 'STOP_TRACKING' )
+				{
+					let id = parameters_array[ 0 ];
+
+					sdTask.PerformActionOnTasksOf( this, ( task )=>
+					{
+						if ( task.mission === sdTask.MISSION_TRACK_ENTITY )
+						if ( task._net_id === id )
+						task.remove();
+					});
 				}
 			}
 			
@@ -5379,6 +5578,8 @@ class sdCharacter extends sdEntity
 							sdWorld.Stop();
 						}
 					});
+					this.AddContextOption( 'Teleport to closest/cheapest claimed rescure teleport', 'RTP', [] );
+
 					this.AddClientSideActionContextOption( 'Copy character hash ID', ()=>
 					{
 						if(confirm( 'Sharing this with others, or not knowing how to use this properly can make you lose your character and progress. Are you sure?' ) )
@@ -5400,6 +5601,24 @@ class sdCharacter extends sdEntity
 
 					this.AddContextOption( 'Emote: Hearts', 'EMOTE', [ 'HEARTS' ] );
 					this.AddContextOption( 'Stop emotes', 'EMOTE', [ 'NOTHING' ] );
+
+					this.AddContextOption( 'Toggle server long-range teleport navigation', 'TOGGLE_LRTP_NAV', [] );
+
+					for ( let i = 0; i < sdTask.tasks.length; i++ )
+					if ( sdWorld.is_singleplayer || sdTask.tasks[ i ]._executer === this )
+					{
+						let task = sdTask.tasks[ i ];
+
+						if ( task.mission === sdTask.MISSION_TRACK_ENTITY )
+						{
+							let t = task.target_biometry;
+
+							if ( sdWorld.client_side_censorship && task.biometry_censored )
+							t = sdWorld.CensoredText( t );
+
+							this.AddContextOptionNoTranslation( T( 'Stop tracking' ) + ' "' + t + '"', 'STOP_TRACKING', [ sdTask.tasks[ i ]._net_id ] );
+						}
+					}
 
 					if ( exectuter_character.fist_change === true && exectuter_character._damage_mult > 1 )
 					this.AddContextOption( 'Cold Weapon Toggle: Psi-Swords', 'FIST', [], true, { color:'#009fff' } );
@@ -5440,13 +5659,24 @@ class sdCharacter extends sdEntity
 	
 	Say( t, to_self=true, force_client_side=false, ignore_rate_limit=false, simulate_sound=false, translate=true )
 	{
+		if ( to_self )
+		{
+			if ( !this._allow_self_talk )
+			return;
+		}
+
+		let raise = 36;
+
+		if ( this.driver_of )
+		raise += 10;
+
 		let params = { 
 			x:this.x, 
-			y:this.y - 36, 
+			y:this.y - raise, 
 			type:sdEffect.TYPE_CHAT, 
 			attachment:this, 
 			attachment_x: 0,
-			attachment_y: -36,
+			attachment_y: -raise,
 			text:t,
 			text_censored: ( typeof sdModeration === 'undefined' ) ? 0 : sdModeration.IsPhraseBad( t, this._socket ),
 			voice:this._voice,

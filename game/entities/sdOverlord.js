@@ -84,7 +84,7 @@ class sdOverlord extends sdEntity
 		this._occasional_anger_noises_timer = 0;
 		this._occasional_levitation_sounds_timer = 0;
 
-		this._nature_damage = 0; // For cubes to attack overlords
+		this._nature_damage = 1000000; // For cubes to attack overlords
 		this._player_damage = 0;
 
 
@@ -111,6 +111,7 @@ class sdOverlord extends sdEntity
 		
 		this.has_gun = 1;
 		this._droppen_gun_entity = null;
+		this.gun_allowed = true;
 		
 		this._relations_to_classes = {};
 		
@@ -171,45 +172,18 @@ class sdOverlord extends sdEntity
 			this._pathfinding = null;
 		}
 	}
-	/*SyncedToPlayer( character )
-	{
-		this.SetTarget( character );
-	}*/
-	/*SyncedToPlayer( character ) // Shortcut for enemies to react to players
-	{
-		if ( this.hea > 0 )
-		if ( character.IsTargetable() && character.IsVisible() )
-		if ( character.hea > 0 )
-		{
-			let di = sdWorld.Dist2D( this.x, this.y, character.x, character.y ); 
-			if ( di < sdOverlord.max_seek_range )
-			if ( this._current_target === null || 
-				 ( this._current_target.hea || this._current_target._hea ) <= 0 || 
-				 di < sdWorld.Dist2D(this._current_target.x,this._current_target.y,this.x,this.y) )
-			{
-				if ( this.CanAttackEnt( character ) )
-				{
-					//this._current_target = character;
-					this.SetTarget( character );
-				
-					if ( this.type === 2 )
-					sdSound.PlaySound({ name:'spider_welcomeC', x:this.x, y:this.y, volume: 1, pitch:2 });
-				}
-			}
-		}
-	}*/
 
 	GetBleedEffect()
 	{
 		return sdEffect.TYPE_BLOOD;
 	}
-	/*GetBleedEffectFilter()
+	GetBleedEffectFilter()
 	{
+		return '';
+
 		if ( this.type === 2 )
 		return 'hue-rotate(100deg)'; // Blue
-	
-		return '';
-	}*/
+	}
 	Damage( dmg, initiator=null )
 	{
 		if ( !sdWorld.is_server )
@@ -347,7 +321,7 @@ class sdOverlord extends sdEntity
 			this.remove();
 		}
 	}
-	get mass() { return 1200; }
+	get mass() { return 200; }
 	Impulse( x, y )
 	{
 		this.sx += x / this.mass;
@@ -894,7 +868,7 @@ class sdOverlord extends sdEntity
 		if ( !e )
 		return 0;
 	
-		if ( e.is( sdBlock ) && e._natural && e.material === sdBlock.MATERIAL_GROUND && Math.random() < 0.995 )
+		if ( e.is( sdBlock ) && e._natural && e.IsDefaultGround() && Math.random() < 0.995 )
 		return 0;
 		
 		if ( e.IsPlayerClass() && e._score <= 30 )
@@ -1051,6 +1025,7 @@ class sdOverlord extends sdEntity
 		if ( sdWorld.is_server )
 		if ( this.state_hp <= 1 )
 		if ( !this.has_gun )
+		if ( this.gun_allowed )
 		if ( from_entity.is( sdGun ) )
 		if ( from_entity.class === sdGun.CLASS_OVERLORD_BLASTER )
 		if ( !from_entity._is_being_removed )
@@ -1082,6 +1057,54 @@ class sdOverlord extends sdEntity
 	MeasureMatterCost()
 	{
 		return 0; // Hack
+	}
+	ExecuteContextCommand( command_name, parameters_array, exectuter_character, executer_socket ) // New way of right click execution. command_name and parameters_array can be anything! Pay attention to typeof checks to avoid cheating & hacking here. Check if current entity still exists as well (this._is_being_removed). exectuter_character can be null, socket can't be null
+	{
+		if ( !this._is_being_removed )
+		if ( this.state_hp > 1 )
+		if ( exectuter_character )
+		if ( exectuter_character.hea > 0 )
+		{
+			if ( command_name === 'STEAL' )
+			{
+				if ( sdWorld.inDist2D_Boolean( this.x, this.y, exectuter_character.x, exectuter_character.y, 64 ) )
+				{
+					if ( exectuter_character._energy_steal < 3000 && this.gun_allowed )
+					{
+						exectuter_character._energy_steal += 500;
+						exectuter_character.matter_max += 500;
+						this.gun_allowed = false;
+
+						if ( !this._is_being_removed )
+						if ( this.hea <= 0 )
+						this.Say([ 
+							'Hey! You!',
+							'Get back my core, you monster!',
+							'My warriors will kill you, Stealer!',
+							'Damn!'
+						][ ~~( Math.random() * 4 ) ], true );
+						
+					}
+					else
+					{
+						executer_socket.SDServiceMessage( 'You have more matters or Overlord matter core was lost.' );
+					}
+				}
+				else
+				executer_socket.SDServiceMessage( 'Overlord is too far' );
+			}
+		}
+	}
+	PopulateContextOptions( exectuter_character ) // This method only executed on client-side and should tell game what should be sent to server + show some captions. Use sdWorld.my_entity to reference current player
+	{
+		if ( !this._is_being_removed )
+		if ( this.state_hp > 1 )
+		if ( exectuter_character )
+		if ( exectuter_character.hea > 0 )
+		if ( sdWorld.inDist2D_Boolean( this.x, this.y, exectuter_character.x, exectuter_character.y, 64 ) )
+		{
+		this.AddContextOption( 'Steal matters', 'STEAL', [] );
+		}
 	}
 }
 //sdOverlord.init_class();

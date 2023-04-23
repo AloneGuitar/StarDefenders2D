@@ -159,8 +159,18 @@ class sdAsp extends sdEntity
 
 			if ( dmg >= this._hmax * 0.5 && this._tier === 1 ) // Instagib, gibs asp into 2 parts ( if you weapon deals enough damage )
 			{
-				sdWorld.SpawnGib( this.x + ( 4 * this.side ), this.y, this.sx + Math.random() * 1 - Math.random() * 1, this.sy - Math.random() * 1.5, -this.side, sdGib.CLASS_ASP_GIBS , 'hue-rotate(' + this.hue + 'deg)' + this.filter, 'hue-rotate(' + this.hue + 'deg)' + this.filter, 100, this );
-				sdWorld.SpawnGib( this.x - ( 4 * this.side ), this.y, this.sx + Math.random() * 1 - Math.random() * 1, this.sy - Math.random() * 1.5, -this.side, sdGib.CLASS_ASP_GIBS , 'hue-rotate(' + this.hue + 'deg)' + this.filter, 'hue-rotate(' + this.hue + 'deg)' + this.filter, 100, this, 1 );
+				if ( Math.random() < 0.3 )
+				{
+					let aspgun;
+					aspgun = new sdGun({ x:this.x, y:this.y, class:sdGun.CLASS_ASPGUN });
+					sdEntity.entities.push( aspgun );
+				}
+				else
+				{
+					sdWorld.SpawnGib( this.x + ( 4 * this.side ), this.y, this.sx + Math.random() * 1 - Math.random() * 1, this.sy - Math.random() * 1.5, -this.side, sdGib.CLASS_ASP_GIBS , 'hue-rotate(' + this.hue + 'deg)' + this.filter, 'hue-rotate(' + this.hue + 'deg)' + this.filter, 100, this );
+					sdWorld.SpawnGib( this.x - ( 4 * this.side ), this.y, this.sx + Math.random() * 1 - Math.random() * 1, this.sy - Math.random() * 1.5, -this.side, sdGib.CLASS_ASP_GIBS , 'hue-rotate(' + this.hue + 'deg)' + this.filter, 'hue-rotate(' + this.hue + 'deg)' + this.filter, 100, this, 1 );
+				}
+
 				this.remove();
 			}
 	

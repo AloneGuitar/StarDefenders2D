@@ -21,6 +21,7 @@ let skipper = 0;
 let GetAnythingNear = null;
 let sdArea = null;
 //let sdSound = null;
+let sdDeepSleep = null;
 			
 class sdEntity
 {
@@ -54,7 +55,7 @@ class sdEntity
 		sdEntity.SCORE_REWARD_TEDIOUS_TASK = 40;
 		sdEntity.SCORE_REWARD_BIG_EVENT_TASK = 100;
 		sdEntity.SCORE_REWARD_ADMIN_CRATE = 100000000;
-		sdEntity.SCORE_REWARD_SCORE_SHARD = 1;
+		sdEntity.SCORE_REWARD_SCORE_SHARD = 2;
 		sdEntity.SCORE_REWARD_SCORE_MOP = 2;
 		sdEntity.SCORE_REWARD_BROKEN_5K_CRYSTAL = 10;
 		sdEntity.SCORE_REWARD_BROKEN_CRAB_CRYSTAL = 2;
@@ -102,7 +103,15 @@ class sdEntity
 		if ( sdWorld.entity_classes_array[ i ].init )
 		sdWorld.entity_classes_array[ i ].init();
 	}
-	
+
+	static GetRandomEntity()
+	{
+		if ( sdEntity.entities.length > 0 )
+		return sdEntity.entities[ Math.floor( Math.random() * sdEntity.entities.length ) ];
+
+		return null;
+	}
+
 	GetCollisionMode()
 	{
 		return sdEntity.COLLISION_MODE_BOUNCE_AND_FRICTION;
@@ -204,7 +213,7 @@ class sdEntity
 	get hitbox_y1() { return -5; }
 	get hitbox_y2() { return 5; }
 	
-	PrecieseHitDetection( x, y ) // Teleports use this to prevent bullets from hitting them like they do. Only ever used by bullets, as a second rule after box-like hit detection. It can make hitting entities past outer bounding box very inaccurate
+	PrecieseHitDetection( x, y, bullet=null ) // Teleports use this to prevent bullets from hitting them like they do. Only ever used by bullets, as a second rule after box-like hit detection. It can make hitting entities past outer bounding box very inaccurate. Can be also used to make it ignore certain bullet kinds altogether
 	{
 		return true;
 	}
@@ -398,6 +407,13 @@ class sdEntity
 								Math.min( Math.max( this.x + this._hitbox_x1, xx ), this.x + this._hitbox_x2 ), 
 								Math.min( Math.max( this.y + this._hitbox_y1, yy ), this.y + this._hitbox_y2 ) );
 	}
+	GetClosestPointWithinCollision( xx, yy )
+	{
+		return [
+			Math.min( Math.max( this.x + this._hitbox_x1, xx ), this.x + this._hitbox_x2 ), 
+			Math.min( Math.max( this.y + this._hitbox_y1, yy ), this.y + this._hitbox_y2 )
+		];
+	}
 	
 	IsAdminEntity() // Influences remover gun hit test
 	{ return false; }
@@ -406,7 +422,11 @@ class sdEntity
 	{
 		return 1;
 	}*/
-	IsVehicle()
+	IsVehicle() // Workbench, sdButton and sdRescueTeleport are all "vehicles" but they won't add player on .AddDriver call. If you wan to prevent ghost mode though - override .IsFakeVehicleForEKeyUsage() just like sdButton does
+	{
+		return false;
+	}
+	IsFakeVehicleForEKeyUsage()
 	{
 		return false;
 	}
@@ -417,6 +437,11 @@ class sdEntity
 	
 	IsEarlyThreat() // Used during entity build & placement logic - basically turrets, barrels, bombs should have IsEarlyThreat as true or else players would be able to spawn turrets through closed doors & walls. Coms considered as threat as well because their spawn can cause damage to other players
 	{ return false; }
+
+	IsCuttingHook()
+	{
+		return false;
+	}
 	
 	ImpactWithDamageEffect( vel )
 	{
@@ -1003,138 +1028,155 @@ class sdEntity
 						debugger;*/
 						
 		//CheckWallExistsBox( x1, y1, x2, y2, ignore_entity=null, ignore_entity_classes=null, include_only_specific_classes=null, custom_filtering_method=null )
-						if ( arr_i.IsBGEntity() === is_bg_entity )
-						//if ( include_only_specific_classes_classes || arr_i.hard_collision )
-						if ( force_hit_non_hard_collision_entities || include_only_specific_classes_classes || arr_i._hard_collision || custom_filtering_method )
+						let arr_i_is_bg_entity = arr_i.IsBGEntity();
+
+						if ( arr_i_is_bg_entity === 10 ) // Check if this is a sdDeepSleep
 						{
-							//class_str = arr_i.GetClass();
+							// If so - wake it up as soon as possible!
+							//debugger;
+							arr_i.WakeUpArea( true, this );
 
-							if ( include_only_specific_classes_classes && !include_only_specific_classes_classes.has( arr_i.__proto__.constructor ) )
-							{
-							}
-							else
-							//if ( ignore_entity_classes && ignore_entity_classes.indexOf( class_str ) !== -1 )
-							//if ( ignore_entity_classes_classes && ignore_entity_classes_classes.has( arr_i.__proto__.constructor ) )
-							if ( ignore_entity_classes_classes && ignore_entity_classes_classes.has( arr_i.constructor ) )
-							{
-							}
-							else
-							if ( custom_filtering_method === null || custom_filtering_method( arr_i ) )
+							// Make it collide if it was not removed and it is meant to be threated as solid
 							if ( !arr_i._is_being_removed )
+							if ( arr_i.ThreatAsSolid() )
 							{
-								let t = sdEntity.MovingRectIntersectionCheck(
-									hitbox_x1,
-									hitbox_y1,
-									hitbox_x2,
-									hitbox_y2,
+								arr_i_is_bg_entity = is_bg_entity;
+							}
+						}
 
-									sx,
-									sy,
+						if ( arr_i_is_bg_entity === is_bg_entity )
+						{
+							//if ( include_only_specific_classes_classes || arr_i.hard_collision )
+							if ( force_hit_non_hard_collision_entities || include_only_specific_classes_classes || arr_i._hard_collision || custom_filtering_method )
+							{
+								//class_str = arr_i.GetClass();
 
-									arr_i.x + arr_i._hitbox_x1,
-									arr_i.y + arr_i._hitbox_y1,
-									arr_i.x + arr_i._hitbox_x2,
-									arr_i.y + arr_i._hitbox_y2
-								);
-
-								if ( debug )
+								if ( include_only_specific_classes_classes && !include_only_specific_classes_classes.has( arr_i.__proto__.constructor ) )
 								{
-									if ( t === 0 )
-									if ( arr_i._class === 'sdBlock' )
-									if ( 
-										 !(
-											( this.x + this._hitbox_x1 <= arr_i.x + arr_i._hitbox_x2 ) &&
-											( this.x + this._hitbox_x2 >= arr_i.x + arr_i._hitbox_x1 ) &&
-											( this.y + this._hitbox_y1 <= arr_i.y + arr_i._hitbox_y2 ) &&
-											( this.y + this._hitbox_y2 >= arr_i.y + arr_i._hitbox_y1 ) 
-										 )
-									)
-									{
-										debugger;
-										
-										trace(
-												'Hitting sdBlock but no real overlap: ',
-											hitbox_x1,
-											hitbox_y1,
-											hitbox_x2,
-											hitbox_y2,
-
-											sx,
-											sy,
-
-											arr_i.x + arr_i._hitbox_x1,
-											arr_i.y + arr_i._hitbox_y1,
-											arr_i.x + arr_i._hitbox_x2,
-											arr_i.y + arr_i._hitbox_y2, ' :: t = '+t
-										);
-
-										t = sdEntity.MovingRectIntersectionCheck(
-											hitbox_x1,
-											hitbox_y1,
-											hitbox_x2,
-											hitbox_y2,
-
-											sx,
-											sy,
-
-											arr_i.x + arr_i._hitbox_x1,
-											arr_i.y + arr_i._hitbox_y1,
-											arr_i.x + arr_i._hitbox_x2,
-											arr_i.y + arr_i._hitbox_y2
-										);
-									}
 								}
-								
-								if ( t <= 1 )
-								if ( arr_i.IsTargetable( this, true ) ) // So guns are ignored
+								else
+								//if ( ignore_entity_classes && ignore_entity_classes.indexOf( class_str ) !== -1 )
+								//if ( ignore_entity_classes_classes && ignore_entity_classes_classes.has( arr_i.__proto__.constructor ) )
+								if ( ignore_entity_classes_classes && ignore_entity_classes_classes.has( arr_i.constructor ) )
 								{
-									/*if ( this.GetClass() === 'sdQuadro' )
-									if ( arr_i.GetClass() === 'sdGun' )
-									if ( !arr_i._held_by )
+								}
+								else
+								if ( custom_filtering_method === null || custom_filtering_method( arr_i ) )
+								if ( !arr_i._is_being_removed )
+								{
+									let t = sdEntity.MovingRectIntersectionCheck(
+										hitbox_x1,
+										hitbox_y1,
+										hitbox_x2,
+										hitbox_y2,
+
+										sx,
+										sy,
+
+										arr_i.x + arr_i._hitbox_x1,
+										arr_i.y + arr_i._hitbox_y1,
+										arr_i.x + arr_i._hitbox_x2,
+										arr_i.y + arr_i._hitbox_y2
+									);
+
+									if ( debug )
 									{
-										debugger;
-									}*/
-									
-									if ( GetCollisionMode === sdEntity.COLLISION_MODE_BOUNCE_AND_FRICTION )
-									{
-										if ( t === best_t )
+										if ( t === 0 )
+										if ( arr_i._class === 'sdBlock' )
+										if ( 
+											 !(
+												( this.x + this._hitbox_x1 <= arr_i.x + arr_i._hitbox_x2 ) &&
+												( this.x + this._hitbox_x2 >= arr_i.x + arr_i._hitbox_x1 ) &&
+												( this.y + this._hitbox_y1 <= arr_i.y + arr_i._hitbox_y2 ) &&
+												( this.y + this._hitbox_y2 >= arr_i.y + arr_i._hitbox_y1 ) 
+											 )
+										)
 										{
-											//trace( 'it happens' );
-											
-											min_xy = Math.min(
+											debugger;
 
-												Math.abs( ( hitbox_x1 + hitbox_x2 ) - ( arr_i.x + arr_i._hitbox_x1 ) + ( arr_i.x + arr_i._hitbox_x2 ) ),
-												Math.abs( ( hitbox_y1 + hitbox_y2 ) - ( arr_i.y + arr_i._hitbox_y1 ) + ( arr_i.y + arr_i._hitbox_y2 ) )
+											trace(
+													'Hitting sdBlock but no real overlap: ',
+												hitbox_x1,
+												hitbox_y1,
+												hitbox_x2,
+												hitbox_y2,
 
+												sx,
+												sy,
+
+												arr_i.x + arr_i._hitbox_x1,
+												arr_i.y + arr_i._hitbox_y1,
+												arr_i.x + arr_i._hitbox_x2,
+												arr_i.y + arr_i._hitbox_y2, ' :: t = '+t
+											);
+											t = sdEntity.MovingRectIntersectionCheck(
+												hitbox_x1,
+												hitbox_y1,
+												hitbox_x2,
+												hitbox_y2,
+
+												sx,
+												sy,
+
+												arr_i.x + arr_i._hitbox_x1,
+												arr_i.y + arr_i._hitbox_y1,
+												arr_i.x + arr_i._hitbox_x2,
+												arr_i.y + arr_i._hitbox_y2
 											);
 										}
-										
-										if ( t < best_t || ( t === best_t && min_xy < best_min_xy ) )
-										{
-											//if ( arr_i._hard_collision )
-											//{
-
-												best_t = t;
-												best_ent = arr_i;
-												
-												if ( t === best_t )
-												{
-													//trace( 'it happens and improvements happens too' );
-													best_min_xy = min_xy;
-												}
-
-												if ( best_t === 0 )
-												break;
-										
-											//}
-											//else
-											//hits.push({ ent:arr_i, t:t });
-										}
 									}
-									else
-									if ( GetCollisionMode === sdEntity.COLLISION_MODE_ONLY_CALL_TOUCH_EVENTS )
+
+									if ( t <= 1 )
+									if ( arr_i.IsTargetable( this, true ) ) // So guns are ignored
 									{
-										hits.push({ ent:arr_i, t:t });
+										/*if ( this.GetClass() === 'sdQuadro' )
+										if ( arr_i.GetClass() === 'sdGun' )
+										if ( !arr_i._held_by )
+										{
+											debugger;
+										}*/
+
+										if ( GetCollisionMode === sdEntity.COLLISION_MODE_BOUNCE_AND_FRICTION )
+										{
+											if ( t === best_t )
+											{
+												//trace( 'it happens' );
+
+												min_xy = Math.min(
+
+													Math.abs( ( hitbox_x1 + hitbox_x2 ) - ( arr_i.x + arr_i._hitbox_x1 ) + ( arr_i.x + arr_i._hitbox_x2 ) ),
+													Math.abs( ( hitbox_y1 + hitbox_y2 ) - ( arr_i.y + arr_i._hitbox_y1 ) + ( arr_i.y + arr_i._hitbox_y2 ) )
+
+												);
+											}
+
+											if ( t < best_t || ( t === best_t && min_xy < best_min_xy ) )
+											{
+												//if ( arr_i._hard_collision )
+												//{
+
+													best_t = t;
+													best_ent = arr_i;
+
+													if ( t === best_t )
+													{
+														//trace( 'it happens and improvements happens too' );
+														best_min_xy = min_xy;
+													}
+
+													if ( best_t === 0 )
+													break;
+
+												//}
+												//else
+												//hits.push({ ent:arr_i, t:t });
+											}
+										}
+										else
+										if ( GetCollisionMode === sdEntity.COLLISION_MODE_ONLY_CALL_TOUCH_EVENTS )
+										{
+											hits.push({ ent:arr_i, t:t });
+										}
 									}
 								}
 							}
@@ -2151,7 +2193,7 @@ class sdEntity
 	{
 		return null;
 	}
-	IsBGEntity() // 0 for in-game entities, 1 for background entities, 2 is for moderator areas, 3 is for cables/sensor areas, 4 for task in-world interfaces, 5 for wandering around background entities, 6 for status effects, 7 for player-defined regions, 8 for decals. 9 for player spectators Should handle collisions separately
+	IsBGEntity() // 0 for in-game entities, 1 for background entities, 2 is for moderator areas, 3 is for cables/sensor areas, 4 for task in-world interfaces, 5 for wandering around background entities, 6 for status effects, 7 for player-defined regions, 8 for decals, 9 for player spectators, 10 for deep sleep areas. Should handle collisions separately
 	{ return 0; }
 	CanMoveWithoutOverlap( new_x, new_y, safe_bound=0, custom_filtering_method=null, alter_ignored_classes=null ) // Safe bound used to check if sdCharacter can stand and not just collides with walls nearby. Also due to number rounding clients should better have it (or else they will teleport while sliding on vertical wall)
 	{
@@ -2166,6 +2208,32 @@ class sdEntity
 				new_y + this._hitbox_y2 - safe_bound, this, ignored_classes, this.GetNonIgnoredEntityClasses(), custom_filtering_method ) )
 		return false;
 		
+		return true;
+	}
+	CanMoveWithoutDeepSleepTriggering( new_x, new_y, safe_bound=0 )
+	{
+		if ( !sdDeepSleep )
+		sdDeepSleep = sdWorld.entity_classes.sdDeepSleep;
+
+		const extra_space_around = -safe_bound;
+
+		for ( let i = 0; i < sdDeepSleep.cells.length; i++ )
+		{
+			const cell = sdDeepSleep.cells[ i ];
+
+			if ( cell.ThreatAsSolid() )
+			{
+				if ( new_x + this._hitbox_x2 <= cell.x + cell._hitbox_x1 - extra_space_around ||
+					 new_x + this._hitbox_x1 >= cell.x + cell._hitbox_x2 + extra_space_around ||
+					 new_y + this._hitbox_y2 <= cell.y + cell._hitbox_y1 - extra_space_around ||
+					 new_y + this._hitbox_y1 >= cell.y + cell._hitbox_y2 + extra_space_around )
+				{
+				}
+				else
+				return false;
+			}
+		}
+
 		return true;
 	}
 	
@@ -2274,10 +2342,10 @@ class sdEntity
 	}
 	DoesOverlapWith( ent, extra_space_around=0 ) // Overlaps( // OverlapsWith(
 	{
-		if ( this.x + this._hitbox_x2 < ent.x + ent._hitbox_x1 - extra_space_around ||
-			 this.x + this._hitbox_x1 > ent.x + ent._hitbox_x2 + extra_space_around ||
-			 this.y + this._hitbox_y2 < ent.y + ent._hitbox_y1 - extra_space_around ||
-			 this.y + this._hitbox_y1 > ent.y + ent._hitbox_y2 + extra_space_around )
+		if ( this.x + this._hitbox_x2 <= ent.x + ent._hitbox_x1 - extra_space_around ||
+			 this.x + this._hitbox_x1 >= ent.x + ent._hitbox_x2 + extra_space_around ||
+			 this.y + this._hitbox_y2 <= ent.y + ent._hitbox_y1 - extra_space_around ||
+			 this.y + this._hitbox_y1 >= ent.y + ent._hitbox_y2 + extra_space_around )
 		return false;
 	
 		return true;
@@ -2407,9 +2475,6 @@ class sdEntity
 		
 		if ( this.PreInit !== sdEntity.prototype.PreInit )
 		this.PreInit();
-			
-		this._connected_ents = null; // Can be array, for slower update rate
-		this._connected_ents_next_rethink = 0;
 		
 		this._frozen = 0; // This value is changed by sdStatusEffect. Result of this value is an alternate ThinkNow function calls. It shows how many degrees temperature is below freezing point, it is always positive value. Value like 1 means it is about to unfreeze - used by turrets to keep targets frozen
 		
@@ -2441,6 +2506,8 @@ class sdEntity
 	
 		this._last_attacker_net_id = -1;
 		this._last_attacker_until = 0;
+
+		this._steering_wheel_net_id = -1;
 		
 		if ( this.is_static )
 		this._update_version = 0;
@@ -2514,7 +2581,7 @@ class sdEntity
 			this._vertex_cache = null;
 		}
 		
-		this._onThinkPtr = this.onThink; // Trying to make v8 optimize stuff better... It actually and unfortunately works.
+		//this._onThinkPtr = this.onThink; // Trying to make v8 optimize stuff better... It actually and unfortunately works.
 		
 		this._has_matter_props = false; // Becomes true on seal in cases where it is needed
 		
@@ -2534,7 +2601,12 @@ class sdEntity
 				this.onThink.has_GetComWiredCache = ( onThinkString.indexOf( 'GetComWiredCache' ) !== -1 || DrawString.indexOf( 'GetComWiredCache' ) !== -1 );
 				
 				this.onThink.has_sdBlock_extras = false;
-				
+
+				if ( !sdCable )
+				sdCable = sdWorld.entity_classes.sdCable;
+
+				this.onThink.has_cable_support = ( sdCable.attacheable_entities.indexOf( this.GetClass() ) !== -1 ) || this.GetClass() === 'sdCrystal'; // Crystals can send matter over amplifiers' cables
+
 				// Hacks
 				const c = this.GetClass();
 				if ( c === 'sdBone' )
@@ -2547,6 +2619,12 @@ class sdEntity
 					this.onThink.has_sdBlock_extras = true;
 				}
 			}
+			if ( this.onThink.has_cable_support )
+			{
+				this._connected_ents = null; // Can be array, for slower update rate
+				this._connected_ents_next_rethink = 0;
+			}
+
 			if ( this.onRemove.has_broken_property_check === undefined )
 			{
 				let onRemoveString = this.onRemove.toString();
@@ -2583,6 +2661,19 @@ class sdEntity
 			sdEntity.to_seal_list.push( this );
 		}
 	}
+	GetSteeringWheel()
+	{
+		if ( this._steering_wheel_net_id === -1 )
+		return null;
+
+		const e = sdEntity.entities_by_net_id_cache_map.get( this._steering_wheel_net_id );
+
+		if ( e )
+		return e;
+
+		this._steering_wheel_net_id = -1;
+		return null;
+	}
 	
 	VehicleHidesDrivers()
 	{
@@ -2594,12 +2685,34 @@ class sdEntity
 	}
 
 	
-	FindObjectsInACableNetwork( accept_test_method=null, alternate_class_to_search=sdWorld.entity_classes.sdBaseShieldingUnit ) // No cache, so far
+	FindObjectsInACableNetwork( accept_test_method=null, alternate_class_to_search=sdWorld.entity_classes.sdBaseShieldingUnit, return_full_paths=false ) // No cache, so far. return_full_paths makes it return arrays of entities on a way to searched entities
 	{
 		const sdCable = sdWorld.entity_classes.sdCable;
 		const SearchedClass = alternate_class_to_search;
 		
-		let ret = [];
+		const ret = [];
+
+		const back_track = return_full_paths ? new Map() : null;
+		const GetBackTrackArray = return_full_paths ? ( e )=>
+		{
+			let e0 = e;
+
+			let arr = [];
+
+			while ( e )
+			{
+				e = back_track.get( e );
+
+				if ( e )
+				arr.unshift( e );
+			}
+
+			return {
+				entity: e0,
+				path: arr
+			};
+
+		} : null;
 
 		//let worked_out_ents = [];
 		const visited_ent_flag = sdEntity.GetUniqueFlagValue();
@@ -2607,34 +2720,44 @@ class sdEntity
 		let active_ents = [ this ];
 		while ( active_ents.length > 0 )
 		{
-			let connected_ents = sdCable.GetConnectedEntities( active_ents[ 0 ], sdCable.TYPE_ANY );
+			let current_ent = active_ents[ 0 ];
 
-			//worked_out_ents.push( active_ents[ 0 ] );
-			active_ents[ 0 ]._flag = visited_ent_flag;
+			let connected_ents = sdCable.GetConnectedEntities( current_ent, sdCable.TYPE_ANY );
+
+			current_ent._flag = visited_ent_flag;
 			
 			active_ents.shift();
 
 			for ( let i = 0; i < connected_ents.length; i++ )
 			{
-				//if ( worked_out_ents.indexOf( connected_ents[ i ] ) === -1 )
-				if ( connected_ents[ i ]._flag !== visited_ent_flag )
+				let connected_ent = connected_ents[ i ];
+
+				if ( connected_ent._flag !== visited_ent_flag )
 				{
+					if ( back_track )
+					back_track.set( connected_ent, current_ent );
+
 					if ( accept_test_method )
 					{
-						if ( accept_test_method( connected_ents[ i ] ) )
+						if ( accept_test_method( connected_ent ) )
 						{
-							//return connected_ents[ i ];
-							ret.push( connected_ents[ i ] );
+							if ( back_track )
+							ret.push( GetBackTrackArray( connected_ent ) );
+							else
+							ret.push( connected_ent );
 						}
 					}
 					else
-					if ( connected_ents[ i ].is( SearchedClass ) )
+					if ( SearchedClass === sdEntity || connected_ent.is( SearchedClass ) )
 					{
-						ret.push( connected_ents[ i ] );
+						if ( back_track )
+						ret.push( GetBackTrackArray( connected_ent ) );
+						else
+						ret.push( connected_ent );
 					}
 
-					if ( active_ents.indexOf( connected_ents[ i ] ) === -1 )
-					active_ents.push( connected_ents[ i ] );
+					if ( active_ents.indexOf( connected_ent ) === -1 )
+					active_ents.push( connected_ent );
 				}
 			}
 		}
@@ -3454,7 +3577,7 @@ class sdEntity
 	
 		if ( possible_ent.GetClass() !== _class && _class !== 'auto' )
 		{
-			debugger; // Should not happen
+			//debugger; // Should not happen
 			return null;
 		}
 	
@@ -3823,16 +3946,25 @@ class sdEntity
 
 			for ( var i = 0; i < arr.length; i++ )
 			{
-				if ( ( typeof arr[ i ].matter !== 'undefined' || typeof arr[ i ]._matter !== 'undefined' ) && arr[ i ] !== this && !arr[ i ]._is_being_removed )
+				const e = arr[ i ];
+
+				if ( ( typeof e.matter !== 'undefined' || typeof e._matter !== 'undefined' ) && e !== this && !e._is_being_removed )
 				{
 					if ( sdWorld.is_server )
 					{
-						arr[ i ].TransferMatter( this, how_much, GSPEED * 4, true ); // Mult by X because targets no longer take 4 cells
-						arr[ i ].WakeUpMatterSources();
+						if ( radius > 32 )
+						{
+							if ( !sdWorld.server_config.base_degradation )
+							if ( !sdWorld.CheckLineOfSight( this.x, this.y, ...e.GetClosestPointWithinCollision( this.x, this.y ), null, null, null, sdWorld.FilterShieldedWallsAndDoors ) )
+							continue;
+						}
+
+						e.TransferMatter( this, how_much, GSPEED * 4, true ); // Mult by X because targets no longer take 4 cells
+						e.WakeUpMatterSources();
 					}
 					else
 					{
-						if ( arr[ i ] === sdWorld.my_entity )
+						if ( e === sdWorld.my_entity )
 						{
 							sdSound.allow_matter_drain_loop = true;
 							break;
@@ -4061,7 +4193,11 @@ class sdEntity
 			this._broken = true; // By default, you can override it after removal was called for entity // Copy [ 1 / 2 ]
 		}
 	}
-	_remove()
+	ClearAllPropertiesOnRemove()
+	{
+		return true;
+	}
+	_remove() // If you are willing to use this method - make sure to removed to do _remove_from_entities_array()
 	{
 		//if ( this.GetClass() === 'sdTask' )
 		//debugger;
@@ -4109,8 +4245,42 @@ class sdEntity
 				this._phys_last_touch = null;
 			}
 			
+			if ( typeof this._connected_ents !== 'undefined' )
 			this._connected_ents = null;
-			
+
+			if ( this.ClearAllPropertiesOnRemove() )
+			{
+				let props = Object.getOwnPropertyNames( this );
+				for ( let i = 0; i < props.length; i++ )
+				{
+					let prop = props[ i ];
+					let value = this[ prop ];
+
+					if ( typeof value === 'number' )
+					{
+						// Ignore
+					}
+					else
+					if ( typeof value === 'object' )
+					{
+						if ( this[ prop ] instanceof sdEntity )
+						this[ prop ] = null;
+						else
+						if ( this[ prop ] instanceof Array && this[ prop ].length > 0 && this[ prop ][ 0 ] instanceof sdEntity )
+						this[ prop ] = null;
+						else
+						if ( ( this[ prop ] instanceof Map || this[ prop ] instanceof Set ) && this[ prop ].values().length > 0 && this[ prop ].values()[ 0 ] instanceof sdEntity )
+						this[ prop ] = null;
+						else
+						if ( this[ prop ] instanceof Map && this[ prop ].keys().length > 0 && this[ prop ].keys()[ 0 ] instanceof sdEntity )
+						this[ prop ] = null;
+					}
+					else
+					if ( typeof value === 'string' )
+					this[ prop ] = '';
+				}
+			}
+
 			/* It is handled by memory leak seeker now instead
 			const is_vehicle = this.IsVehicle();
 		
@@ -4230,6 +4400,17 @@ class sdEntity
 		}
 		
 		sdSound.DestroyAllSoundChannels( this );
+	}
+	_remove_from_entities_array( old_hiber_state=-2 )
+	{
+		let id = sdEntity.entities.indexOf( this );
+		if ( id === -1 )
+		{
+			console.log('Removing unlisted entity ' + this.GetClass() + ', hiberstate was ' + ( old_hiber_state === -2 ) ? '(unspecified)' : old_hiber_state + '. Entity was made at: ' + this._stack_trace );
+			debugger;	
+		}
+		else
+		sdEntity.entities.splice( id, 1 );
 	}
 	isWaterDamageResistant()
 	{
@@ -4491,19 +4672,55 @@ class sdEntity
 			{
 				sdChat.StartPrompt( hint, default_text, ( v )=>
 				{
-					parameters_array[ 0 ] = v;
+					let id = parameters_array.indexOf( undefined );
+					if ( id === -1 )
+					throw new Error( 'parameters_array of AddPromptContextOption is missing undefined value - without it AddPromptContextOption does now know where to put string which player has provided' );
+					else
+					parameters_array[ id ] = v;
+
 					globalThis.socket.emit( 'ENTITY_CONTEXT_ACTION', [ this.GetClass(), this._net_id, command_name, parameters_array ] );
 				});
 			}
 		});
 	}
-	AddClientSideActionContextOption( title, action, close_on_click=true )
+	AddColorPickerContextOption( title, command_name, parameters_array, close_on_click=true, default_color='#ff0000' )
 	{
-		sdContextMenu.options.push({ 
+		//sdContextMenu.options.push({ title: title,
+		//	action: ()=>
+		//	{
+				this.AddClientSideActionContextOption( 
+					title, 
+					()=>
+					{
+						sdRenderer.GetColorPickerValue( default_color, ( new_color )=>
+						{
+							let id = parameters_array.indexOf( undefined );
+							if ( id === -1 )
+							throw new Error( 'parameters_array of AddColorPickerContextOption is missing undefined value - without it AddColorPickerContextOption does now know where to put color which player has picked' );
+							else
+							parameters_array[ id ] = new_color;
+
+							globalThis.socket.emit( 'ENTITY_CONTEXT_ACTION', [ this.GetClass(), this._net_id, command_name, parameters_array ] );
+
+							if ( !close_on_click )
+							this.RebuildContextMenu();
+						});
+					}, 
+					true,
+					{ 
+						 hint_color: default_color
+					}
+				);
+		//	}
+		//});
+	}
+	AddClientSideActionContextOption( title, action, close_on_click=true, extra={} )
+	{
+		sdContextMenu.options.push( Object.assign( extra, {
 			title: title,
 			close_on_click: close_on_click,
 			action: action
-		});
+		} ) );
 	}
 	RebuildContextMenu()
 	{

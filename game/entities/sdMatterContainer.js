@@ -146,6 +146,8 @@ class sdMatterContainer extends sdEntity
 		return this._hmax * sdWorld.damage_to_matter + this.matter_max * 0.25;
 		if ( this.matter_max == 40960 )
 		return this._hmax * sdWorld.damage_to_matter + this.matter_max * 0.15;
+		if ( this.matter_max == 163840 )
+		return this._hmax * sdWorld.damage_to_matter + this.matter_max * 0.1;
 	}
 }
 //sdMatterContainer.init_class();

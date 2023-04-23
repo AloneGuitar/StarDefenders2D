@@ -217,14 +217,14 @@ class sdCrystal extends sdEntity
 		if ( this.matter_max === sdCrystal.anticrystal_value * 16 && this.type === 7 )
 		{
 			this.matter = 0;
-			this._hea = 10000;
+			this._hea = 1000;
 			this._damagable_in = 0;
 		}
 		else
 		if ( this.type === sdCrystal.TYPE_CRYSTAL_GIANT )
 		{
 			this.matter = this.matter_max;
-			this._hea = 10000;
+			this._hea = 1000;
 			this._damagable_in = sdWorld.time + 1000;
 		}
 		else
@@ -378,8 +378,13 @@ class sdCrystal extends sdEntity
 				{
 					reward_amount = 0;
 				}
-				else
+
 				if ( this.matter_regen >= 1200 )
+				{
+					reward_amount = 0;
+				}
+
+				if ( this.matter_max >= 5120 * 32 )
 				{
 					reward_amount = 0;
 				}
@@ -432,6 +437,7 @@ class sdCrystal extends sdEntity
 			if ( this._hea < this._hmax )
 			this._hea = Math.min( this._hmax, this._hea + GSPEED * 0.01 ); // Quite slow
 
+			if ( sdWorld.server_config.base_degradation )
 			if ( sdWorld.server_config.base_shielding_units_passive_drain_per_week_blue > 0 )
 			if ( this.held_by.is( sdMatterAmplifier ) )
 			this.matter_regen = sdWorld.MorphWithTimeScale( this.matter_regen, 0, 1 - sdWorld.server_config.base_shielding_units_passive_drain_per_week_blue, GSPEED * this.held_by.multiplier/8 / ( 30 * 60 * 60 * 24 * 7 ) ); // 20% per week on highest tier
@@ -582,6 +588,7 @@ class sdCrystal extends sdEntity
 				else
 				this.matter = Math.min( this.matter_max, this.matter + GSPEED_scaled * 0.001 * this.matter_max / 80 * ( this.matter_regen / 100 ) );
 
+				if ( sdWorld.server_config.base_degradation )
 				this.matter_regen = Math.max( sdCrystal.lowest_matter_regen, this.matter_regen - ( this.matter - matter_before_regen ) / this.matter_max * 100 / sdCrystal.recharges_until_depleated ); // 30 full recharges
 
 				this.MatterGlow( 0.01, 30, GSPEED_scaled );

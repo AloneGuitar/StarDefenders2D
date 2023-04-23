@@ -21,6 +21,7 @@ import sdGun from './sdGun.js';
 import sdStatusEffect from './sdStatusEffect.js';
 import sdJunk from './sdJunk.js';
 import sdLandScanner from './sdLandScanner.js';
+import sdBaseShieldingUnit from './sdBaseShieldingUnit.js';
 
 import sdTask from './sdTask.js';
 import sdCharacter from './sdCharacter.js';
@@ -73,18 +74,21 @@ class sdLongRangeTeleport extends sdEntity
 		
 		if ( this.hea > 0 )
 		{
-			if ( !this.is_server_teleport )
-			this.hea -= dmg;
-			
-			this.SetHiberState( sdEntity.HIBERSTATE_ACTIVE );
-			
-			if ( this.delay < 90 )
-			this.SetDelay( 90 );
-			
-			this._regen_timeout = 60;
+			if ( sdBaseShieldingUnit.TestIfDamageShouldPass( this, dmg, initiator ) )
+			{
+				if ( !this.is_server_teleport )
+				this.hea -= dmg;
 
-			if ( this.hea <= 0 )
-			this.remove();
+				this.SetHiberState( sdEntity.HIBERSTATE_ACTIVE );
+
+				if ( this.delay < 90 )
+				this.SetDelay( 90 );
+
+				this._regen_timeout = 60;
+
+				if ( this.hea <= 0 )
+				this.remove();
+			}
 		}
 	}
 	Activation()
@@ -139,7 +143,9 @@ class sdLongRangeTeleport extends sdEntity
 		this.hmax = 1500 * 4;
 		this.hea = this.hmax;
 		this._regen_timeout = 0;
-		
+
+		this._shielded = null; // Is this entity protected by a base defense unit?
+
 		this._cc_near = null;
 		this.has_cc_near = false; // Store boolean because client does not know if cc exists
 		
@@ -171,6 +177,10 @@ class sdLongRangeTeleport extends sdEntity
 		//this.owner_net_id = this._owner ? this._owner._net_id : null;
 		
 		sdLongRangeTeleport.long_range_teleports.push( this );
+	}
+	get biometry()
+	{
+		return 'Long-range teleport';
 	}
 	onServerSideSnapshotLoaded() // Something like LRT will use this to reset phase on load
 	{
@@ -971,7 +981,7 @@ class sdLongRangeTeleport extends sdEntity
 					
 					trace( '--AuthorizedIncomingS2SProtocolMessageHandler--');
 					trace( 'Executing: ', data_object.action );
-					trace( 'collected_entities_array: ', collected_entities_array );
+					trace( 'collected_entities_array: ', collected_entities_array.length );
 					
 					for ( let i = 0; i < collected_entities_array.length; i++ )
 					if ( collected_entities_array[ i ].IsPlayerClass() )
@@ -991,11 +1001,7 @@ class sdLongRangeTeleport extends sdEntity
 		
 		callback( ret );
 	}
-	
-	AllowContextCommandsInRestirectedAreas( exectuter_character, executer_socket ) // exectuter_character can be null
-	{
-		return true;
-	}
+
 	static ReceivedCommandFromEntityClass( command_name, parameters_array )
 	{
 		if ( command_name === 'AD_START_ALLOWED' )
@@ -1045,10 +1051,10 @@ class sdLongRangeTeleport extends sdEntity
 						'Mothership: We had plenty in a storage but someone teleported Quickie which broke all our stuff including crystals.',
 						'Mothership: We don\'t have any right now.',
 						'Mothership: Message me in 5 minutes. We are in the middle of something.',
-						'Mothership: We really are not picking who gets the crystals. Please don\'t be jelous if somebody gets crystals when you don\'t.',
+						'Mothership: We really are not picking who gets the crystals. Please don\'t be jealous if somebody gets crystals when you don\'t.',
 						'Mothership: I have a note "Don\'t give crystals to this person" next to your name. I\'m really sorry...',
 						'Mothership: We don\'t have any stunning ads for you to see at this moment. Oops.',
-						'Mothership: Well... Does\'t planet you are on has them?!',
+						'Mothership: Well... Doesn\'t the planet you are on has them?!',
 						'Mothership: There is a note that says "torture this person with 5 minute delay promises".',
 						'Mothership: There is a note that says "There is a note that says "torture this person with 5 minute delay promises"".',
 						'Mothership: I hope you can wait for when it is a time.',
@@ -1061,6 +1067,11 @@ class sdLongRangeTeleport extends sdEntity
 		}
 		else
 		sdMotherShipStorageManager.HandleServerCommand( command_name, parameters_array );
+	}
+
+	AllowContextCommandsInRestirectedAreas( exectuter_character, executer_socket ) // exectuter_character can be null
+	{
+		return true;
 	}
 	ExecuteContextCommand( command_name, parameters_array, exectuter_character, executer_socket ) // New way of right click execution. command_name and parameters_array can be anything! Pay attention to typeof checks to avoid cheating & hacking here. Check if current entity still exists as well (this._is_being_removed). exectuter_character can be null, socket can't be null
 	{

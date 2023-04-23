@@ -14,6 +14,7 @@ import sdWater from './sdWater.js';
 import sdBlock from './sdBlock.js';
 import sdCom from './sdCom.js';
 import sdCharacter from './sdCharacter.js';
+import sdRescueTeleport from './sdRescueTeleport.js';
 
 
 class sdFaceCrab extends sdEntity
@@ -57,9 +58,6 @@ class sdFaceCrab extends sdEntity
 		this._hmax = 100;
 	
 		this._hea = this._hmax;
-
-		this._nature_damage = 1000000;
-		this._player_damage = 0;
 	
 		this.death_anim = 0;
 		
@@ -203,6 +201,14 @@ class sdFaceCrab extends sdEntity
 		
 		if ( this.attached_to )
 		{
+			if ( !this.attached_to._is_being_removed && this.attached_to.IsPlayerClass() && this.attached_to.driver_of && this.attached_to.driver_of.is( sdRescueTeleport ) )
+			{
+				// Do not follow into the cloner
+				
+				this._current_target = null;
+				this.attached_to = null;
+			}
+			else
 			if ( this._hea <= 0 || in_water || this.attached_to._is_being_removed || ( this.attached_to.hea || this.attached_to._hea || 0 ) <= 0 )
 			{
 				if ( in_water )

@@ -646,7 +646,7 @@ class sdSpider extends sdEntity
 								variant: 'klatt3'
 							} 
 						};
-						if ( exectuter_character._energy_sent < 900 )
+						if ( exectuter_character._energy_sent < 15 * exectuter_character._max_level )
 						{
 							if ( exectuter_character.matter >= 500 )
 							{
