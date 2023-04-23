@@ -8,8 +8,12 @@ class sdServerConfigShort
 	// This file should contain one object (for example class like this one), it will be interpreted using basic eval method and automatically assigned to global variable sdWorld.server_config
 			
 	// If this all looks scary and you are using NetBeans - use "Ctrl + -" and "Ctrl + *" to hide big methods.
-	
-	static game_title = 'Star Defenders';
+
+	static password = ''; // Restrict connection access?
+
+	static make_server_public = ( this.password === '' ); // By default it is public if password was not set. Public means server will send its' URL to www.gevanni.com to be potentially listed in servers list in future. Sent URL is told by first browser that has successfully connected to this server.
+
+	static game_title = 'Star Susanoos';
 	
 	static allowed_s2s_protocol_ips = [
 		'127.0.0.1',
@@ -22,9 +26,14 @@ class sdServerConfigShort
 	static notify_about_failed_s2s_attempts = true;
 	
 	static log_s2s_messages = false;
-	
+
+	static skip_arrival_sequence = false; // Skipping it will prevent players from spawning together pretty much. It is useful during tests though.
+
+	// Setting both 'enable_bounds_move' and 'aggressive_hibernation' will enable open world support
 	static enable_bounds_move = false;
-		
+
+	static aggressive_hibernation = false; // Offscreen groups of entities (sometimes whole bases) will be put to sleep until something tries to access these areas
+
 	static apply_censorship = true; // Censorship file is not included
 		
 	// Check file sdServerConfig.js for more stuff to alter in server logic
@@ -79,12 +88,29 @@ class sdServerConfigFull extends sdServerConfigShort
 		else
 		return false;
 	}
-	
+
+	static base_degradation = true; // False will disable roach attacks, BSU value decrease, crystal matter regeneration rate decrease, flesh corruption removing protection off blocks
+
 	static base_shielding_units_passive_drain_per_week_green = 0.01; // 0.2 // Percentage. Also applied to matter amplifiers so green BSUs drain as fast as blue BSUs
-	static base_shielding_units_passive_drain_per_week_blue = 0.2; // 0.2 // Percentage. Also applied to matter amplifiers so green BSUs drain as fast as blue BSUs
+	static base_shielding_units_passive_drain_per_week_blue = 0.01; // 0.2 // Percentage. Also applied to matter amplifiers so green BSUs drain as fast as blue BSUs
+	static allowed_base_shielding_unit_types = null; // [ sdBaseShieldingUnit.TYPE_CRYSTAL_CONSUMER, sdBaseShieldingUnit.TYPE_MATTER, sdBaseShieldingUnit.TYPE_SCORE_TIMED ] to allow specific ones or null to allow all
+
+	static open_world_max_distance_from_zero_coordinates_x = 40000; // Greater values work just fine, but do you really want this on your server? It can only cause lags.
+	static open_world_max_distance_from_zero_coordinates_y_min = -3000; // Greater values work just fine, but do you really want this on your server? It can only cause lags.
+	static open_world_max_distance_from_zero_coordinates_y_max = 40000; // Greater values work just fine, but do you really want this on your server? It can only cause lags.
+
+	static player_vs_player_damage_scale = 3;
 	
 	static LinkPlayerMatterCapacityToScore( character )
 	{
+		return true;
+	}
+
+	static GetLineOfSightMode( character )
+	{
+		if ( character._god || character.is( sdPlayerSpectator ) )
+		return false;
+
 		return true;
 	}
 	
@@ -174,16 +200,75 @@ class sdServerConfigFull extends sdServerConfigShort
 		// Player was reconnected. Alternatively onRespawn can be called
 		
 	}
+	static AllowAggressiveHibernationFor( entity )
+	{
+		if ( entity === sdWorld.server_config.new_player_delivery_hover )
+		if ( entity.hea > 0 )
+		return false;
+
+		return true;
+	}
+	static SendNewPlayerDeliveryHoverAway()
+	{
+		if ( sdWorld.server_config.new_player_delivery_hover )
+		{
+			let hover = sdWorld.server_config.new_player_delivery_hover;
+
+			sdWorld.server_config.new_player_delivery_hover = null;
+
+			if ( hover.driver0 )
+			if ( !hover.driver0._is_being_removed )
+			{
+				hover.driver0._key_states.SetKey( 'KeyW', 1 );
+
+				hover.driver0.Say( [
+					'Yeah... I\'m out of here',
+					'Welp, bad landing',
+					'I\'ll be somewhere else thank you very much',
+					'This place is too much fun',
+					'Yeah, good luck it is'
+				][ ~~( Math.random() * 5 ) ], false );
+			}
+
+			setTimeout( ()=>{
+
+				if ( !hover._is_being_removed )
+				{
+					if ( hover.driver0 )
+					if ( !hover.driver0._is_being_removed )
+					{
+						hover.driver0.remove();
+						hover.driver0._broken = false;
+					}
+
+					hover.remove();
+					hover._broken = false;
+				}
+
+			}, 5000 )
+		}
+	}
 	static onRespawn( character_entity, player_settings )
 	{
 		// Player just fully respawned. Best moment to give him guns for example. Alternatively onReconnect can be called
 		
 		let instructor_entity = null;
-		
+
+		let hover = null;
+		let fresh_hover = false;
+
+		if ( sdWorld.server_config.new_player_delivery_hover && sdWorld.server_config.new_player_delivery_hover.hea > 0 )
+		{
+			hover = sdWorld.server_config.new_player_delivery_hover;
+		}
+		else
+		{
+		}
+
 		// Spawn starter items based off what player wants to spawn with
-		let guns = [ sdGun.CLASS_BUILD_TOOL, sdGun.CLASS_MEDIKIT ];
+		let guns = [ sdGun.CLASS_BUILD_TOOL, sdGun.CLASS_MEDIKIT, sdGun.CLASS_CABLE_TOOL ];
 		if ( player_settings.start_with1 )
-		guns.push( sdGun.CLASS_PISTOL ),guns.push( sdGun.CLASS_LMG ),guns.push( sdGun.CLASS_ROCKET ),guns.push( sdGun.CLASS_LVL1_MEDIUM_ARMOR );
+		guns.push( sdGun.CLASS_PISTOL ),guns.unshift( sdGun.CLASS_RIFLE ),guns.push( sdGun.CLASS_ROCKET ),guns.push( sdGun.CLASS_LVL1_MEDIUM_ARMOR ), character_entity.hmax = 300, character_entity.hea = 300;
 		else
 		if ( player_settings.start_with2 )
 		guns.push( sdGun.CLASS_SWORD ),guns.push( sdGun.CLASS_NEEDLE ),guns.push( sdGun.CLASS_SPARK ), character_entity._damage_mult = 1.2, character_entity._upgrade_counters[ 'upgrade_damage' ] = 1, character_entity._upgrade_counters[ 'upgrade_invisibility' ] = 1, character_entity._ghost_allowed = true, character_entity.hmax = 200, character_entity.hea = 200, character_entity.iron_body = 2;
@@ -213,7 +298,7 @@ class sdServerConfigFull extends sdServerConfigShort
 		guns.push( sdGun.CLASS_ALIEN_ENERGY_RIFLE ),guns.push( sdGun.CLASS_LVL1_ARMOR_REGEN ),guns.push( sdGun.CLASS_LVL1_LIGHT_ARMOR ), character_entity._damage_mult = 1.2, character_entity._upgrade_counters[ 'upgrade_damage' ] = 1, character_entity._air_upgrade = 2, character_entity._upgrade_counters[ 'upgrade_oxygen_capacity' ] = 1, character_entity.iron_body = 1;
 		else
 		if ( player_settings.start_with11 )
-		guns.push( sdGun.CLASS_LVL1_LIGHT_ARMOR ),character_entity.s = 111, character_entity._damage_mult = 1.2, character_entity._upgrade_counters[ 'upgrade_damage' ] = 1, character_entity._upgrade_counters[ 'upgrade_suit' ] = 1, character_entity.hmax = 650, character_entity.hea = 650, character_entity._matter_capacity_boosters = 4 * 45;
+		guns.push( sdGun.CLASS_LVL1_LIGHT_ARMOR ),character_entity.s = 111, character_entity._damage_mult = 1.2, character_entity._upgrade_counters[ 'upgrade_damage' ] = 1, character_entity._upgrade_counters[ 'upgrade_suit' ] = 1, character_entity.hmax = 650, character_entity.hea = 650, character_entity._matter_capacity_boosters = 4 * 45, character_entity.fist_change = true;
 
 		if ( character_entity.is( sdCharacter ) )
 		for ( var i = 0; i < sdGun.classes.length; i++ )
@@ -224,6 +309,7 @@ class sdServerConfigFull extends sdServerConfigShort
 
 			if ( i !== sdGun.CLASS_BUILD_TOOL )
 			character_entity.gun_slot = sdGun.classes[ i ].slot;
+			character_entity.onMovementInRange( gun );
 		}
 			
 		// Track early damage and save this kind of info for later
@@ -259,6 +345,8 @@ class sdServerConfigFull extends sdServerConfigShort
 					});
 				}
 
+				sdWorld.server_config.SendNewPlayerDeliveryHoverAway();
+
 				character_entity.removeEventListener( 'DAMAGE', EarlyDamageTaken );
 			}
 		};
@@ -268,7 +356,63 @@ class sdServerConfigFull extends sdServerConfigShort
 		setTimeout( ()=>
 		{
 			character_entity.removeEventListener( 'DAMAGE', EarlyDamageTaken );
-		}, 5000 );
+		}, 15000 );
+
+		if ( !hover )
+		if ( !sdWorld.server_config.skip_arrival_sequence )
+		{
+			fresh_hover = true;
+
+			hover = new sdHover({ x:character_entity.x, y:character_entity.y });
+			hover.guns = 0;
+			hover._doors_locked = true;
+			hover.nick = 'Extraction Hover';
+
+			sdEntity.entities.push( hover );
+
+			for ( let rise = 0; rise < 10; rise++ )
+			{
+				if ( hover.CanMoveWithoutOverlap( hover.x, hover.y - 16 ) )
+				{
+					hover.y -= 16;
+				}
+				else
+				break;
+			}
+
+			{
+				let pilot;
+				pilot = new sdCharacter({ x:character_entity.x - 32, y:character_entity.y - 32 });
+				pilot._ai_enabled = sdCharacter.AI_MODEL_NONE;
+
+				let pilot_settings = {"hero_name":"Extraction Pilot","color_bright":"#feeee1","color_dark":"#a38e7b","color_bright3":"#21180d","color_dark3":"#2d2824","color_visor":"#58feb0","color_suit":"#43382d","color_shoes":"#000000","color_skin":"#4c4224","voice1":true,"voice2":false,"voice3":false,"voice4":false,"voice5":false,"color_suit2":"#3c280b","color_dark2":"#000000","color_extra1":"#000000","helmet1":false,"helmet19":true,"body1":false,"body23":true,"legs1":false,"legs37":true};
+
+				pilot.sd_filter = sdWorld.ConvertPlayerDescriptionToSDFilter_v2( pilot_settings );
+				pilot._voice = sdWorld.ConvertPlayerDescriptionToVoice( pilot_settings );
+				pilot.helmet = sdWorld.ConvertPlayerDescriptionToHelmet( pilot_settings );
+				pilot.body = sdWorld.ConvertPlayerDescriptionToBody( pilot_settings );
+				pilot.legs = sdWorld.ConvertPlayerDescriptionToLegs( pilot_settings );
+				pilot.title = pilot_settings.hero_name;
+
+				pilot.hmax = pilot.hea = 31;
+
+				pilot.matter = 1;
+				pilot.matter_max = 1;
+
+				sdEntity.entities.push( pilot );
+
+				hover.AddDriver( pilot, true );
+			}
+
+			sdWorld.server_config.new_player_delivery_hover = hover;
+
+			setTimeout( ()=>
+			{
+				if ( sdWorld.server_config.new_player_delivery_hover === hover )
+				sdWorld.server_config.SendNewPlayerDeliveryHoverAway();
+
+			}, 1000 * 60 * 60 ); // Relocates in hour
+		}
 		
 		// Instructor, obviously
 		if ( player_settings.hints2 && character_entity.is( sdCharacter ) )
@@ -485,6 +629,7 @@ class sdServerConfigFull extends sdServerConfigShort
 			instructor_entity._matter_regeneration_multiplier = 10;
 			
 			let instructor_gun = new sdGun({ x:instructor_entity.x, y:instructor_entity.y, class:sdGun.CLASS_COUNCIL_PISTOL });
+			instructor_entity.onMovementInRange( instructor_gun );
 			
 			let instructor_settings = {"hero_name":"Council Acolyte","color_bright":"#e1e100","color_dark":"#ffffff","color_bright3":"#ffff00","color_dark3":"#e1e1e1","color_visor":"#ffff00","color_suit":"#ffffff","color_suit2":"#e1e1e1","color_dark2":"#ffe100","color_shoes":"#e1e1e1","color_skin":"#ffffff","color_extra1":"#ffff00","helmet1":false,"helmet23":true,"body11":true,"legs8":true,"voice1":false,"voice2":false,"voice3":true,"voice4":false,"voice5":false,"voice6":false,"voice7":false,"voice8":true};
 
@@ -544,7 +689,7 @@ class sdServerConfigFull extends sdServerConfigShort
 			}, 100 );
 			let instructor_interval = setInterval( ()=>
 			{
-				if ( instructor_entity && instructor_entity.hea > 0 && !instructor_entity._is_being_removed )
+				if ( instructor_entity && instructor_entity.hea > 0 && !instructor_entity._is_being_removed && !instructor_entity.driver_of )
 				{
 					/*if ( my_character_entity.hea > 0 && !my_character_entity._dying )
 					if ( sdWeather.only_instance )
@@ -589,8 +734,35 @@ class sdServerConfigFull extends sdServerConfigShort
 			{
 				let instructor_gun2 = new sdGun({ x:instructor_entity.x, y:instructor_entity.y, class:sdGun.CLASS_EMERGENCY_INSTRUCTOR });
 				sdEntity.entities.push( instructor_gun2 );
+
+				instructor_entity.onMovementInRange( instructor_gun2 );
 			}
 		}
+
+		if ( hover )
+		{
+			hover.AddDriver( character_entity, true );
+
+			if ( instructor_entity )
+			hover.AddDriver( instructor_entity, true );
+
+			setTimeout( ()=>
+			{
+				if ( character_entity.driver_of )
+				character_entity.driver_of.ExcludeDriver( character_entity, true );
+
+				setTimeout( ()=>
+				{
+					if ( instructor_entity )
+					if ( !instructor_entity._is_being_removed )
+					if ( instructor_entity.driver_of )
+					instructor_entity.driver_of.ExcludeDriver( instructor_entity, true );
+
+				}, 2500 );
+
+			}, fresh_hover ? 5000 : 1000 );
+		}
+
 	}
 	static EntitySaveAllowedTest( entity )
 	{
@@ -615,6 +787,12 @@ class sdServerConfigFull extends sdServerConfigShort
 		if ( sdWorld.world_bounds.y2 === 0 )
 		{
 			console.log( 'Reinitializing world bounds' );
+			
+			if ( sdWorld.server_config.aggressive_hibernation )
+			{
+				sdWorld.ChangeWorldBounds( -16 * Math.round( sdDeepSleep.normal_cell_size / 16 ), -16 * Math.round( sdDeepSleep.normal_cell_size / 16 ), 16 * Math.round( sdDeepSleep.normal_cell_size / 16 ), 16 * Math.round( sdDeepSleep.normal_cell_size / 16 ) );
+			}
+			else
 			sdWorld.ChangeWorldBounds( -16 * Math.round( 4000 / 16 ), -16 * Math.round( 2000 / 16 ), 16 * Math.round( 4000 / 16 ), 16 * Math.round( 2000 / 16 ) );
 		}
 			
@@ -630,254 +808,256 @@ class sdServerConfigFull extends sdServerConfigShort
 			let y1 = sdWorld.world_bounds.y1;
 			let x2 = sdWorld.world_bounds.x2;
 			let y2 = sdWorld.world_bounds.y2;
-
-			// Locked decrease for removal of old parts
-			let x1_locked = false;
-			let y1_locked = false;
-			let x2_locked = false;
-			let y2_locked = false;
-
-			let x1_locked_by = [];
-			let y1_locked_by = [];
-			let x2_locked_by = [];
-			let y2_locked_by = [];
-
-			let edge_cursious = []; // -1
-			let edge_cursious_ent = [];
-
-			let sockets = sdWorld.sockets;
-			let no_respawn_areas = sdWorld.no_respawn_areas;
-
-			function TellReason()
+			
+			if ( sdWorld.server_config.aggressive_hibernation )
 			{
-				for ( var i = 0; i < edge_cursious_ent.length; i++ )
+				// New approach, allows infinite world stretching, aggrassive hiberantion will handle proper freezing of chunks
+				
+				const increase_step_size = sdDeepSleep.normal_cell_size;
+				
+				x1 = Math.floor( x1 / sdDeepSleep.normal_cell_size ) * sdDeepSleep.normal_cell_size;
+				x2 = Math.ceil( x2 / sdDeepSleep.normal_cell_size ) * sdDeepSleep.normal_cell_size;
+				y1 = Math.floor( y1 / sdDeepSleep.normal_cell_size ) * sdDeepSleep.normal_cell_size;
+				y2 = Math.ceil( y2 / sdDeepSleep.normal_cell_size ) * sdDeepSleep.normal_cell_size;
+				
+				let left = 0;
+				let right = 0;
+				let up = 0;
+				let down = 0;
+				
+				const distance_near_edge_to_trigger = 256;
+				
+				for ( let i = 0; i < sockets.length; i++ )
 				{
-					if ( edge_cursious_ent[ i ]._socket )
+					let ent = sockets[ i ].character;
+					if ( ent !== null )
+					if ( ent.hea > 0 )
+					if ( !ent._is_being_removed )
 					{
-						let blocking_by = [];
-
-						switch ( edge_cursious[ i ] )
-						{
-							case 0: for ( var i2 = 0; i2 < x1_locked_by.length; i2++ ) blocking_by.push( sdEntity.GuessEntityName( x1_locked_by[ i2 ]._net_id ) ); break;
-							case 1: for ( var i2 = 0; i2 < x2_locked_by.length; i2++ ) blocking_by.push( sdEntity.GuessEntityName( x2_locked_by[ i2 ]._net_id ) ); break;
-							case 2: for ( var i2 = 0; i2 < y1_locked_by.length; i2++ ) blocking_by.push( sdEntity.GuessEntityName( y1_locked_by[ i2 ]._net_id ) ); break;
-							case 3: for ( var i2 = 0; i2 < y2_locked_by.length; i2++ ) blocking_by.push( sdEntity.GuessEntityName( y2_locked_by[ i2 ]._net_id ) ); break;
-						}
-
-						for ( var i2 = 0; i2 < blocking_by.length; i2++ )
-						{
-							let count = 1;
-							for ( var i3 = i2 + 1; i3 < blocking_by.length; i3++ )
-							{
-								if ( blocking_by[ i2 ] === blocking_by[ i3 ] )
-								{
-									count++;
-									blocking_by.splice( i3, 1 );
-									i3--;
-									continue;
-								}
-							}
-							if ( count > 1 )
-							{
-								blocking_by[ i2 ] = blocking_by[ i2 ] + ' x' + count;
-							}
-						}
-
-						if ( blocking_by.length === 1 )
-						edge_cursious_ent[ i ]._socket.SDServiceMessage( 'World can not be extended past this point - ' + blocking_by.join(', ') + ' is at the opposite edge of playable area' );
-						else
-						edge_cursious_ent[ i ]._socket.SDServiceMessage( 'World can not be extended past this point - ' + blocking_by.join(', ') + ' are at the opposite edge of playable area' );
+						if ( ent.x < x1 + distance_near_edge_to_trigger )
+						left = increase_step_size;
+						if ( ent.x > x2 - distance_near_edge_to_trigger )
+						right = increase_step_size;
+						
+						if ( ent.y < y1 + distance_near_edge_to_trigger )
+						up = increase_step_size;
+						if ( ent.y > y2 - distance_near_edge_to_trigger )
+						down = increase_step_size;
 					}
 				}
+				
+				if ( up || down || left || right )
+				sdWorld.ChangeWorldBounds( x1 - left, y1 - up, x2 + right, y2 + down );
 			}
-
-			let top_matter = 0;
-
-
-			for ( let i = 0; i < no_respawn_areas.length; i++ )
+			else
 			{
-				if ( sdWorld.time > no_respawn_areas[ i ].until )
+				// Classic bounds move approach
+				
+				// Locked decrease for removal of old parts
+				let x1_locked = false;
+				let y1_locked = false;
+				let x2_locked = false;
+				let y2_locked = false;
+
+				let x1_locked_by = [];
+				let y1_locked_by = [];
+				let x2_locked_by = [];
+				let y2_locked_by = [];
+
+				let edge_cursious = []; // -1
+				let edge_cursious_ent = [];
+
+				let sockets = sdWorld.sockets;
+				let no_respawn_areas = sdWorld.no_respawn_areas;
+
+				function TellReason()
 				{
-					no_respawn_areas.splice( i, 1 );
-					i--;
-					continue;
+					for ( var i = 0; i < edge_cursious_ent.length; i++ )
+					{
+						if ( edge_cursious_ent[ i ]._socket )
+						{
+							let blocking_by = [];
+
+							switch ( edge_cursious[ i ] )
+							{
+								case 0: for ( var i2 = 0; i2 < x1_locked_by.length; i2++ ) blocking_by.push( sdEntity.GuessEntityName( x1_locked_by[ i2 ]._net_id ) ); break;
+								case 1: for ( var i2 = 0; i2 < x2_locked_by.length; i2++ ) blocking_by.push( sdEntity.GuessEntityName( x2_locked_by[ i2 ]._net_id ) ); break;
+								case 2: for ( var i2 = 0; i2 < y1_locked_by.length; i2++ ) blocking_by.push( sdEntity.GuessEntityName( y1_locked_by[ i2 ]._net_id ) ); break;
+								case 3: for ( var i2 = 0; i2 < y2_locked_by.length; i2++ ) blocking_by.push( sdEntity.GuessEntityName( y2_locked_by[ i2 ]._net_id ) ); break;
+							}
+
+							for ( var i2 = 0; i2 < blocking_by.length; i2++ )
+							{
+								let count = 1;
+								for ( var i3 = i2 + 1; i3 < blocking_by.length; i3++ )
+								{
+									if ( blocking_by[ i2 ] === blocking_by[ i3 ] )
+									{
+										count++;
+										blocking_by.splice( i3, 1 );
+										i3--;
+										continue;
+									}
+								}
+								if ( count > 1 )
+								{
+									blocking_by[ i2 ] = blocking_by[ i2 ] + ' x' + count;
+								}
+							}
+
+							if ( blocking_by.length === 1 )
+							edge_cursious_ent[ i ]._socket.SDServiceMessage( 'World can not be extended past this point - ' + blocking_by.join(', ') + ' is at the opposite edge of playable area' );
+							else
+							edge_cursious_ent[ i ]._socket.SDServiceMessage( 'World can not be extended past this point - ' + blocking_by.join(', ') + ' are at the opposite edge of playable area' );
+						}
+					}
 				}
 
-				if ( no_respawn_areas[ i ].entity )
+				let top_matter = 0;
+
+
+				for ( let i = 0; i < no_respawn_areas.length; i++ )
 				{
-					if ( no_respawn_areas[ i ].entity._is_being_removed )
+					if ( sdWorld.time > no_respawn_areas[ i ].until )
 					{
 						no_respawn_areas.splice( i, 1 );
 						i--;
 						continue;
 					}
 
-					no_respawn_areas[ i ].x = no_respawn_areas[ i ].entity.x;
-					no_respawn_areas[ i ].y = no_respawn_areas[ i ].entity.y;
-				}
-			}
-
-			for ( let i = 0; i < sockets.length; i++ )
-			{
-				var ent = sockets[ i ].character;
-				if ( ent !== null )
-				if ( ent.hea > 0 )
-				if ( !ent._is_being_removed )
-				{
-					if ( ent.matter > top_matter )
-					top_matter = ent.matter;
-
-					if ( sdWorld.world_bounds.x2 - sdWorld.world_bounds.x1 > 4000 )
+					if ( no_respawn_areas[ i ].entity )
 					{
-						if ( ent.x < sdWorld.world_bounds.x1 + 2000 )
+						if ( no_respawn_areas[ i ].entity._is_being_removed )
 						{
-							x1_locked = true;
-							x1_locked_by.push( ent );
+							no_respawn_areas.splice( i, 1 );
+							i--;
+							continue;
 						}
 
-						if ( ent.x > sdWorld.world_bounds.x2 - 2000 )
-						{
-							x2_locked = true;
-							x2_locked_by.push( ent );
-						}
-					}
-
-
-					if ( sdWorld.world_bounds.y2 - sdWorld.world_bounds.y1 > 2000 )
-					{
-						if ( ent.y < sdWorld.world_bounds.y1 + 1000 )
-						{
-							y1_locked = true;
-							y1_locked_by.push( ent );
-						}
-
-						if ( ent.y > sdWorld.world_bounds.y2 - 1000 )
-						{
-							y2_locked = true;
-							y2_locked_by.push( ent );
-						}
-					}
-					/*
-					if ( ent.y < ( sdWorld.world_bounds.y1 + sdWorld.world_bounds.y2 ) / 2 )
-					y1_locked = true;
-					else
-					y2_locked = true;*/
-
-					if ( ent.x > sdWorld.world_bounds.x2 - 16 * 40 )
-					{
-						x2 += 16 * 5;
-
-						if ( ent.x > sdWorld.world_bounds.x2 - 32 )
-						{
-							edge_cursious.push( 0 );
-							edge_cursious_ent.push( ent );
-						}
-					}
-
-					if ( ent.x < sdWorld.world_bounds.x1 + 16 * 40 )
-					{
-						x1 -= 16 * 5;
-						if ( ent.x < sdWorld.world_bounds.x1 + 32 )
-						{
-							edge_cursious.push( 1 );
-							edge_cursious_ent.push( ent );
-						}
-					}
-
-					if ( ent.y > sdWorld.world_bounds.y2 - 16 * 40 )
-					{
-						y2 += 16 * 5;
-						if ( ent.y > sdWorld.world_bounds.y2 - 32 )
-						{
-							edge_cursious.push( 2 );
-							edge_cursious_ent.push( ent );
-						}
-					}
-
-					if ( ent.y < sdWorld.world_bounds.y1 + 16 * 40 )
-					{
-						y1 -= 16 * 5;
-						if ( ent.y < sdWorld.world_bounds.y1 + 32 )
-						{
-							edge_cursious.push( 3 );
-							edge_cursious_ent.push( ent );
-						}
+						no_respawn_areas[ i ].x = no_respawn_areas[ i ].entity.x;
+						no_respawn_areas[ i ].y = no_respawn_areas[ i ].entity.y;
 					}
 				}
-			}
 
-			for ( let i = 0; i < sdCommandCentre.centres.length; i++ )
-			{
-				var ent = sdCommandCentre.centres[ i ];
-
-				if ( top_matter >= sdCharacter.matter_required_to_destroy_command_center )
-				if ( ent.self_destruct_on < sdWorld.time + sdCommandCentre.time_to_live_without_matter_keepers_near - 1000 * 5 )
+				for ( let i = 0; i < sockets.length; i++ )
 				{
-					ent.self_destruct_on = Math.min( ent.self_destruct_on + world_edge_think_rate * 2, sdWorld.time + sdCommandCentre.time_to_live_without_matter_keepers_near );
-				}
-
-				if ( ent.x < sdWorld.world_bounds.x1 + 1000 )
-				{
-					x1_locked = true;
-					x1_locked_by.push( ent );
-				}
-				if ( ent.x > sdWorld.world_bounds.x2 - 1000 )
-				{
-					x2_locked = true;
-					x2_locked_by.push( ent );
-				}
-
-				if ( ent.y < sdWorld.world_bounds.y1 + 1000 )
-				{
-					y1_locked = true;
-					y1_locked_by.push( ent );
-				}
-				if ( ent.y > sdWorld.world_bounds.y2 - 1000 )
-				{
-					y2_locked = true;
-					y2_locked_by.push( ent );
-				}
-			}
-
-			if ( sdWorld.world_bounds.x1 !== x1 ||
-				 sdWorld.world_bounds.y1 !== y1 ||
-				 sdWorld.world_bounds.x2 !== x2 ||
-				 sdWorld.world_bounds.y2 !== y2 )
-			{
-				let min_width = 3200 * 2; // % 16
-				let min_height = 1600 * 2; // % 16
-
-				if ( x2 - x1 > min_width )
-				{
-					if ( x1_locked && x2_locked )
+					var ent = sockets[ i ].character;
+					if ( ent !== null )
+					if ( ent.hea > 0 )
+					if ( !ent._is_being_removed )
 					{
-						x1 = sdWorld.world_bounds.x1;
-						x2 = sdWorld.world_bounds.x2;
-						//return; 
-					}
-					else
-					{
-						if ( x1_locked )
-						x2 = x1 + min_width;
+						if ( ent.matter > top_matter )
+						top_matter = ent.matter;
+
+						if ( sdWorld.world_bounds.x2 - sdWorld.world_bounds.x1 > 4000 )
+						{
+							if ( ent.x < sdWorld.world_bounds.x1 + 2000 )
+							{
+								x1_locked = true;
+								x1_locked_by.push( ent );
+							}
+
+							if ( ent.x > sdWorld.world_bounds.x2 - 2000 )
+							{
+								x2_locked = true;
+								x2_locked_by.push( ent );
+							}
+						}
+
+
+						if ( sdWorld.world_bounds.y2 - sdWorld.world_bounds.y1 > 2000 )
+						{
+							if ( ent.y < sdWorld.world_bounds.y1 + 1000 )
+							{
+								y1_locked = true;
+								y1_locked_by.push( ent );
+							}
+
+							if ( ent.y > sdWorld.world_bounds.y2 - 1000 )
+							{
+								y2_locked = true;
+								y2_locked_by.push( ent );
+							}
+						}
+						/*
+						if ( ent.y < ( sdWorld.world_bounds.y1 + sdWorld.world_bounds.y2 ) / 2 )
+						y1_locked = true;
 						else
-						x1 = x2 - min_width;
+						y2_locked = true;*/
+
+						if ( ent.x > sdWorld.world_bounds.x2 - 16 * 40 )
+						{
+							x2 += 16 * 5;
+
+							if ( ent.x > sdWorld.world_bounds.x2 - 32 )
+							{
+								edge_cursious.push( 0 );
+								edge_cursious_ent.push( ent );
+							}
+						}
+
+						if ( ent.x < sdWorld.world_bounds.x1 + 16 * 40 )
+						{
+							x1 -= 16 * 5;
+							if ( ent.x < sdWorld.world_bounds.x1 + 32 )
+							{
+								edge_cursious.push( 1 );
+								edge_cursious_ent.push( ent );
+							}
+						}
+
+						if ( ent.y > sdWorld.world_bounds.y2 - 16 * 40 )
+						{
+							y2 += 16 * 5;
+							if ( ent.y > sdWorld.world_bounds.y2 - 32 )
+							{
+								edge_cursious.push( 2 );
+								edge_cursious_ent.push( ent );
+							}
+						}
+
+						if ( ent.y < sdWorld.world_bounds.y1 + 16 * 40 )
+						{
+							y1 -= 16 * 5;
+							if ( ent.y < sdWorld.world_bounds.y1 + 32 )
+							{
+								edge_cursious.push( 3 );
+								edge_cursious_ent.push( ent );
+							}
+						}
 					}
 				}
 
-				if ( y2 - y1 > min_height )
+				for ( let i = 0; i < sdCommandCentre.centres.length; i++ )
 				{
-					if ( y1_locked && y2_locked )
+					var ent = sdCommandCentre.centres[ i ];
+
+					if ( top_matter >= sdCharacter.matter_required_to_destroy_command_center )
+					if ( ent.self_destruct_on < sdWorld.time + sdCommandCentre.time_to_live_without_matter_keepers_near - 1000 * 5 )
 					{
-						y1 = sdWorld.world_bounds.y1;
-						y2 = sdWorld.world_bounds.y2;
-						//return;
+						ent.self_destruct_on = Math.min( ent.self_destruct_on + world_edge_think_rate * 2, sdWorld.time + sdCommandCentre.time_to_live_without_matter_keepers_near );
 					}
-					else
+
+					if ( ent.x < sdWorld.world_bounds.x1 + 1000 )
 					{
-						if ( y1_locked )
-						y2 = y1 + min_height;
-						else
-						y1 = y2 - min_height;
+						x1_locked = true;
+						x1_locked_by.push( ent );
+					}
+					if ( ent.x > sdWorld.world_bounds.x2 - 1000 )
+					{
+						x2_locked = true;
+						x2_locked_by.push( ent );
+					}
+
+					if ( ent.y < sdWorld.world_bounds.y1 + 1000 )
+					{
+						y1_locked = true;
+						y1_locked_by.push( ent );
+					}
+					if ( ent.y > sdWorld.world_bounds.y2 - 1000 )
+					{
+						y2_locked = true;
+						y2_locked_by.push( ent );
 					}
 				}
 
@@ -885,13 +1065,56 @@ class sdServerConfigFull extends sdServerConfigShort
 					 sdWorld.world_bounds.y1 !== y1 ||
 					 sdWorld.world_bounds.x2 !== x2 ||
 					 sdWorld.world_bounds.y2 !== y2 )
-				sdWorld.ChangeWorldBounds( x1, y1, x2, y2 );
+				{
+					let min_width = 3200 * 2; // % 16
+					let min_height = 1600 * 2; // % 16
+
+					if ( x2 - x1 > min_width )
+					{
+						if ( x1_locked && x2_locked )
+						{
+							x1 = sdWorld.world_bounds.x1;
+							x2 = sdWorld.world_bounds.x2;
+							//return; 
+						}
+						else
+						{
+							if ( x1_locked )
+							x2 = x1 + min_width;
+							else
+							x1 = x2 - min_width;
+						}
+					}
+
+					if ( y2 - y1 > min_height )
+					{
+						if ( y1_locked && y2_locked )
+						{
+							y1 = sdWorld.world_bounds.y1;
+							y2 = sdWorld.world_bounds.y2;
+							//return;
+						}
+						else
+						{
+							if ( y1_locked )
+							y2 = y1 + min_height;
+							else
+							y1 = y2 - min_height;
+						}
+					}
+
+					if ( sdWorld.world_bounds.x1 !== x1 ||
+						 sdWorld.world_bounds.y1 !== y1 ||
+						 sdWorld.world_bounds.x2 !== x2 ||
+						 sdWorld.world_bounds.y2 !== y2 )
+					sdWorld.ChangeWorldBounds( x1, y1, x2, y2 );
+					else
+					TellReason();
+				}
 				else
-				TellReason();
-			}
-			else
-			{
-				TellReason();
+				{
+					TellReason();
+				}
 			}
 
 		}, world_edge_think_rate );
@@ -900,14 +1123,25 @@ class sdServerConfigFull extends sdServerConfigShort
 	{
 		//const sdBaseShieldingUnit = sdWorld.entity_classes.sdBaseShieldingUnit;
 		//const sdBlock = sdWorld.entity_classes.sdBlock;
+
+		let x1 = Math.max( sdWorld.world_bounds.x1, -sdWorld.server_config.open_world_max_distance_from_zero_coordinates_x );
+		let x2 = Math.min( sdWorld.world_bounds.x2, sdWorld.server_config.open_world_max_distance_from_zero_coordinates_x );
+		let y1 = Math.max( sdWorld.world_bounds.y1, sdWorld.server_config.open_world_max_distance_from_zero_coordinates_y_min );
+		let y2 = Math.min( sdWorld.world_bounds.y2, sdWorld.server_config.open_world_max_distance_from_zero_coordinates_y_max );
+		
+		// Limit by zero coords somewhat
+		x1 = Math.max( x1, -10000 );
+		x2 = Math.min( x2, 10000 );
+		y1 = Math.max( y1, -1000 );
+		y2 = Math.min( y2, 1000 );
 		
 		let x,y,bad_areas_near,i;
 		let tr = 0;
 		let max_tr = 10000;
 		do
 		{
-			x = sdWorld.world_bounds.x1 + Math.random() * ( sdWorld.world_bounds.x2 - sdWorld.world_bounds.x1 );
-			y = sdWorld.world_bounds.y1 + Math.random() * ( sdWorld.world_bounds.y2 - sdWorld.world_bounds.y1 );
+			x = x1 + Math.random() * ( x2 - x1 );
+			y = y1 + Math.random() * ( y2 - y1 );
 
 			if ( socket.command_centre )
 			{
@@ -961,7 +1195,21 @@ class sdServerConfigFull extends sdServerConfigShort
 			
 			sdWorld.last_hit_entity = null;
 
-			let can_stand_here = character_entity.CanMoveWithoutOverlap( x, y, 0 ) && !character_entity.CanMoveWithoutOverlap( x, y + 32, 0 );
+			// It is good for hover-less version:
+			//let can_stand_here = character_entity.CanMoveWithoutOverlap( x, y, 0 ) && !character_entity.CanMoveWithoutOverlap( x, y + 32, 0 );
+			let can_stand_here = ( 
+				!sdWorld.CheckWallExistsBox( 
+					x + (-26), 
+					y + (-9), 
+					x + (26), 
+					y + (10), character_entity, character_entity.GetIgnoredEntityClasses(), character_entity.GetNonIgnoredEntityClasses(), null )
+				&& 
+				sdWorld.CheckWallExistsBox( 
+					x + (-26), 
+					y + (-9) + 19, 
+					x + (26), 
+					y + (10) + 19, character_entity, character_entity.GetIgnoredEntityClasses(), character_entity.GetNonIgnoredEntityClasses(), null ) 
+			);
 			
 			let ground_ent = sdWorld.last_hit_entity;
 			
