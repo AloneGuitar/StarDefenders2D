@@ -154,173 +154,32 @@ let entity_class_names = ( await ( await fetch( '/get_entity_classes.txt' ) ).te
 
 		})() );
 	});
-	
-	await Promise.all( import_entity_class_promises );
-	
-	/*import sdCharacter from './entities/sdCharacter.js';
-	import sdGun from './entities/sdGun.js';
-	import sdEffect from './entities/sdEffect.js';
-	import sdBlock from './entities/sdBlock.js';
-	import sdCrystal from './entities/sdCrystal.js';
-	import sdBullet from './entities/sdBullet.js';
-	import sdCom from './entities/sdCom.js';
-	import sdAsteroid from './entities/sdAsteroid.js';
-	import sdVirus from './entities/sdVirus.js';
-	import sdAmphid from './entities/sdAmphid.js';
-	import sdTeleport from './entities/sdTeleport.js';
-	import sdDoor from './entities/sdDoor.js';
-	import sdWater from './entities/sdWater.js';
-	import sdBG from './entities/sdBG.js';
-	import sdWeather from './entities/sdWeather.js';
-	import sdTurret from './entities/sdTurret.js';
-	import sdMatterContainer from './entities/sdMatterContainer.js';
-	import sdMatterAmplifier from './entities/sdMatterAmplifier.js';
-	import sdQuickie from './entities/sdQuickie.js';
-	import sdOctopus from './entities/sdOctopus.js';
-	import sdAntigravity from './entities/sdAntigravity.js';
-	import sdCube from './entities/sdCube.js';
-	import sdLamp from './entities/sdLamp.js';
-	import sdCommandCentre from './entities/sdCommandCentre.js';
-	import sdBomb from './entities/sdBomb.js';
-	import sdHover from './entities/sdHover.js';
-	import sdStorage from './entities/sdStorage.js';
-	import sdAsp from './entities/sdAsp.js';
-	import sdSandWorm from './entities/sdSandWorm.js';
-	import sdGrass from './entities/sdGrass.js';
-	import sdSlug from './entities/sdSlug.js';
-	import sdBarrel from './entities/sdBarrel.js';
-	import sdEnemyMech from './entities/sdEnemyMech.js';
-	import sdArea from './entities/sdArea.js';
-	import sdCrystalCombiner from './entities/sdCrystalCombiner.js';
-	import sdUpgradeStation from './entities/sdUpgradeStation.js';
-	import sdJunk from './entities/sdJunk.js';
-	import sdBadDog from './entities/sdBadDog.js';
-	import sdShark from './entities/sdShark.js';
-	import sdWorkbench from './entities/sdWorkbench.js';
-	import sdRescueTeleport from './entities/sdRescueTeleport.js';
-	import sdRift from './entities/sdRift.js';
-	import sdDrone from './entities/sdDrone.js';
-	import sdLifeBox from './entities/sdLifeBox.js';
-	import sdLost from './entities/sdLost.js';
-	import sdCable from './entities/sdCable.js';
-	import sdCharacterRagdoll from './entities/sdCharacterRagdoll.js';
-	import sdNode from './entities/sdNode.js';
-	import sdSpider from './entities/sdSpider.js';
-	import sdBall from './entities/sdBall.js';
-	import sdTheatre from './entities/sdTheatre.js';
-	import sdCaption from './entities/sdCaption.js';
-	import sdPlayerDrone from './entities/sdPlayerDrone.js';
-	import sdBaseShieldingUnit from './entities/sdBaseShieldingUnit.js';	
-	import sdConveyor from './entities/sdConveyor.js';	
-	import sdBeamProjector from './entities/sdBeamProjector.js';	
-	import sdQuadro from './entities/sdQuadro.js';	
-	import sdHoverBike from './entities/sdHoverBike.js';	
-	import sdObelisk from './entities/sdObelisk.js';
-	import sdSunPanel from './entities/sdSunPanel.js';
-	import sdWeaponBench from './entities/sdWeaponBench.js';
-	import sdLongRangeTeleport from './entities/sdLongRangeTeleport.js';
-	import sdTask from './entities/sdTask.js';
-	import sdBeacon from './entities/sdBeacon.js';
-	import sdPortal from './entities/sdPortal.js';*/
 
+	await Promise.all( import_entity_class_promises );
 
 	sdWorld.init_class();
 	sdAtlasMaterial.init_class();
 	sdRenderer.init_class();
 	LZW.init_class();
-	
+
 	sdPathFinding.init_class();
-	
+
 	sdSound.init_class();
 	sdContextMenu.init_class();
-	
+
 	sdElement.init_class();
 	sdDatabaseEditor.init_class();
 	sdMotherShipStorageManager.init_class();
 	sdCodeEditor.init_class();
 
-
 	for ( let i = 0; i < imported_entity_classes.length; i++ )
 	imported_entity_classes[ i ].init_class();
 
 	sdEntity.AllEntityClassesLoadedAndInitiated();
-	
-	/*sdEntity.init_class();
-	sdCharacter.init_class();
-	sdPlayerDrone.init_class();
-	sdEffect.init_class(); 
-	sdGun.init_class(); // must be after sdEffect
-	sdBlock.init_class();
-	sdCrystal.init_class();
-	sdBG.init_class();
-	sdCaption.init_class();
-	sdBullet.init_class();
-	sdCom.init_class();
-	sdAsteroid.init_class();
-	sdVirus.init_class();
-	sdAmphid.init_class();
-	sdTeleport.init_class();
-	sdDoor.init_class();
-	sdWater.init_class();
-	sdWeather.init_class();
-	sdMatterContainer.init_class();
-	sdMatterAmplifier.init_class();
-	sdQuickie.init_class();
-	sdOctopus.init_class();
-	sdAntigravity.init_class();
-	sdCube.init_class();
-	sdLamp.init_class();
-	sdCommandCentre.init_class();
-	sdBomb.init_class();
-	sdBeacon.init_class();
-	sdHover.init_class();
-	sdStorage.init_class();
-	sdAsp.init_class();
-	sdSandWorm.init_class();
-	sdGrass.init_class();
-	sdSlug.init_class();
-	sdBarrel.init_class();
-	sdEnemyMech.init_class();
-	sdArea.init_class();
-	sdCrystalCombiner.init_class();
-	sdUpgradeStation.init_class();
-	sdJunk.init_class();
-	sdBadDog.init_class();
-	sdShark.init_class();
-	sdWorkbench.init_class();
-	sdRescueTeleport.init_class();
-	sdRift.init_class();
-	sdDrone.init_class();
-	sdLifeBox.init_class();
-	sdLost.init_class();
-	sdCable.init_class();
-	sdCharacterRagdoll.init_class();
-	sdNode.init_class();
-	sdSpider.init_class();
-	sdBall.init_class();
-	sdTheatre.init_class();
-	sdTurret.init_class();
-	sdBaseShieldingUnit.init_class();
-	sdConveyor.init_class();
-	sdBeamProjector.init_class();
-	sdQuadro.init_class();
-	sdHoverBike.init_class();
-	sdObelisk.init_class();
-	sdSunPanel.init_class();
-	sdWeaponBench.init_class();
-	sdLongRangeTeleport.init_class();
-	sdTask.init_class();
-	sdPortal.init_class();*/
 
 	sdShop.init_class();
 	sdChat.init_class();
-	
-	/*globalThis.sdCharacter = sdCharacter; // for console access
-	globalThis.sdEntity = sdEntity;
-	globalThis.sdGun = sdGun;
-	globalThis.sdBullet = sdBullet;
-	globalThis.sdWeather = sdWeather;*/
-	
+
 	globalThis.sdWorld = sdWorld;
 	globalThis.socket = socket;
 	globalThis.sdRenderer = sdRenderer;
@@ -473,6 +332,8 @@ let enf_once = true;
 	{
 		if ( sdWorld.is_singleplayer )
 		return;
+
+		socket.emit( 'my_url', window.location.href );
 		
 		globalThis.connection_started = true;
 		
@@ -611,6 +472,8 @@ let enf_once = true;
 			}
 			
 			let message_id_to_report = ( stuff_arr[ 9 ] === undefined ) ? -1 : stuff_arr[ 9 ];
+
+			sdRenderer.line_of_sight_mode = stuff_arr[ 10 ] || 0;
 			
 			if ( message_id_to_report !== -1 )
 			messages_to_report_arrival.push( message_id_to_report );
@@ -621,10 +484,15 @@ let enf_once = true;
 				let new_snapshot_entities = [];
 				for ( var i = 0; i < snapshot.length; i++ )
 				{
-					let ent = sdEntity.GetObjectFromSnapshot( snapshot[ i ] );
-					
-					if ( ent )
-					new_snapshot_entities.push( ent );
+					{
+						if ( snapshot[ i ]._class === undefined )
+						snapshot[ i ]._class = 'auto';
+
+						let ent = sdEntity.GetObjectFromSnapshot( snapshot[ i ] );
+
+						if ( ent )
+						new_snapshot_entities.push( ent );
+					}
 				}
 
 				for ( var i = 0; i < old_snapshot_entities.length; i++ )
@@ -828,6 +696,11 @@ let enf_once = true;
 			supported_languages = obj.supported_languages;
 			
 			UpdateLanguageBar();
+		});
+		socket.on( 'REQUIRE_PASSWORD', ( message_and_color )=>
+		{
+			sdWorld.Stop();
+			sdWorld.RequirePassword( message_and_color );
 		});
 		socket.on( 'OPEN_INTERFACE', ( obj )=> // Such as sdDatabaseEditor
 		{
@@ -1039,6 +912,20 @@ let enf_once = true;
 		if ( !IsGameFocused() )
 		return true;
 	
+		if ( e.key === 'Escape' )
+		{
+			if ( sdContextMenu.open )
+			{
+				sdContextMenu.open = false;
+			}
+			else
+			{
+				sdWorld.hovered_entity = sdWorld.my_entity;
+				sdContextMenu.Open();
+			}
+
+			e.preventDefault();
+		}
 	
 		if ( sdShop.open )
 		{

@@ -163,7 +163,30 @@
 		};
 	    }
 	</script>
+	<!--<input type="color" id="ingame_color_picker" tabindex=-1 style="
+	    position: fixed;
+	    left: 0;
+	    top: 0;
+	    overflow: hidden;
+	    width: 0;
+	    height: 0;
+	    padding: 0;
+	    margin: 0;
+	">-->
+	<input id="ingame_color_picker" tabindex=-1 type="text" data-coloris style="
+	    position: fixed;
+	    left: 0;
+	    top: 0;
+	    overflow: hidden;
+	    width: 0;
+	    height: 0;
+	    padding: 0;
+	    margin: 0;
+	">
+	<link rel="stylesheet" href="libs/coloris/coloris.min.css"/>
+	<script src="libs/coloris/coloris.min.js"></script>
 
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.17.0/ace.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="socketio/socketio.js"></script>
 	<script src="libs/three.js"></script>
 	<script src="libs/three-examples/BufferGeometryUtils.js"></script>
@@ -1713,14 +1736,7 @@
 	    
 	    <div class="set_block" tabindex="1">
 		<span class="sdtitle">Volume</span><br>
-		<input type="checkbox" id="volume1" value="1">
-		<label for="volume1">40%</label>
-		<br>
-		<input type="checkbox" id="volume2" value="1">
-		<label for="volume2">25%</label>
-		<br>
-		<input type="checkbox" id="volume3" value="1" checked>
-		<label for="volume3">10%</label>
+		<input id="volume" type="range" min="0" max="100" step="0.1">
 	    </div>
 	    
 	    <div class="set_block" tabindex="1">
@@ -1733,6 +1749,15 @@
 		<br>
 		<input type="checkbox" id="censorship2" value="0">
 		<label for="censorship2">No</label>
+	    </div>
+
+	    <div class="set_block" tabindex="1">
+		<span class="sdtitle">Allow self-talk</span><br>
+		<input type="checkbox" id="selftalk1" value="1" checked>
+		<label for="selftalk1">Yes (these includes hints)</label>
+		<br>
+		<input type="checkbox" id="selftalk2" value="0">
+		<label for="selftalk2">No (important hints will be compeltely disabled)</label>
 	    </div>
 	    <!--
 	    <div class="set_block" tabindex="1" style="width: 485px">
@@ -1752,6 +1777,22 @@
 	    </div>
 	    
 	    <canvas style="position: absolute;right: 40px;top: 40px;/*border-radius: 20px;box-shadow: 0 0 0px 5px #7b321963;*/" id="skin_preview" width="128" height="128"></canvas>
+
+	</div>
+
+	<div class="password_screen" style="display:none">
+	    <div class="prompt_box">
+		<div id="password_screen_message">Password is required</div>
+		<input type="password" id="password" size="90" maxlength="90" value="">
+		<input type="button" style="width: 100px;" onclick="
+			document.querySelector('.password_screen').style.display = 'none';
+			document.getElementById('start_btn').click();
+		" value="Accept">
+
+		<input type="button" style="width: 100px;" onclick="
+			document.querySelector('.password_screen').style.display = 'none';
+		" value="Cancel">
+	    </div>
 	</div>
 
 	<script>
@@ -1763,6 +1804,7 @@
 	    let start_offline_btn = document.getElementById( 'start_offline_btn' );
 	    
 	    let my_hash_input = document.getElementById( 'my_hash' );
+	    let volume_input = document.getElementById( 'volume' );
 	    
 	    let inputs = [];
 	    let inputs_hash = {};
@@ -1791,9 +1833,53 @@
 	    };
 	    
 	    let draw_once = true;
-	    
+	    let cursor_x = 0;
+	    let cursor_y = 0;
+
+	    let hovered_preview = false;
+	    let forced_time = 0;
+	    let hovered_color = null;
+
+	    skin_preview.onmouseover = ( e )=>
+	    {
+		hovered_preview = true;
+		forced_time = sdWorld.time;
+	    };
+	    skin_preview.onmouseout = ( e )=>
+	    {
+		hovered_preview = false;
+		hovered_color = null;
+	    };
+	    skin_preview.onmousemove = ( e )=>
+	    {
+		cursor_x = e.offsetX;
+		cursor_y = e.offsetY;
+	    };
+	    skin_preview.onmousedown = ( e )=>
+	    {
+		cursor_x = e.offsetX;
+		cursor_y = e.offsetY;
+
+		var p = ctx.getImageData( cursor_x, cursor_y, 1, 1 ).data; 
+		var hex = "#" + ( "000000" + sdWorld.ColorArrayToHex( [ p[0], p[1], p[2] ] ) ).slice( -6 );
+
+		for ( let i = 0; i < inputs.length; i++ )
+		if ( inputs[ i ].el.type === 'color' )
+		{
+		    if ( inputs[ i ].el.value === hex )
+		    {
+			inputs[ i ].el.focus();
+			inputs[ i ].el.click();
+			break;
+		    }
+		}
+	    };
+
 	    let DrawPreview = function()
 	    {
+		if ( hovered_preview )
+	        sdWorld.time = forced_time;
+
 		//if ( !draw_once )
 		//return;
 	    
@@ -1839,19 +1925,26 @@
 		
 		
 		let ent2;
+		let ent3;
 			
 		if ( inputs_hash[ 'start_with2' ].el.checked )
 		{
 		    ent2 = new sdGun({ x:0, y:0, class: sdGun.CLASS_NEEDLE });
 		    ent._inventory[ 0 ] = ent2;
 		    ent2._held_by = ent;
+		    ent3 = new sdGun({ x:0, y:0, class: sdGun.CLASS_SPARK });
+		    ent._inventory[ 1 ] = ent3;
+		    ent3._held_by = ent;
 		}
 		else
 		if ( inputs_hash[ 'start_with1' ].el.checked )
 		{
 		    ent2 = new sdGun({ x:0, y:0, class: sdGun.CLASS_RIFLE });
-		    ent._inventory[ 1 ] = ent2;
+		    ent._inventory[ 0 ] = ent2;
 		    ent2._held_by = ent;
+		    ent3 = new sdGun({ x:0, y:0, class: sdGun.CLASS_ROCKET });
+		    ent._inventory[ 1 ] = ent3;
+		    ent3._held_by = ent;
 	        	}
 		else
 		if ( inputs_hash[ 'start_with3' ].el.checked )
@@ -1859,6 +1952,9 @@
 		    ent2 = new sdGun({ x:0, y:0, class: sdGun.CLASS_SHOTGUN });
 		    ent._inventory[ 0 ] = ent2;
 		    ent2._held_by = ent;
+		    ent3 = new sdGun({ x:0, y:0, class: sdGun.CLASS_GRENADE_LAUNCHER });
+		    ent._inventory[ 1 ] = ent3;
+		    ent3._held_by = ent;
 	        	}
 		else
 		if ( inputs_hash[ 'start_with4' ].el.checked )
@@ -1866,6 +1962,9 @@
 		    ent2 = new sdGun({ x:0, y:0, class: sdGun.CLASS_SNIPER });
 		    ent._inventory[ 0 ] = ent2;
 		    ent2._held_by = ent;
+		    ent3 = new sdGun({ x:0, y:0, class: sdGun.CLASS_SMG });
+		    ent._inventory[ 1 ] = ent3;
+		    ent3._held_by = ent;
 	        	}
 		else
 		if ( inputs_hash[ 'start_with5' ].el.checked )
@@ -1873,6 +1972,9 @@
 		    ent2 = new sdGun({ x:0, y:0, class: sdGun.CLASS_FALKOK_RIFLE });
 		    ent._inventory[ 0 ] = ent2;
 		    ent2._held_by = ent;
+		    ent3 = new sdGun({ x:0, y:0, class: sdGun.CLASS_RAYGUN });
+		    ent._inventory[ 1 ] = ent3;
+		    ent3._held_by = ent;
 	        	}
 		else
 		if ( inputs_hash[ 'start_with6' ].el.checked )
@@ -1880,6 +1982,9 @@
 		    ent2 = new sdGun({ x:0, y:0, class: sdGun.CLASS_TRIPLE_RAIL });
 		    ent._inventory[ 0 ] = ent2;
 		    ent2._held_by = ent;
+		    ent3 = new sdGun({ x:0, y:0, class: sdGun.CLASS_RAIL_SHOTGUN });
+		    ent._inventory[ 1 ] = ent3;
+		    ent3._held_by = ent;
 	        	}
 		else
 		if ( inputs_hash[ 'start_with7' ].el.checked )
@@ -1887,6 +1992,9 @@
 		    ent2 = new sdGun({ x:0, y:0, class: sdGun.CLASS_VELOX_COMBAT_RIFLE });
 		    ent._inventory[ 0 ] = ent2;
 		    ent2._held_by = ent;
+		    ent3 = new sdGun({ x:0, y:0, class: sdGun.CLASS_RAIL_CANNON });
+		    ent._inventory[ 1 ] = ent3;
+		    ent3._held_by = ent;
 	        	}
 		else
 		if ( inputs_hash[ 'start_with8' ].el.checked )
@@ -1894,6 +2002,9 @@
 		    ent2 = new sdGun({ x:0, y:0, class: sdGun.CLASS_ERTHAL_BURST_RIFLE });
 		    ent._inventory[ 0 ] = ent2;
 		    ent2._held_by = ent;
+		    ent3 = new sdGun({ x:0, y:0, class: sdGun.CLASS_ERTHAL_PLASMA_PISTOL });
+		    ent._inventory[ 1 ] = ent3;
+		    ent3._held_by = ent;
 	        	}
 		else
 		if ( inputs_hash[ 'start_with9' ].el.checked )
@@ -1901,6 +2012,9 @@
 		    ent2 = new sdGun({ x:0, y:0, class: sdGun.CLASS_SETR_PLASMA_SHOTGUN });
 		    ent._inventory[ 0 ] = ent2;
 		    ent2._held_by = ent;
+		    ent3 = new sdGun({ x:0, y:0, class: sdGun.CLASS_SETR_ROCKET });
+		    ent._inventory[ 1 ] = ent3;
+		    ent3._held_by = ent;
 	        	}
 		else
 		if ( inputs_hash[ 'start_with10' ].el.checked )
@@ -1908,6 +2022,9 @@
 		    ent2 = new sdGun({ x:0, y:0, class: sdGun.CLASS_ALIEN_ENERGY_RIFLE });
 		    ent._inventory[ 0 ] = ent2;
 		    ent2._held_by = ent;
+		    ent3 = new sdGun({ x:0, y:0, class: sdGun.CLASS_GAUSS_RIFLE });
+		    ent._inventory[ 1 ] = ent3;
+		    ent3._held_by = ent;
 	        	}
 		else
 		if ( inputs_hash[ 'start_with11' ].el.checked )
@@ -1915,18 +2032,18 @@
 		    ent2 = new sdGun({ x:0, y:0, class: sdGun.CLASS_TIME_PACK });
 		    ent._inventory[ 0 ] = ent2;
 		    ent2._held_by = ent;
+		    ent3 = new sdGun({ x:0, y:0, class: sdGun.CLASS_STIMPACK });
+		    ent._inventory[ 1 ] = ent3;
+		    ent3._held_by = ent;
 	        	}
 		
-		
-		if ( !inputs_hash[ 'start_with2' ].el.checked && !inputs_hash[ 'start_with3' ].el.checked )
 		ent.gun_slot = ( sdWorld.time % 4000 ) < 2000 ? 0 : 1;
 		
-		//ent._an = Math.PI / 2;
 		ent.look_x = -1000;
 		ent.look_y = 0;
 		ent.stands = true;
 		ent.act_x = ( ( sdWorld.time ) % 4000 > 3000 ) ? -1 : 0;
-		ent._anim_walk = ( sdWorld.time / 50 ) % 10;
+		ent._anim_walk = ( sdWorld.time / 30 ) % 20;
 		
 		ent.sd_filter = sdWorld.ConvertPlayerDescriptionToSDFilter_v2( globalThis.GetPlayerSettings() );
 		ent.helmet = sdWorld.ConvertPlayerDescriptionToHelmet( globalThis.GetPlayerSettings() );
@@ -1939,9 +2056,6 @@
 		if ( ( sdWorld.time + 500 ) % 2000 < 250 )
 		{
 		    ent.fire_anim = 5 / ( ( sdWorld.time + 500 ) % 2000 ) / 250;
-		    
-		    if ( !inputs_hash[ 'start_with2' ].el.checked && !inputs_hash[ 'start_with3' ].el.checked )
-		    ent2.muzzle = 5 / ( ( sdWorld.time + 500 ) % 2000 ) / 250;
 		}
 
 		ctx.scale( 4,4 );
@@ -1963,7 +2077,82 @@
 		ent2._remove();
 
 		ctx.restore();
-		
+
+		if ( hovered_preview )
+		{
+		    var p = ctx.getImageData( cursor_x, cursor_y, 1, 1 ).data; 
+		    var hex = "#" + ( "000000" + sdWorld.ColorArrayToHex( [ p[0], p[1], p[2] ] ) ).slice( -6 );
+
+		    hovered_color = [ p[0], p[1], p[2] ];
+
+		    let reset = true;
+
+		    for ( let i = 0; i < inputs.length; i++ )
+		    if ( inputs[ i ].el.type === 'color' )
+		    {
+			if ( inputs[ i ].el.value === hex )
+			{
+			    reset = false;
+			    break;
+			}
+		    }
+
+		    if ( reset )
+		    hovered_color = null;
+		}
+
+		if ( hovered_color )
+		{
+		    let image_data = ctx.getImageData( 0, 0, 128, 128 );
+		    let image_data_new = ctx.getImageData( 0, 0, 128, 128 );
+
+		    let left = -1 * 4;
+		    let right = 1 * 4;
+		    let up = -128 * 4;
+		    let down = 128 * 4;
+
+		    function ColorMatches( i )
+		    {
+			if ( image_data.data[ i   ] === hovered_color[ 0 ] )
+			if ( image_data.data[ i+1 ] === hovered_color[ 1 ] )
+			if ( image_data.data[ i+2 ] === hovered_color[ 2 ] )
+			return true;
+
+			return false;
+		    }
+
+		    let t = Date.now();
+
+		    let br = ~~( 127 + Math.sin( t / 100 ) * 127 );
+
+		    function Fill( i )
+		    {
+			//if ( ( t / 100 + i / 4 ) % 10 < 5 )
+			{
+			    image_data_new.data[ i   ] = br;
+			    image_data_new.data[ i+1 ] = br;
+			    image_data_new.data[ i+2 ] = br;
+			}
+		    }
+
+		    for ( let i = 0; i < image_data.data.length; i += 4 )
+		    {
+			if ( ColorMatches( i ) )
+			{
+			    if ( !ColorMatches( i + right ) )
+			    Fill( i + right );
+			    if ( !ColorMatches( i + left ) )
+			    Fill( i + left );
+			    if ( !ColorMatches( i + up ) )
+			    Fill( i + up );
+			    if ( !ColorMatches( i + down ) )
+			    Fill( i + down );
+			}
+		    }
+
+		    ctx.putImageData( image_data_new, 0, 0, 0, 0, 128, 128 );
+		}
+
 		draw_once = false;
 	    };
 	    globalThis.preview_fnc = DrawPreview;
@@ -1999,6 +2188,8 @@
 	    
 	    AcceptField( 'my_hash', [ Math.random(), Math.random(), Math.random(), Math.random(), Math.random() ].join('') );
 	    AcceptField( 'last_local_time_start', 0 );
+	    AcceptField( 'volume', 70 );
+	    AcceptField( 'password', '' );
 	    
 	    if ( Date.now() > parseInt( document.getElementById( 'last_local_time_start' ).value ) + 1000 * 60 * 60 * 8 )
 	    {
@@ -2108,11 +2299,11 @@
 		JustOne( 'helmet', last_changed_el );
 		JustOne( 'drone_helmet', last_changed_el );
 		JustOne( 'camera', last_changed_el );
-		JustOne( 'volume', last_changed_el );
 		JustOne( 'body', last_changed_el );
 		JustOne( 'legs', last_changed_el );
 		JustOne( 'entity', last_changed_el );
 		JustOne( 'censorship', last_changed_el );
+		JustOne( 'selftalk', last_changed_el );
 		
 		for ( let i = 0; i < conditional_elements.length; i++ )
 		{
