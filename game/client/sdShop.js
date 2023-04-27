@@ -404,6 +404,7 @@ class sdShop
 		sdShop.options.push({ _class: 'sdButton', _category:'Base equipment' });
 		sdShop.options.push({ _class: 'sdButton', type:1, _category:'Base equipment' });
 		sdShop.options.push({ _class: 'sdButton', type:2, _category:'Base equipment' });
+		sdShop.options.push({ _class: 'sdButton', type:3, _category:'Base equipment' });
 		
 		for ( let i = 0; i < sdCaption.colors.length / 3; i++ )
 		sdShop.options.push({ _class: 'sdCaption', type: i, _category:'Base equipment' });
@@ -908,6 +909,7 @@ class sdShop
 		sdShop.options.push({ _class: 'sdFactionTools', type:8, _category:'Admin tools' });
 		sdShop.options.push({ _class: 'sdFactionTools', type:9, _category:'Admin tools' });
 		sdShop.options.push({ _class: 'sdFactionTools', type:10, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdFactionTools', type:11, _category:'Admin tools' });
 
 		sdShop.options.push({ _class: 'sdGun', class:sdGun.CLASS_ADMIN_REMOVER, _category:'Admin tools' });
 		sdShop.options.push({ _class: 'sdGun', class:sdGun.CLASS_ADMIN_TELEPORTER, _category:'Admin tools' });
@@ -932,6 +934,13 @@ class sdShop
 		sdShop.options.push({ _class: 'sdCrystal', type: sdCrystal.TYPE_CRYSTAL_CRAB, tag: 'deep', matter_max: 5120 * 32, _category:'Admin tools' });
 		sdShop.options.push({ _class: 'sdCrystal', type: sdCrystal.TYPE_CRYSTAL_CRAB_BIG, tag: 'deep', matter_max: 5120 * 128, _category:'Admin tools' });
 		sdShop.options.push({ _class: 'sdCrystal', type: sdCrystal.TYPE_CRYSTAL_GIANT, tag: 'deep', matter_max: 5120 * 512, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdCrystal', type: sdCrystal.TYPE_CRYSTAL_ARTIFICIAL, tag: 'deep', matter_max: 5120 * 64, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdCrystal', tag: 'deep', matter_max: 5120 * 64, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdCrystal', type: sdCrystal.TYPE_CRYSTAL_CORRUPTED, tag: 'deep', matter_max: 5120 * 64, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdCrystal', type: sdCrystal.TYPE_CRYSTAL_BIG, tag: 'deep', matter_max: 5120 * 256, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdCrystal', type: sdCrystal.TYPE_CRYSTAL_CRAB, tag: 'deep', matter_max: 5120 * 64, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdCrystal', type: sdCrystal.TYPE_CRYSTAL_CRAB_BIG, tag: 'deep', matter_max: 5120 * 256, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdCrystal', type: sdCrystal.TYPE_CRYSTAL_GIANT, tag: 'deep', matter_max: 5120 * 1024, _category:'Admin tools' });
 		sdShop.options.push({ _class: 'sdCrystal', type: sdCrystal.TYPE_CRYSTAL_ARTIFICIAL, tag: 'deep', matter_max: sdCrystal.anticrystal_value, _category:'Admin tools' });
 		sdShop.options.push({ _class: 'sdCrystal', tag: 'deep', matter_max: sdCrystal.anticrystal_value, _category:'Admin tools' });
 		sdShop.options.push({ _class: 'sdCrystal', type: sdCrystal.TYPE_CRYSTAL_CORRUPTED, tag: 'deep', matter_max: sdCrystal.anticrystal_value, _category:'Admin tools' });
