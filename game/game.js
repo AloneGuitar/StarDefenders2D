@@ -485,9 +485,6 @@ let enf_once = true;
 				for ( var i = 0; i < snapshot.length; i++ )
 				{
 					{
-						if ( snapshot[ i ]._class === undefined )
-						snapshot[ i ]._class = 'auto';
-
 						let ent = sdEntity.GetObjectFromSnapshot( snapshot[ i ] );
 
 						if ( ent )
@@ -995,7 +992,7 @@ let enf_once = true;
 			if ( sdWorld.my_entity.hea > 0 )
 			if ( !sdWorld.my_entity._is_being_removed )
 			if ( sdWorld.my_entity._inventory[ sdGun.classes[ sdGun.CLASS_BUILD_TOOL ].slot ] && 
-			     ( sdWorld.my_entity._inventory[ sdGun.classes[ sdGun.CLASS_BUILD_TOOL ].slot ].class === sdGun.CLASS_BUILD_TOOL || sdWorld.my_entity._inventory[ sdGun.classes[ sdGun.CLASS_BUILD_TOOL ].slot ].class === sdGun.CLASS_BUILD_TOOL_MK2 ) )
+			     ( sdWorld.my_entity._inventory[ sdGun.classes[ sdGun.CLASS_BUILD_TOOL ].slot ].class === sdGun.CLASS_BUILD_TOOL || sdWorld.my_entity._inventory[ sdGun.classes[ sdGun.CLASS_BUILD_TOOL ].slot ].class === sdGun.CLASS_BUILD_TOOL_MK2 || sdWorld.my_entity._inventory[ sdGun.classes[ sdGun.CLASS_BUILD_TOOL ].slot ].class === sdGun.CLASS_CREATOR ) )
 			{
 				key_states.SetKey( 'Digit9', 1 );
 				key_states.SetKey( 'Digit9', 0 );

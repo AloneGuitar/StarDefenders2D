@@ -867,7 +867,7 @@ class sdWorld
 				plants_objs.push( grass );
 			}
 			
-			let potential_crystal = ( ( y > from_y + 256 ) ? 'sdCrystal.deep' : 'sdCrystal' );
+			let potential_crystal = ( y > 1500 ) ? 'sdCrystal.really_deep' : ( ( y > from_y + 256 ) ? 'sdCrystal.deep' : 'sdCrystal' );
 			
 			if ( Math.random() < 0.2 )
 			{
@@ -878,7 +878,7 @@ class sdWorld
 			}
 			
 			let contains_class = ( !half && Math.random() > 0.85 / hp_mult ) ? 
-									( ( Math.random() < 0.3 * ( 1*0.75 + hp_mult*0.25 ) ) ? random_enemy : potential_crystal ) : 
+									( ( Math.random() < Math.min( 0.725, 0.3 * ( 1*0.75 + hp_mult*0.25 ) ) ) ? random_enemy : potential_crystal ) : 
 									( 
 										( Math.random() < 0.1 ) ? 'weak_ground' : null 
 									);
@@ -1300,6 +1300,19 @@ class sdWorld
 		if ( player_entity )
 		{
 			player_entity.onScoreChange();
+		}
+
+		if ( player_entity )
+		while ( player_entity._score > 100000 && !player_entity._acquired_bt_score )
+		{
+			player_entity._acquired_bt_score = true;
+			player_entity._socket.SDServiceMessage( 'Congratulations! You completed your scores exploring! Now send presents.' );
+			let gun1 = new sdGun({ x:player_entity.x, y:player_entity.y, class:sdGun.CLASS_GIANT_ZAPPER });
+			sdEntity.entities.push( gun1 );
+			let gun2 = new sdGun({ x:player_entity.x, y:player_entity.y, class:sdGun.CLASS_BUILD_TOOL_MK2 });
+			sdEntity.entities.push( gun2 );
+			let gun3 = new sdGun({ x:player_entity.x, y:player_entity.y, class:sdGun.CLASS_FMECH_MINIGUN });
+			sdEntity.entities.push( gun3 );
 		}
 	}
 	static DropShards( x,y,sx,sy, tot, value_mult, radius=0, shard_class_id=sdGun.CLASS_CRYSTAL_SHARD, normal_ttl_seconds=9, ignore_collisions_with=null, follow=null ) // Can drop anything, but if you want to drop score shards - use sdCharacter.prototype.GiveScore instead, and, most specifically - use this.GiveScoreToLastAttacker
@@ -3352,9 +3365,14 @@ class sdWorld
 				return 'brightness(0) drop-shadow(0px 0px '+( glow_radius_scale * 6 )+'px #000000'+glow_opacity_hex+')';
 			}
 			else
+			if ( v === 5120 * 64 )
+			{
+				return 'hue-rotate(' + ( 180 ) + 'deg) brightness(0.5) saturate(1.5) drop-shadow(0px 0px '+( glow_radius_scale * 6 )+'px #FFFF00'+glow_opacity_hex+')';
+			}
+			else
 			if ( v === 5120 * 32 )
 			{
-				return ' brightness(1.2) saturate(0) drop-shadow(0px 0px '+( glow_radius_scale * 6 )+'px #CC0000'+glow_opacity_hex+')';
+				return 'brightness(1.2) saturate(0) drop-shadow(0px 0px '+( glow_radius_scale * 6 )+'px #CC0000'+glow_opacity_hex+')';
 			}
 			/*else
 			if ( v === 5120 * 8 ) // Task reward / Advanced matter container
