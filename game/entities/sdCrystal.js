@@ -132,6 +132,8 @@ class sdCrystal extends sdEntity
 	{
 		super( params );
 		
+		let is_really_deep = params.tag && params.tag.indexOf( 'really_deep' ) !== -1; // params.tag === 'deep' || params.tag === 'deep_crab';
+
 		let is_deep = params.tag && params.tag.indexOf( 'deep' ) !== -1; // params.tag === 'deep' || params.tag === 'deep_crab';
 		
 		if ( params.tag )
@@ -167,37 +169,43 @@ class sdCrystal extends sdEntity
 			this.attack_anim = 0; // For big crystal crabs
 		}
 
-		if ( r < 0.0078125 / 8 && is_deep ) // matter consuming crystal
+		if ( is_really_deep )
+		r *= 0.25;
+
+		if ( r < 0.0125 / 16 && is_really_deep )
+		this.matter_max *= 4096;
+		else
+		if ( r < 0.0125 / 8 && is_deep ) // matter consuming crystal
 		this.matter_max *= 2048;
 		else
-		if ( r < 0.0078125 / 4 && is_deep ) // new 2022
+		if ( r < 0.0125 / 4 && is_deep ) // new 2022
 		this.matter_max *= 1024;
 		else
-		if ( r < 0.0078125 / 2 && is_deep ) // new 2022
+		if ( r < 0.0125 / 2 && is_deep ) // new 2022
 		this.matter_max *= 512;
 		else
-		if ( r < 0.0078125 && is_deep ) // new 2022
+		if ( r < 0.0125 && is_deep ) // new 2022
 		this.matter_max *= 256;
 		else
-		if ( r < 0.015625 && is_deep ) // glowing, new
+		if ( r < 0.025 && is_deep ) // glowing, new
 		this.matter_max *= 128;
 		else
-		if ( r < 0.03125 ) // Red, new
+		if ( r < 0.05 ) // Red, new
 		this.matter_max *= 64;
 		else
-		if ( r < 0.0625 ) // Pink variation, new (old red)
+		if ( r < 0.1 ) // Pink variation, new (old red)
 		this.matter_max *= 32;
 		else
-		if ( r < 0.125 )
+		if ( r < 0.2 )
 		this.matter_max *= 16;
 		else
-		if ( r < 0.25 )
+		if ( r < 0.4 )
 		this.matter_max *= 8;
 		else
-		if ( r < 0.5 )
+		if ( r < 0.6 )
 		this.matter_max *= 4;
 		else
-		if ( r < 0.75 )
+		if ( r < 0.8 )
 		this.matter_max *= 2;
 		
 		this._last_damage = 0; // Sound flood prevention
