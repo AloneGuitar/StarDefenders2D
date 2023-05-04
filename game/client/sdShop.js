@@ -15,6 +15,8 @@ import sdDoor from '../entities/sdDoor.js';
 import sdCaption from '../entities/sdCaption.js';
 import sdGib from '../entities/sdGib.js'
 import sdRescueTeleport from '../entities/sdRescueTeleport.js';
+import sdFactionSpawner from '../entities/sdFactionSpawner.js';
+import sdStorageTank from '../entities/sdStorageTank.js';
 
 import sdRenderer from './sdRenderer.js';
 import sdContextMenu from './sdContextMenu.js';
@@ -39,6 +41,10 @@ class sdShop
 		
 		sdShop.isDrawing = false;
 		
+		sdShop.potential_selection = -1;
+		
+		if ( sdWorld.is_server )
+		{
 		sdShop.options.push({ _class: null, image: 'return', _category:'!root',  _opens_category:'root' });
 		sdShop.options.push({ _class: 'sdBlock', width: 32, height: 32, _category:'root', _opens_category:'Walls' });
 		sdShop.options.push({ _class: 'sdBG', width: 32, height: 32, material: sdBG.MATERIAL_PLATFORMS, _category:'root', _opens_category:'Background walls' });
@@ -48,8 +54,8 @@ class sdShop
 		sdShop.options.push({ _class: 'sdHover', type: 2, _category:'root', _opens_category:'Vehicles' });
 		sdShop.options.push({ _class: null, image: 'upgrade', _category:'root', _opens_category:'Upgrades' });
 		sdShop.options.push({ _class: 'sdBeamProjector', _category:'root', _opens_category:'Other' });
-		sdShop.options.push({ _class: 'sdGun', class: sdGun.CLASS_ADMIN_TELEPORTER, _category:'root', _godmode_only: true, _opens_category:'Admin tools' }); // Cost of Infinity is what actually prevents items here from being accessible to non-in-godmode-admins
-		
+		sdShop.options.push({ _class: 'sdGun', class: sdGun.CLASS_ADMIN_TELEPORTER, _category:'root', _godmode_only: true, _opens_category:'Admin tools' });
+
 		//if ( globalThis.isWin )
 		sdShop.options.push({ _class: 'sdVirus', _category:'root', _godmode_only: true, _opens_category:'Development tests' });
 	
@@ -122,13 +128,6 @@ class sdShop
 		sdShop.options.push({ _class: 'sdHoverBike', filter: 'saturate(0) brightness(0.5)', _category:'Vehicles', _min_build_tool_level: 44, _min_workbench_level: 27 });
 		sdShop.options.push({ _class: 'sdHoverBike', filter: 'saturate(0) brightness(2)', _category:'Vehicles', _min_build_tool_level: 44, _min_workbench_level: 29 });
 		sdShop.options.push({ _class: 'sdHoverBike', filter: 'saturate(0) brightness(0.25)', _category:'Vehicles', _min_build_tool_level: 44, _min_workbench_level: 29 });
-
-		//ctx.filter = '' // yellow
-		//ctx.filter = '' // redish
-		//ctx.filter = '' // pink
-		//ctx.filter = '' // blueish
-		//ctx.filter = '' // white
-		//ctx.filter = '' // black
 		
 		function AddBuildPack( filter )
 		{
@@ -165,31 +164,14 @@ class sdShop
 				sdShop.options.push({ _class: 'sdBlock', width: 16, height: 8, filter: filter, _category:'Walls', _min_build_tool_level:_min_build_tool_level, _reinforced_level:_reinforced_level, material:material, texture_id:texture_id });
 				sdShop.options.push({ _class: 'sdBlock', width: 8, height: 16, filter: filter, _category:'Walls', _min_build_tool_level:_min_build_tool_level, _reinforced_level:_reinforced_level, material:material, texture_id:texture_id });
 			}
-			/*
-			sdShop.options.push({ _class: 'sdBlock', width: 16, height: 16, filter: filter, material: sdBlock.MATERIAL_REINFORCED_WALL_LVL1, _reinforced_level: 1, _category:'Walls', _min_build_tool_level: 7 });
-			sdShop.options.push({ _class: 'sdBlock', width: 32, height: 16, filter: filter, material: sdBlock.MATERIAL_REINFORCED_WALL_LVL1, _reinforced_level: 1, _category:'Walls', _min_build_tool_level: 7 });
-			sdShop.options.push({ _class: 'sdBlock', width: 16, height: 32, filter: filter, material: sdBlock.MATERIAL_REINFORCED_WALL_LVL1, _reinforced_level: 1, _category:'Walls', _min_build_tool_level: 7 });
-			sdShop.options.push({ _class: 'sdBlock', width: 32, height: 32, filter: filter, material: sdBlock.MATERIAL_REINFORCED_WALL_LVL1, _reinforced_level: 1, _category:'Walls', _min_build_tool_level: 7 });
-			sdShop.options.push({ _class: 'sdBlock', width: 16, height: 8, filter: filter, material: sdBlock.MATERIAL_REINFORCED_WALL_LVL1, _reinforced_level: 1, _category:'Walls', _min_build_tool_level: 7 });
-			
-			sdShop.options.push({ _class: 'sdBlock', width: 16, height: 16, filter: filter, material: sdBlock.MATERIAL_REINFORCED_WALL_LVL2, _reinforced_level: 2, _category:'Walls', _min_build_tool_level: 16 });
-			sdShop.options.push({ _class: 'sdBlock', width: 32, height: 16, filter: filter, material: sdBlock.MATERIAL_REINFORCED_WALL_LVL2, _reinforced_level: 2, _category:'Walls', _min_build_tool_level: 16 });
-			sdShop.options.push({ _class: 'sdBlock', width: 16, height: 32, filter: filter, material: sdBlock.MATERIAL_REINFORCED_WALL_LVL2, _reinforced_level: 2, _category:'Walls', _min_build_tool_level: 16 });
-			sdShop.options.push({ _class: 'sdBlock', width: 32, height: 32, filter: filter, material: sdBlock.MATERIAL_REINFORCED_WALL_LVL2, _reinforced_level: 2, _category:'Walls', _min_build_tool_level: 16 });
-			sdShop.options.push({ _class: 'sdBlock', width: 16, height: 8, filter: filter, material: sdBlock.MATERIAL_REINFORCED_WALL_LVL2, _reinforced_level: 2, _category:'Walls', _min_build_tool_level: 16 });
-			*/
-			//if ( i !== 0 )
-			//{
-				sdShop.options.push({ _class: 'sdBG', width: 32, height: 32, filter: filter + 'brightness(1.5)', texture_id: sdBG.TEXTURE_PLATFORMS_COLORED, _category:'Background walls' });
-				sdShop.options.push({ _class: 'sdBG', width: 32, height: 16, filter: filter + 'brightness(1.5)', texture_id: sdBG.TEXTURE_PLATFORMS_COLORED, _category:'Background walls' });
-				sdShop.options.push({ _class: 'sdBG', width: 16, height: 32, filter: filter + 'brightness(1.5)', texture_id: sdBG.TEXTURE_PLATFORMS_COLORED, _category:'Background walls' });
-				sdShop.options.push({ _class: 'sdBG', width: 16, height: 16, filter: filter + 'brightness(1.5)', texture_id: sdBG.TEXTURE_PLATFORMS_COLORED, _category:'Background walls' });
-				
-				sdShop.options.push({ _class: 'sdBG', width: 32, height: 32, filter: filter, texture_id: sdBG.TEXTURE_HEX, _category:'Background walls' });
-				sdShop.options.push({ _class: 'sdBG', width: 32, height: 16, filter: filter, texture_id: sdBG.TEXTURE_HEX, _category:'Background walls' });
-				sdShop.options.push({ _class: 'sdBG', width: 16, height: 32, filter: filter, texture_id: sdBG.TEXTURE_HEX, _category:'Background walls' });
-				sdShop.options.push({ _class: 'sdBG', width: 16, height: 16, filter: filter, texture_id: sdBG.TEXTURE_HEX, _category:'Background walls' });
-			//}
+			sdShop.options.push({ _class: 'sdBG', width: 32, height: 32, filter: filter + 'brightness(1.5)', texture_id: sdBG.TEXTURE_PLATFORMS_COLORED, _category:'Background walls' });
+			sdShop.options.push({ _class: 'sdBG', width: 32, height: 16, filter: filter + 'brightness(1.5)', texture_id: sdBG.TEXTURE_PLATFORMS_COLORED, _category:'Background walls' });
+			sdShop.options.push({ _class: 'sdBG', width: 16, height: 32, filter: filter + 'brightness(1.5)', texture_id: sdBG.TEXTURE_PLATFORMS_COLORED, _category:'Background walls' });
+			sdShop.options.push({ _class: 'sdBG', width: 16, height: 16, filter: filter + 'brightness(1.5)', texture_id: sdBG.TEXTURE_PLATFORMS_COLORED, _category:'Background walls' });
+			sdShop.options.push({ _class: 'sdBG', width: 32, height: 32, filter: filter, texture_id: sdBG.TEXTURE_HEX, _category:'Background walls' });
+			sdShop.options.push({ _class: 'sdBG', width: 32, height: 16, filter: filter, texture_id: sdBG.TEXTURE_HEX, _category:'Background walls' });
+			sdShop.options.push({ _class: 'sdBG', width: 16, height: 32, filter: filter, texture_id: sdBG.TEXTURE_HEX, _category:'Background walls' });
+			sdShop.options.push({ _class: 'sdBG', width: 16, height: 16, filter: filter, texture_id: sdBG.TEXTURE_HEX, _category:'Background walls' });
 		}
 		for ( var i = 0; i < 20; i++ )
 		{
@@ -267,9 +249,7 @@ class sdShop
 		sdShop.options.push({ _class: 'sdBlock', br:100, width: 32, height: 32, texture_id: sdBlock.TEXTURE_ID_FULL_WHITE_BRICK, _category:'Walls' });
 		sdShop.options.push({ _class: 'sdBlock', br:100, width: 16, height: 8, texture_id: sdBlock.TEXTURE_ID_FULL_WHITE_BRICK, _category:'Walls' });
 		sdShop.options.push({ _class: 'sdBlock', br:100, width: 8, height: 16, texture_id: sdBlock.TEXTURE_ID_FULL_WHITE_BRICK, _category:'Walls' });
-		
-		
-		
+
 		sdShop.options.push({ _class: 'sdDoor', width: 32, height: 32, filter: 'saturate(0)', _category:'Doors' });
 
 		sdShop.options.push({ _class: 'sdBlock', width: 16, height: 16, material:sdBlock.MATERIAL_GROUND, _category:'Walls' });
@@ -375,16 +355,28 @@ class sdShop
 		sdShop.options.push({ _class: 'sdMatterAmplifier', multiplier: 4, _category:'Base equipment', _min_build_tool_level: 9 });
 		sdShop.options.push({ _class: 'sdMatterAmplifier', multiplier: 8, _category:'Base equipment', _min_build_tool_level: 18 });
 		sdShop.options.push({ _class: 'sdMatterAmplifier', multiplier: 16, _category:'Base equipment', _min_build_tool_level: 24 });
+		sdShop.options.push({ _class: 'sdStorageTank', _category:'Base equipment', });
+		sdShop.options.push({ _class: 'sdStorageTank', type: sdStorageTank.TYPE_PORTABLE, _category:'Base equipment', });
+		sdShop.options.push({ _class: 'sdEssenceExtractor', _category:'Base equipment', });
 		sdShop.options.push({ _class: 'sdCommandCentre', _category:'Base equipment' });
 		sdShop.options.push({ _class: 'sdLongRangeTeleport', _category:'Base equipment' });
 		sdShop.options.push({ _class: 'sdCrystalCombiner', _category:'Base equipment' });
 		sdShop.options.push({ _class: 'sdCrystalCombiner', type: 1, _min_workbench_level: 3, _category:'Base equipment' });
+
+		if ( sdWorld.server_config.allow_rescue_teleports )
+		{
 		sdShop.options.push({ _class: 'sdRescueTeleport', type: sdRescueTeleport.TYPE_SHORT_RANGE, _category:'Base equipment' });
 		sdShop.options.push({ _class: 'sdRescueTeleport', _category:'Base equipment', _min_build_tool_level: 10 });
 		sdShop.options.push({ _class: 'sdRescueTeleport', type: sdRescueTeleport.TYPE_CLONER, _category:'Base equipment', _min_build_tool_level: 20 });
+		}
+
+		if ( sdWorld.server_config.allowed_base_shielding_unit_types === null )
+		{
 		sdShop.options.push({ _class: 'sdBaseShieldingUnit', type:0, _category:'Base equipment' });
 		sdShop.options.push({ _class: 'sdBaseShieldingUnit', type:1, _category:'Base equipment' });
 		sdShop.options.push({ _class: 'sdBaseShieldingUnit', type:2, _category:'Base equipment' });
+		}
+
 		sdShop.options.push({ _class: 'sdConveyor', _category:'Base equipment' });
 		sdShop.options.push({ _class: 'sdConveyor', filter:'sepia(1) saturate(2) hue-rotate(30deg) brightness(0.8)', _category:'Base equipment' });
 		sdShop.options.push({ _class: 'sdConveyor', filter:'sepia(1) saturate(1.5) hue-rotate(170deg) brightness(0.7)', _category:'Base equipment' });
@@ -537,6 +529,186 @@ class sdShop
 		sdShop.options.push({ _class: 'sdBarrel', color: '#333333', filter: 'saturate(0) brightness(0.5)', variation: 3.5, _category:'Equipment', _min_build_tool_level:70, _min_workbench_level: 26 });
 		sdShop.options.push({ _class: 'sdBarrel', color: '#000000', filter: 'saturate(0) brightness(0.25)', variation: 4, _category:'Equipment', _min_build_tool_level:75, _min_workbench_level: 26 });
 		sdShop.options.push({ _class: 'sdLandMine', _category:'Equipment' });
+
+
+		//if ( globalThis.isWin ) // Lack of this check will probably allow creation of these entities even if category can not be opened in normal way
+		{
+			sdShop.options.push({ _class: 'sdOctopus', _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdQuickie', _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdVirus', _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdFaceCrab', _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdAmphid', _category:'Development tests' });
+
+			let sd_filter = sdWorld.CreateSDFilter();
+			sdWorld.ReplaceColorInSDFilter_v2( sd_filter, '#ff00ff', '#007f00', false );
+			sdWorld.ReplaceColorInSDFilter_v2( sd_filter, '#800080', '#007f00', false );
+
+			sdShop.options.push({ _class: 'sdCharacter', title: 'Player from the shop', sd_filter:sd_filter, _category:'Development tests' });
+
+			let sd_filter2 = sdWorld.CreateSDFilter();
+			sdWorld.ReplaceColorInSDFilter_v2( sd_filter2, '#ff00ff', '#000000', false );
+			sdWorld.ReplaceColorInSDFilter_v2( sd_filter2, '#800080', '#000000', false );
+
+			sdShop.options.push({ _class: 'sdCharacter', title: 'Idling AI from the shop', sd_filter:sd_filter2, _category:'Development tests' });
+
+			sdShop.options.push({ _class: 'sdAsteroid', _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdCube', _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdCube', kind:1, _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdCube', kind:2, _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdCube', kind:3, _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdCube', kind:4, _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdCube', kind:5, _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdCube', kind:6, _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdWater', type: sdWater.TYPE_LAVA, _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdWater', type: sdWater.TYPE_WATER, _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdWater', type: sdWater.TYPE_ACID, _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdWater', type: sdWater.TYPE_TOXIC_GAS, _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdWater', type: sdWater.TYPE_ESSENCE, _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdWater', type: sdWater.TYPE_ESSENCE, extra: 40, _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdWater', type: sdWater.TYPE_ESSENCE, extra: sdCrystal.anticrystal_value / 2, _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdWater', type: sdWater.TYPE_ANTIMATTER, _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdAsp', _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdSandWorm', _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdSandWorm', kind: 1, _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdSandWorm', kind: 2, _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdSandWorm', kind: 3, _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdGrass', _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdSlug', _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdEnemyMech', _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdSetrDestroyer', _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdJunk', type: 0, _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdJunk', type: 1, _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdJunk', type: 2, _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdJunk', type: 3, _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdJunk', type: 4, _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdJunk', type: 5, _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdJunk', type: 7, _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdJunk', type: 8, _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdCouncilMachine', _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdTzyrgAbsorber', _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdBadDog', _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdShark', _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdRift', _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdRift', type: 2, _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdRift', type: 3, _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdRift', type: 4, _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdRift', type: 5, _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdDrone', type: 6, _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdDrone', type: 7, _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdDrone', type: 8, _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdDrone', type: 9, _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdDrone', _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdDrone', _ai_team: 2, type: 2, _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdDrone', type: 3, _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdDrone', type: 4,_ai_team: 4, _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdDrone', type: 5,_ai_team: 4, _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdDrone', type: 10, _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdDrone', type: 11, _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdSpider', _ai_team: 2, _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdSpider', type: 1, _ai_team: 2, _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdPlayerDrone', _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdBeamProjector', _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdOverlord', _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdPlayerOverlord', _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdTutel', _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdGrub', _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdAbomination', _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdBiter', _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdBG', width: 16, height: 8, _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdBlock', width: 16, height: 16, material:sdBlock.MATERIAL_SAND, natural: true, _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdBlock', width: 16, height: 16, material:sdBlock.MATERIAL_GROUND, natural: true, _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdBlock', width: 16, height: 16, material:sdBlock.MATERIAL_ROCK, natural: true, _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdBlock', width: 16, height: 16, material:sdBlock.MATERIAL_CORRUPTION, natural: true, _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdBlock', width: 16, height: 16, material:sdBlock.MATERIAL_FLESH, natural: true, _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdGib', class:sdGib.CLASS_VELOX_MECH_HEAD, _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdMimic', _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdRoach', _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdGuanako', _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdLandScanner', _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdBot', kind:0, _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdBot', kind:1, _category:'Development tests' });
+		}
+		
+		sdShop.options.push({ _class: 'sdArea', type:sdArea.TYPE_PREVENT_DAMAGE, size:256, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdArea', type:sdArea.TYPE_PREVENT_DAMAGE, size:128, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdArea', type:sdArea.TYPE_PREVENT_DAMAGE, size:64, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdArea', type:sdArea.TYPE_PREVENT_DAMAGE, size:32, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdArea', type:sdArea.TYPE_PREVENT_DAMAGE, size:16, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdArea', type:sdArea.TYPE_ERASER_AREA, size:16, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdRegion', w:16, h:16, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdDeepSleep', w:64, h:64, type:0, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdDeepSleep', w:64, h:64, type:1, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdPresetEditor', w:1, h:1, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdFactionTools', _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdFactionTools', type:2, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdFactionTools', type:3, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdFactionTools', type:4, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdFactionTools', type:5, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdFactionTools', type:6, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdFactionTools', type:7, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdFactionTools', type:8, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdFactionTools', type:9, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdFactionTools', type:10, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdFactionTools', type:11, _category:'Admin tools' });
+
+		sdShop.options.push({ _class: 'sdGun', class:sdGun.CLASS_ADMIN_REMOVER, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdGun', class:sdGun.CLASS_ADMIN_TELEPORTER, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdGun', class:sdGun.CLASS_ADMIN_DAMAGER, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdGun', class:sdGun.CLASS_ADMIN_HEAL, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdGun', class:sdGun.CLASS_ADMIN_LOST, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdGun', class:sdGun.CLASS_ADMIN_LOST2, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdGun', class:sdGun.CLASS_ADMIN_EMPTY, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdGun', class:sdGun.CLASS_ADMIN_EMPTY2, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdGun', class:sdGun.CLASS_ADMIN_MATTERS, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdGun', class:sdGun.CLASS_ADMIN_GOD, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdLongRangeTeleport', is_server_teleport:1, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdTurret', kind:sdTurret.KIND_LASER, _category:'Admin tools', type: 1 });
+		sdShop.options.push({ _class: 'sdTurret', kind:sdTurret.KIND_ROCKET, _category:'Admin tools', type: 1 });
+		sdShop.options.push({ _class: 'sdTurret', kind:sdTurret.KIND_RAPID_LASER, _category:'Admin tools', type: 1 });
+		sdShop.options.push({ _class: 'sdTurret', kind:sdTurret.KIND_SNIPER, _category:'Admin tools', type: 1 });
+		sdShop.options.push({ _class: 'sdTurret', kind:sdTurret.KIND_FREEZER, _category:'Admin tools', type: 1 });
+		sdShop.options.push({ _class: 'sdCrystal', type: sdCrystal.TYPE_CRYSTAL_ARTIFICIAL, tag: 'deep', matter_max: 5120 * 32, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdCrystal', tag: 'deep', matter_max: 5120 * 32, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdCrystal', type: sdCrystal.TYPE_CRYSTAL_CORRUPTED, tag: 'deep', matter_max: 5120 * 32, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdCrystal', type: sdCrystal.TYPE_CRYSTAL_BIG, tag: 'deep', matter_max: 5120 * 128, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdCrystal', type: sdCrystal.TYPE_CRYSTAL_CRAB, tag: 'deep', matter_max: 5120 * 32, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdCrystal', type: sdCrystal.TYPE_CRYSTAL_CRAB_BIG, tag: 'deep', matter_max: 5120 * 128, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdCrystal', type: sdCrystal.TYPE_CRYSTAL_GIANT, tag: 'deep', matter_max: 5120 * 512, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdCrystal', type: sdCrystal.TYPE_CRYSTAL_ARTIFICIAL, tag: 'deep', matter_max: 5120 * 64, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdCrystal', tag: 'deep', matter_max: 5120 * 64, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdCrystal', type: sdCrystal.TYPE_CRYSTAL_CORRUPTED, tag: 'deep', matter_max: 5120 * 64, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdCrystal', type: sdCrystal.TYPE_CRYSTAL_BIG, tag: 'deep', matter_max: 5120 * 256, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdCrystal', type: sdCrystal.TYPE_CRYSTAL_CRAB, tag: 'deep', matter_max: 5120 * 64, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdCrystal', type: sdCrystal.TYPE_CRYSTAL_CRAB_BIG, tag: 'deep', matter_max: 5120 * 256, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdCrystal', type: sdCrystal.TYPE_CRYSTAL_GIANT, tag: 'deep', matter_max: 5120 * 1024, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdCrystal', type: sdCrystal.TYPE_CRYSTAL_ARTIFICIAL, tag: 'deep', matter_max: sdCrystal.anticrystal_value, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdCrystal', tag: 'deep', matter_max: sdCrystal.anticrystal_value, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdCrystal', type: sdCrystal.TYPE_CRYSTAL_CORRUPTED, tag: 'deep', matter_max: sdCrystal.anticrystal_value, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdCrystal', type: sdCrystal.TYPE_CRYSTAL_BIG, tag: 'deep', matter_max: sdCrystal.anticrystal_value * 4, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdCrystal', type: sdCrystal.TYPE_CRYSTAL_CRAB, tag: 'deep', matter_max: sdCrystal.anticrystal_value, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdCrystal', type: sdCrystal.TYPE_CRYSTAL_CRAB_BIG, tag: 'deep', matter_max: sdCrystal.anticrystal_value * 4, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdObelisk', _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdObelisk', type: 2, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdObelisk', type: 3, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdObelisk', type: 4, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdObelisk', type: 5, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdObelisk', type: 6, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdObelisk', type: 7, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdObelisk', type: 8, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdFactionSpawner', type: 10, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdFactionSpawner', type: 1, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdFactionSpawner', type: 2, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdFactionSpawner', type: 4, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdFactionSpawner', type: 5, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdFactionSpawner', type: 7, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdFactionSpawner', type: 8, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdFactionSpawner', type: 9, _category:'Admin tools' });
+
+		// Make all admin tools have Infinite cost to prevent them from being build by non-admins
+		for ( let i = 0; i < sdShop.options.length; i++ )
+		if ( sdShop.options[ i ]._category === 'Admin tools' || sdShop.options[ i ]._category === 'Development tests' )
+		sdShop.options[ i ].matter_cost = Infinity;
+		}
 
 		sdShop.upgrades = {
 			upgrade_suit:
@@ -795,181 +967,6 @@ class sdShop
 			sdShop.options.push({ _class: null, matter_cost: sdShop.upgrades[ i ].matter_cost, upgrade_name: i, description: sdShop.upgrades[ i ].description, 
 				_category:'Upgrades', _min_build_tool_level: sdShop.upgrades[ i ].min_build_tool_level || 0, _min_workbench_level: sdShop.upgrades[ i ].min_workbench_level || 0 });
 		}
-		
-		//if ( globalThis.isWin ) // Lack of this check will probably allow creation of these entities even if category can not be opened in normal way
-		{
-			sdShop.options.push({ _class: 'sdOctopus', _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdQuickie', _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdVirus', _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdFaceCrab', _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdAmphid', _category:'Development tests' });
-
-			let sd_filter = sdWorld.CreateSDFilter();
-			sdWorld.ReplaceColorInSDFilter_v2( sd_filter, '#ff00ff', '#007f00', false );
-			sdWorld.ReplaceColorInSDFilter_v2( sd_filter, '#800080', '#007f00', false );
-
-			sdShop.options.push({ _class: 'sdCharacter', title: 'Player from the shop', sd_filter:sd_filter, _category:'Development tests' });
-
-			let sd_filter2 = sdWorld.CreateSDFilter();
-			sdWorld.ReplaceColorInSDFilter_v2( sd_filter2, '#ff00ff', '#000000', false );
-			sdWorld.ReplaceColorInSDFilter_v2( sd_filter2, '#800080', '#000000', false );
-
-			sdShop.options.push({ _class: 'sdCharacter', title: 'Idling AI from the shop', sd_filter:sd_filter2, _category:'Development tests' });
-
-			sdShop.options.push({ _class: 'sdAsteroid', _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdCube', _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdCube', kind:1, _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdCube', kind:2, _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdCube', kind:3, _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdCube', kind:4, _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdCube', kind:5, _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdCube', kind:6, _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdWater', type: sdWater.TYPE_LAVA, _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdWater', type: sdWater.TYPE_WATER, _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdWater', type: sdWater.TYPE_ACID, _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdWater', type: sdWater.TYPE_TOXIC_GAS, _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdAsp', _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdSandWorm', _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdSandWorm', kind: 1, _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdSandWorm', kind: 2, _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdSandWorm', kind: 3, _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdGrass', _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdSlug', _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdEnemyMech', _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdSetrDestroyer', _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdJunk', type: 0, _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdJunk', type: 1, _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdJunk', type: 2, _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdJunk', type: 3, _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdJunk', type: 4, _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdJunk', type: 5, _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdJunk', type: 7, _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdJunk', type: 8, _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdCouncilMachine', _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdTzyrgAbsorber', _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdBadDog', _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdShark', _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdRift', _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdRift', type: 2, _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdRift', type: 3, _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdRift', type: 4, _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdRift', type: 5, _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdDrone', type: 6, _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdDrone', type: 7, _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdDrone', type: 8, _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdDrone', type: 9, _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdDrone', _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdDrone', _ai_team: 2, type: 2, _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdDrone', type: 3, _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdDrone', type: 4,_ai_team: 4, _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdDrone', type: 5,_ai_team: 4, _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdDrone', type: 10, _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdDrone', type: 11, _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdSpider', _ai_team: 2, _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdSpider', type: 1, _ai_team: 2, _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdPlayerDrone', _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdBeamProjector', _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdOverlord', _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdPlayerOverlord', _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdTutel', _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdGrub', _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdAbomination', _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdBiter', _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdBG', width: 16, height: 8, _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdBlock', width: 16, height: 16, material:sdBlock.MATERIAL_SAND, natural: true, _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdBlock', width: 16, height: 16, material:sdBlock.MATERIAL_GROUND, natural: true, _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdBlock', width: 16, height: 16, material:sdBlock.MATERIAL_ROCK, natural: true, _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdBlock', width: 16, height: 16, material:sdBlock.MATERIAL_CORRUPTION, natural: true, _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdBlock', width: 16, height: 16, material:sdBlock.MATERIAL_FLESH, natural: true, _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdGib', class:sdGib.CLASS_VELOX_MECH_HEAD, _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdMimic', _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdRoach', _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdGuanako', _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdLandScanner', _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdBot', kind:0, _category:'Development tests' });
-			sdShop.options.push({ _class: 'sdBot', kind:1, _category:'Development tests' });
-		}
-		
-		sdShop.options.push({ _class: 'sdArea', type:sdArea.TYPE_PREVENT_DAMAGE, size:256, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdArea', type:sdArea.TYPE_PREVENT_DAMAGE, size:128, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdArea', type:sdArea.TYPE_PREVENT_DAMAGE, size:64, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdArea', type:sdArea.TYPE_PREVENT_DAMAGE, size:32, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdArea', type:sdArea.TYPE_PREVENT_DAMAGE, size:16, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdArea', type:sdArea.TYPE_ERASER_AREA, size:16, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdRegion', w:16, h:16, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdDeepSleep', w:64, h:64, type:0, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdDeepSleep', w:64, h:64, type:1, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdFactionTools', _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdFactionTools', type:2, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdFactionTools', type:3, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdFactionTools', type:4, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdFactionTools', type:5, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdFactionTools', type:6, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdFactionTools', type:7, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdFactionTools', type:8, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdFactionTools', type:9, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdFactionTools', type:10, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdFactionTools', type:11, _category:'Admin tools' });
-
-		sdShop.options.push({ _class: 'sdGun', class:sdGun.CLASS_ADMIN_REMOVER, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdGun', class:sdGun.CLASS_ADMIN_TELEPORTER, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdGun', class:sdGun.CLASS_ADMIN_DAMAGER, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdGun', class:sdGun.CLASS_ADMIN_HEAL, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdGun', class:sdGun.CLASS_ADMIN_LOST, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdGun', class:sdGun.CLASS_ADMIN_LOST2, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdGun', class:sdGun.CLASS_ADMIN_EMPTY, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdGun', class:sdGun.CLASS_ADMIN_EMPTY2, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdGun', class:sdGun.CLASS_ADMIN_MATTERS, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdGun', class:sdGun.CLASS_ADMIN_GOD, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdLongRangeTeleport', is_server_teleport:1, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdTurret', kind:sdTurret.KIND_LASER, _category:'Admin tools', type: 1 });
-		sdShop.options.push({ _class: 'sdTurret', kind:sdTurret.KIND_ROCKET, _category:'Admin tools', type: 1 });
-		sdShop.options.push({ _class: 'sdTurret', kind:sdTurret.KIND_RAPID_LASER, _category:'Admin tools', type: 1 });
-		sdShop.options.push({ _class: 'sdTurret', kind:sdTurret.KIND_SNIPER, _category:'Admin tools', type: 1 });
-		sdShop.options.push({ _class: 'sdTurret', kind:sdTurret.KIND_FREEZER, _category:'Admin tools', type: 1 });
-		sdShop.options.push({ _class: 'sdCrystal', type: sdCrystal.TYPE_CRYSTAL_ARTIFICIAL, tag: 'deep', matter_max: 5120 * 32, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdCrystal', tag: 'deep', matter_max: 5120 * 32, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdCrystal', type: sdCrystal.TYPE_CRYSTAL_CORRUPTED, tag: 'deep', matter_max: 5120 * 32, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdCrystal', type: sdCrystal.TYPE_CRYSTAL_BIG, tag: 'deep', matter_max: 5120 * 128, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdCrystal', type: sdCrystal.TYPE_CRYSTAL_CRAB, tag: 'deep', matter_max: 5120 * 32, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdCrystal', type: sdCrystal.TYPE_CRYSTAL_CRAB_BIG, tag: 'deep', matter_max: 5120 * 128, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdCrystal', type: sdCrystal.TYPE_CRYSTAL_GIANT, tag: 'deep', matter_max: 5120 * 512, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdCrystal', type: sdCrystal.TYPE_CRYSTAL_ARTIFICIAL, tag: 'deep', matter_max: 5120 * 64, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdCrystal', tag: 'deep', matter_max: 5120 * 64, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdCrystal', type: sdCrystal.TYPE_CRYSTAL_CORRUPTED, tag: 'deep', matter_max: 5120 * 64, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdCrystal', type: sdCrystal.TYPE_CRYSTAL_BIG, tag: 'deep', matter_max: 5120 * 256, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdCrystal', type: sdCrystal.TYPE_CRYSTAL_CRAB, tag: 'deep', matter_max: 5120 * 64, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdCrystal', type: sdCrystal.TYPE_CRYSTAL_CRAB_BIG, tag: 'deep', matter_max: 5120 * 256, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdCrystal', type: sdCrystal.TYPE_CRYSTAL_GIANT, tag: 'deep', matter_max: 5120 * 1024, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdCrystal', type: sdCrystal.TYPE_CRYSTAL_ARTIFICIAL, tag: 'deep', matter_max: sdCrystal.anticrystal_value, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdCrystal', tag: 'deep', matter_max: sdCrystal.anticrystal_value, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdCrystal', type: sdCrystal.TYPE_CRYSTAL_CORRUPTED, tag: 'deep', matter_max: sdCrystal.anticrystal_value, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdCrystal', type: sdCrystal.TYPE_CRYSTAL_BIG, tag: 'deep', matter_max: sdCrystal.anticrystal_value * 4, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdCrystal', type: sdCrystal.TYPE_CRYSTAL_CRAB, tag: 'deep', matter_max: sdCrystal.anticrystal_value, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdCrystal', type: sdCrystal.TYPE_CRYSTAL_CRAB_BIG, tag: 'deep', matter_max: sdCrystal.anticrystal_value * 4, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdObelisk', _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdObelisk', type: 2, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdObelisk', type: 3, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdObelisk', type: 4, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdObelisk', type: 5, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdObelisk', type: 6, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdObelisk', type: 7, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdObelisk', type: 8, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdFactionSpawner', type: 10, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdFactionSpawner', type: 1, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdFactionSpawner', type: 2, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdFactionSpawner', type: 4, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdFactionSpawner', type: 5, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdFactionSpawner', type: 7, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdFactionSpawner', type: 8, _category:'Admin tools' });
-		sdShop.options.push({ _class: 'sdFactionSpawner', type: 9, _category:'Admin tools' });
-		
-		// Make all admin tools have Infinite cost to prevent them from being build by non-admins
-		for ( let i = 0; i < sdShop.options.length; i++ )
-		if ( sdShop.options[ i ]._category === 'Admin tools' || sdShop.options[ i ]._category === 'Development tests' )
-		sdShop.options[ i ].matter_cost = Infinity;
-		
-		sdShop.potential_selection = -1;
 	}
 	static Draw( ctx )
 	{
