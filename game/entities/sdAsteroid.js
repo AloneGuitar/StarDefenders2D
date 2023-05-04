@@ -37,11 +37,11 @@ class sdAsteroid extends sdEntity
 		
 		this._max_build_tool_level_near = 0;
 
-		this.scale = Math.max( 0.8, Math.random() * 4 ); // Scale / size of the asteroid
+		this.scale = Math.max( 0.4, Math.random() * 8 ); // Scale / size of the asteroid
 		this._type = params._type || Math.random() < 0.2 ? 1 : 0;
 		this.landed = false;
 		
-		this._hmax = 240 * this.scale; // Asteroids that land need more HP to survive the "explosion" when they land
+		this._hmax = 60 * this.scale; // Asteroids that land need more HP to survive the "explosion" when they land
 		this._hea = this._hmax;
 		
 		this.sx = Math.random() * 12 - 6;
@@ -109,7 +109,10 @@ class sdAsteroid extends sdEntity
 			this._an += this.sx * GSPEED * 20 / 100 / this.scale;
 			
 			if ( this._time_to_despawn < 0 )
-			this.remove();
+			{
+				this.remove();
+				this._broken = false;
+			}
 		}
 		else
 		{
@@ -127,9 +130,8 @@ class sdAsteroid extends sdEntity
 			//if ( sdWorld.CheckWallExists( this.x, this.y + this._hitbox_y2, this ) )
 			if ( !this.CanMoveWithoutDeepSleepTriggering( new_x, new_y, 0 ) )
 			{
-				// Despawn asteroids flying into sdDeepSleep
-				this.remove();
-				this._broken = false;
+				this.x = new_x;
+				this.y = new_y;
 			}
 			else
 			if ( !this.CanMoveWithoutOverlap( new_x, new_y, 0 ) )
@@ -141,6 +143,9 @@ class sdAsteroid extends sdEntity
 				{
 					sdWorld.SendEffect({ x:this.x, y:this.y, radius:12, type:sdEffect.TYPE_EXPLOSION, color:sdEffect.default_explosion_color, can_hit_owner:false, owner:this });
 					this.landed = true;
+					
+					//this.x -= this.sx * GSPEED;
+					//this.y -= this.sy * GSPEED; // Revert overlapping position
 					
 					this.sx *= 0.02;
 					this.sy *= 0.02;
@@ -154,7 +159,7 @@ class sdAsteroid extends sdEntity
 			}
 		}
 	}
-	get mass() { return 40 * this.scale; }
+	get mass() { return 80 * this.scale; }
 	
 	get hard_collision() // For world geometry where players can walk
 	{ return this.landed; }

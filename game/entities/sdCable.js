@@ -67,7 +67,9 @@ class sdCable extends sdEntity
 			'sdCamera',
 			'sdBotFactory',
 			'sdBotCharger',
-			'sdButton'
+			'sdButton',
+			'sdStorageTank',
+			'sdEssenceExtractor'
 		];
 		
 		sdCable.empty_array = [];
@@ -207,6 +209,9 @@ class sdCable extends sdEntity
 		if ( !this._is_being_removed )
 		this.SetHiberState( sdEntity.HIBERSTATE_ACTIVE, false );
 	}
+	
+	
+	
 	static AddCableForEntity( e, cable )
 	{
 		let set = sdCable.cables_per_entity.get( e );
@@ -232,7 +237,11 @@ class sdCable extends sdEntity
 		}
 		
 		if ( !e._is_being_removed )
-		e._connected_ents = null; // Update cache instantly
+		{
+			e._connected_ents = null; // Update cache instantly
+			
+			e.FindObjectsInACableNetwork( sdEntity.CableCacheFlushMethod );
+		}
 	}
 	static RemoveCableFromEntity( e, cable )
 	{
@@ -246,6 +255,8 @@ class sdCable extends sdEntity
 			{
 				e.SetHiberState( sdEntity.HIBERSTATE_ACTIVE );
 				e._connected_ents = null; // Update cache instantly
+			
+				e.FindObjectsInACableNetwork( sdEntity.CableCacheFlushMethod );
 			}
 			
 			if ( set.size === 0 )
@@ -323,6 +334,8 @@ class sdCable extends sdEntity
 	{
 		let old = this.p;
 		
+		//debugger;
+		
 		if ( this.p )
 		{
 			this.p.removeEventListener( 'REMOVAL', this.Wakeup );
@@ -350,6 +363,8 @@ class sdCable extends sdEntity
 	set c( e )
 	{
 		let old = this.c;
+		
+		//debugger;
 		
 		if ( this.c )
 		{
@@ -847,7 +862,11 @@ class sdCable extends sdEntity
 			};
 
 			this.p.GetComWiredCache( method );
-			//this.c.GetComWiredCache( method );
+			this.c.GetComWiredCache( method ); // Why was it commented out?
+			
+			
+			this.p.FindObjectsInACableNetwork( sdEntity.CableCacheFlushMethod );
+			this.c.FindObjectsInACableNetwork( sdEntity.CableCacheFlushMethod );
 		}
 		else
 		{
@@ -968,10 +987,10 @@ class sdCable extends sdEntity
 		if ( this.GetAccurateDistance( exectuter_character.x, exectuter_character.y ) < 20 ) // 32 can cause door to be "hackable" if first socket was on top
 		{
 			this.AddContextOption( 'Cut cable', 'CUT_CABLE', [] );
-			/*this.AddContextOption( 'Transfer matter', 'SET_TYPE', [ sdCable.TYPE_MATTER ] );
-			this.AddContextOption( 'Transfer oxygen', 'SET_TYPE', [ sdCable.TYPE_AIR ] );
+			this.AddContextOption( 'Transfer matter', 'SET_TYPE', [ sdCable.TYPE_MATTER ] );
+			//this.AddContextOption( 'Transfer oxygen', 'SET_TYPE', [ sdCable.TYPE_AIR ] );
 			this.AddContextOption( 'Transfer liquid', 'SET_TYPE', [ sdCable.TYPE_LIQUID ] );
-			this.AddContextOption( 'Transfer IO-1 signals', 'SET_TYPE', [ sdCable.TYPE_IO1 ] );
+			/*this.AddContextOption( 'Transfer IO-1 signals', 'SET_TYPE', [ sdCable.TYPE_IO1 ] );
 			this.AddContextOption( 'Transfer IO-2 signals', 'SET_TYPE', [ sdCable.TYPE_IO2 ] );
 			this.AddContextOption( 'Transfer IO-3 signals', 'SET_TYPE', [ sdCable.TYPE_IO3 ] );*/
 		}

@@ -257,38 +257,47 @@ class sdDeepSleep extends sdEntity
 
 					let e = sdEntity.entities[ i ];
 
-					if ( !e.is( sdDeepSleep ) )
+					//if ( !e.is( sdDeepSleep ) )
+					if ( e.IsBGEntity() !== 10 )
 					{
 						let x = Math.floor( ( e.x + e._hitbox_x1 ) / sdDeepSleep.normal_cell_size ) * sdDeepSleep.normal_cell_size;
 						let y = Math.floor( ( e.y + e._hitbox_y1 ) / sdDeepSleep.normal_cell_size ) * sdDeepSleep.normal_cell_size;
 						let w = sdDeepSleep.normal_cell_size;
 						let h = sdDeepSleep.normal_cell_size;
 
-						let cell = new sdDeepSleep({
-							x: x,
-							y: y,
-							w: w,
-							h: h,
-							type: sdDeepSleep.TYPE_SCHEDULED_SLEEP
-						});
 
-						sdEntity.entities.push( cell );
-
-						let ok = true;
+						/*let ok = true;
 						for ( let i2 = 0; i2 < sdDeepSleep.cells.length; i2++ )
 						if ( cell !== sdDeepSleep.cells[ i2 ] )
 						if ( cell.DoesOverlapWith( sdDeepSleep.cells[ i2 ] ) )
 						{
 							ok = false;
 							break;
-						}
+						}*/
+						let ok = !sdWorld.CheckSolidDeepSleepExistsAtBox(
+							x,
+							y,
+							x + w,
+							y + h,
+							null,
+							true
+						);
 
 						if ( ok )
 						{
+							let cell = new sdDeepSleep({
+								x: x,
+								y: y,
+								w: w,
+								h: h,
+								type: sdDeepSleep.TYPE_SCHEDULED_SLEEP
+							});
+
+							sdEntity.entities.push( cell );
 						}
 						else
 						{
-							cell.remove();
+							//cell.remove();
 						}
 					}
 				}
@@ -1096,6 +1105,7 @@ class sdDeepSleep extends sdEntity
 					if ( e.is( sdBlock ) )
 					{
 						if ( e._shielded )
+						if ( !e._shielded._is_being_removed )
 						dependences.push( e._shielded );
 						
 						if ( e._plants )
@@ -1280,6 +1290,8 @@ class sdDeepSleep extends sdEntity
 				debugger;
 			}
 			
+			const bulk_exclude = [];
+			
 			//entity_once.forEach( ( e )=>
 			//{
 			for ( let i = 0; i < all_entities.length; i++ )
@@ -1313,11 +1325,13 @@ class sdDeepSleep extends sdEntity
 					
 					e._remove(); // Instant remove is required or else it won't be able to spawn same entities from snapshot?
 					
-					e._remove_from_entities_array();
+					bulk_exclude.push( e );
+					//e._remove_from_entities_array();
 					
 					sdLongRangeTeleport.teleported_items.add( e );
 				}
 			}
+			sdEntity.BulkRemoveEntitiesFromEntitiesArray( bulk_exclude );
 			
 			//for ( let i = 0; i < scheduled_sleep_areas_to_cancel.length; i++ )
 			//scheduled_sleep_areas_to_cancel[ i ].remove();

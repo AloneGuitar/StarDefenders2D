@@ -24,6 +24,7 @@ class sdFactionTools extends sdEntity
 		sdFactionTools.img_character_spawner8 = sdWorld.CreateImageFromFile( 'helmets/helmet_oxide' );
 		sdFactionTools.img_character_spawner9 = sdWorld.CreateImageFromFile( 'helmets/helmet_cs' );
 		sdFactionTools.img_character_spawner10 = sdWorld.CreateImageFromFile( 'helmets/helmet_star_defender' );
+		sdFactionTools.img_character_spawner11 = sdWorld.CreateImageFromFile( 'helmets/helmet_omega' );
 
 		sdFactionTools.FACTIONTOOL_FALKOK = 1; // Falkoks
 		sdFactionTools.FACTIONTOOL_ERTHAL = 2; // Erthals
@@ -35,6 +36,7 @@ class sdFactionTools extends sdEntity
 		sdFactionTools.FACTIONTOOL_SHURG = 8; // Shurg
 		sdFactionTools.FACTIONTOOL_KVT = 9;
 		sdFactionTools.FACTIONTOOL_SD = 10;
+		sdFactionTools.FACTIONTOOL_SWORD_BOT = 11;
 
 		sdWorld.entity_classes[ this.name ] = this; // Register for object spawn
 	}
@@ -87,7 +89,7 @@ class sdFactionTools extends sdEntity
 		}
 		if ( this.type === sdFactionTools.FACTIONTOOL_SD )
 		{
-			ctx.drawImageFilterCache( sdFactionTools.img_character_spawner10, - 16, - 16, 32,32 );
+			ctx.drawImageFilterCache( sdFactionTools.img_character_spawner10, - 16, - 48, 32,96 );
 		}
 		if ( this.type === sdFactionTools.FACTIONTOOL_SHURG )
 		{
@@ -96,6 +98,10 @@ class sdFactionTools extends sdEntity
 		if ( this.type === sdFactionTools.FACTIONTOOL_COUNCIL )
 		{
 			ctx.drawImageFilterCache( sdFactionTools.img_character_spawner3, - 16, - 16, 32,32 );
+		}
+		if ( this.type === sdFactionTools.FACTIONTOOL_SWORD_BOT )
+		{
+			ctx.drawImageFilterCache( sdFactionTools.img_character_spawner11, - 16, - 16, 32,32 );
 		}
 
 		ctx.globalAlpha = 1;
@@ -113,132 +119,232 @@ class sdFactionTools extends sdEntity
 			if ( this.type === sdFactionTools.FACTIONTOOL_FALKOK ) // Falkok spawner
 			{
 				sdSound.PlaySound({ name:'teleport', x:this.x, y:this.y, pitch: 1, volume:1 });
-				sdWorld.SendEffect({ x:this.x, y:this.y, type:sdEffect.TYPE_TELEPORT, filter:'hue-rotate(' + ~~( 170 ) + 'deg)' });
+				sdWorld.SendEffect({ x:this.x, y:this.y, type:sdEffect.TYPE_TELEPORT });
 
 				let character_entity = new sdCharacter({ x:this.x, y:this.y, _ai_enabled:sdCharacter.AI_MODEL_FALKOK });
 				sdEntity.entities.push( character_entity );
 				{
-					sdFactions.SetHumanoidProperties( character_entity, sdFactionTools.FACTIONTOOL_FALKOK );
+					sdFactions.SetHumanoidProperties( character_entity, sdFactions.FACTION_FALKOK );
 				}
 			}
 			else
 			if ( this.type === sdFactionTools.FACTIONTOOL_SARRORIAN )
 			{
 				sdSound.PlaySound({ name:'teleport', x:this.x, y:this.y, pitch: 1, volume:1 });
-				sdWorld.SendEffect({ x:this.x, y:this.y, type:sdEffect.TYPE_TELEPORT, filter:'hue-rotate(' + ~~( 170 ) + 'deg)' });
+				sdWorld.SendEffect({ x:this.x, y:this.y, type:sdEffect.TYPE_TELEPORT });
 
 				let character_entity = new sdCharacter({ x:this.x, y:this.y, _ai_enabled:sdCharacter.AI_MODEL_FALKOK });
 				sdEntity.entities.push( character_entity );
 				{
-					sdFactions.SetHumanoidProperties( character_entity, sdFactionTools.FACTIONTOOL_SARRORIAN );
+					sdFactions.SetHumanoidProperties( character_entity, sdFactions.FACTION_SARRORIAN );
+
+								const logic = ()=>
+								{
+								if ( character_entity.hea <= 800 && character_entity.s === 120 )
+								if ( !character_entity._is_being_removed )
+								{
+									character_entity.stability_upgrade = 25;
+									character_entity._damage_mult = 2.5;
+								}
+								};
+								setInterval( logic, 0 );
 				}
 			}
 			else
 			if ( this.type === sdFactionTools.FACTIONTOOL_VELOX )
 			{
 				sdSound.PlaySound({ name:'teleport', x:this.x, y:this.y, pitch: 1, volume:1 });
-				sdWorld.SendEffect({ x:this.x, y:this.y, type:sdEffect.TYPE_TELEPORT, filter:'hue-rotate(' + ~~( 170 ) + 'deg)' });
+				sdWorld.SendEffect({ x:this.x, y:this.y, type:sdEffect.TYPE_TELEPORT });
 
 				let character_entity = new sdCharacter({ x:this.x, y:this.y, _ai_enabled:sdCharacter.AI_MODEL_FALKOK });
 				sdEntity.entities.push( character_entity );
 				{
-					sdFactions.SetHumanoidProperties( character_entity, sdFactionTools.FACTIONTOOL_VELOX );
+					sdFactions.SetHumanoidProperties( character_entity, sdFactions.FACTION_VELOX );
+
+								const logic = ()=>
+								{
+								if ( character_entity.hea <= 700 && character_entity.s === 110 )
+								if ( !character_entity._is_being_removed )
+								{
+									character_entity.stability_upgrade = 25;
+									character_entity._damage_mult = 4;
+								}
+								};
+								setInterval( logic, 0 );
 				}
 			}
 			else
 			if ( this.type === sdFactionTools.FACTIONTOOL_SETR )
 			{
 				sdSound.PlaySound({ name:'teleport', x:this.x, y:this.y, pitch: 1, volume:1 });
-				sdWorld.SendEffect({ x:this.x, y:this.y, type:sdEffect.TYPE_TELEPORT, filter:'hue-rotate(' + ~~( 170 ) + 'deg)' });
+				sdWorld.SendEffect({ x:this.x, y:this.y, type:sdEffect.TYPE_TELEPORT });
 
 				let character_entity = new sdCharacter({ x:this.x, y:this.y, _ai_enabled:sdCharacter.AI_MODEL_FALKOK });
 				sdEntity.entities.push( character_entity );
 				{
-					sdFactions.SetHumanoidProperties( character_entity, sdFactionTools.FACTIONTOOL_SETR );
+					sdFactions.SetHumanoidProperties( character_entity, sdFactions.FACTION_SETR );
 				}
 			}
 			else
 			if ( this.type === sdFactionTools.FACTIONTOOL_TZYRG )
 			{
 				sdSound.PlaySound({ name:'teleport', x:this.x, y:this.y, pitch: 1, volume:1 });
-				sdWorld.SendEffect({ x:this.x, y:this.y, type:sdEffect.TYPE_TELEPORT, filter:'hue-rotate(' + ~~( 170 ) + 'deg)' });
+				sdWorld.SendEffect({ x:this.x, y:this.y, type:sdEffect.TYPE_TELEPORT });
 
 				let character_entity = new sdCharacter({ x:this.x, y:this.y, _ai_enabled:sdCharacter.AI_MODEL_FALKOK });
 				sdEntity.entities.push( character_entity );
 				{
-					sdFactions.SetHumanoidProperties( character_entity, sdFactionTools.FACTIONTOOL_TZYRG );
+					sdFactions.SetHumanoidProperties( character_entity, sdFactions.FACTION_TZYRG );
 				}
 			}
 			else
 			if ( this.type === sdFactionTools.FACTIONTOOL_ERTHAL )
 			{
 				sdSound.PlaySound({ name:'teleport', x:this.x, y:this.y, pitch: 1, volume:1 });
-				sdWorld.SendEffect({ x:this.x, y:this.y, type:sdEffect.TYPE_TELEPORT, filter:'hue-rotate(' + ~~( 170 ) + 'deg)' });
+				sdWorld.SendEffect({ x:this.x, y:this.y, type:sdEffect.TYPE_TELEPORT });
 
 				let character_entity = new sdCharacter({ x:this.x, y:this.y, _ai_enabled:sdCharacter.AI_MODEL_FALKOK });
 				sdEntity.entities.push( character_entity );
 				{
-					sdFactions.SetHumanoidProperties( character_entity, sdFactionTools.FACTIONTOOL_ERTHAL );
+					sdFactions.SetHumanoidProperties( character_entity, sdFactions.FACTION_ERTHAL );
+
+								const logic = ()=>
+								{
+								if ( character_entity.hea <= 2400 && character_entity.s === 140 )
+								if ( !character_entity._is_being_removed )
+								{
+									character_entity.iron_fist = true;
+									character_entity.s = 150;
+									character_entity._damage_mult = 3.5;
+								}
+								};
+								setInterval( logic, 0 );
 				}
 			}
 			else
 			if ( this.type === sdFactionTools.FACTIONTOOL_SHURG )
 			{
 				sdSound.PlaySound({ name:'teleport', x:this.x, y:this.y, pitch: 1, volume:1 });
-				sdWorld.SendEffect({ x:this.x, y:this.y, type:sdEffect.TYPE_TELEPORT, filter:'hue-rotate(' + ~~( 170 ) + 'deg)' });
+				sdWorld.SendEffect({ x:this.x, y:this.y, type:sdEffect.TYPE_TELEPORT });
 
 				let character_entity = new sdCharacter({ x:this.x, y:this.y, _ai_enabled:sdCharacter.AI_MODEL_FALKOK });
 				sdEntity.entities.push( character_entity );
 				{
-					sdFactions.SetHumanoidProperties( character_entity, sdFactionTools.FACTIONTOOL_SHURG );
+					sdFactions.SetHumanoidProperties( character_entity, sdFactions.FACTION_SHURG );
 				}
 			}
 			else
 			if ( this.type === sdFactionTools.FACTIONTOOL_KVT )
 			{
 				sdSound.PlaySound({ name:'teleport', x:this.x, y:this.y, pitch: 1, volume:1 });
-				sdWorld.SendEffect({ x:this.x, y:this.y, type:sdEffect.TYPE_TELEPORT, filter:'hue-rotate(' + ~~( 170 ) + 'deg)' });
+				sdWorld.SendEffect({ x:this.x, y:this.y, type:sdEffect.TYPE_TELEPORT });
 
 				let character_entity = new sdCharacter({ x:this.x, y:this.y, _ai_enabled:sdCharacter.AI_MODEL_TEAMMATE });
 				sdEntity.entities.push( character_entity );
 				{
-					sdFactions.SetHumanoidProperties( character_entity, sdFactionTools.FACTIONTOOL_KVT );
+					sdFactions.SetHumanoidProperties( character_entity, sdFactions.FACTION_KVT );
 				}
 			}
 			else
 			if ( this.type === sdFactionTools.FACTIONTOOL_SD )
 			{
 				sdSound.PlaySound({ name:'teleport', x:this.x, y:this.y, pitch: 1, volume:1 });
-				sdWorld.SendEffect({ x:this.x, y:this.y, type:sdEffect.TYPE_TELEPORT, filter:'hue-rotate(' + ~~( 170 ) + 'deg)' });
+				sdWorld.SendEffect({ x:this.x, y:this.y, type:sdEffect.TYPE_TELEPORT });
 
 				let character_entity = new sdCharacter({ x:this.x, y:this.y, _ai_enabled:sdCharacter.AI_MODEL_TEAMMATE });
 				sdEntity.entities.push( character_entity );
 				{
-					sdFactions.SetHumanoidProperties( character_entity, sdFactionTools.FACTIONTOOL_SD );
+					sdFactions.SetHumanoidProperties( character_entity, sdFactions.FACTION_SD );
 				}
 			}
 			else
 			if ( this.type === sdFactionTools.FACTIONTOOL_COUNCIL )
 			{
-				sdSound.PlaySound({ name:'teleport', x:this.x, y:this.y, pitch: 1, volume:1 });
+				sdSound.PlaySound({ name:'council_teleport', x:this.x, y:this.y, volume:0.5 });
 				sdWorld.SendEffect({ x:this.x, y:this.y, type:sdEffect.TYPE_TELEPORT, filter:'hue-rotate(' + ~~( 170 ) + 'deg)' });
 
 				let character_entity = new sdCharacter({ x:this.x, y:this.y, _ai_enabled:sdCharacter.AI_MODEL_AGGRESSIVE });
 				sdEntity.entities.push( character_entity );
 				{
-					sdFactions.SetHumanoidProperties( character_entity, sdFactionTools.FACTIONTOOL_COUNCIL );
+					sdFactions.SetHumanoidProperties( character_entity, sdFactions.FACTION_COUNCIL );
 
 					const logic = ()=>
 					{
 					if ( character_entity.hea <= 0 )
 					if ( !character_entity._is_being_removed )
 					{
-						sdSound.PlaySound({ name:'teleport', x:character_entity.x, y:character_entity.y, volume:0.5 });
+						sdSound.PlaySound({ name:'council_teleport', x:character_entity.x, y:character_entity.y, volume:0.5 });
 						sdWorld.SendEffect({ x:character_entity.x, y:character_entity.y, type:sdEffect.TYPE_TELEPORT, hue:170 });
 						character_entity.remove();
 					}
 					};
 					setInterval( logic, 1000 );
+				}
+			}
+			else
+			if ( this.type === sdFactionTools.FACTIONTOOL_SWORD_BOT )
+			{
+				sdSound.PlaySound({ name:'teleport', x:this.x, y:this.y, pitch: 1, volume:1 });
+				sdWorld.SendEffect({ x:this.x, y:this.y, type:sdEffect.TYPE_TELEPORT });
+
+				let character_entity = new sdCharacter({ x:this.x, y:this.y, _ai_enabled:sdCharacter.AI_MODEL_AGGRESSIVE });
+				sdEntity.entities.push( character_entity );
+				{
+					sdFactions.SetHumanoidProperties( character_entity, sdFactions.FACTION_SWORD_BOT );
+
+								if ( Math.random() < 0.2 )
+								{
+								const logic = ()=>
+								{
+									if ( character_entity.hea <= 10000  && character_entity.s === 250 )
+									if ( !character_entity._is_being_removed )
+									{
+									character_entity.hea = 50000;
+									character_entity.hmax = 50000;
+									character_entity.matter = 60000;
+									character_entity.matter_max = 60000;
+									character_entity.s = 300;
+									character_entity._damage_mult = 5;
+									character_entity._jetpack_power = 10;
+									character_entity.iron_fist = true;
+									character_entity.iron_body = 2;
+
+									let character_settings;
+									character_settings = {"hero_name":"Blood Hunter","color_bright":"#404040","color_dark":"#303030","color_bright3":"#202020","color_dark3":"#101010","color_visor":"#FF0000","color_suit":"#404040","color_suit2":"#303030","color_dark2":"#202020","color_shoes":"#101010","color_skin":"#101010","color_extra1":"#FF0000","helmet1":false,"helmet40":true,"body1":false,"legs1":false,"body86":true,"legs66":true,"voice1":false,"voice2":false,"voice10":true};
+
+									character_entity.sd_filter = sdWorld.ConvertPlayerDescriptionToSDFilter_v2( character_settings );
+									character_entity._voice = sdWorld.ConvertPlayerDescriptionToVoice( character_settings );
+									character_entity.helmet = sdWorld.ConvertPlayerDescriptionToHelmet( character_settings );
+									character_entity.body = sdWorld.ConvertPlayerDescriptionToBody( character_settings );
+									character_entity.legs = sdWorld.ConvertPlayerDescriptionToLegs( character_settings );
+									character_entity.title = character_settings.hero_name;
+
+									let gun;
+									gun = new sdGun({ x:character_entity.x, y:character_entity.y - 16, class:sdGun.CLASS_FALKONIAN_SWORD });
+									sdEntity.entities.push( gun );
+									}
+								};
+								setInterval( logic, 0 );
+
+								const logic2 = ()=>
+								{
+									if ( character_entity.hea <= 0  && character_entity.s === 300 )
+									if ( !character_entity._is_being_removed )
+									{
+									sdWorld.SendEffect({ 
+										x:character_entity.x, 
+										y:character_entity.y, 
+										radius:150,
+										damage_scale: 150,
+										type:sdEffect.TYPE_EXPLOSION, 
+										owner:character_entity,
+										color:'#FF0000'});
+
+									character_entity.remove();
+									}
+								};
+								setInterval( logic2, 2000 );
+								}
 				}
 			}
 

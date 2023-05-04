@@ -273,8 +273,9 @@ class sdPlayerDrone extends sdCharacter
 		else
 		this._beep_charge = 0;
 
-		
-		
+		if ( this.IsOutOfBounds() )
+		this.Damage( this.hmax * GSPEED / ( 30 * 5 ) );
+
 		if ( this.hea <= 0 )
 		{
 			this.sy += sdWorld.gravity * GSPEED;
@@ -533,6 +534,7 @@ class sdPlayerDrone extends sdCharacter
 							{
 								if ( nears[ i ] !== this )
 								if ( nears[ i ]._hiberstate === sdEntity.HIBERSTATE_HIBERNATED || nears[ i ]._hiberstate === sdEntity.HIBERSTATE_ACTIVE )
+								if ( nears[ i ].IsBGEntity() === this.IsBGEntity() ) // Do not grab special items and spectators
 								if ( this._god || sdWorld.CheckLineOfSight( this.x, this.y, nears[ i ].x + ( nears[ i ]._hitbox_x1 + nears[ i ]._hitbox_x2 ) / 2, nears[ i ].y + ( nears[ i ]._hitbox_y1 + nears[ i ]._hitbox_y2 ) / 2, this, null, [ 'sdBlock', 'sdDoor' ] ) )
 								if ( this._god || sdArea.CheckPointDamageAllowed( nears[ i ].x + ( nears[ i ]._hitbox_x1 + nears[ i ]._hitbox_x2 ) / 2, nears[ i ].y + ( nears[ i ]._hitbox_y1 + nears[ i ]._hitbox_y2 ) / 2 ) )
 								{

@@ -175,6 +175,17 @@ class sdFactionSpawner extends sdEntity
 						{	
 							{
 								sdFactions.SetHumanoidProperties( character_entity, sdFactions.FACTION_SARRORIAN );
+
+								const logic = ()=>
+								{
+								if ( character_entity.hea <= 800 && character_entity.s === 120 )
+								if ( !character_entity._is_being_removed )
+								{
+									character_entity.stability_upgrade = 25;
+									character_entity._damage_mult = 2.5;
+								}
+								};
+								setInterval( logic, 0 );
 							}
 						}
 					}
@@ -193,6 +204,17 @@ class sdFactionSpawner extends sdEntity
 						{	
 							{
 								sdFactions.SetHumanoidProperties( character_entity, sdFactions.FACTION_VELOX );
+
+								const logic = ()=>
+								{
+								if ( character_entity.hea <= 700 && character_entity.s === 110 )
+								if ( !character_entity._is_being_removed )
+								{
+									character_entity.stability_upgrade = 25;
+									character_entity._damage_mult = 4;
+								}
+								};
+								setInterval( logic, 0 );
 							}
 						}
 					}
@@ -246,6 +268,18 @@ class sdFactionSpawner extends sdEntity
 						{	
 							{
 								sdFactions.SetHumanoidProperties( character_entity, sdFactions.FACTION_ERTHAL );
+
+								const logic = ()=>
+								{
+								if ( character_entity.hea <= 2400 && character_entity.s === 140 )
+								if ( !character_entity._is_being_removed )
+								{
+									character_entity.iron_fist = true;
+									character_entity.s = 150;
+									character_entity._damage_mult = 3.5;
+								}
+								};
+								setInterval( logic, 0 );
 							}
 						}
 					}

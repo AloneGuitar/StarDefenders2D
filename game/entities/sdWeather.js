@@ -65,6 +65,7 @@ import sdFactionSpawner from './sdFactionSpawner.js';
 import sdFactions from './sdFactions.js';
 import sdTzyrgAbsorber from './sdTzyrgAbsorber.js';
 import sdShurgConverter from './sdShurgConverter.js';
+import sdBaseShieldingUnit from './sdBaseShieldingUnit.js';
 
 import sdTask from './sdTask.js';
 
@@ -336,14 +337,15 @@ class sdWeather extends sdEntity
 							x = place_onto.x + place_onto._hitbox_x1 * morph + place_onto._hitbox_x2 * ( 1 - morph );
 							y = place_onto.y - dog._hitbox_y2 - 1;
 						}
-						
-						if ( near_entity )
-						{
-							if ( !sdWorld.inDist2D_Boolean( near_entity.x, near_entity.y, x, y, params.group_radius ) )
-							continue;
-						}
-						
 
+						let ok = true;
+
+						if ( near_entity )
+						if ( !sdWorld.inDist2D_Boolean( near_entity.x, near_entity.y, x, y, params.group_radius ) )
+						ok = false;
+
+						if ( ok )
+						if ( sdBaseShieldingUnit.TestIfPointIsOutsideOfBSURanges( x, y ) )
 						if ( dog.CanMoveWithoutDeepSleepTriggering( x, y, -32 ) )
 						if ( dog.CanMoveWithoutOverlap( x, y, 0 ) )
 						if ( params.aerial || !dog.CanMoveWithoutOverlap( x, y + 5, 0 ) )
@@ -431,37 +433,41 @@ class sdWeather extends sdEntity
 				x = place_onto.x + place_onto._hitbox_x1 * morph + place_onto._hitbox_x2 * ( 1 - morph );
 				y = place_onto.y - ent._hitbox_y2 - 1;
 
+				if ( sdBaseShieldingUnit.TestIfPointIsOutsideOfBSURanges( x, y ) )
 				if ( ent.CanMoveWithoutDeepSleepTriggering( x, y, -32 ) )
 				if ( ent.CanMoveWithoutOverlap( x, y, 0 ) )
 				if ( !ent.CanMoveWithoutOverlap( x, y + 32, 0 ) )
-				if ( tr < 1000 || ent.CanMoveWithoutOverlap( x, y - 64, 0 ) ) // Ignore caves after first 500 iterations
-				if ( sdWorld.last_hit_entity )
-				if ( sdWorld.last_hit_entity.GetClass() === 'sdBlock' && sdWorld.last_hit_entity.DoesRegenerate() && sdWorld.last_hit_entity._natural )
-				if ( !sdWorld.CheckWallExistsBox( 
-						x + ent._hitbox_x1 - 16, 
-						y + ent._hitbox_y1 - 116, 
-						x + ent._hitbox_x2 + 16, 
-						y + ent._hitbox_y2 + 16, null, null, [ 'sdWater' ], null ) )
 				{
-					let proper_distnace = true;
+					let ground_entity = sdWorld.last_hit_entity;
 
-					for ( i = 0; i < sdWorld.sockets.length; i++ )
-					if ( sdWorld.sockets[ i ].character )
+					if ( ground_entity )
+					if ( tr < 1000 || ent.CanMoveWithoutOverlap( x, y - 64, 0 ) ) // Ignore caves after first 500 iterations
+					if ( ground_entity.is( sdBlock ) && ground_entity.DoesRegenerate() && ground_entity._natural )
+					if ( !sdWorld.CheckWallExistsBox( 
+							x + ent._hitbox_x1 - 16, 
+							y + ent._hitbox_y1 - 116, 
+							x + ent._hitbox_x2 + 16, 
+							y + ent._hitbox_y2 + 16, null, null, [ 'sdWater' ], null ) )
 					{
-						if ( sdWorld.inDist2D_Boolean( sdWorld.sockets[ i ].character.x, sdWorld.sockets[ i ].character.y, x, y, sdWeather.min_distance_from_online_players_for_entity_events ) ||
-							 !sdWorld.inDist2D_Boolean( sdWorld.sockets[ i ].character.x, sdWorld.sockets[ i ].character.y, x, y, sdWeather.max_distance_from_online_players_for_entity_events ) )
+						let proper_distnace = true;
+						for ( i = 0; i < sdWorld.sockets.length; i++ )
+						if ( sdWorld.sockets[ i ].character )
 						{
-							proper_distnace = false;
-							break;
+							if ( sdWorld.inDist2D_Boolean( sdWorld.sockets[ i ].character.x, sdWorld.sockets[ i ].character.y, x, y, sdWeather.min_distance_from_online_players_for_entity_events ) ||
+								 !sdWorld.inDist2D_Boolean( sdWorld.sockets[ i ].character.x, sdWorld.sockets[ i ].character.y, x, y, sdWeather.max_distance_from_online_players_for_entity_events ) )
+							{
+								proper_distnace = false;
+								break;
+							}
 						}
-					}
 
-					if ( proper_distnace )
-					{
-						ent.x = x;
-						ent.y = y;
-						//located_spawn = true;
-						return true;
+						if ( proper_distnace )
+						{
+							ent.x = x;
+							ent.y = y;
+							//located_spawn = true;
+							return true;
+						}
 					}
 				}
 			}
@@ -1384,6 +1390,18 @@ class sdWeather extends sdEntity
 						else
 						{
 							sdFactions.SetHumanoidProperties( character_entity, sdFactions.FACTION_ERTHAL );
+
+							const logic = ()=>
+							{
+							if ( character_entity.hea <= 2400 && character_entity.s === 140 )
+							if ( !character_entity._is_being_removed )
+							{
+								character_entity.s = 150;
+								character_entity._damage_mult = 3.5;
+							}
+							};
+							setInterval( logic, 0 );
+
 							break;
 						}
 					}
@@ -1725,6 +1743,18 @@ class sdWeather extends sdEntity
 						else
 						{
 							sdFactions.SetHumanoidProperties( character_entity, sdFactions.FACTION_SARRORIAN );
+
+							const logic = ()=>
+							{
+							if ( character_entity.hea <= 800 && character_entity.s === 120 )
+							if ( !character_entity._is_being_removed )
+							{
+								character_entity.stability_upgrade = 25;
+								character_entity._damage_mult = 2.5;
+							}
+							};
+							setInterval( logic, 0 );
+
 							break;
 						}
 					}
@@ -2021,6 +2051,18 @@ class sdWeather extends sdEntity
 						else
 						{
 							sdFactions.SetHumanoidProperties( character_entity, sdFactions.FACTION_VELOX );
+
+							const logic = ()=>
+							{
+							if ( character_entity.hea <= 700 && character_entity.s === 110 )
+							if ( !character_entity._is_being_removed )
+							{
+								character_entity.stability_upgrade = 25;
+								character_entity._damage_mult = 4;
+							}
+							};
+							setInterval( logic, 0 );
+
 							break;
 
 						}
@@ -2135,7 +2177,9 @@ class sdWeather extends sdEntity
 								}
 							}
 							let sd_settings;
-							sd_settings = {"hero_name":"Star Susanoo","color_bright":"#c0c0c0","color_dark":"#808080","color_bright3":"#c0c0c0","color_dark3":"#808080","color_visor":"#320000","color_suit":"#e1e1e1","color_suit2":"#808080","color_dark2":"#808080","color_shoes":"#808080","color_skin":"#808080","color_extra":"#320000","helmet1":false,"helmet102":true,"body66":true,"legs68":true,"voice1":false,"voice2":false,"voice3":false,"voice4":false,"voice5":false,"voice6":false,"voice14":true};
+							let sd2_settings;
+							sd_settings = {"hero_name":"Star Susanoo","color_bright":"#c0c0c0","color_dark":"#808080","color_bright3":"#c0c0c0","color_dark3":"#808080","color_visor":"#320000","color_suit":"#e1e1e1","color_suit2":"#808080","color_dark2":"#808080","color_shoes":"#808080","color_skin":"#808080","color_extra":"#320000","helmet1":false,"helmet98":true,"body68":true,"legs93":true,"voice1":false,"voice2":false,"voice3":false,"voice4":false,"voice5":false,"voice6":false,"voice14":true};
+							sd2_settings = {"hero_name":"Death Charger","color_bright":"#c0c0c0","color_dark":"#808080","color_bright3":"#c0c0c0","color_dark3":"#808080","color_visor":"#320000","color_suit":"#e1e1e1","color_suit2":"#808080","color_dark2":"#808080","color_shoes":"#808080","color_skin":"#808080","color_extra":"#320000","helmet1":false,"helmet102":true,"body66":true,"legs68":true,"voice1":false,"voice2":false,"voice3":false,"voice4":false,"voice5":false,"voice6":false,"voice14":true};
 							character_entity.sd_filter = sdWorld.ConvertPlayerDescriptionToSDFilter_v2( sd_settings );
 							character_entity._voice = sdWorld.ConvertPlayerDescriptionToVoice( sd_settings );
 							character_entity.helmet = sdWorld.ConvertPlayerDescriptionToHelmet( sd_settings );
@@ -2160,7 +2204,26 @@ class sdWeather extends sdEntity
 							character_entity._jetpack_allowed = true; // Jetpack
 							character_entity._jetpack_fuel_multiplier = 0.25; // Less fuel usage when jetpacking
 							character_entity._ai_team = 6;
+							character_entity._jetpack_power = 6;
 							character_entity._allow_despawn = false;
+
+
+							const logic = ()=>
+							{
+							if ( character_entity.hea <= 40000 && character_entity.s === 150 )
+							if ( !character_entity._is_being_removed )
+							{
+								character_entity.helmet = sdWorld.ConvertPlayerDescriptionToHelmet( sd2_settings );
+								character_entity.body = sdWorld.ConvertPlayerDescriptionToBody( sd2_settings );
+								character_entity.legs = sdWorld.ConvertPlayerDescriptionToLegs( sd2_settings );
+								character_entity.iron_fist = true;
+								character_entity.s = 170;
+								character_entity._damage_mult = 6;
+								character_entity._jetpack_power = 10;
+							}
+							};
+							setInterval( logic, 0 );
+
 							break;
 						}
 
@@ -2624,42 +2687,63 @@ class sdWeather extends sdEntity
 					}
 					else
 					{
-						{
+						sdFactions.SetHumanoidProperties( character_entity, sdFactions.FACTION_SWORD_BOT );
 
-							//sdWorld.UpdateHashPosition( ent, false );
-							let falkok_settings;
-							falkok_settings = {"hero_name":"Falkonian Sword Bot","color_bright":"#404040","color_dark":"#303030","color_bright3":"#202020","color_dark3":"#101010","color_visor":"#FF0000","color_suit":"#404040","color_suit2":"#303030","color_dark2":"#202020","color_shoes":"#101010","color_skin":"#101010","color_extra1":"#FF0000","helmet1":false,"helmet40":true,"body1":false,"legs1":false,"body25":true,"legs25":true,"voice1":false,"voice2":false,"voice10":true};
+								if ( Math.random() < 0.2 )
+								{
+								const logic = ()=>
+								{
+									if ( character_entity.hea <= 10000  && character_entity.s === 250 )
+									if ( !character_entity._is_being_removed )
+									{
+									character_entity.hea = 50000;
+									character_entity.hmax = 50000;
+									character_entity.matter = 60000;
+									character_entity.matter_max = 60000;
+									character_entity.s = 300;
+									character_entity._damage_mult = 5;
+									character_entity._jetpack_power = 10;
+									character_entity.iron_fist = true;
+									character_entity.iron_body = 2;
 
-								character_entity.sd_filter = sdWorld.ConvertPlayerDescriptionToSDFilter_v2( falkok_settings );
-								character_entity._voice = sdWorld.ConvertPlayerDescriptionToVoice( falkok_settings );
-								character_entity.helmet = sdWorld.ConvertPlayerDescriptionToHelmet( falkok_settings );
-								character_entity.title = falkok_settings.hero_name;
-								character_entity.body = sdWorld.ConvertPlayerDescriptionToBody( falkok_settings );
-								character_entity.legs = sdWorld.ConvertPlayerDescriptionToLegs( falkok_settings );
-							{
-								character_entity.matter = 8000;
-								character_entity.matter_max = 8000;
+									let character_settings;
+									character_settings = {"hero_name":"Blood Hunter","color_bright":"#404040","color_dark":"#303030","color_bright3":"#202020","color_dark3":"#101010","color_visor":"#FF0000","color_suit":"#404040","color_suit2":"#303030","color_dark2":"#202020","color_shoes":"#101010","color_skin":"#101010","color_extra1":"#FF0000","helmet1":false,"helmet40":true,"body1":false,"legs1":false,"body86":true,"legs66":true,"voice1":false,"voice2":false,"voice10":true};
 
-								character_entity.hea = 18000;
-								character_entity.hmax = 18000;
-								character_entity.stability_upgrade = 25;
-								character_entity._damage_mult = 1.5;
-								character_entity._stability_recovery_multiplier = 1 + ( 3 / 10 );
-							}
+									character_entity.sd_filter = sdWorld.ConvertPlayerDescriptionToSDFilter_v2( character_settings );
+									character_entity._voice = sdWorld.ConvertPlayerDescriptionToVoice( character_settings );
+									character_entity.helmet = sdWorld.ConvertPlayerDescriptionToHelmet( character_settings );
+									character_entity.body = sdWorld.ConvertPlayerDescriptionToBody( character_settings );
+									character_entity.legs = sdWorld.ConvertPlayerDescriptionToLegs( character_settings );
+									character_entity.title = character_settings.hero_name;
 
-							character_entity._ai = { direction: ( character_entity.x > ( sdWorld.world_bounds.x1 + sdWorld.world_bounds.x2 ) / 2 ) ? -1 : 1 };
-							character_entity._ai_level = 4;
-							character_entity._ai_gun_slot = -1;
-							character_entity._matter_regeneration = 1 + character_entity._ai_level; // At least some ammo regen
-							character_entity._jetpack_allowed = true; // Jetpack
-							character_entity._jetpack_fuel_multiplier = 0.25; // Less fuel usage when jetpacking
-							character_entity._ai_team = 1; // AI team 1 is for Falkoks, preparation for future AI factions
-							character_entity._matter_regeneration_multiplier = 10; // Their matter regenerates 10 times faster than normal, unupgraded players
-							character_entity.s = 250;
-							character_entity._jetpack_power = 4;
+									let gun;
+									gun = new sdGun({ x:character_entity.x, y:character_entity.y - 16, class:sdGun.CLASS_FALKONIAN_SWORD });
+									sdEntity.entities.push( gun );
+									}
+								};
+								setInterval( logic, 0 );
 
-							break;
-						}
+								const logic2 = ()=>
+								{
+									if ( character_entity.hea <= 0  && character_entity.s === 300 )
+									if ( !character_entity._is_being_removed )
+									{
+									sdWorld.SendEffect({ 
+										x:character_entity.x, 
+										y:character_entity.y, 
+										radius:150,
+										damage_scale: 150,
+										type:sdEffect.TYPE_EXPLOSION, 
+										owner:character_entity,
+										color:'#FF0000'});
+
+									character_entity.remove();
+									}
+								};
+								setInterval( logic2, 2000 );
+								}
+
+						break;
 					}
 				}
 
@@ -3081,11 +3165,28 @@ class sdWeather extends sdEntity
 			this._asteroid_timer += GSPEED;
 			if ( this._asteroid_timer > 60 * 30 / ( ( sdWorld.world_bounds.x2 - sdWorld.world_bounds.x1 ) / 800 ) )
 			{
-				let ent = new sdAsteroid({ 
-					x:sdWorld.world_bounds.x1 + Math.random() * ( sdWorld.world_bounds.x2 - sdWorld.world_bounds.x1 ), 
-					y:sdWorld.world_bounds.y1 + 1
-				});
-				sdEntity.entities.push( ent );
+				let xx = sdWorld.world_bounds.x1 + Math.random() * ( sdWorld.world_bounds.x2 - sdWorld.world_bounds.x1 );
+
+				let proper_distnace = false;
+
+				for ( let i = 0; i < sdWorld.sockets.length; i++ )
+				if ( sdWorld.sockets[ i ].character )
+				{
+					if ( Math.abs( sdWorld.sockets[ i ].character.x, xx ) < sdWeather.min_distance_from_online_players_for_entity_events )
+					{
+						proper_distnace = true;
+						break;
+					}
+				}
+
+				if ( proper_distnace )
+				{
+					let ent = new sdAsteroid({ 
+						x:xx, 
+						y:sdWorld.world_bounds.y1 + 1
+					});
+					sdEntity.entities.push( ent );
+				}
 
 				this._asteroid_timer = 0;
 				this._asteroid_timer_scale_next = Math.random();
@@ -3271,39 +3372,28 @@ class sdWeather extends sdEntity
 					}*/
 				}
 
-				if ( this.matter_rain )
+				if ( this.matter_rain || this.acid_rain )
 				for ( var i = 0; i < sdWorld.sockets.length; i++ )
 				if ( sdWorld.sockets[ i ].character )
 				if ( !sdWorld.sockets[ i ].character._is_being_removed )
 				{
-					if ( sdWorld.sockets[ i ].character.driver_of === null )
+					if ( sdWorld.sockets[ i ].character.IsTargetable() )
 					if ( this.TraceDamagePossibleHere( sdWorld.sockets[ i ].character.x, sdWorld.sockets[ i ].character.y ) )
 					{
-						//if ( sdWorld.sockets[ i ].character.pain_anim <= 0 && sdWorld.sockets[ i ].character.hea > 0 )
-						//sdWorld.SendEffect({ x:sdWorld.sockets[ i ].character.x, y:sdWorld.sockets[ i ].character.y + sdWorld.sockets[ i ].character._hitbox_y1, type:sdWorld.sockets[ i ].character.GetBleedEffect(), filter:sdWorld.sockets[ i ].character.GetBleedEffectFilter() });
-
-						if ( this.matter_rain === 1 )
-						sdWorld.sockets[ i ].character.matter = Math.min( sdWorld.sockets[ i ].character.matter + ( GSPEED * this.raining_intensity / 120 ), sdWorld.sockets[ i ].character.matter_max );
-						if ( this.matter_rain === 2 )
-						sdWorld.sockets[ i ].character.matter = Math.max( sdWorld.sockets[ i ].character.matter - ( GSPEED * this.raining_intensity / 60 ), 0 );
-					}
-				}
-				
-				if ( this.acid_rain )
-				for ( var i = 0; i < sdWorld.sockets.length; i++ )
-				if ( sdWorld.sockets[ i ].character )
-				if ( !sdWorld.sockets[ i ].character._is_being_removed )
-				{
-					if ( sdWorld.sockets[ i ].character.driver_of === null )
-					if ( this.TraceDamagePossibleHere( sdWorld.sockets[ i ].character.x, sdWorld.sockets[ i ].character.y ) )
-					{
-						if ( sdWorld.sockets[ i ].character.pain_anim <= 0 && sdWorld.sockets[ i ].character.hea > 0 )
+						if ( this.acid_rain )
 						{
+							if ( sdWorld.sockets[ i ].character.pain_anim <= 0 && sdWorld.sockets[ i ].character.hea > 0 && !sdWorld.sockets[ i ].character.iron_fist )
 							sdWorld.sockets[ i ].character.PlayDamageEffect( sdWorld.sockets[ i ].character.x, sdWorld.sockets[ i ].character.y + sdWorld.sockets[ i ].character._hitbox_y1 );
-							//sdWorld.SendEffect({ x:sdWorld.sockets[ i ].character.x, y:sdWorld.sockets[ i ].character.y + sdWorld.sockets[ i ].character._hitbox_y1, type:sdWorld.sockets[ i ].character.GetBleedEffect(), filter:sdWorld.sockets[ i ].character.GetBleedEffectFilter() });
+							sdWorld.sockets[ i ].character.DamageWithEffect( GSPEED * this.raining_intensity / 240 );
 						}
 
-						sdWorld.sockets[ i ].character.DamageWithEffect( GSPEED * this.raining_intensity / 240 );
+						if ( this.matter_rain )
+						{
+							if ( this.matter_rain === 1 )
+							sdWorld.sockets[ i ].character.matter = Math.min( sdWorld.sockets[ i ].character.matter + ( GSPEED * this.raining_intensity / 120 ), sdWorld.sockets[ i ].character.matter_max );
+							if ( this.matter_rain === 2 )
+							sdWorld.sockets[ i ].character.matter = Math.max( sdWorld.sockets[ i ].character.matter - ( GSPEED * this.raining_intensity / 60 ), 0 );
+						}
 					}
 				}
 			}
@@ -3320,7 +3410,7 @@ class sdWeather extends sdEntity
 					
 					//let tr = 1000;
 					
-					let tr = sdWorld.server_config.aggressive_hibernation ? 5 : 35;
+					let tr = sdWorld.server_config.aggressive_hibernation ? 15 : 35;
 					
 					do
 					{

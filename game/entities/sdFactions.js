@@ -23,6 +23,7 @@ class sdFactions extends sdEntity
 		sdFactions.FACTION_SHURG = 8; // Shurg
 		sdFactions.FACTION_KVT = 9;
 		sdFactions.FACTION_SD = 10;
+		sdFactions.FACTION_SWORD_BOT = 11;
 		sdWorld.entity_classes[ this.name ] = this; // Register for object spawn
 	}
 
@@ -34,9 +35,9 @@ class sdFactions extends sdEntity
 		let character_settings;
 		if ( faction === sdFactions.FACTION_FALKOK ) // Falkoks
 		{
-			if ( Math.random() < 0.2 )
+			if ( Math.random() < 0.3 )
 			{
-				if ( Math.random() < 0.07 )
+				if ( Math.random() < 0.1 )
 				{
 					sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_F_HEAVY_RIFLE }) );
 					character_entity._ai_gun_slot = 2;
@@ -44,7 +45,7 @@ class sdFactions extends sdEntity
 				}
 				else
 				{
-					if ( Math.random() < 0.1 )
+					if ( Math.random() < 0.2 )
 					{
 						sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_FALKOK_PSI_CUTTER }) );
 						character_entity._ai_gun_slot = 4;
@@ -58,7 +59,7 @@ class sdFactions extends sdEntity
 			}
 			else
 			{ 
-				if ( Math.random() < 0.6 )
+				if ( Math.random() < 0.4 )
 				{
 					sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_F_MARKSMAN }) );
 					character_entity._ai_gun_slot = 2;
@@ -80,8 +81,8 @@ class sdFactions extends sdEntity
 				character_entity.matter = 170;
 				character_entity.matter_max = 170;
 
-				character_entity.hea = 250;
-				character_entity.hmax = 250;
+				character_entity.hea = 185;
+				character_entity.hmax = 185;
 
 				character_entity.armor = 100;
 				character_entity.armor_max = 100;
@@ -95,8 +96,8 @@ class sdFactions extends sdEntity
 				character_entity.matter = 1080;
 				character_entity.matter_max = 1080;
 
-				character_entity.hea = 2420;
-				character_entity.hmax = 2420;
+				character_entity.hea = 1720;
+				character_entity.hmax = 1720;
 
 				character_entity.armor = 1400;
 				character_entity.armor_max = 1400;
@@ -113,12 +114,12 @@ class sdFactions extends sdEntity
 				character_entity.matter = 1400;
 				character_entity.matter_max = 1400;
 	
-				character_entity.hea = 1150; // It is a stronger falkok after all, although revert changes if you want
-				character_entity.hmax = 1150;
+				character_entity.hea = 750; // It is a stronger falkok after all, although revert changes if you want
+				character_entity.hmax = 750;
 				character_entity.s = 110;
 
-				character_entity.armor = 860;
-				character_entity.armor_max = 860;
+				character_entity.armor = 660;
+				character_entity.armor_max = 660;
 				character_entity._armor_absorb_perc = 0.3;
 				character_entity._matter_regeneration = 20;
 				character_entity._matter_regeneration_multiplier = 30;
@@ -154,17 +155,17 @@ class sdFactions extends sdEntity
 				if ( character_entity._ai_gun_slot === 2 || character_entity._ai_gun_slot === 1 )
 				character_settings = {"hero_name":"Erthal","color_bright":"#37a2ff","color_dark":"#000000","color_bright3":"#464646","color_dark3":"#000000","color_visor":"#1664a8","color_suit":"#464646","color_suit2":"#000000","color_dark2":"#464646","color_shoes":"#000000","color_skin":"#1665a8","color_extra1":"#464646","helmet1":false,"helmet4":true,"body3":true,"legs3":true,"voice1":false,"voice2":false,"voice3":true,"voice4":false,"voice5":false,"voice6":false,"voice7":true};
 				if ( character_entity._ai_gun_slot === 5 )
-				character_settings = {"hero_name":"Erthal Brutal Destroyer","color_bright":"#37a2ff","color_dark":"#000000","color_bright3":"#464646","color_dark3":"#000000","color_visor":"#1664a8","color_suit":"#464646","color_suit2":"#000000","color_dark2":"#464646","color_shoes":"#000000","color_skin":"#1665a8","color_extra1":"#464646","helmet1":false,"helmet122":true,"body91":true,"legs91":true,"voice1":false,"voice2":false,"voice3":true,"voice4":false,"voice5":false,"voice6":false,"voice7":true};
+				character_settings = {"hero_name":"Erthal Brutal Destroyer","color_bright":"#37a2ff","color_dark":"#000000","color_bright3":"#464646","color_dark3":"#000000","color_visor":"#1664a8","color_suit":"#464646","color_suit2":"#000000","color_dark2":"#464646","color_shoes":"#000000","color_skin":"#1665a8","color_extra1":"#464646","helmet1":false,"helmet127":true,"body95":true,"legs95":true,"voice3":false,"voice7":true};
 				if ( character_entity._ai_gun_slot === 2 || character_entity._ai_gun_slot === 1 )
 				{
 					character_entity.matter = 150;
 					character_entity.matter_max = 150;
 
-					character_entity.hea = 750;
-					character_entity.hmax = 750;
+					character_entity.hea = 650;
+					character_entity.hmax = 650;
 
-					character_entity.armor = 500;
-					character_entity.armor_max = 500;
+					character_entity.armor = 400;
+					character_entity.armor_max = 400;
 					character_entity._armor_absorb_perc = 0.2; // 75% damage absorption, since armor will run out before health, they effectively have 750 health
 					character_entity._ai_level = 4;
 					character_entity._matter_regeneration = 1 + character_entity._ai_level; // At least some ammo regen
@@ -249,11 +250,11 @@ class sdFactions extends sdEntity
 				character_entity.matter = 300;
 				character_entity.matter_max = 300; // Let player leech matter off the bodies
 
-				character_entity.hea = 1400;
-				character_entity.hmax = 1400;
+				character_entity.hea = 850;
+				character_entity.hmax = 850;
 
-				character_entity.armor = 1500;
-				character_entity.armor_max = 1500;
+				character_entity.armor = 700;
+				character_entity.armor_max = 700;
 				character_entity._armor_absorb_perc = 0.4; // 87% damage absorption, since armor will run out before just a little before health
 				character_entity._damage_mult = 1.5;
 				character_entity._matter_regeneration = 10 + character_entity._ai_level; // At least some ammo regen
@@ -265,11 +266,11 @@ class sdFactions extends sdEntity
 				character_entity.matter = 1400;
 				character_entity.matter_max = 1400;
 
-				character_entity.hea = 1750;
-				character_entity.hmax = 1750;
+				character_entity.hea = 1000;
+				character_entity.hmax = 1000;
 
-				character_entity.armor = 2000;
-				character_entity.armor_max = 2000;
+				character_entity.armor = 800;
+				character_entity.armor_max = 800;
 				character_entity._armor_absorb_perc = 0.5;
 				character_entity._damage_mult = 2;
 				character_entity._matter_regeneration = 20;
@@ -334,14 +335,14 @@ class sdFactions extends sdEntity
 			}
 			if ( character_entity._ai_gun_slot === 8 && character_entity.s === 120 )
 			{
-				character_entity.matter = 1450;
-				character_entity.matter_max = 1450;
+				character_entity.matter = 3750;
+				character_entity.matter_max = 3750;
 
-				character_entity.hea = 1600;
-				character_entity.hmax = 1600;
+				character_entity.hea = 1200;
+				character_entity.hmax = 1200;
 
-				character_entity.armor = 2050;
-				character_entity.armor_max = 2050;
+				character_entity.armor = 1050;
+				character_entity.armor_max = 1050;
 				character_entity._armor_absorb_perc = 0.55;
 
 				character_entity._matter_regeneration = 20;
@@ -392,23 +393,87 @@ class sdFactions extends sdEntity
 				}
 			}
 			if ( character_entity._ai_gun_slot === 1 )
-			character_settings = {"hero_name":"Velox Soldier","color_bright":"#c0c0c0","color_dark":"#a0a0a0","color_bright3":"#00ffff","color_dark3":"#202020","color_visor":"#00ffff","color_suit":"#c0c0c0","color_suit2":"#080808","color_dark2":"#000000","color_shoes":"#000000","color_skin":"#000000","helmet1":false,"helmet86":true,"voice1":false,"voice2":false,"voice3":false,"voice4":false,"voice5":false,"voice7":true,"body59":true, "legs59":true};
+			character_settings = {"hero_name":"Velox Soldier", // Name // blue soldier
+			"color_bright":"#bcbcbc", // Helmet bright color
+			"color_dark":"#7a7a7a", // Helmet dark color
+			"color_bright3":"#bcbcbc", // Jetpack (bright shade) color
+			"color_dark3":"#7a7a7a", // Jetpack (dark shade) color
+			"color_visor":"#00ffff", // Visor color
+			"color_suit":"#1c1c1c", // Upper suit color
+			"color_suit2":"#121212", // Lower suit color
+			"color_dark2":"#a2a2a2", // Lower suit plates color
+			"color_shoes":"#1c1c1c", // Shoes color
+			"color_skin":"#626262", // Gloves and neck color
+			"color_extra1":"#00b9b9", // Extra 1 color
+			"helmet86":true, // Velox helmet
+			"body89":true, // Lite Velox body
+			"legs89":true, // Lite Velox legs
+			"voice7":true };
+
 			if ( character_entity._ai_gun_slot === 2 && character_entity.s === 100 )
-			character_settings = {"hero_name":"Velox Soldier","color_bright":"#c0c0c0","color_dark":"#a0a0a0","color_bright3":"#00ff44","color_dark3":"#202020","color_visor":"#00ff44","color_suit":"#c0c0c0","color_suit2":"#080808","color_dark2":"#000000","color_shoes":"#000000","color_skin":"#000000","helmet1":false,"helmet86":true,"voice1":false,"voice2":false,"voice3":false,"voice4":false,"voice5":false,"voice7":true,"body59":true, "legs59":true};
+			character_settings = {"hero_name":"Velox Soldier", // Name // green soldier
+			"color_bright":"#bcbcbc", // Helmet bright color
+			"color_dark":"#7a7a7a", // Helmet dark color
+			"color_bright3":"#bcbcbc", // Jetpack (bright shade) color
+			"color_dark3":"#7a7a7a", // Jetpack (dark shade) color
+			"color_visor":"#00ff00", // Visor color
+			"color_suit":"#1c1c1c", // Upper suit color
+			"color_suit2":"#121212", // Lower suit color
+			"color_dark2":"#a2a2a2", // Lower suit plates color
+			"color_shoes":"#1c1c1c", // Shoes color
+			"color_skin":"#626262", // Gloves and neck color
+			"color_extra1":"#00b900", // Extra 1 color
+			"helmet86":true, // Velox helmet
+			"body59":true, // Velox body
+			"legs59":true, // Velox legs
+			"voice7":true };
+
 			if ( character_entity._ai_gun_slot === 4 )
-			character_settings = {"hero_name":"Velox Devastator","color_bright":"#c0c0c0","color_dark":"#a0a0a0","color_bright3":"#ff0000","color_dark3":"#202020","color_visor":"#ff0000","color_suit":"#c0c0c0","color_suit2":"#080808","color_dark2":"#000000","color_shoes":"#000000","color_skin":"#000000","helmet1":false,"helmet86":true,"voice1":false,"voice2":false,"voice3":false,"voice4":false,"voice5":false,"voice7":true,"body59":true, "legs59":true};
+			character_settings = {"hero_name":"Velox Devastator", // Name
+			"color_bright":"#bcbcbc", // Helmet bright color
+			"color_dark":"#7a7a7a", // Helmet dark color
+			"color_bright3":"#bcbcbc", // Jetpack (bright shade) color
+			"color_dark3":"#7a7a7a", // Jetpack (dark shade) color
+			"color_visor":"#ff0000", // Visor color
+			"color_suit":"#1c1c1c", // Upper suit color
+			"color_suit2":"#121212", // Lower suit color
+			"color_dark2":"#a2a2a2", // Lower suit plates color
+			"color_shoes":"#1c1c1c", // Shoes color
+			"color_skin":"#626262", // Gloves and neck color
+			"color_extra1":"#b90000", // Extra 1 color
+			"helmet86":true, // Velox helmet
+			"body90":true, // Heavy Velox body
+			"legs90":true, // Heavy Velox legs
+			"voice7":true };
+
 			if ( character_entity._ai_gun_slot === 2 && character_entity.s === 120 )
-			character_settings = {"hero_name":"Velox Berserker","color_bright":"#c0c0c0","color_dark":"#a0a0a0","color_bright3":"#96ffff","color_dark3":"#202020","color_visor":"#96ffff","color_suit":"#c0c0c0","color_suit2":"#080808","color_dark2":"#000000","color_shoes":"#000000","color_skin":"#000000","helmet1":false,"helmet86":true,"voice1":false,"voice2":false,"voice3":false,"voice4":false,"voice5":false,"voice7":true,"body59":true, "legs59":true};
+			character_settings = {"hero_name":"Velox Berkerser", // Name
+			"color_bright":"#bcbcbc", // Helmet bright color
+			"color_dark":"#7a7a7a", // Helmet dark color
+			"color_bright3":"#bcbcbc", // Jetpack (bright shade) color
+			"color_dark3":"#7a7a7a", // Jetpack (dark shade) color
+			"color_visor":"#aaffff", // Visor color
+			"color_suit":"#1c1c1c", // Upper suit color
+			"color_suit2":"#121212", // Lower suit color
+			"color_dark2":"#a2a2a2", // Lower suit plates color
+			"color_shoes":"#1c1c1c", // Shoes color
+			"color_skin":"#626262", // Gloves and neck color
+			"color_extra1":"#00c9c9", // Extra 1 color
+			"helmet118":true, // Heavy Velox helmet
+			"body90":true, // Heavy Velox body
+			"legs90":true, // Heavy Velox legs
+			"voice7":true };
+
 			if ( character_entity._ai_gun_slot === 1 || 2 && character_entity.s === 100 ) // If a regular Velox soldier
 			{
 				character_entity.matter = 200;
 				character_entity.matter_max = 200;
 
-				character_entity.hea = 750;
-				character_entity.hmax = 750;
+				character_entity.hea = 650;
+				character_entity.hmax = 650;
 
-				character_entity.armor = 500;
-				character_entity.armor_max = 500;
+				character_entity.armor = 400;
+				character_entity.armor_max = 400;
 				character_entity._armor_absorb_perc = 0.2;
 
 				character_entity._matter_regeneration = 5; // At least some ammo regen
@@ -419,11 +484,11 @@ class sdFactions extends sdEntity
 				character_entity.matter = 400;
 				character_entity.matter_max = 400;
 
-				character_entity.hea = 1200;
-				character_entity.hmax = 1200;
+				character_entity.hea = 1100;
+				character_entity.hmax = 1100;
 				character_entity.s = 110; // tougher so bigger target
-				character_entity.armor = 1750;
-				character_entity.armor_max = 1750;
+				character_entity.armor = 750;
+				character_entity.armor_max = 750;
 				character_entity._armor_absorb_perc = 0.45; // 97% damage absorption, since armor will run out before health, they effectively have 2000 health
 				character_entity._damage_mult = 1.2;
 
@@ -436,11 +501,11 @@ class sdFactions extends sdEntity
 				character_entity.matter = 900;
 				character_entity.matter_max = 900;
 
-				character_entity.hea = 1800;
-				character_entity.hmax = 1800;
+				character_entity.hea = 1300;
+				character_entity.hmax = 1300;
 
-				character_entity.armor = 2000;
-				character_entity.armor_max = 2000;
+				character_entity.armor = 1500;
+				character_entity.armor_max = 1500;
 				character_entity._armor_absorb_perc = 0.65;
 				character_entity._damage_mult = 1.5;
 				character_entity._matter_regeneration = 25;
@@ -459,7 +524,7 @@ class sdFactions extends sdEntity
 
 		if ( faction === sdFactions.FACTION_SETR ) // Setr
 		{
-			if ( Math.random() < 0.4 )
+			if ( Math.random() < 0.3 )
 			{
 				sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_SETR_ROCKET }) );
 				character_entity._ai_gun_slot = 5;
@@ -492,11 +557,11 @@ class sdFactions extends sdEntity
 				character_entity.matter = 750;
 				character_entity.matter_max = 750;
 
-				character_entity.hea = 1320;
-				character_entity.hmax = 1320;
+				character_entity.hea = 1020;
+				character_entity.hmax = 1020;
 
-				character_entity.armor = 1500;
-				character_entity.armor_max = 1500;
+				character_entity.armor = 1200;
+				character_entity.armor_max = 1200;
 				character_entity._armor_absorb_perc = 0.5;
 				character_entity.s = 110;
 				character_entity._matter_regeneration = 10;
@@ -557,11 +622,11 @@ class sdFactions extends sdEntity
 				character_entity.matter = 1000;
 				character_entity.matter_max = 1000;
 
-				character_entity.hea = 1500;
-				character_entity.hmax = 1500;
+				character_entity.hea = 800;
+				character_entity.hmax = 800;
 
-				character_entity.armor = 800;
-				character_entity.armor_max = 800;
+				character_entity.armor = 300;
+				character_entity.armor_max = 300;
 				character_entity._armor_absorb_perc = 0.4;
 				character_entity._matter_regeneration = 15;
 				character_entity._matter_regeneration_multiplier = 30;
@@ -601,13 +666,17 @@ class sdFactions extends sdEntity
 						"body48":true,
 						"legs17":true };
 
-			if ( character_entity._ai_gun_slot === 1 ) // If a regular Tzyrg
+			if ( character_entity._ai_gun_slot === 1 )
 			{
 				character_entity.matter = 100;
 				character_entity.matter_max = 100;
 
 				character_entity.hea = 200;
 				character_entity.hmax = 200;
+
+				character_entity.armor = 100;
+				character_entity.armor_max = 100;
+				character_entity._armor_absorb_perc = 0.1;
 			}
 
 			character_entity._ai = { direction: ( character_entity.x > ( sdWorld.world_bounds.x1 + sdWorld.world_bounds.x2 ) / 2 ) ? -1 : 1 };
@@ -818,6 +887,31 @@ class sdFactions extends sdEntity
 			character_entity._matter_regeneration = 5;
 			character_entity._matter_regeneration_multiplier = 4;
 			character_entity._ai_team = 0;
+		}
+
+		if ( faction === sdFactions.FACTION_SWORD_BOT )
+		{
+			character_settings = {"hero_name":"Falkonian Sword Bot","color_bright":"#404040","color_dark":"#303030","color_bright3":"#202020","color_dark3":"#101010","color_visor":"#FF0000","color_suit":"#404040","color_suit2":"#303030","color_dark2":"#202020","color_shoes":"#101010","color_skin":"#101010","color_extra1":"#FF0000","helmet1":false,"helmet40":true,"body1":false,"legs1":false,"body25":true,"legs25":true,"voice1":false,"voice2":false,"voice10":true};
+			character_entity.matter = 8000;
+			character_entity.matter_max = 8000;
+
+			character_entity.hea = 18000;
+			character_entity.hmax = 18000;
+			character_entity.stability_upgrade = 25;
+			character_entity.fist_change = true;
+			character_entity._damage_mult = 2.5;
+			character_entity._stability_recovery_multiplier = 1 + ( 3 / 10 );
+
+			character_entity._ai = { direction: ( character_entity.x > ( sdWorld.world_bounds.x1 + sdWorld.world_bounds.x2 ) / 2 ) ? -1 : 1 };
+			character_entity._ai_level = 4;
+			character_entity._ai_gun_slot = -1;
+			character_entity._matter_regeneration = 1 + character_entity._ai_level; // At least some ammo regen
+			character_entity._jetpack_allowed = true; // Jetpack
+			character_entity._jetpack_fuel_multiplier = 0.25; // Less fuel usage when jetpacking
+			character_entity._ai_team = 1; // AI team 1 is for Falkoks, preparation for future AI factions
+			character_entity._matter_regeneration_multiplier = 10; // Their matter regenerates 10 times faster than normal, unupgraded players
+			character_entity.s = 250;
+			character_entity._jetpack_power = 4;
 		}
 
 		character_entity.sd_filter = sdWorld.ConvertPlayerDescriptionToSDFilter_v2( character_settings );

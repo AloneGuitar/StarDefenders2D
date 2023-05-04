@@ -30,7 +30,7 @@ class sdRescueTeleport extends sdEntity
 		*/
 		sdRescueTeleport.max_matter = 1700;
 		sdRescueTeleport.max_matter_short = 500;
-		sdRescueTeleport.max_matter_cloner = 40000 * 3;
+		sdRescueTeleport.max_matter_cloner = 40000 * 3; // 40k can be charged rather quickly. It is a last resort escape thing after all.
 		
 		sdRescueTeleport.clonning_time = 30 * 60 * 20; // 20 minutes
 
@@ -103,13 +103,16 @@ class sdRescueTeleport extends sdEntity
 							let range = rtp.GetRTPRange( character );
 							let cost = rtp.GetRTPMatterCost( character );
 							
-							let suits = ( range === Infinity || sdWorld.inDist2D_Boolean( rtp.x, rtp.y, character.x, character.y, range ) ) && ( rtp.matter >= cost );
+							//let suits = ( range === Infinity || sdWorld.inDist2D_Boolean( rtp.x, rtp.y, character.x, character.y, range ) ) && ( rtp.matter >= cost );
+							let suits = !rtp.IsCloner() && ( range === Infinity || sdWorld.inDist2D_Boolean( rtp.x, rtp.y, character.x, character.y, range ) ) && ( rtp.matter >= cost );
+							
+							// Warn about cloner-only RTPs being available
 							
 							if ( suits )
 							{
 								//let t = rtp;
-								//if ( sdWorld.CheckLineOfSight( t.x - t._hitbox_x1, t.y + t._hitbox_y1 - character._hitbox_y2 - 1, t.x + t._hitbox_x1, t.y + t._hitbox_y1 - character._hitbox_y2 - 12, t, null, sdCom.com_vision_blocking_classes ) )
 								if ( rtp.GetRTPPotentialPlayerPlacementTestResult( character ) )
+								//if ( sdWorld.CheckLineOfSight( t.x - t._hitbox_x1, t.y + t._hitbox_y1 - character._hitbox_y2 - 1, t.x + t._hitbox_x1, t.y + t._hitbox_y1 - character._hitbox_y2 - 12, t, null, sdCom.com_vision_blocking_classes ) )
 								{
 									is_suitable[ i2 ] = suits;
 									any_is_suitable = true;
@@ -219,8 +222,8 @@ class sdRescueTeleport extends sdEntity
 					//{
 						c.remove();
 					//}
-					//else
-					/*{
+					/*else No because it causes abuse of cloner in a way where player could get into cloner and then to short range teleports - effectively RTP-ing for free after dying far from the base
+					{
 						if ( !c.AttemptTeleportOut( null, false ) )
 						{
 							this.AddDriver( c, true );
@@ -322,7 +325,7 @@ class sdRescueTeleport extends sdEntity
 		
 		this.driver0 = null;
 		this.cloning_progress = 0;
-		//this._rescuing_from_lost_effect = false;
+		//this._rescuing_from_lost_effect = false; Always true
 		
 		this._owner = params.owner || null;
 		//this.owner_net_id = null;
@@ -330,6 +333,10 @@ class sdRescueTeleport extends sdEntity
 		this.owner_biometry = -1;
 		
 		this.UpdateMaxMatter(); // Update max matter so old snapshots are updated
+		/*this._matter_max = 
+			this.type === sdRescueTeleport.TYPE_INFINITE_RANGE ? sdRescueTeleport.max_matter : 
+			this.type === sdRescueTeleport.TYPE_CLONER ? sdRescueTeleport.max_matter_cloner : 
+			sdRescueTeleport.max_matter_short;*/
 	
 		this.matter = 0;
 		
@@ -374,9 +381,9 @@ class sdRescueTeleport extends sdEntity
 	{
 		if ( this.IsCloner() )
 		return true;
-
+	
 		const t = this;
-
+		
 		return ( sdWorld.CheckLineOfSight( t.x - t._hitbox_x1, t.y + t._hitbox_y1 - character._hitbox_y2 - 1, t.x + t._hitbox_x1, t.y + t._hitbox_y1 - character._hitbox_y2 - 12, t, null, sdCom.com_vision_blocking_classes ) );
 	}
 	onBuilt()
@@ -548,7 +555,7 @@ class sdRescueTeleport extends sdEntity
 	{
 		let postfix;
 		if ( this.driver0 )
-		postfix = " ( " + ~~(this.matter) + " / " + ~~(this._matter_max) + ", " + T("clonning") + " "+(~~Math.min( 100, this.cloning_progress / sdRescueTeleport.clonning_time * 100 ))+"% )";
+		postfix = " ( " + ~~(this.matter) + " / " + ~~(this._matter_max) + ", " + T("cloning") + " "+(~~Math.min( 100, this.cloning_progress / sdRescueTeleport.clonning_time * 100 ))+"% )";
 		else
 		postfix = "  ( " + ~~(this.matter) + " / " + ~~(this._matter_max) + " )";
 		
@@ -628,7 +635,7 @@ class sdRescueTeleport extends sdEntity
 							{
 								//if ( this._rescuing_from_lost_effect )
 								//{
-									executer_socket.SDServiceMessage( 'Your previous body does no longer exist. Clonning procedure needs to be compelted. Does anyone have "Area amplifier" device?' );
+									executer_socket.SDServiceMessage( 'Your previous body does no longer exist. Cloning procedure needs to be completed. Does anyone have "Area amplifier" device?' );
 								/*}
 								else
 								{
@@ -692,9 +699,9 @@ class sdRescueTeleport extends sdEntity
 			if ( this.type === sdRescueTeleport.TYPE_CLONER && this.driver0 )
 			{
 				if ( this.driver0 !== exectuter_character )
-				this.AddContextOption( 'Sabotage clonning', 'SABOTAGE', [] );
+				this.AddContextOption( 'Sabotage cloning', 'SABOTAGE', [] );
 				else
-				this.AddContextOption( 'Continue at rescure teleport instead', 'CANCEL', [] );
+				this.AddContextOption( 'Continue at rescue teleport instead', 'CANCEL', [] );
 			}
 			
 			//if ( sdWorld.my_entity && this.owner_net_id === sdWorld.my_entity._net_id )
