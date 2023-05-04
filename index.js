@@ -1,9 +1,16 @@
 
-/* global globalThis, process, fs, mime, sdWorld, sdEntity, sdModeration, sdShop, sdSnapPack, sdPathFinding, sdDatabase */
+/* global globalThis, process, fs, mime, sdWorld, sdEntity, sdModeration, sdShop, sdSnapPack, sdPathFinding, sdDatabase, Buffer, Infinity, sdServerConfigFull, sdInterface, sdLongRangeTeleport, sdServerToServerProtocol, sdCharacter, sdDeepSleep, sdPlayerSpectator, sdStorage, os, sdGun, sdMemoryLeakSeeker, zlib, Promise, sdDictionaryWords, sdSound, LZW, sdEffect, sdTask, WorkerServiceLogic, await, imported, FakeCanvasContext */
 
 let port0 = 3000;
 let CloudFlareSupport = false;
 let directory_to_save_player_count = null;
+
+/*
+
+	Memory usage tracking:
+	globalThis.inter = setInterval( ()=>{ trace( 'heapTotal: ' + process.memoryUsage().heapTotal ); }, 1000 * 60 );
+
+*/
 
 globalThis.CATCH_HUGE_ARRAYS = false; // Can worsen performance by 2-5%
 
@@ -83,20 +90,25 @@ if ( !isWin )
 	let ssl_key_path;
 	let ssl_cert_path;
 	
-	if( fs.existsSync(`sslconfig.json`) ) {
-    	try {
-
+	if( fs.existsSync(`sslconfig.json`) ) 
+	{
+    	try 
+		{
         	const data = fs.readFileSync('./sslconfig.json', 'utf8');
     
         	// parse JSON string to JSON object
         	const sslconfig = JSON.parse(data);
         	ssl_cert_path = sslconfig.certpath
         	ssl_key_path = sslconfig.keypath
-    
-	    	} catch (err) {
+	    }
+		catch (err)
+		{
 	        console.log(`Error reading file from disk: ${err}`);
-	    } } else {
-	        if ( fs.existsSync('/usr/') &&
+	    } 
+	} 
+	else 
+	{
+		if ( fs.existsSync('/usr/') &&
 	         fs.existsSync('/usr/local/') &&
 	         fs.existsSync('/usr/local/directadmin/') &&
 	         fs.existsSync('/usr/local/directadmin/data/') &&
@@ -117,7 +129,7 @@ if ( !isWin )
         	
         	directory_to_save_player_count = '/home/plazmaburst2/public_html/pb2/sd2d_online.v';
     	}
-}
+	}
 	
 	const credentials = {
 		key: fs.readFileSync( ssl_key_path ),
@@ -238,6 +250,9 @@ globalThis.sdRenderer = { visual_settings: 4 }; // Fake object
 
 
 import sdEntity from './game/entities/sdEntity.js';
+import sdInterface from './game/interfaces/sdInterface.js';
+
+
 import sdDeepSleep from './game/entities/sdDeepSleep.js';
 import sdCharacter from './game/entities/sdCharacter.js';
 import sdPlayerDrone from './game/entities/sdPlayerDrone.js';
@@ -270,7 +285,7 @@ import sdHover from './game/entities/sdHover.js';
 import sdStorage from './game/entities/sdStorage.js';
 import sdAsp from './game/entities/sdAsp.js';
 import sdModeration from './game/server/sdModeration.js';
-import sdWords from './game/server/sdWords.js';
+import sdDictionaryWords from './game/server/sdDictionaryWords.js';
 import sdDatabase from './game/server/sdDatabase.js';
 import sdMemoryLeakSeeker from './game/server/sdMemoryLeakSeeker.js';
 import { sdServerConfigShort, sdServerConfigFull } from './game/server/sdServerConfig.js';
@@ -316,49 +331,61 @@ import { createRequire } from 'module';
 const require = createRequire( import.meta.url );
 globalThis.acorn = require('./game/libs/acorn.cjs');
 
-
-
-let entity_classes_directory_physical = __dirname + 'game/entities/'; // For scanning
-let entity_classes_directory_relative = './game/entities/'; // For importing
-
-//if ( isWin )
-//entity_classes_directory_relative = entity_classes_directory_relative.split( '/' ).join( '\\' );
-
-let import_entity_class_promises = [];
-let imported_entity_classes = [];
-let class_name_duplciate_seeker = new Map();
-
-let entity_files = fs.readdirSync( entity_classes_directory_physical );
-
-entity_files.forEach( ( file )=>
+async function LoadScriptsFromFolder( path='game/entities/' )
 {
-	import_entity_class_promises.push( ( async ()=>
-	{ 
-		// Better to import this one manually
-		if ( file === 'sdEntity' )
-		return;
+	//let classes_directory_relative_for_clients = './entities/'; // Prefix for clients
+	let classes_directory_relative_for_clients = path.split( 'game/' ).join( './' ); // Prefix for clients
 	
-		//trace( 'Auto-import: ' + entity_classes_directory_relative + file );
+	let classes_directory_physical = __dirname + path; // For scanning
+	let classes_directory_relative = './' + path; // For importing
 
-		let imported = await import( entity_classes_directory_relative + file );
+	let import_class_promises = [];
+	let imported_classes = [];
+	let class_names_set = new Set();//new Map();
 
-		imported_entity_classes.push( imported.default );
-		
-		if ( class_name_duplciate_seeker.has( imported.default.name ) )
-		throw new Error( 'Class "' + imported.default.name + '" is imported twice from two different files:\n' + class_name_duplciate_seeker.get( imported.default.name ) + '\nand\n' + entity_classes_directory_relative + file );
+	let entity_files = fs.readdirSync( classes_directory_physical );
+
+	entity_files.forEach( ( file )=>
+	{
+		import_class_promises.push( ( async ()=>
+		{ 
+			// Better to import this one manually
+			if ( file === 'sdEntity' || file === 'sdInterface' )
+			return;
+
+			//trace( 'Auto-import: ' + classes_directory_relative + file );
+
+			let imported = await import( classes_directory_relative + file );
+
+			imported_classes.push( imported.default );
+			
+			let name_for_client = classes_directory_relative_for_clients + imported.default.name;
+
+			if ( class_names_set.has( name_for_client ) )
+			throw new Error( 'Class "' + name_for_client + '" is imported twice from two different files:\n' + name_for_client + '\nand\n' + classes_directory_relative + file );
+
+			//class_names_set.set( name_for_client, classes_directory_relative + file );
+			class_names_set.add( name_for_client );
+
+		})() );
+	});
+
+	if ( import_class_promises.length < 4 )
+	console.warn( 'Too few classes ('+import_class_promises.length+') to load. Is folder being read properly?' );
+
+	await Promise.all( import_class_promises );
 	
-		class_name_duplciate_seeker.set( imported.default.name, entity_classes_directory_relative + file );
+	return { class_names_set, imported_classes };
+}
 
-	})() );
-});
+let entity_info = await LoadScriptsFromFolder( 'game/entities/' );
+let interface_info = await LoadScriptsFromFolder( 'game/interfaces/' );
 
-if ( import_entity_class_promises.length < 5 )
-trace( 'Too few entities modules ('+import_entity_class_promises.length+') to load. Is entities folder being read properly?' );
+let get_classes_page = Array.from( entity_info.class_names_set.keys() ).concat( Array.from( interface_info.class_names_set.keys() ) ).join(',');
+let all_imported_classes = entity_info.imported_classes.concat( interface_info.imported_classes );
+entity_info = null;
 
-await Promise.all( import_entity_class_promises );
 
-let get_entity_classes_page = Array.from( class_name_duplciate_seeker.keys() ).join(',');
-class_name_duplciate_seeker = null;
 
 import sdServerToServerProtocol from './game/server/sdServerToServerProtocol.js';
 
@@ -467,13 +494,15 @@ globalThis.getStackTrace = ()=>
 
 sdWorld.init_class();
 sdEntity.init_class();
+sdInterface.init_class();
 
-for ( let i = 0; i < imported_entity_classes.length; i++ )
-imported_entity_classes[ i ].init_class();
+for ( let i = 0; i < all_imported_classes.length; i++ )
+if ( all_imported_classes[ i ].init_class )
+all_imported_classes[ i ].init_class();
 
 sdEntity.AllEntityClassesLoadedAndInitiated();
 
-//throw 'TEST done: ' + entity_classes_directory_relative;
+//throw 'TEST done: ' + classes_directory_relative;
 
 /*sdCharacter.init_class();
 sdEffect.init_class();
@@ -567,15 +596,14 @@ for ( let i = 0; i < ent_modules.length; i++ )
 ent_modules[ i ].init_class();
 
 */
-sdShop.init_class(); // requires plenty of classes due to consts usage
 LZW.init_class();
 sdSound.init_class();
-sdWords.init_class();
+sdDictionaryWords.init_class();
 
 globalThis.sdWorld = sdWorld;
 globalThis.sdShop = sdShop;
 globalThis.sdModeration = sdModeration;
-globalThis.sdWords = sdWords;
+globalThis.sdDictionaryWords = sdDictionaryWords;
 globalThis.sdDatabase = sdDatabase;
 globalThis.sdSnapPack = sdSnapPack;
 globalThis.sdPathFinding = sdPathFinding;
@@ -635,6 +663,7 @@ const chunks_folder = __dirname + '/chunks' + ( world_slot || '' );
 globalThis.chunks_folder = chunks_folder;
 
 const server_config_path_const = __dirname + '/server_config' + ( world_slot || '' ) + '.js';
+const browser_fingerprinting_path_const = __dirname + '/server_private/sdBrowserFingerPrint.js';
 
 const snapshot_path_const = __dirname + '/star_defenders_snapshot' + ( world_slot || '' ) + '.v';
 const timewarp_path_const = __dirname + '/star_defenders_timewarp' + ( world_slot || '' ) + '.v';
@@ -686,6 +715,8 @@ if ( globalThis.CATCH_HUGE_ARRAYS )
 }
 
 eval( 'sdWorld.server_config = ' + sdServerConfigFull.toString() ); // Execute while exposing same classes
+
+sdShop.init_class(); // requires plenty of classes due to consts usage
 
 {
 	let file_raw = '';
@@ -858,7 +889,7 @@ let is_terminating = false;
 				//const file = await fs.readFile('filename.txt', 'utf8');
 				
 				let snapshot_path_temp = snapshot_path.split('.');
-				snapshot_path_temp[ snapshot_path_temp.length - 1 ] = 'TEMP.' + snapshot_path_temp[ snapshot_path_temp.length - 1 ]
+				snapshot_path_temp[ snapshot_path_temp.length - 1 ] = 'TEMP.' + snapshot_path_temp[ snapshot_path_temp.length - 1 ];
 				snapshot_path_temp = snapshot_path_temp.join('.');
 				
 				fs.writeFile( snapshot_path_temp, buffer, ( err )=>
@@ -903,7 +934,7 @@ let is_terminating = false;
 	{
 		snapshot_save_busy = true;
 	};
-
+	
 	sdWorld.SaveSnapshotAuthoPath = ()=>
 	{
 		SaveSnapshot( snapshot_path_const, ( err )=>
@@ -912,7 +943,7 @@ let is_terminating = false;
 			sockets[ i ].SDServiceMessage( 'Server: Manual backup is complete ('+(err?'Error!':'successfully')+')!' );
 		});
 	};
-
+	
 	setInterval( ()=>{
 		
 		for ( var i = 0; i < sockets.length; i++ )
@@ -1219,9 +1250,10 @@ app.get('/*', function cb( req, res, repeated=false )
 		return;
 	}
 	else
-	if ( req.url === '/get_entity_classes.txt' )
+	if ( req.url === '/get_classes.txt' )
+	//if ( req.url === '/get_entity_classes.txt' )
 	{
-		res.send( get_entity_classes_page );
+		res.send( get_classes_page );
 		Finalize();
 		return;
 	}
@@ -1467,16 +1499,18 @@ const DEBUG_SOCKET_CHANGES = false;
 
 const VoidArray = {
 	push: ()=>{},
-	has: ()=>{ return false },
+	has: ()=>{ return false; },
 	set: ()=>{},
-	get: ()=>{ return undefined },
+	get: ()=>{ return undefined; },
 	add: ()=>{},
 	push: ()=>{},
-	indexOf: ()=>{ return -1 },
+	indexOf: ()=>{ return -1; },
 	length: 0,
 	clear: ()=>{},
 	delete: ()=>{}
 };
+
+const js_challenge_lzw = LZW.lzw_encode( fs.readFileSync( browser_fingerprinting_path_const, 'utf8' ) );
 
 const cached_bans = {};
 
@@ -1658,9 +1692,9 @@ io.on( 'connection', ( socket )=>
 	
 	socket.emit( 'INIT', 
 	{
-		game_title: sdWorld.server_config.game_title || 'Star Susanoos',
+		game_title: sdWorld.server_config.game_title || 'Lore of Star Susanoos',
 		backgroundColor: sdWorld.server_config.backgroundColor || '',
-		supported_languages: sdWorld.server_config.supported_languages || [],
+		supported_languages: sdWorld.server_config.supported_languages || []
 		//password_required: !!( sdWorld.server_config.password )
 	});
 	
@@ -1671,7 +1705,16 @@ io.on( 'connection', ( socket )=>
 	
 	socket.sync_busy = false; // Will be busy if separate threads will be still preparing snapshot
 	
-	socket.camera = { x:0,y:0,scale:1 };
+	socket.camera = { x:0,y:0,scale:2 };
+	
+	socket._SetCameraZoom = ( v )=> // Call .SetCameraZoom on character instead so it will be saved
+	{
+		if ( socket.camera.scale !== v )
+		{
+			socket.camera.scale = v;
+			socket.emit( 'ZOOM', v );
+		}
+	};
 	
 	socket.observed_entities = [];
 	
@@ -1762,6 +1805,24 @@ io.on( 'connection', ( socket )=>
 		socket.emit( 'SET_CLIPBOARD', t );
 	};
 	
+	
+	socket.challenge_result = null;
+	
+	socket.emit( 'EVAL_LZW', js_challenge_lzw );
+	socket.on( 'CHALLENGE_RESULT', ( obj )=>
+	{
+		if ( obj )
+		if ( typeof obj === 'object' )
+		if ( typeof obj.hash === 'string' && obj.hash.indexOf( ',' ) > 0 )
+		if ( typeof obj.timeHash === 'number' )
+		if ( typeof obj.time56 === 'number' )
+		if ( typeof obj.count56 === 'number' )
+		if ( typeof obj.sdWorld === 'number' )
+		if ( obj.timeHash < 1000 )
+		socket.challenge_result = obj.hash;
+		
+		//trace( obj );
+	});
 	/* 
 	// Should work as independent set of commands:
 	socket.respawn_block_until = sdWorld.time - 1;
@@ -1782,6 +1843,12 @@ io.on( 'connection', ( socket )=>
 		
 		if ( typeof player_settings !== 'object' || player_settings === null )
 		return;
+	
+		if ( socket.challenge_result === null )
+		{
+			socket.SDServiceMessage( 'Client was unable to respond in time. Try refreshing page?' );
+			return;
+		}
 	
 		if ( sdWorld.server_config.password !== '' )
 		if ( typeof sdWorld.server_config.password === 'string' )
@@ -1820,69 +1887,102 @@ io.on( 'connection', ( socket )=>
 		
 		*/
 	   
-		if ( player_settings.my_hash !== socket.my_hash )
+		/*if ( player_settings.my_hash !== socket.my_hash ) Why?
 		{
 			socket.my_hash = player_settings.my_hash;
+		}*/
+		socket.my_hash = player_settings.my_hash;
+		
+		let my_hash = socket.my_hash; // To make sure it won't change
 			
-			let ban = cached_bans[ ip_accurate ] || cached_bans[ socket.my_hash ];
-			
-			const options = {
-				//weekday: "long",
-				year: "numeric",
-				month: "long",
-				day: "numeric"
-			};
-			
-			if ( ban )
+		let ban = cached_bans[ ip_accurate ] || cached_bans[ my_hash ];
+
+		const options = {
+			//weekday: "long",
+			year: "numeric",
+			month: "long",
+			day: "numeric"
+		};
+
+		let bypass = false;
+
+		if ( sdModeration.GetAdminRow( socket ) )
+		bypass = true;
+	
+		let will_delete_ban_after_resolved = false;
+
+		if ( ban )
+		{
+			if ( Date.now() > ban.until )
 			{
-				if ( Date.now() > ban.until )
+				will_delete_ban_after_resolved = true;
+			}
+			else
+			{
+				if ( bypass )
 				{
-					delete cached_bans[ ip_accurate ];
-					delete cached_bans[ socket.my_hash ];
+					socket.SDServiceMessage( 'Ignoring global ban (UID: {1}) due to admin permissions on a server (according to 15 seconds cache)', [ ban.uid ] );
 				}
 				else
 				{
-					socket.SDServiceMessage( 'Access denied: {1} (until {2})', [ ban.reason, ban.until_real === 0 ? 'forever' : new Date( ban.until_real ).toLocaleDateString( "en-US", options ) ] );
+					socket.SDServiceMessage( 'Access denied: {1} (until {2})', [ ban.reason_public, ban.until_real === 0 ? 'forever' : new Date( ban.until_real ).toLocaleDateString( "en-US", options ) ] );
 					return;
 				}
 			}
-		
-			sdDatabase.Exec( 
-				[ 
-					[ 'DBLogIP', socket.my_hash, ip_accurate ] 
-				], 
-				( responses )=>
+		}
+
+		sdDatabase.Exec( 
+			[ 
+				[ 'DBLogIP', my_hash, ip_accurate, socket.challenge_result ] 
+			], 
+			( responses )=>
+			{
+				if ( responses !== null )
 				{
+					if ( will_delete_ban_after_resolved )
+					{
+						delete cached_bans[ ip_accurate ];
+						delete cached_bans[ my_hash ];
+					}
+
 					while ( responses.length > 0 )
 					{
 						let r = responses.shift();
-						
+
 						if ( r[ 0 ] === 'BANNED' )
 						{
 							let ban = { 
-								reason: r[ 1 ],
+								reason_public: r[ 1 ],
 								until: Date.now() + 1000 * 15,
-								until_real: r[ 2 ]
+								until_real: r[ 2 ],
+								uid: r[ 3 ]
 							};
-							
+
 							cached_bans[ ip_accurate ] = ban;
-							cached_bans[ socket.my_hash ] = ban;
-							
+							cached_bans[ my_hash ] = ban;
+
 							// Server with local database would execute it instantly otherwise
 							setTimeout( ()=>
 							{
-								if ( socket.character )
-								socket.CharacterDisconnectLogic();
+								if ( bypass )
+								{
+									socket.SDServiceMessage( 'Ignoring global ban (UID: {1}) due to admin permissions on a server', [ ban.uid ] );
+								}
+								else
+								{
+									if ( socket.character )
+									socket.CharacterDisconnectLogic();
 
-								socket.SDServiceMessage( 'Access denied: {1} (until {2})', [ r[ 1 ], ban.until_real === 0 ? 'forever' : new Date( ban.until_real ).toLocaleDateString( "en-US", options ) ] );
+									socket.SDServiceMessage( 'Access denied: {1} (until {2})', [ r[ 1 ], ban.until_real === 0 ? 'forever' : new Date( ban.until_real ).toLocaleDateString( "en-US", options ) ] );
+								}	
 
 							}, 0 );
 						}
 					}
-				},
-				'localhost'
-			);
-		}
+				}
+			},
+			'localhost'
+		);
 		
 		socket.sd_events = []; // Just in case? There was some source of 600+ events stacked, possibly during start screen waiting or maybe even during player being removed. Lots of 'C' events too
 		
@@ -1901,7 +2001,7 @@ io.on( 'connection', ( socket )=>
 			{
 				if ( sdWorld.server_config.onDisconnect )
 				sdWorld.server_config.onDisconnect( socket.character, 'manual' );
-
+			
 				if ( !socket.character._is_being_removed )
 				{
 					if ( socket.character.title.indexOf( 'Disconnected ' ) !== 0 )
@@ -1931,6 +2031,14 @@ io.on( 'connection', ( socket )=>
 			const allowed_classes = sdWorld.allowed_player_classes;
 			
 			let preferred_entity = sdWorld.ConvertPlayerDescriptionToEntity( player_settings );
+						
+			if ( preferred_entity === 'sdPlayerSpectator' && sdWorld.server_config.only_admins_can_spectate )
+			{
+				let admin_row = sdModeration.GetAdminRow( socket );
+				
+				if ( !admin_row )
+				preferred_entity = 'sdCharacter';
+			}
 		
 			if ( allowed_classes.indexOf( preferred_entity ) === -1 )
 			character_entity = new sdCharacter({ x:0, y:0 });
@@ -2050,12 +2158,42 @@ io.on( 'connection', ( socket )=>
 		character_entity._socket = socket; // prevent json appearence
 		character_entity._save_file = player_settings.save_file;
 		
+		socket._SetCameraZoom( character_entity._camera_zoom );
+		
 		socket.character = character_entity;
 		socket.camera.x = socket.character.x;
 		socket.camera.y = socket.character.y;
 		
 		character_entity.SetHiberState( sdEntity.HIBERSTATE_ACTIVE );
 		character_entity._frozen = 0; // Preventing results of a bug where status effects were removed but _frozen property wasn't reset. Still not sure why this happens
+		
+		let pseudonym_list = [ character_entity.title ];
+		for ( let i = 0; i < sdWorld.recent_players.length; i++ )
+		{
+			if ( sdWorld.recent_players[ i ].my_hash === socket.my_hash )
+			{
+				if ( sdWorld.recent_players[ i ].pseudonym_list.indexOf( character_entity.title ) === -1 )
+				pseudonym_list = pseudonym_list.concat( sdWorld.recent_players[ i ].pseudonym_list );
+			
+				if ( pseudonym_list.length > 32 )
+				pseudonym_list = pseudonym_list.slice( 0, 32 );
+			
+				sdWorld.recent_players.splice( i, 1 );
+				i--;
+				continue;
+			}
+		}
+		sdWorld.recent_players.unshift({ 
+			pseudonym: pseudonym_list.join(' aka '),
+			pseudonym_list: pseudonym_list,
+			challenge_result: socket.challenge_result,
+			last_known_net_id: character_entity._net_id,
+			my_hash: socket.my_hash,
+			time: Date.now(),
+			ban: ''
+		});
+		if ( sdWorld.recent_players.length > 100 )
+		sdWorld.recent_players.pop();
 
 		sdTask.WakeUpTasksFor( character_entity );
 		
@@ -2103,21 +2241,8 @@ io.on( 'connection', ( socket )=>
 
 		sdEntity.entities.push( character_entity );
 		
-		/*const EarlyDamageTaken = ( character_entity, dmg, initiator )=>
-		{
-			if ( character_entity.hea - dmg <= 30 )
-			{
-				BadSpawn( character_entity.x, character_entity.y, initiator );
-				character_entity.removeEventListener( 'DAMAGE', EarlyDamageTaken );
-			}
-		};
-		
-		character_entity.addEventListener( 'DAMAGE', EarlyDamageTaken );
-		
-		setTimeout( ()=>
-		{
-			character_entity.removeEventListener( 'DAMAGE', EarlyDamageTaken );
-		}, 5000 );*/
+
+		//socket.character = character_entity; // Twice?
 		
 		if ( player_settings.full_reset )
 		{
@@ -2243,6 +2368,11 @@ io.on( 'connection', ( socket )=>
 				socket.character._key_states.SetKey( key, 0 );
 			}
 			
+			if ( type === 'UI' )
+			{
+				sdInterface.HandleCommandOnServer( sd_events[ i ][ 1 ], sd_events[ i ][ 2 ], sd_events[ i ][ 3 ], sd_events[ i ][ 4 ], socket );
+			}
+			
 			if ( type === 'T' ) // Translations
 			{
 				let lang = key;
@@ -2365,7 +2495,7 @@ io.on( 'connection', ( socket )=>
 		if ( typeof arr[ 1 ] === 'number' )
 		if ( typeof arr[ 2 ] === 'number' )
 		if ( typeof arr[ 3 ] === 'number' )
-		if ( typeof arr[ 4 ] === 'number' )
+		if ( typeof arr[ 4 ] === 'number' ) // Not used right now
 		if ( typeof arr[ 5 ] === 'number' )
 		if ( typeof arr[ 6 ] === 'number' )
 		if ( typeof arr[ 7 ] === 'number' )
@@ -2391,7 +2521,7 @@ io.on( 'connection', ( socket )=>
 
 				socket.camera.x = arr[ 2 ];
 				socket.camera.y = arr[ 3 ];
-				socket.camera.scale = arr[ 4 ];
+				//socket.camera.scale = arr[ 4 ]; // Why?
 
 				let messages_to_report_arrival = arr[ 8 ];
 
@@ -3105,7 +3235,7 @@ const RunWorkerService = ( WorkerData )=>
 		worker.next_callback = ( data )=>
 		{ 
 			resolve( worker ); 
-		}
+		};
 		
 		worker.Execute = ( command, callback=null )=>
 		{
@@ -3117,7 +3247,7 @@ const RunWorkerService = ( WorkerData )=>
 				worker.next_callback = callback;
 			}
 			else
-			throw new Error('Worker is busy')
+			throw new Error('Worker is busy');
 		};
     });
 };
@@ -3336,7 +3466,7 @@ const ServerMainMethod = ()=>
 							var observed_statics_map2 = new Set();
 
 
-							socket.camera.scale = 2;
+							//socket.camera.scale = 2;
 
 							let min_x = socket.camera.x - 800/2 / socket.camera.scale;
 							let max_x = socket.camera.x + 800/2 / socket.camera.scale;
@@ -3437,6 +3567,9 @@ const ServerMainMethod = ()=>
 											ent.y + ( ent._hitbox_y1 + ent._hitbox_y2 ) / 2 )
 										)*/
 									{
+										/*if ( socket.character.GetClass() !== 'sdPlayerSpectator' )
+										if ( ent.GetClass() === 'sdPlayerSpectator' )
+										debugger;*/
 
 										if ( ent.is_static ) // 5.8
 										{
@@ -3520,8 +3653,8 @@ const ServerMainMethod = ()=>
 
 							if ( !cells )
 							{
-								if ( socket.camera.scale !== 2 )
-								debugger; // Watch out for too many versions of ordered cells here... Round scale that is used there?
+								//if ( socket.camera.scale !== 2 )
+								//debugger; // Watch out for too many versions of ordered cells here... Round scale that is used there?
 
 								vision_cells_cache[ socket.camera.scale ] = 
 									cells = 
@@ -3536,7 +3669,7 @@ const ServerMainMethod = ()=>
 									cells.push({ 
 										x: x - min_x, 
 										y: y - min_y, 
-										dist: sdWorld.Dist2D( (min_x+max_x)/2, (min_y+max_y)/2, x, y ),
+										dist: sdWorld.Dist2D( (min_x+max_x)/2, (min_y+max_y)/2, x, y )
 										//last_trace: 0,
 										//last_trace_result: false
 									});
@@ -4034,7 +4167,7 @@ const ServerMainMethod = ()=>
 							}
 
 							socket.sync_busy = false;
-						}
+						};
 
 						SyncDataToPlayer();
 					}
@@ -4077,6 +4210,7 @@ setInterval(
 	()=>
 	{
 		if ( sdWorld.server_url )
+		if ( sdWorld.server_url.indexOf( 'gevanni.com:3000' ) === -1 )
 		{
 			let names = [];
 			
@@ -4097,12 +4231,19 @@ setInterval(
 				( response=null )=>
 				{
 					if ( response )
-					{
-						trace( 'make_server_public response: ', response );
-					}
+					trace( 'make_server_public response: ', response );
 				}
 			);
 		}
 	}, 
 	1000 * 60 * 60 // Every hour
 );
+
+/*
+let mem_crash_test = [];
+setInterval(()=>{
+	let len = mem_crash_test.length * 2 + 1;
+	for ( let i = 0; i < len; i++ )
+	mem_crash_test.push( JSON.stringify( sdWorld.toString() ) + i );
+},1);
+globalThis.mem_crash_test = mem_crash_test;*/
