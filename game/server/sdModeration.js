@@ -16,6 +16,7 @@ import sdWater from '../entities/sdWater.js';
 import sdRescueTeleport from '../entities/sdRescueTeleport.js';
 import sdDeepSleep from '../entities/sdDeepSleep.js';
 
+
 import { spawn } from 'child_process';
 
 class sdModeration
@@ -27,13 +28,15 @@ class sdModeration
 			admins: [
 				// { my_hash, access_level, pseudonym, promoter_hash } // lower access_level - more rights // promoter_hash can be null for first admin
 			],
-			ban_ips: {},
-			ban_passwords: {},
+			ban_ips: {}, // Obsolete? Use DB bans instead
+			ban_passwords: {}, // Obsolete? Use DB bans instead
 			// xxx: { until, reason, pseudonym, time } // not working yet
 		};
 		sdModeration.ever_loaded = false;
 		
-		sdModeration.non_admin_commands = [ 'myid', 'id', 'help', '?', 'commands', 'listadmins', 'selfpromote', 'connection', 'kill' ];
+		sdModeration.non_admin_commands = [ 'help', '?', 'commands', 'listadmins', 'selfpromote', 'connection', 'kill' ];
+		
+		sdModeration.admin_commands = [ 'commands', 'listadmins', 'announce', 'quit', 'restart', 'save', 'restore', 'fullreset', 'god', 'scale', 'admin', 'boundsmove', 'db', 'database' ];
 		
 		// Fake socket that can be passed instead of socket to force some commands from world logic
 		sdModeration.superuser_socket = {
@@ -109,7 +112,15 @@ class sdModeration
 	}
 	static SpecialsReplaceWithLatin( s )
 	{
-		return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+		s = s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+		
+		s = s.split('е').join('e');
+		s = s.split('і').join('i');
+		s = s.split('ї').join('i');
+		s = s.split('о').join('o');
+		s = s.split('р').join('p');
+		
+		return s;
 	}
 	static IsPhraseBad( phrase, coming_from_socket=null )
 	{
@@ -121,11 +132,13 @@ class sdModeration
 		{
 			//trace( 'Checking words', sdModeration.bad_words.length );
 			
+			let phrase_raw_lower_case = ' ' + ( phrase.toLowerCase ) + ' ';
 			phrase = ' ' + sdModeration.SpecialsReplaceWithLatin( phrase ) + ' ';
 
 			for ( let i = 0; i < sdModeration.bad_words.length; i++ )
 			{
-				if ( phrase.indexOf( sdModeration.bad_words[ i ][ 0 ] ) !== -1 )
+				if ( phrase.indexOf( sdModeration.bad_words[ i ][ 0 ] ) !== -1 ||
+					 phrase_raw_lower_case.indexOf( sdModeration.bad_words[ i ][ 0 ] ) !== -1 )
 				{
 					// Potentially tracking IPs and lowering reaction level would make sense against some obsessed people, hopefully there won't be any
 					
@@ -133,6 +146,7 @@ class sdModeration
 					{
 						// Low tier phrases should prevent higher tier to react to them
 						phrase = phrase.split( sdModeration.bad_words[ i ][ 1 ] ).join( ' ' );
+						phrase_raw_lower_case = phrase_raw_lower_case.split( sdModeration.bad_words[ i ][ 1 ] ).join( ' ' );
 						//trace( 'Partially found', i, ' -- ', sdModeration.bad_words[ i ][ 0 ], ' -- ', sdModeration.bad_words[ i ][ 1 ] );
 					}
 					else
@@ -151,19 +165,18 @@ class sdModeration
 		return 0;
 	}
 	
+	static GetAdminRowByHash( hash )
+	{
+		if ( hash !== null )
+		for ( var a = 0; a < sdModeration.data.admins.length; a++ )
+		if ( sdModeration.data.admins[ a ].my_hash === hash )
+		return sdModeration.data.admins[ a ];
+		
+		return null;
+	}
 	static GetAdminRow( socket )
 	{
-		let my_admin_row = null;
-		
-		if ( socket.my_hash !== null )
-		for ( var a = 0; a < sdModeration.data.admins.length; a++ )
-		if ( sdModeration.data.admins[ a ].my_hash === socket.my_hash )
-		{
-			my_admin_row = sdModeration.data.admins[ a ];
-			break;
-		}
-		
-		return my_admin_row;
+		return sdModeration.GetAdminRowByHash( socket.my_hash );
 	}
 	
 	static CommandReceived( socket, text )
@@ -221,6 +234,21 @@ class sdModeration
 			}
 		}
 		
+		let allowed_commands = sdModeration.admin_commands;
+		
+		if ( my_admin_row )
+		if ( my_admin_row.access_level > 0 )
+		{
+			allowed_commands = sdWorld.server_config.allowed_non_full_access_level_admin_commands;
+			
+			if ( sdModeration.non_admin_commands.indexOf( parts[ 0 ] ) === -1 )
+			if ( allowed_commands.indexOf( parts[ 0 ] ) === -1 )
+			{
+				socket.SDServiceMessage( 'Server: No permissions according to allowed_non_full_access_level_admin_commands server config file value. Type /help for list of allowed commands.' );
+				return;
+			}
+		}
+		
 		// Anything below won't execute without admin permission, except for selfpromote. Nothing will also be executed if moderation data wasn't loaded yet or failed to load.
 		
 		if ( parts[ 0 ] === 'selfpromote' )
@@ -231,7 +259,11 @@ class sdModeration
 				{
 					if ( !globalThis.file_exists( sdWorld.superuser_pass_path ) )
 					{
-						fs.writeFileSync( sdWorld.superuser_pass_path, 'pass'+ ~~( 10000 + Math.random() * 89999 ) );
+						fs.writeFileSync( sdWorld.superuser_pass_path, 'pass' + 
+							Math.floor( 1000000000000000 + Math.random() * 8007199254740991 ) + 
+							Math.floor( 1000000000000000 + Math.random() * 8007199254740991 ) + 
+							Math.floor( 1000000000000000 + Math.random() * 8007199254740991 )
+						);
 					}
 					
 					let pass = fs.readFileSync( sdWorld.superuser_pass_path ).toString();
@@ -243,7 +275,7 @@ class sdModeration
 						socket.SDServiceMessage( 'Server: You are a first admin now! That password won\'t work while at least one admin exists.' );
 					}
 					else
-					socket.SDServiceMessage( 'Server: Wrong password. Check superuser_pass.v for correct one.' );
+					socket.SDServiceMessage( 'Server: Wrong password. Open superuser_pass.v in Notepad, select everything, press Ctrl+C, and then type here "/selfpromote pass..." (Ctrl+V to paste).' );
 				}
 				else
 				socket.SDServiceMessage( 'Server: No hash or no character found.' );
@@ -256,7 +288,7 @@ class sdModeration
 		{
 			sdModeration.Load( 0 );
 		}
-		else
+		/*else
 		if ( parts[ 0 ] === 'myid' || parts[ 0 ] === 'id' )
 		{
 			if ( socket.character )
@@ -265,7 +297,7 @@ class sdModeration
 				
 			}
 		}
-		else
+		else Moved to '/admin' or '/a' command
 		if ( parts[ 0 ] === 'promote' || parts[ 0 ] === 'demote' )
 		{
 			if ( parts[ 1 ] === 'undefined' )
@@ -365,14 +397,14 @@ class sdModeration
 			{
 				socket.SDServiceMessage( 'Server: Unable to find target' );
 			}
-		}
+		}*/
 		else
 		if ( parts[ 0 ] === 'commands' || parts[ 0 ] === 'help' || parts[ 0 ] === '?' )
 		{
 			if ( is_non_admin )
-			socket.SDServiceMessage( 'Supported commands: ' + [ '/commands', '/myid', '/listadmins', '/connection', '/kill' ].join(', ') );
+			socket.SDServiceMessage( 'Supported commands: /' + sdModeration.non_admin_commands.join(', /') );
 			else
-			socket.SDServiceMessage( 'Supported commands: ' + [ '/commands', '/myid', '/listadmins', '/announce', '/quit', '/restart', '/save', '/restore', '/fullreset', '/god', '/scale', '/promote', '/demote', '/boundsmove' ].join(', ') );
+			socket.SDServiceMessage( 'Supported commands: /' + allowed_commands.join(', /') );
 		}
 		else
 		if ( parts[ 0 ] === 'announce' )
@@ -523,7 +555,7 @@ class sdModeration
 			{
 				fs.unlinkSync( sdWorld.snapshot_path_const );
 				sdDeepSleep.DeleteAllFiles();
-
+				
 			}catch(e){}
 			
 			sdModeration.CommandReceived( socket, '/restart nosave' );
@@ -557,37 +589,41 @@ class sdModeration
 					{
 						socket.character.driver_of.ExcludeDriver( socket.character, true );
 					}
-
-					for ( let i = 0; i < sdWorld.sockets.length; i++ )
-					sdWorld.sockets[ i ].SDServiceMessage( socket.character.title + ' has entered "godmode".' );
-		
+					
 					socket.character._god = true;
 					
-					sdEntity.entities.push( new sdGun({ x:socket.character.x, y:socket.character.y, class:sdGun.CLASS_ADMIN_REMOVER }) );
-					sdEntity.entities.push( new sdGun({ x:socket.character.x, y:socket.character.y, class:sdGun.CLASS_ADMIN_TELEPORTER }) );
-					sdEntity.entities.push( new sdGun({ x:socket.character.x, y:socket.character.y, class:sdGun.CLASS_ADMIN_DAMAGER }) );
-					sdEntity.entities.push( new sdGun({ x:socket.character.x, y:socket.character.y, class:sdGun.CLASS_BUILD_TOOL }) );
-					
-					socket.character.InstallUpgrade( 'upgrade_jetpack' );
-					socket.character.InstallUpgrade( 'upgrade_hook' );
-					socket.character.InstallUpgrade( 'upgrade_invisibility' );
-					socket.character.InstallUpgrade( 'upgrade_grenades' );
+					if ( socket.character.GetClass() !== 'sdPlayerSpectator' )
+					{
+						//for ( let i = 0; i < sdWorld.sockets.length; i++ )
+						//sdWorld.sockets[ i ].SDServiceMessage( socket.character.title + ' has entered "godmode".' );
 
-					socket.character.InstallUpgrade( 'upgrade_jetpack_power' );
-					socket.character.InstallUpgrade( 'upgrade_jetpack_power' );
-					socket.character.InstallUpgrade( 'upgrade_jetpack_power' );
+						sdEntity.entities.push( new sdGun({ x:socket.character.x, y:socket.character.y, class:sdGun.CLASS_ADMIN_REMOVER }) );
+						sdEntity.entities.push( new sdGun({ x:socket.character.x, y:socket.character.y, class:sdGun.CLASS_ADMIN_TELEPORTER }) );
+						sdEntity.entities.push( new sdGun({ x:socket.character.x, y:socket.character.y, class:sdGun.CLASS_ADMIN_DAMAGER }) );
+						sdEntity.entities.push( new sdGun({ x:socket.character.x, y:socket.character.y, class:sdGun.CLASS_BUILD_TOOL }) );
 
-					socket.character.InstallUpgrade( 'upgrade_stability_recovery' );
-					socket.character.InstallUpgrade( 'upgrade_stability_recovery' );
-					socket.character.InstallUpgrade( 'upgrade_stability_recovery' );
+						socket.character.InstallUpgrade( 'upgrade_jetpack' );
+						socket.character.InstallUpgrade( 'upgrade_hook' );
+						socket.character.InstallUpgrade( 'upgrade_invisibility' );
+						socket.character.InstallUpgrade( 'upgrade_grenades' );
+
+						socket.character.InstallUpgrade( 'upgrade_jetpack_power' );
+						socket.character.InstallUpgrade( 'upgrade_jetpack_power' );
+						socket.character.InstallUpgrade( 'upgrade_jetpack_power' );
+
+						socket.character.InstallUpgrade( 'upgrade_stability_recovery' );
+						socket.character.InstallUpgrade( 'upgrade_stability_recovery' );
+						socket.character.InstallUpgrade( 'upgrade_stability_recovery' );
+					}
 					
 					socket.emit('SET sdWorld.my_entity._god', true );
 				}
 				else
 				if ( parts[ 1 ] === '0' )
 				{
-					for ( let i = 0; i < sdWorld.sockets.length; i++ )
-					sdWorld.sockets[ i ].SDServiceMessage( socket.character.title + ' is no longer in "godmode".' );
+					//if ( socket.character.GetClass() !== 'sdPlayerSpectator' )
+					//for ( let i = 0; i < sdWorld.sockets.length; i++ )
+					//sdWorld.sockets[ i ].SDServiceMessage( socket.character.title + ' is no longer in "godmode".' );
 				
 					socket.character._god = false;
 					socket.emit('SET sdWorld.my_entity._god', false );
@@ -611,7 +647,7 @@ class sdModeration
 			if ( sdEntity.entities[ i ].GetClass() === parts[ 1 ] || parts[ 1 ] === '*' )
 			{
 				sdEntity.entities[ i ].remove();
-
+				
 				if ( parts[ 0 ] === 'remove' )
 				sdEntity.entities[ i ]._broken = false;
 			}
@@ -641,6 +677,7 @@ class sdModeration
 			if ( !socket.character._is_being_removed )
 			{
 				let character = socket.character;
+				
 				character.ManualRTPSequence( true );
 			}
 		}
@@ -711,7 +748,7 @@ class sdModeration
 			let counts = [ 0,0,0 ];
 			for ( let i = 0; i < sdDeepSleep.cells.length; i++ )
 			counts[ sdDeepSleep.cells[ i ].type ]++;
-
+		
 			socket.SDServiceMessage( 'Cells total: ' + sdDeepSleep.cells.length + ', unspawned: ' + counts[ sdDeepSleep.TYPE_UNSPAWNED_WORLD ] + ', hibernated: ' + counts[ sdDeepSleep.TYPE_HIBERNATED_WORLD ] + ', potentially-to-hibernate: ' + counts[ sdDeepSleep.TYPE_SCHEDULED_SLEEP ] );
 		}
 		else
@@ -729,10 +766,12 @@ class sdModeration
 		else
 		if ( parts[ 0 ] === 'database' || parts[ 0 ] === 'db' )
 		{
-			//if ( my_admin_row.access_level === 0 )
 			socket.emit( 'OPEN_INTERFACE', 'sdDatabaseEditor' );
-			//else
-			//socket.SDServiceMessage( 'Server: Only first admin can access database. Your access level isn\'t low enough: ' + my_admin_row.access_level );
+		}
+		else
+		if ( parts[ 0 ] === 'admin' || parts[ 0 ] === 'a' || parts[ 0 ] === 'adm' )
+		{
+			socket.emit( 'OPEN_INTERFACE', 'sdAdminPanel' );
 		}
 		else
 		socket.SDServiceMessage( 'Server: Unknown command "' + parts[ 0 ] + '"' );

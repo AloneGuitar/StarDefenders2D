@@ -10,6 +10,7 @@ class sdServerConfigShort
 	// If this all looks scary and you are using NetBeans - use "Ctrl + -" and "Ctrl + *" to hide big methods.
 
 	static password = ''; // Restrict connection access?
+	static only_admins_can_spectate = true;
 
 	static make_server_public = ( this.password === '' ); // By default it is public if password was not set. Public means server will send its' URL to www.gevanni.com to be potentially listed in servers list in future. Sent URL is told by first browser that has successfully connected to this server.
 
@@ -50,10 +51,13 @@ class sdServerConfigFull extends sdServerConfigShort
 
 	static adsense_client = 'ca-pub-7381466440820611'; // To learn how to install your ads go there https://developers.google.com/ad-placement/docs/beta . This adsense_client comes from HTML code for AdSense. You'll additionally be requested to allow ads on your domain via ads.txt file. Your server will not show ads designed for other servers and vice versa
 		
-	static save_raw_version_of_snapshot = true; // One that can be easily viewed in Notepad-like applications. It is never used within server logic. "true" can slow-down snapshot generation.
+	static save_raw_version_of_snapshot = false; // One that can be easily viewed in Notepad-like applications. It is never used within server logic. "true" can slow-down snapshot generation.
 	
 	static store_game_files_in_ram = false; // Will make server never use hard drive without need until next reboot, except for cases when backup is being made (more RAM usage, can be suitable for VPS servers that have strange Disk I/O issues)
-	
+
+	static allowed_non_full_access_level_admin_commands = [ 'commands', 'listadmins', 'announce', 'restart', 'save', 'restore', 'god', 'admin', 'a', 'adm', 'db', 'database' ];
+	static let_non_full_access_level_admin_setup_long_range_teleports = false; // Can potentially cause connecting server to some local LRTPs with admin shop-made items. Also can leak server IP if you are using Cloudflare.
+
 	static offscreen_behavior = 'OFFSCREEN_BEHAVIOR_SIMULATE_X_STEPS_AT_ONCE'; // Or 'OFFSCREEN_BEHAVIOR_SIMULATE_PROPERLY' or 'OFFSCREEN_BEHAVIOR_SIMULATE_X_TIMES_SLOWER' or 'OFFSCREEN_BEHAVIOR_SIMULATE_X_STEPS_AT_ONCE'. We cheat a little bit offscreen as huge/dense worlds would have perforamnce issues otherwise
 	static offscreen_behavior_x_value = 30; // By how much slower or how many steps to do at once. Usually 30 can give 2x performance improvement in case of OFFSCREEN_BEHAVIOR_SIMULATE_X_STEPS_AT_ONCE. You can test if anything goes wrong offscreen by enabling debug_offscreen_behavior
 	static debug_offscreen_behavior = false; // If you want to see how everything moves offscreen - set this to true
@@ -72,16 +76,15 @@ class sdServerConfigFull extends sdServerConfigShort
 			return true;
 		}
 		else
-		if ( ent.is( sdSandWorm ) )
+		if ( ent.onThink.has_GiveLiquid )
 		{
-			if ( ( ent.towards_tail && !ent.towards_tail._is_being_removed ) || ( ent.towards_head && !ent.towards_head._is_being_removed ) )
-			if ( ent._phys_sleep > 0 )
+			if ( sdCable.connected_entities_per_entity.has( ent ) )
 			return true;
 		}
 		else
-		if ( ent.is( sdQuadro ) )
+		if ( ent.is( sdSandWorm ) )
 		{
-			if ( ent.w1 || ent.w2 || ent.p )
+			if ( ( ent.towards_tail && !ent.towards_tail._is_being_removed ) || ( ent.towards_head && !ent.towards_head._is_being_removed ) )
 			if ( ent._phys_sleep > 0 )
 			return true;
 		}
@@ -93,10 +96,14 @@ class sdServerConfigFull extends sdServerConfigShort
 
 	static base_shielding_units_passive_drain_per_week_green = 0.01; // 0.2 // Percentage. Also applied to matter amplifiers so green BSUs drain as fast as blue BSUs
 	static base_shielding_units_passive_drain_per_week_blue = 0.01; // 0.2 // Percentage. Also applied to matter amplifiers so green BSUs drain as fast as blue BSUs
+	static do_green_base_shielding_units_consume_essence = true; // Allows green BSU essence consumption through cables. Does not disable crystal consumption
 	static allowed_base_shielding_unit_types = null; // [ sdBaseShieldingUnit.TYPE_CRYSTAL_CONSUMER, sdBaseShieldingUnit.TYPE_MATTER, sdBaseShieldingUnit.TYPE_SCORE_TIMED ] to allow specific ones or null to allow all
+	static allow_private_storage = true; // Accesible via LRTPs
+	static allow_rescue_teleports = true;
 
-	static open_world_max_distance_from_zero_coordinates_x = 40000; // Greater values work just fine, but do you really want this on your server? It can only cause lags.
-	static open_world_max_distance_from_zero_coordinates_y_min = -3000; // Greater values work just fine, but do you really want this on your server? It can only cause lags.
+	static open_world_max_distance_from_zero_coordinates_x = 80000; // Greater values work just fine, but do you really want this on your server? It can only cause lags.
+	static open_world_max_distance_from_zero_coordinates_y_min_soft = -3000; // Greater values work just fine, but do you really want this on your server? It can only cause lags.
+	static open_world_max_distance_from_zero_coordinates_y_min = -6000; // Greater values work just fine, but do you really want this on your server? It can only cause lags.
 	static open_world_max_distance_from_zero_coordinates_y_max = 40000; // Greater values work just fine, but do you really want this on your server? It can only cause lags.
 
 	static player_vs_player_damage_scale = 3;
@@ -234,11 +241,13 @@ class sdServerConfigFull extends sdServerConfigShort
 
 				if ( !hover._is_being_removed )
 				{
-					if ( hover.driver0 )
-					if ( !hover.driver0._is_being_removed )
+					let driver = hover.driver0;
+
+					if ( driver )
+					if ( !driver._is_being_removed )
 					{
-						hover.driver0.remove();
-						hover.driver0._broken = false;
+						driver.remove();
+						driver._broken = false;
 					}
 
 					hover.remove();
@@ -360,12 +369,13 @@ class sdServerConfigFull extends sdServerConfigShort
 
 		if ( !hover )
 		if ( !sdWorld.server_config.skip_arrival_sequence )
+		if ( character_entity.is( sdCharacter ) || character_entity.is( sdPlayerDrone ) )
 		{
 			fresh_hover = true;
 
 			hover = new sdHover({ x:character_entity.x, y:character_entity.y });
 			hover.guns = 0;
-			hover._doors_locked = true;
+			hover.doors_locked = true;
 			hover.nick = 'Extraction Hover';
 
 			sdEntity.entities.push( hover );
@@ -1271,5 +1281,10 @@ class sdServerConfigFull extends sdServerConfigShort
 		} while( true );
 	}
 };
+
+if ( sdServerConfigShort.password !== '' || sdServerConfigShort.allowed_s2s_protocol_ips.length !== 3 )
+{
+	throw new Error( '/!\\ DO NOT EDIT sdServerConfig.js FILE - MAKE CHANGES TO server_config.js ONLY, SINCE YOU ARE MAKING SENSITIVE INFORMATION SUCH AS PASSWORDS/IP ADDRESSES PUBLIC. READ COMMENTS AT THE BEGGINNING OF A FILE FOR HOW THIS ALL WORKS. /!\\' );
+}
 
 export { sdServerConfigShort, sdServerConfigFull };

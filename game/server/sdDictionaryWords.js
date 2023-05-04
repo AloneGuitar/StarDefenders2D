@@ -1,15 +1,15 @@
 
-class sdWords
+class sdDictionaryWords
 {
 	static init_class()
 	{
-		sdWords.words = [];
+		sdDictionaryWords.words = [];
 		
-		sdWords.PopulateWordsArray();
+		sdDictionaryWords.PopulateWordsArray();
 	}
 	static GetRandomWord()
 	{
-		return sdWords.words[ Math.floor( Math.random() * sdWords.words.length ) ];
+		return sdDictionaryWords.words[ Math.floor( Math.random() * sdDictionaryWords.words.length ) ];
 	}
 	static PopulateWordsArray()
 	{
@@ -12796,6 +12796,8 @@ defeating
 defeatism
 defeatist
 defeats
+defecate
+defecating
 defect
 defected
 defecting
@@ -18777,6 +18779,8 @@ farseeing
 farsighted
 farther
 farthest
+farthing
+farthings
 fascia
 fascias
 fascinate
@@ -18786,6 +18790,9 @@ fascinating
 fascinatingly
 fascination
 fascinations
+fascism
+fascist
+fascists
 fashion
 fashionable
 fashionably
@@ -22559,6 +22566,12 @@ groin
 groins
 grommet
 grommets
+groom
+groomed
+groomer
+groomers
+grooming
+grooms
 groove
 grooved
 grooves
@@ -35706,6 +35719,8 @@ panoramic
 pans
 pansies
 pansy
+pant
+pantaloons
 pantechnicon
 panted
 pantheism
@@ -35714,6 +35729,7 @@ pantheistic
 pantheon
 panther
 panthers
+panties
 pantile
 pantiled
 pantiles
@@ -35724,6 +35740,7 @@ pantomime
 pantomimes
 pantries
 pantry
+pants
 panzer
 pap
 papa
@@ -38051,6 +38068,7 @@ pooled
 pooling
 pools
 poolside
+poop
 poor
 poorer
 poorest
@@ -38708,6 +38726,8 @@ presently
 presents
 preservation
 preservationists
+preservative
+preservatives
 preserve
 preserved
 preserver
@@ -40574,6 +40594,10 @@ rants
 rap
 rapacious
 rapacity
+rape
+raped
+rapes
+rapeseed
 rapid
 rapidity
 rapidly
@@ -49705,6 +49729,10 @@ suggestively
 suggestiveness
 suggests
 sugillate
+suicidal
+suicidally
+suicide
+suicides
 suing
 suit
 suitabilities
@@ -57024,6 +57052,9 @@ whooping
 whoops
 whoosh
 whop
+whore
+whorehouse
+whores
 whoring
 whorled
 whorls
@@ -57916,7 +57947,7 @@ zooplankton
 zoos
 zulu
 zulus`;
-		sdWords.words = str.split( '\n' );
+		sdDictionaryWords.words = str.split( '\n' );
 	}
 }
-export default sdWords;
+export default sdDictionaryWords;
