@@ -292,8 +292,8 @@ class sdFactionTools extends sdEntity
 				{
 					sdFactions.SetHumanoidProperties( character_entity, sdFactions.FACTION_SWORD_BOT );
 
-								if ( Math.random() < 0.2 )
-								{
+							if ( Math.random() < 0.5 )
+							{
 								const logic = ()=>
 								{
 									if ( character_entity.hea <= 10000  && character_entity.s === 250 )
@@ -331,7 +331,7 @@ class sdFactionTools extends sdEntity
 									if ( character_entity.hea <= 0  && character_entity.s === 300 )
 									if ( !character_entity._is_being_removed )
 									{
-									sdWorld.SendEffect({ 
+										sdWorld.SendEffect({ 
 										x:character_entity.x, 
 										y:character_entity.y, 
 										radius:150,
@@ -344,7 +344,7 @@ class sdFactionTools extends sdEntity
 									}
 								};
 								setInterval( logic2, 2000 );
-								}
+							}
 				}
 			}
 

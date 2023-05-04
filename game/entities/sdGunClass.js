@@ -8169,7 +8169,7 @@ class sdGunClass
 			count: 1,
 			spread: 0.01,
 			projectile_velocity: 30,
-			projectile_properties: { _rail: true, _damage: 150, color:'#ffff00'/*, _knock_scale:0.01 * 8*/ , explosion_radius: 30 },
+			projectile_properties: { _rail: true, _damage: 425, color:'#ffff00', explosion_radius: 30 },
 			min_build_tool_level: 90,
 			matter_cost: 19800,
 			min_workbench_level: 32,
@@ -8197,7 +8197,7 @@ class sdGunClass
 			projectile_properties_dynamic: ( gun )=>{ 
 				
 				let obj = { _rail: true, color: '#ffff00', explosion_radius: 30, _rail_circled: true };
-				obj._knock_scale = 0.01 * 8 * gun.extra[ ID_DAMAGE_MULT ];
+				obj._knock_scale = 0.0001 * 8 * gun.extra[ ID_DAMAGE_MULT ];
 				obj._damage = gun.extra[ ID_DAMAGE_VALUE ]; // Damage value is set onMade
 				obj._damage *= gun.extra[ ID_DAMAGE_MULT ];
 				obj.explosion_radius *= gun.extra[ ID_DAMAGE_MULT ];
@@ -8214,7 +8214,7 @@ class sdGunClass
 					gun.extra[ ID_FIRE_RATE ] = 1;
 					gun.extra[ ID_TEMPERATURE_APPLIED ] = 0;
 					gun.extra[ ID_RECOIL_SCALE ] = 1;
-					gun.extra[ ID_DAMAGE_VALUE ] = 150;
+					gun.extra[ ID_DAMAGE_VALUE ] = 425;
 				}
 			},
 			upgrades: AddGunDefaultUpgrades(
@@ -8492,7 +8492,7 @@ class sdGunClass
 			 '#ffffff', 100, 'Outer Energy' ),
 			 '#d3d3d3', 100, 'Inner Energy' ) )
 		};
-		sdGun.classes[ sdGun.CLASS_MINIGUN = 1107 ] = 
+		sdGun.classes[ sdGun.CLASS_KVT_MINIGUN = 1107 ] = 
 		{
 			image: sdWorld.CreateImageFromFile( 'Minigun' ),
 			image_charging: sdWorld.CreateImageFromFile( 'Minigun' ),

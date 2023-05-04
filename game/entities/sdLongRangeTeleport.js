@@ -701,7 +701,7 @@ class sdLongRangeTeleport extends sdEntity
 			gun = new sdGun({ x:this.x, y:this.y - 16, class:sdGun.CLASS_ERTHAL_ROCKET });
 			else
 			if ( rng < 0.7 )
-			gun = new sdGun({ x:this.x, y:this.y - 16, class:sdGun.CLASS_MINIGUN });
+			gun = new sdGun({ x:this.x, y:this.y - 16, class:sdGun.CLASS_KVT_MINIGUN });
 			else
 			if ( rng < 0.8 )
 			gun = new sdGun({ x:this.x, y:this.y - 16, class:sdGun.CLASS_OVERLORD_BLASTER });
@@ -742,17 +742,23 @@ class sdLongRangeTeleport extends sdEntity
 		else
 		if ( rewards === 'CLAIM_REWARD_CRYSTALS' )
 		{
-			let crystal, crystal2, crystal3, crystal4, crystal5;
-			crystal = new sdCrystal({ x:this.x - 12, y:this.y - 24, matter_max: 10240, type:sdCrystal.TYPE_CRYSTAL_ARTIFICIAL });
+			let crystal, crystal2, crystal3, crystal4, crystal5, crystal6, crystal7, crystal8;
+			crystal = new sdCrystal({ x:this.x - 12, y:this.y - 24, matter_max: 20480, type:sdCrystal.TYPE_CRYSTAL_ARTIFICIAL });
 			sdEntity.entities.push( crystal );
-			crystal2 = new sdCrystal({ x:this.x, y:this.y - 24, matter_max: 10240, type:sdCrystal.TYPE_CRYSTAL_ARTIFICIAL });
+			crystal2 = new sdCrystal({ x:this.x, y:this.y - 36, matter_max: 40960, type:sdCrystal.TYPE_CRYSTAL_ARTIFICIAL });
 			sdEntity.entities.push( crystal2 );
-			crystal3 = new sdCrystal({ x:this.x + 12, y:this.y - 24, matter_max: 10240, type:sdCrystal.TYPE_CRYSTAL_ARTIFICIAL });
+			crystal3 = new sdCrystal({ x:this.x + 12, y:this.y - 24, matter_max: 20480, type:sdCrystal.TYPE_CRYSTAL_ARTIFICIAL });
 			sdEntity.entities.push( crystal3 );
-			crystal4 = new sdCrystal({ x:this.x - 24, y:this.y - 24, matter_max: 5120, type:sdCrystal.TYPE_CRYSTAL_ARTIFICIAL });
+			crystal4 = new sdCrystal({ x:this.x - 24, y:this.y - 24, matter_max: 10240, type:sdCrystal.TYPE_CRYSTAL_ARTIFICIAL });
 			sdEntity.entities.push( crystal4 );
-			crystal5 = new sdCrystal({ x:this.x + 24, y:this.y - 24, matter_max: 5120, type:sdCrystal.TYPE_CRYSTAL_ARTIFICIAL });
+			crystal5 = new sdCrystal({ x:this.x + 24, y:this.y - 24, matter_max: 10240, type:sdCrystal.TYPE_CRYSTAL_ARTIFICIAL });
 			sdEntity.entities.push( crystal5 );
+			crystal6 = new sdCrystal({ x:this.x, y:this.y - 24, matter_max: 20480, type:sdCrystal.TYPE_CRYSTAL_ARTIFICIAL });
+			sdEntity.entities.push( crystal6 );
+			crystal7 = new sdCrystal({ x:this.x - 12, y:this.y - 36, matter_max: 10240, type:sdCrystal.TYPE_CRYSTAL_ARTIFICIAL });
+			sdEntity.entities.push( crystal7 );
+			crystal8 = new sdCrystal({ x:this.x + 12, y:this.y - 36, matter_max: 10240, type:sdCrystal.TYPE_CRYSTAL_ARTIFICIAL });
+			sdEntity.entities.push( crystal8 );
 		}
 		else
 		if ( rewards === 'CLAIM_REWARD_CONTAINER' )

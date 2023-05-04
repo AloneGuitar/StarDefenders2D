@@ -690,30 +690,38 @@ class sdFactions extends sdEntity
 
 		if ( faction === sdFactions.FACTION_KVT )
 		{
-			if ( Math.random() < 0.5 )
+			if ( Math.random() < 0.6 )
 			{
-				if ( Math.random() < 0.2 )
+				if ( Math.random() < 0.3 )
 				{
-					sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_IRON_BULL_HANDCANNON }) );
-					character_entity._ai_gun_slot = 1;
+					if ( Math.random() < 0.2 )
+					{
+						sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_KVT_HANDCANNON }) );
+						character_entity._ai_gun_slot = 1;
+					}
+					else
+					{
+						sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_KVT_SMG }) );
+						character_entity._ai_gun_slot = 1;
+					}
 				}
 				else
 				{
-					if ( Math.random() < 0.3 )
+					if ( Math.random() < 0.4 )
 					{
-						sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_MINIGUN }) );
+						sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_KVT_MINIGUN }) );
 						character_entity._ai_gun_slot = 2;
 						character_entity.stability_upgrade = 1;
 					}
 					else
-					if ( Math.random() < 0.4 )
+					if ( Math.random() < 0.5 )
 					{
-						sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_KIVORTEC_AVRS_P09 }) );
+						sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_KVT_AVRS }) );
 						character_entity._ai_gun_slot = 4;
 					}
 					else
 					{
-						sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_PHASERCANNON_P03 }) );
+						sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_KVT_RAILCANNON }) );
 						character_entity._ai_gun_slot = 8;
 					}
 				}
@@ -722,22 +730,22 @@ class sdFactions extends sdEntity
 			{ 
 				if ( Math.random() < 0.9 )
 				{
-					if ( Math.random() < 0.6 )
+					if ( Math.random() < 0.7 )
 					{
-						sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_MISSLE_LAUNCHER_P07 }) );
+						sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_KVT_MISSLE_LAUNCHER }) );
 						character_entity._ai_gun_slot = 5;
 					}
 					else
 					{
-						sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_MMG_THE_RIPPER_T3 }) );
+						sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_KVT_MMG_MK2 }) );
 						character_entity._ai_gun_slot = 2;
 					}
 				}
 				else
 				{
-					if ( Math.random() < 0.7 )
+					if ( Math.random() < 0.8 )
 					{
-						sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_MMG_THE_RIPPER_T2 }) );
+						sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_KVT_MMG_MK1 }) );
 						character_entity._ai_gun_slot = 2;
 					}
 					else
