@@ -39,6 +39,7 @@ import sdPlayerSpectator from './entities/sdPlayerSpectator.js';
 import sdBaseShieldingUnit from './entities/sdBaseShieldingUnit.js';
 import sdDeepSleep from './entities/sdDeepSleep.js';
 import sdCommandCentre from './entities/sdCommandCentre.js';
+import sdPresetEditor from './entities/sdPresetEditor.js';
 
 
 import sdRenderer from './client/sdRenderer.js';
@@ -86,8 +87,11 @@ class sdWorld
 		sdWorld.show_videos = true;
 		
 		sdWorld.sockets = null; // Becomes array
+		sdWorld.recent_players = []; // { pseudonym, last_known_net_id, my_hash, time, ban }, up to 100 connections or so
 		//sdWorld.hook_entities = []; // Entities that implement hook logic, basically for notification system. These must have HandleHookReply( hook_id, password ) and return either JSON-able object or null
-		
+
+		sdWorld.online_characters = []; // Used for active entities update rate optimizations
+
 		sdWorld.camera = {
 			x:0,
 			y:0,
@@ -100,7 +104,9 @@ class sdWorld
 		sdWorld.last_slowest_class = 'nothing';
 		
 		sdWorld.target_scale = 2;
-		
+		sdWorld.default_zoom = 2;
+		sdWorld.current_zoom = sdWorld.default_zoom; // Synced from server, for example when player is in vehicle or steering wheel
+
 		sdWorld.my_key_states = null; // Will be assigned to active entity to allow client-side movement
 		
 		sdWorld.my_entity = null;
@@ -1201,24 +1207,21 @@ class sdWorld
 	}
 	static CanAnySocketSee( ent ) // Actually used to lower think rate of some entities
 	{
-		if ( typeof ent._socket === 'object' ) // Is a connected player
-		if ( ent._socket !== null )
-		return true;
-
 		if ( sdWorld.server_config.debug_offscreen_behavior )
 		return false;
-	
-		let x = ent.x;
-		let y = ent.y;
 
-		for ( let i = 0; i < sdWorld.sockets.length; i++ )
+		const x = ent.x;
+		const y = ent.y;
+
+		for ( let i = 0; i < sdWorld.online_characters.length; i++ )
 		{
-			let socket = sdWorld.sockets[ i ];
-
-			if ( sdWorld.CanSocketSee( socket, x, y ) )
+			const c = sdWorld.online_characters[ i ];
+			if ( x > c.x - 800 )
+			if ( x < c.x + 800 )
+			if ( y > c.y - 400 )
+			if ( y < c.y + 400 )
 			return true;
 		}
-		
 		return false;
 	}
 	static SpawnGib( x, y, sx = Math.random() * 1 - Math.random() * 1, sy = Math.random() * 1 - Math.random() * 1, side = 1, gib_class, gib_filter, blood_filter = null, scale = 100, ignore_collisions_with=null, image = 0 )
@@ -1333,6 +1336,72 @@ class sdWorld
 				sdEntity.entities.push( ent );
 			}
 		}
+	}
+	static SpawnWaterEntities( x, y, di_x, di_y, tot, type, extra=0, liquid_to_modify=null )
+	{
+		if ( !sdWorld.is_server )
+		return;
+		let spawned = 0;
+
+		for ( var i = 0; i < tot; i++ )
+		{
+			let xx,yy;
+			let tr = 1000;
+			while ( tr > 0 )
+			{
+				xx = Math.floor( ( x - di_x + Math.random() * di_x * 2 ) / 16 ) * 16;
+				yy = Math.floor( ( y - di_y + Math.random() * di_y * 2 ) / 16 ) * 16;
+
+				let safe_bound = 1;
+
+				let water_ent = sdWater.GetWaterObjectAt( xx, yy );
+
+				while ( water_ent && tr > 0 )
+				{
+					yy = water_ent.y - 16;
+					water_ent = sdWater.GetWaterObjectAt( xx, yy );
+
+					tr--;
+				}
+
+				if ( xx >= Math.floor( sdWorld.world_bounds.x1 / 16 ) * 16 && xx < Math.floor( sdWorld.world_bounds.x2 / 16 ) * 16 )
+				if ( yy >= Math.floor( sdWorld.world_bounds.y1 / 16 ) * 16 && yy < Math.floor( sdWorld.world_bounds.y2 / 16 ) * 16 )
+				{
+					if ( !water_ent )
+					if ( !sdWorld.CheckWallExistsBox( 
+						xx + safe_bound, 
+						yy + safe_bound, 
+						xx + 16 - safe_bound, 
+						yy + 16 - safe_bound, null, null, sdWater.classes_to_interact_with ) )
+					{
+						water_ent = new sdWater({ x: xx, y: yy, type:type });
+
+						if ( typeof water_ent.extra !== 'undefined' )
+						water_ent.extra = extra;
+
+						sdEntity.entities.push( water_ent );
+						sdWorld.UpdateHashPosition( water_ent, false );
+
+						spawned++;
+
+						if ( liquid_to_modify )
+						{
+							liquid_to_modify.amount -= 100;
+							liquid_to_modify.extra -= extra;
+
+							if ( liquid_to_modify.amount <= 0 )
+							liquid_to_modify.type = -1;
+						}
+
+						break;
+					}
+				}
+
+				tr--;
+			}
+		}
+
+		console.log( spawned );
 	}
 	static SendEffect( params, command='EFF', exclusive_to_sockets_arr=null ) // 'S' for sound
 	{
@@ -1780,8 +1849,8 @@ class sdWorld
 				{
 					if ( sdWorld.is_server )
 					{
-						console.warn('Entity pointer could not be resolved even at later stage for ' + arr[ 0 ].GetClass() + '.' + arr[ 1 ] + ' :: ' + arr[ 2 ] + ' :: ' + arr[ 3 ] );
-						debugger;
+						console.warn('Entity pointer could not be resolved even at later stage (can be unimportant but usually is worth attention) for ' + arr[ 0 ].GetClass() + '.' + arr[ 1 ] + ' :: ' + arr[ 2 ] + ' :: ' + arr[ 3 ] );
+						//debugger;
 					}
 				}
 			}
@@ -1924,14 +1993,17 @@ class sdWorld
 
 		return c;
 	}
-	
 
-	static shuffleArray(array) {
-		for (let i = array.length - 1; i > 0; i--) {
-		const j = Math.floor(Math.random() * (i + 1));
-		[array[i], array[j]] = [array[j], array[i]];
+	static shuffleArray( array ) 
+	{
+		for (var i = array.length - 1; i > 0; i--) {
+			var j = Math.floor(Math.random() * (i + 1));
+			var temp = array[i];
+			array[i] = array[j];
+			array[j] = temp;
 		}
 	}
+
 	static Dist2D_Vector_pow2( tox, toy )
 	{
 		return ( tox*tox + toy*toy );
@@ -1986,17 +2058,7 @@ class sdWorld
 
 		return true;
 	}
-	
-	static shuffleArray( array ) 
-	{
-		for (var i = array.length - 1; i > 0; i--) {
-			var j = Math.floor(Math.random() * (i + 1));
-			var temp = array[i];
-			array[i] = array[j];
-			array[j] = temp;
-		}
-	}
-	
+
 	static sqr( x )
 	{ return x * x; }
 	static dist2( v, w )
@@ -2497,6 +2559,7 @@ class sdWorld
 			let skip_frames;
 			
 			let timewarps = null;
+			let stop_motion_regions = null;
 			
 			if ( sdEntity.to_seal_list.length > 0 )
 			{
@@ -2509,6 +2572,7 @@ class sdWorld
 					{
 						//sdEntity.to_seal_list[ i ].InitMatterMode();
 						e._has_matter_props = ( typeof e.matter !== 'undefined' || typeof e._matter !== 'undefined' );//sdWorld.FilterHasMatterProperties( e );
+						e._has_liquid_props = ( typeof e.liquid !== 'undefined' || typeof e._liquid !== 'undefined' );//sdWorld.FilterHasMatterProperties( e );
 				
 						Object.seal( e );
 					}
@@ -2547,6 +2611,15 @@ class sdWorld
 				}
 			}
 			
+			for ( i = 0; i < sdPresetEditor.regions.length; i++ )
+			if ( sdPresetEditor.regions[ i ].time_scale !== 1 )
+			{
+				if ( stop_motion_regions === null )
+				stop_motion_regions = [];
+
+				stop_motion_regions.push( sdPresetEditor.regions[ i ] );
+			}
+
 			//sdCable.GlobalCableThink( GSPEED );
 
 			for ( i = 0; i < sdWorld.static_think_methods.length; i++ )
@@ -2555,8 +2628,19 @@ class sdWorld
 			//const think_function_ptr_cache = [];
 			
 			//let skipper = 0;
-			
+
+			sdWorld.online_characters.length = 0;
+			if ( sdWorld.sockets ) // Server-side only thing
+			for ( let i = 0; i < sdWorld.sockets.length; i++ )
+			{
+				let socket = sdWorld.sockets[ i ];
+
+				if ( socket.character && socket.post_death_spectate_ttl > 0 )
+				sdWorld.online_characters.push( socket.character );
+			}
+
 			const debug_wake_up_sleep_refuse_reasons = sdDeepSleep.debug_wake_up_sleep_refuse_reasons;
+			const bulk_exclude = [];
 			for ( arr_i = 0; arr_i < 2; arr_i++ )
 			{
 				arr = ( arr_i === 0 ) ? sdEntity.active_entities : sdEntity.global_entities;
@@ -2677,7 +2761,27 @@ class sdWorld
 
 							gspeed_mult *= best_warp;
 						}
-
+						if ( stop_motion_regions )
+						{
+							if ( e.is( sdEffect ) || e.is( sdBullet ) )
+							{
+							}
+							else
+							if ( e.is( sdCharacter ) && ( e._socket || sdWorld.my_entity === e ) )
+							{
+							}
+							else
+							if ( e.is( sdGun ) && e._held_by && ( e._held_by._socket || sdWorld.my_entity === e._held_by._socket ) )
+							{
+							}
+							else
+							for ( i2 = 0; i2 < stop_motion_regions.length; i2++ )
+							if ( e.DoesOverlapWith( stop_motion_regions[ i2 ] ) )
+							{
+								gspeed_mult *= stop_motion_regions[ i2 ].time_scale / 1000;
+								break;
+							}
+						}
 					}
 					
 					if ( DEBUG_TIME_MODE )
@@ -2731,7 +2835,7 @@ class sdWorld
 							
 							if ( arr_i === 0 )
 							{
-								e._remove_from_entities_array( hiber_state );
+								bulk_exclude.push( e );
 							}
 							
 							if ( arr[ i ] === e ) // Removal did not happen?
@@ -2772,6 +2876,7 @@ class sdWorld
 					}
 				}
 			}
+			sdEntity.BulkRemoveEntitiesFromEntitiesArray( bulk_exclude );
 			
 			if ( !sdWorld.is_server || sdWorld.is_singleplayer )
 			{
@@ -2870,7 +2975,10 @@ class sdWorld
 			sdWorld.leaders.length = 0;
 			for ( let i2 = 0; i2 < sockets.length; i2++ )
 			{
-				if ( sockets[ i2 ].character && !sockets[ i2 ].character._is_being_removed )
+				if ( sockets[ i2 ].character && 
+					( !sdWorld.server_config.only_admins_can_spectate || !sockets[ i2 ].character.is( sdPlayerSpectator ) ) && 
+					!sockets[ i2 ].character._is_being_removed 
+				)
 				sdWorld.leaders.push({ name:sockets[ i2 ].character.title, name_censored:sockets[ i2 ].character.title_censored, score:sockets[ i2 ].GetScore(), here:1 });
 			
 				if ( sockets[ i2 ].ffa_warning > 0 )
@@ -2991,75 +3099,7 @@ class sdWorld
 	{
 		return ((a%n)+n)%n;
 	}
-	/*
-	static GetClientSideGlowReceived( x, y, lume_receiver )
-	{
-		let lumes = 0;
-		
-		if ( sdWorld.is_server ) // Disabled, could be called by draw command collector
-		return 0;
-		
-		let cache = sdRenderer.lumes_weak_cache.get( lume_receiver );
-		
-		if ( !cache )
-		{
-			cache = { expiration: 0, lumes: 0 };
-			sdRenderer.lumes_weak_cache.set( lume_receiver, cache );
-		}
-		
-		if ( sdWorld.time > cache.expiration )
-		{
-			let nears = [];
-			sdWorld.GetAnythingNear( x, y, 64, nears, [ 'sdWater', 'sdLamp' ] );
-			
-			let ent;
-			
-			//sdWorld.CheckWallExistsBox( x - 64, y - 64, x + 64, y + 64, null, null, [ 'sdWater', 'sdLamp' ], ( ent )=>
-			for ( let i = 0; i < nears.length; i++ )
-			{
-				ent = nears[ i ];
-				
-				if ( ent.is( sdWorld.entity_classes.sdWater ) )
-				{
-					if ( ent.type === sdWorld.entity_classes.sdWater.TYPE_LAVA )
-					{
-						lumes += 10 / Math.max( 16, sdWorld.Dist2D( x, y, ent.x + ( ent._hitbox_x1 + ent._hitbox_x2 ) / 2, ent.y + ( ent._hitbox_y1 + ent._hitbox_y2 ) / 2 ) );
-					}
-				}
-				else
-				{
-					lumes += 10 / Math.max( 16, sdWorld.Dist2D( x, y, ent.x + ( ent._hitbox_x1 + ent._hitbox_x2 ) / 2, ent.y + ( ent._hitbox_y1 + ent._hitbox_y2 ) / 2 ) );
-				}
-				//return false;
-			}//);
-			
-			lumes = Math.min( 5, Math.floor( lumes * 2 ) / 2 );
-			
-			if ( cache.lumes !== lumes )
-			{
-				cache.lumes = lumes;
-				
-				nears = [];
-				sdWorld.GetAnythingNear( x, y, 16, nears, [ 'sdBlock', 'sdBG' ] );
-				
-				let ent2;
-				let cache2;
-				for ( let i = 0; i < nears.length; i++ )
-				{
-					ent2 = nears[ i ];
-					cache2 = sdRenderer.lumes_weak_cache.get( ent2 );
-					if ( cache2 )
-					cache2.expiration = 0;
-				}
-			}
-			cache.expiration = 1000 + sdWorld.time + Math.random() * 15000;
-		}
-		else
-		lumes = cache.lumes;
-		
-		return lumes;
-	}*/
-	
+
 	// custom_filtering_method( another_entity ) should return true in case if surface can not be passed through
 	static CheckWallExistsBox( x1, y1, x2, y2, ignore_entity=null, ignore_entity_classes=null, include_only_specific_classes=null, custom_filtering_method=null ) // under 32x32 boxes unless line with arr = sdWorld.RequireHashPosition( x1 + xx * 32, y1 + yy * 32 ); changed
 	{
@@ -3071,10 +3111,6 @@ class sdWorld
 			sdWorld.last_hit_entity = null;
 			return true;
 		}
-		
-		//let el_hit_cache = new WeakMap();
-		//let el_hit_cache = sdWorld.el_hit_cache;
-		//let el_hit_cache_len = 0;
 	
 		let arr;
 		let i;
@@ -3093,24 +3129,13 @@ class sdWorld
 		
 		if ( yy_to === yy_from )
 		yy_to++;
-	
-		//for ( var xx = -1; xx <= 2; xx++ )
-		//for ( var yy = -1; yy <= 2; yy++ )
-		//for ( var xx = -1; xx <= 0; xx++ ) Was not enough for doors, sometimes they would have left vertical part lacking collision with players
-		//for ( var yy = -1; yy <= 0; yy++ )
-		//for ( var xx = -1; xx <= 1; xx++ )
-		//for ( var yy = -1; yy <= 1; yy++ )
-		//for ( var xx = xx_from; xx <= xx_to; xx++ )
-		//for ( var yy = yy_from; yy <= yy_to; yy++ )
+
 		let xx,yy;
 		for ( xx = xx_from; xx < xx_to; xx++ )
 		for ( yy = yy_from; yy < yy_to; yy++ )
 		{
-			//arr = sdWorld.RequireHashPosition( x1 + xx * CHUNK_SIZE, y1 + yy * CHUNK_SIZE );
-			//arr = sdWorld.RequireHashPosition( x2 + xx * CHUNK_SIZE, y2 + yy * CHUNK_SIZE ); // Better player-matter container collisions. Worse for player-block cases
 			arr = sdWorld.RequireHashPosition( xx * CHUNK_SIZE, yy * CHUNK_SIZE ).arr;
-			
-			//ent_skip: 
+
 			for ( i = 0; i < arr.length; i++ )
 			{
 				arr_i = arr[ i ];
@@ -3118,16 +3143,12 @@ class sdWorld
 				if ( arr_i !== ignore_entity )
 				{
 					arr_i_x = arr_i.x;
-					
-					//if ( x2 >= arr_i_x + arr_i._hitbox_x1 )
-					//if ( x1 <= arr_i_x + arr_i._hitbox_x2 )
+
 					if ( x2 > arr_i_x + arr_i._hitbox_x1 )
 					if ( x1 < arr_i_x + arr_i._hitbox_x2 )
 					{
 						arr_i_y = arr_i.y;
-						
-						//if ( y2 >= arr_i_y + arr_i._hitbox_y1 )
-						//if ( y1 <= arr_i_y + arr_i._hitbox_y2 )
+
 						if ( y2 > arr_i_y + arr_i._hitbox_y1 )
 						if ( y1 < arr_i_y + arr_i._hitbox_y2 )
 						{
@@ -3172,64 +3193,71 @@ class sdWorld
 	
 		return false;
 	}
-	/*static CheckWallExistsBox( x1, y1, x2, y2, ignore_entity=null, ignore_entity_classes=null, include_only_specific_classes=null ) // under 32x32 boxes unless line with arr = sdWorld.RequireHashPosition( x1 + xx * 32, y1 + yy * 32 ); changed
+
+	static CheckSolidDeepSleepExistsAtBox( x1, y1, x2, y2, ignore_cell=null, include_non_solid=false )
 	{
 		if ( y1 < sdWorld.world_bounds.y1 || 
 			 y2 > sdWorld.world_bounds.y2 || 
 			 x1 < sdWorld.world_bounds.x1 ||
 			 x2 > sdWorld.world_bounds.x2 )
 		{
-			sdWorld.last_hit_entity = null;
-			return true;
+			return false;
 		}
 	
 		let arr;
 		let i;
-		
-		var xx_from = x1 - CHUNK_SIZE; // TODO: Overshoot no longer needed, due to big entities now taking all needed hash arrays?
-		var yy_from = y1 - CHUNK_SIZE;
-		var xx_to = x2 + CHUNK_SIZE;
-		var yy_to = y2 + CHUNK_SIZE;
-	
-		//for ( var xx = -1; xx <= 2; xx++ )
-		//for ( var yy = -1; yy <= 2; yy++ )
-		//for ( var xx = -1; xx <= 0; xx++ ) Was not enough for doors, sometimes they would have left vertical part lacking collision with players
-		//for ( var yy = -1; yy <= 0; yy++ )
-		//for ( var xx = -1; xx <= 1; xx++ )
-		//for ( var yy = -1; yy <= 1; yy++ )
-		for ( var xx = xx_from; xx <= xx_to; xx += CHUNK_SIZE )
-		for ( var yy = yy_from; yy <= yy_to; yy += CHUNK_SIZE )
+		let arr_i;
+		let arr_i_x;
+		let arr_i_y;
+
+		var xx_from = sdWorld.FastFloor( x1 / CHUNK_SIZE ); // Overshoot no longer needed, due to big entities now taking all needed hash arrays
+		var yy_from = sdWorld.FastFloor( y1 / CHUNK_SIZE );
+		var xx_to = sdWorld.FastCeil( x2 / CHUNK_SIZE );
+		var yy_to = sdWorld.FastCeil( y2 / CHUNK_SIZE );
+
+		if ( xx_to === xx_from )
+		xx_to++;
+
+		if ( yy_to === yy_from )
+		yy_to++;
+
+		let xx,yy;
+		for ( xx = xx_from; xx < xx_to; xx++ )
+		for ( yy = yy_from; yy < yy_to; yy++ )
 		{
-			//arr = sdWorld.RequireHashPosition( x1 + xx * CHUNK_SIZE, y1 + yy * CHUNK_SIZE );
-			//arr = sdWorld.RequireHashPosition( x2 + xx * CHUNK_SIZE, y2 + yy * CHUNK_SIZE ); // Better player-matter container collisions. Worse for player-block cases
-			arr = sdWorld.RequireHashPosition( xx, yy );
+			arr = sdWorld.RequireHashPosition( xx * CHUNK_SIZE, yy * CHUNK_SIZE ).arr;
 			
 			for ( i = 0; i < arr.length; i++ )
-			if ( arr[ i ]._hard_collision || include_only_specific_classes )
-			if ( arr[ i ] !== ignore_entity )
-			if ( ignore_entity === null || arr[ i ].IsBGEntity() === ignore_entity.IsBGEntity() )
 			{
-				if ( x2 >= arr[ i ].x + arr[ i ]._hitbox_x1 )
-				if ( x1 <= arr[ i ].x + arr[ i ]._hitbox_x2 )
-				if ( y2 >= arr[ i ].y + arr[ i ]._hitbox_y1 )
-				if ( y1 <= arr[ i ].y + arr[ i ]._hitbox_y2 )
+				arr_i = arr[ i ];
 				{
-					if ( include_only_specific_classes )
-					if ( include_only_specific_classes.indexOf( arr[ i ].GetClass() ) === -1 )
-					continue;
+					arr_i_x = arr_i.x;
 					
-					if ( ignore_entity_classes !== null )
-					if ( ignore_entity_classes.indexOf( arr[ i ].GetClass() ) !== -1 )
-					continue;
-					
-					sdWorld.last_hit_entity = arr[ i ];
-					return true;
+					if ( x2 > arr_i_x + arr_i._hitbox_x1 )
+					if ( x1 < arr_i_x + arr_i._hitbox_x2 )
+					{
+						arr_i_y = arr_i.y;
+
+						if ( y2 > arr_i_y + arr_i._hitbox_y1 )
+						if ( y1 < arr_i_y + arr_i._hitbox_y2 )
+						{
+							const arr_i_is_bg_entity = arr_i.IsBGEntity();
+
+							//if ( arr_i.GetClass() === 'sdButton' )
+							//debugger;
+
+							if ( arr_i_is_bg_entity === 10 ) // sdDeepSleep
+							if ( arr_i !== ignore_cell )
+							if ( include_non_solid || arr_i.ThreatAsSolid() )
+							return true;
+						}
+					}
 				}
 			}
 		}
 	
 		return false;
-	}*/
+	}
 	static FilterOnlyVisionBlocking( e )
 	{
 		return e.is( sdBlock ) || e.is( sdDoor );
