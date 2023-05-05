@@ -28,7 +28,7 @@
 -Godmode is allowed to create Characters from Faction Tools.
 -Breaking humanoids' body if they aren't SD factions, you will get scores.
 -30 levels for players is now from 60 to 90.
--Admin tool of start controlling characters are available to change their hash ID. ( Only when hash ID undefined, also remove your character or player drone. )
+-Admin tool of start controlling characters are available to change their hash ID. ( Only when hash ID undefined, also remove your character or player drone, but a bad idea is that you can't change your skin, expect title name. )
 
 
 
