@@ -458,7 +458,7 @@ class sdFactions extends sdEntity
 			"color_dark2":"#a2a2a2", // Lower suit plates color
 			"color_shoes":"#1c1c1c", // Shoes color
 			"color_skin":"#626262", // Gloves and neck color
-			"color_extra1":"#00c9c9", // Extra 1 color
+			"color_extra1":"#aaffff", // Extra 1 color
 			"helmet118":true, // Heavy Velox helmet
 			"body90":true, // Heavy Velox body
 			"legs90":true, // Heavy Velox legs
