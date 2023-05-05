@@ -49,6 +49,7 @@ import sdSound from './sdSound.js';
 import sdKeyStates from './sdKeyStates.js';
 
 const CHUNK_SIZE = 64; // 128 causes groups of 111 or so entities, it is probably too much // 32
+const CHUNK_SIZE_INV = 1 / 64;
 
 class sdWorld
 {
@@ -2175,49 +2176,18 @@ class sdWorld
 	}
 	static RequireHashPosition( x, y, spawn_if_empty=false )
 	{
-		/*
-		x = sdWorld.FastFloor( x / CHUNK_SIZE );
-		y = sdWorld.FastFloor( y / CHUNK_SIZE );
-		
-		//x = Math.floor( x / CHUNK_SIZE );
-		//y = Math.floor( y / CHUNK_SIZE );
-		
-		var a;
-		
-		if ( typeof sdWorld.world_hash_positions[ x ] === 'undefined' )
-		a = sdWorld.world_hash_positions[ x ] = {};
-		else
-		a = sdWorld.world_hash_positions[ x ];
-	
-		var b;
-	
-		if ( typeof a[ y ] === 'undefined' )
-		b = a[ y ] = [];
-		else
-		b = a[ y ];
-	
-		return b;*/
-		
-		//x = ~~( x / CHUNK_SIZE );
-		//y = ;
-		
-		//x = ( ~~( y / CHUNK_SIZE ) ) * 4098 + ~~( x / CHUNK_SIZE ); // Too many left-over empty arrays when bounds move?
-		
-		x = ( sdWorld.FastFloor( y / CHUNK_SIZE ) ) * 4098 + sdWorld.FastFloor( x / CHUNK_SIZE );
+		x = ( sdWorld.FastFloor( y * CHUNK_SIZE_INV ) ) * 4098 + sdWorld.FastFloor( x * CHUNK_SIZE_INV );
 		
 		let arr = sdWorld.world_hash_positions.get( x );
-		
-		//if ( !sdWorld.world_hash_positions.has( x ) )
 		if ( arr === undefined )
 		{
 			if ( spawn_if_empty )
 			{
-				//let arr = [];
-				//arr.hash = x;
-				
 				arr = new Cell( x );
 
 				sdWorld.world_hash_positions.set( x, arr );
+
+				if ( sdWorld.world_hash_positions_recheck_keys.size < 10000 ) // There will be a lot of these on server start, causing 3 second delay at very least
 
 				sdWorld.world_hash_positions_recheck_keys.add( x );
 			}
@@ -2227,7 +2197,7 @@ class sdWorld
 			}
 		}
 		
-		return arr;// sdWorld.world_hash_positions.get( x );
+		return arr;
 		
 	}
 	static ArraysEqualIgnoringOrder( a, b )
@@ -2295,10 +2265,10 @@ class sdWorld
 			}
 			else
 			{
-				let from_x = sdWorld.FastFloor( ( entity.x + entity._hitbox_x1 ) / CHUNK_SIZE );
-				let from_y = sdWorld.FastFloor( ( entity.y + entity._hitbox_y1 ) / CHUNK_SIZE );
-				let to_x = sdWorld.FastCeil( ( entity.x + entity._hitbox_x2 ) / CHUNK_SIZE );
-				let to_y = sdWorld.FastCeil( ( entity.y + entity._hitbox_y2 ) / CHUNK_SIZE );
+				let from_x = sdWorld.FastFloor( ( entity.x + entity._hitbox_x1 ) * CHUNK_SIZE_INV );
+				let from_y = sdWorld.FastFloor( ( entity.y + entity._hitbox_y1 ) * CHUNK_SIZE_INV );
+				let to_x = sdWorld.FastCeil( ( entity.x + entity._hitbox_x2 ) * CHUNK_SIZE_INV );
+				let to_y = sdWorld.FastCeil( ( entity.y + entity._hitbox_y2 ) * CHUNK_SIZE_INV );
 
 				if ( to_x === from_x )
 				to_x++;
@@ -3119,10 +3089,10 @@ class sdWorld
 		let arr_i_x;
 		let arr_i_y;
 		
-		var xx_from = sdWorld.FastFloor( x1 / CHUNK_SIZE ); // Overshoot no longer needed, due to big entities now taking all needed hash arrays
-		var yy_from = sdWorld.FastFloor( y1 / CHUNK_SIZE );
-		var xx_to = sdWorld.FastCeil( x2 / CHUNK_SIZE );
-		var yy_to = sdWorld.FastCeil( y2 / CHUNK_SIZE );
+		var xx_from = sdWorld.FastFloor( x1 * CHUNK_SIZE_INV ); // Overshoot no longer needed, due to big entities now taking all needed hash arrays
+		var yy_from = sdWorld.FastFloor( y1 * CHUNK_SIZE_INV );
+		var xx_to = sdWorld.FastCeil( x2 * CHUNK_SIZE_INV );
+		var yy_to = sdWorld.FastCeil( y2 * CHUNK_SIZE_INV );
 		
 		if ( xx_to === xx_from )
 		xx_to++;
@@ -3210,10 +3180,10 @@ class sdWorld
 		let arr_i_x;
 		let arr_i_y;
 
-		var xx_from = sdWorld.FastFloor( x1 / CHUNK_SIZE ); // Overshoot no longer needed, due to big entities now taking all needed hash arrays
-		var yy_from = sdWorld.FastFloor( y1 / CHUNK_SIZE );
-		var xx_to = sdWorld.FastCeil( x2 / CHUNK_SIZE );
-		var yy_to = sdWorld.FastCeil( y2 / CHUNK_SIZE );
+		var xx_from = sdWorld.FastFloor( x1 * CHUNK_SIZE_INV ); // Overshoot no longer needed, due to big entities now taking all needed hash arrays
+		var yy_from = sdWorld.FastFloor( y1 * CHUNK_SIZE_INV );
+		var xx_to = sdWorld.FastCeil( x2 * CHUNK_SIZE_INV );
+		var yy_to = sdWorld.FastCeil( y2 * CHUNK_SIZE_INV );
 
 		if ( xx_to === xx_from )
 		xx_to++;
@@ -3948,12 +3918,15 @@ class sdWorld
 	
 	static ApplyPlayerSettingsToPlayer( character_entity, player_settings, socket ) 
 	{
+		if ( character_entity.skin_allowed )
+		{
 		character_entity.sd_filter = sdWorld.ConvertPlayerDescriptionToSDFilter_v2( player_settings );
 		character_entity._voice = sdWorld.ConvertPlayerDescriptionToVoice( player_settings );
 
 		character_entity.helmet = sdWorld.ConvertPlayerDescriptionToHelmet( player_settings );
 		character_entity.body = sdWorld.ConvertPlayerDescriptionToBody( player_settings );
 		character_entity.legs = sdWorld.ConvertPlayerDescriptionToLegs( player_settings );
+		}
 
 		character_entity.title = player_settings.hero_name;
 		character_entity.title_censored = ( typeof sdModeration !== 'undefined' && socket ) ? sdModeration.IsPhraseBad( character_entity.title, socket ) : false;
