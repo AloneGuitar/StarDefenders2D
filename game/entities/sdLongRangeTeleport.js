@@ -74,7 +74,7 @@ class sdLongRangeTeleport extends sdEntity
 		
 		if ( this.hea > 0 )
 		{
-			if ( sdBaseShieldingUnit.TestIfDamageShouldPass( this, dmg, initiator ) )
+			if ( dmg = sdBaseShieldingUnit.TestIfDamageShouldPass( this, dmg, initiator ) )
 			{
 				if ( !this.is_server_teleport )
 				this.hea -= dmg;
@@ -1088,37 +1088,42 @@ class sdLongRangeTeleport extends sdEntity
 		{
 			if ( command_name === 'LIST_PRIVATE_STORAGE' )
 			{
-				let initiator_hash_or_user_uid = exectuter_character._my_hash;
-												
-				sdDatabase.Exec( 
-					[ 
-						[ 'DBManageSavedItems', initiator_hash_or_user_uid, 'LIST' ] 
-					], 
-					( responses )=>
-					{
-						// What if responses is null? Might happen if there is no connection to database server or database server refuses to accept connection from current server
-						
-						executer_socket.CommandFromEntityClass( sdLongRangeTeleport, 'LIST_RESET', [] ); // class, command_name, parameters_array
-						
-						for ( let i = 0; i < responses.length; i++ )
-						{
-							let response = responses[ i ];
+				if ( sdWorld.server_config.allow_private_storage_access )
+				{
+					let initiator_hash_or_user_uid = exectuter_character._my_hash;
 
-							if ( response[ 0 ] === 'DENY_WITH_SERVICE_MESSAGE' )
+					sdDatabase.Exec( 
+						[ 
+							[ 'DBManageSavedItems', initiator_hash_or_user_uid, 'LIST' ] 
+						], 
+						( responses )=>
+						{
+							executer_socket.CommandFromEntityClass( sdLongRangeTeleport, 'LIST_RESET', [] ); // class, command_name, parameters_array
+
+							for ( let i = 0; i < responses.length; i++ )
 							{
-								executer_socket.SDServiceMessage( response[ 1 ] );
+								let response = responses[ i ];
+
+								if ( response[ 0 ] === 'DENY_WITH_SERVICE_MESSAGE' )
+								{
+									executer_socket.SDServiceMessage( response[ 1 ] );
+								}
+								else
+								if ( response[ 0 ] === 'LIST_RESULT' )
+								{
+									executer_socket.CommandFromEntityClass( sdLongRangeTeleport, 'LIST_ADD', [ response[ 1 ] ] ); // class, command_name, parameters_array
+								}
+								else
+								debugger;
 							}
-							else
-							if ( response[ 0 ] === 'LIST_RESULT' )
-							{
-								executer_socket.CommandFromEntityClass( sdLongRangeTeleport, 'LIST_ADD', [ response[ 1 ] ] ); // class, command_name, parameters_array
-							}
-							else
-							debugger;
-						}
-					},
-					'localhost'
-				);
+						},
+						'localhost'
+					);
+				}
+				else
+				{
+					executer_socket.SDServiceMessage( 'Private storages are not available here' );
+				}
 				return;
 			}
 			
@@ -1256,6 +1261,13 @@ class sdLongRangeTeleport extends sdEntity
 				else
 				if ( command_name === 'TELEPORT_STUFF' || command_name === 'SAVE_STUFF' || command_name === 'GET_PRIVATE_STORAGE' )
 				{
+					if ( command_name === 'GET_PRIVATE_STORAGE' )
+					if ( !sdWorld.server_config.allow_private_storage_access )
+					{
+						executer_socket.SDServiceMessage( 'Private storages are not available here' );
+						return;
+					}
+
 					if ( !this.is_server_teleport )
 					{
 						let cc_near = this.has_cc_near;//GetComWiredCache( null, sdCommandCentre );

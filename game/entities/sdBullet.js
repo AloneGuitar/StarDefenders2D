@@ -20,6 +20,7 @@ import sdTurret from './sdTurret.js';
 import sdCrystal from './sdCrystal.js';
 import sdStatusEffect from './sdStatusEffect.js';
 import sdBloodDecal from './sdBloodDecal.js';
+import sdBaseShieldingUnit from './sdBaseShieldingUnit.js';
 
 class sdBullet extends sdEntity
 {
@@ -81,6 +82,17 @@ class sdBullet extends sdEntity
 			sdSound.PlaySound({ name:'world_hit', x:this.x, y:this.y, pitch:5, volume: Math.min( 0.25, 0.1 * vel ), _server_allowed:true });
 		}
 	}
+
+	static AntiShieldBulletReaction( bullet, target_entity )
+	{
+		if ( target_entity._shielded )
+		if ( !target_entity._shielded._is_being_removed )
+		if ( target_entity._shielded.enabled )
+		if ( target_entity._shielded.type === sdBaseShieldingUnit.TYPE_DAMAGE_PERCENTAGE ) // Wasn't tested on any else type
+		{
+			target_entity.Damage( bullet._anti_shield_damage_bonus, bullet._owner || bullet._owner2 || null );
+		}
+	}
 	
 	constructor( params )
 	{
@@ -94,12 +106,11 @@ class sdBullet extends sdEntity
 		this._smoke_spawn_wish = 0;
 		
 		this._hittable_by_bullets = true;
-		
-		//globalThis.EnforceChangeLog( this, 'color' );
+
+		this._anti_shield_damage_bonus = 0;
 		
 		this._start_x = this.x;
 		this._start_y = this.y;
-		//sdWorld.SendEffect({ x:this.x, y:this.y, type:sdEffect.TYPE_BLOOD });
 		
 		this._damage = 10;
 		this.time_left = 30;

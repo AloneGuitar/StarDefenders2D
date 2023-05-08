@@ -5997,7 +5997,7 @@ class sdGunClass
 
 						if ( bullet._gun._held_item_snapshot )
 						{
-							let amount = Math.round( gun._held_item_snapshot._volume * 100 );
+							let amount = gun._held_item_snapshot._volume * 100;
 							let extra = ( gun._held_item_snapshot.extra || 0 );
 	
 							if ( target_entity.IsLiquidTypeAllowed( gun._held_item_snapshot.type ) )
@@ -6021,22 +6021,22 @@ class sdGunClass
 						}
 						else
 						{
-							if ( liquid.amount >= 100 )
+							if ( liquid.amount > 0 )
 							{
 								let water_ent = new sdWater({ x:0, y:0, type: liquid.type });
 								sdEntity.entities.push( water_ent );
 	
-								if ( typeof water_ent.extra !== 'undefined' )
-								{
-									water_ent.extra = Math.round( liquid.extra / liquid.amount * 100 );
-									liquid.extra -= water_ent.extra
-								}
+								water_ent._volume = Math.min( 100, liquid.amount ) / 100;
+								let extra = liquid.extra / liquid.amount * water_ent._volume * 100;
 
-								liquid.amount -= 100;
+								liquid.amount -= water_ent._volume * 100;
+								liquid.extra -= extra;
 	
 								bullet._gun._held_item_snapshot = water_ent.GetSnapshot( GetFrame(), true );
 	
 								delete bullet._gun._held_item_snapshot._net_id; // Erase this just so snapshot logic won't think that it is a some kind of object that should exist somewhere
+
+								bullet._gun._held_item_snapshot.extra = extra; // For transfer between containers
 								
 								sdWorld.ReplaceColorInSDFilter_v2( gun.sd_filter, liquid_carrier_base_color, sdWater.reference_colors[ water_ent.type ] || '#ffffff' );
 	
@@ -6103,8 +6103,7 @@ class sdGunClass
 								{
 									let liquid = ( connected[ i ].liquid || connected[ i ]._liquid );
 
-									let amount = Math.round( water_ent._volume * 100 )
-									let extra = ( water_ent.extra || 0 );
+									let amount = water_ent._volume * 100;
 
 									if ( liquid.max - liquid.amount >= amount )
 									{
@@ -6112,7 +6111,6 @@ class sdGunClass
 										liquid.type = water_ent.type;
 		
 										liquid.amount += amount;
-										liquid.extra += extra;
 
 										water_ent.remove();
 
@@ -6125,15 +6123,14 @@ class sdGunClass
 							if ( !can_transfer )
 							{
 								bullet._gun._held_item_snapshot = water_ent.GetSnapshot( GetFrame(), true );
-								
+
 								delete bullet._gun._held_item_snapshot._net_id; // Erase this just so snapshot logic won't think that it is a some kind of object that should exist somewhere
-								
 								sdWorld.ReplaceColorInSDFilter_v2( gun.sd_filter, liquid_carrier_base_color, sdWater.reference_colors[ water_ent.type ] || '#ffffff' );
 	
 								water_ent.AwakeSelfAndNear();
-								
+
 								water_ent.remove();
-								
+
 								sdSound.PlaySound({ name:'water_entrance', x:gun.x, y:gun.y, volume: 0.1, pitch: 1 });
 							}
 						}
@@ -8651,8 +8648,8 @@ class sdGunClass
 			apply_shading: false,
 			onPickupAttempt: ( character, gun )=> 
 			{ 
-				if ( character._energy_upgrade < 8690 && character._energy_upgrade >= 3690 )
-				{
+				if ( character._energy_sent > 1200 && character._energy_upgrade > 8000 && !character._acquired_bt_projector )
+				{ 
 					character._energy_upgrade += 1000;
 					character.matter_max += 1000;
 					character.hmax += 200;
@@ -8663,9 +8660,9 @@ class sdGunClass
 					character.s += 2;
 					}
 
-					if ( character._acquired_bt_projector === false && character._energy_upgrade >= 8690 )
+					if ( !character._acquired_bt_projector && character._energy_upgrade >= 8000 )
 					{
-					character._acquired_bt_projector === true;
+					character._acquired_bt_projector = true;
 
 					if ( Math.random() > 0.5 )
 					character.Say( "The last stand to the victory is Star Defender, not you!" );

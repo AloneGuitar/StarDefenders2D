@@ -505,6 +505,7 @@ class sdCharacter extends sdEntity
 		if ( prop === '_upgrade_counters' ) return true;
 		if ( prop === '_save_file' ) return true;
 		if ( prop === '_discovered' ) return true;
+		if ( prop === '_user_data' ) return true;
 		if ( prop === '_finished' ) return true;
 
 		return false;
@@ -530,7 +531,7 @@ class sdCharacter extends sdEntity
 		{
 			let old_matter_max = this.matter_max;
 
-			if ( this.matter_max <= 25650 )
+			if ( this.matter_max <= 26250 )
 			this.matter_max = Math.min( 75 + Math.max( 0, this._score * 20 ), 3650 ) + this._matter_capacity_boosters + this._energy_upgrade + this._energy_sent + this._energy_steal;
 			
 			// Keep matter multiplied when low score or else it feels like matter gets removed
@@ -723,9 +724,7 @@ class sdCharacter extends sdEntity
 		this._socket = null; // undefined causes troubles
 		this._my_hash = undefined;
 		this._save_file = null;
-		/*this._pos_corr_x = this.x;
-		this._pos_corr_y = this.y;
-		this._pos_corr_until = 0;*/
+		this._user_data = {}; // Must be JSON-able. Contains random game mode related values
 		this.skin_allowed = true;
 			
 		this._global_user_uid = null; // Multiple sdCharacter-s can have same _global_user_uid because it points to user, not a character - user can have multiple characters. This can be null is sandbox modes that chose not to use global accounts yet might use presets and translations
@@ -1787,10 +1786,10 @@ class sdCharacter extends sdEntity
 		if ( from_ent._is_being_removed )
 		from_ent = null;
 
-		/*let tele_cost = sdRescueTeleport.max_matter;
-		
-		if ( !this.is( sdCharacter ) )
-		tele_cost = 100;*/
+		if ( !sdWorld.server_config.allow_rescue_teleports )
+		{
+			return false;
+		}
 
 		let best_di = Infinity;
 		let best_cost = Infinity;

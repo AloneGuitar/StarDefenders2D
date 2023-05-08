@@ -65,6 +65,7 @@ import sdFactionSpawner from './sdFactionSpawner.js';
 import sdFactions from './sdFactions.js';
 import sdTzyrgAbsorber from './sdTzyrgAbsorber.js';
 import sdShurgConverter from './sdShurgConverter.js';
+import sdShurgTurret from './sdShurgTurret.js';
 import sdBaseShieldingUnit from './sdBaseShieldingUnit.js';
 
 import sdTask from './sdTask.js';
@@ -3068,6 +3069,16 @@ class sdWeather extends sdEntity
 					if ( sdWeather.SetRandomSpawnLocation( converter ) )
 					{
 						sdShurgConverter.ents_left = 2; // 3 converters to destroy
+
+						sdWeather.SimpleSpawner({
+
+						count: [ 2, 2 ],
+						class: sdShurgTurret,
+
+						group_radius: 800,
+						near_entity: converter
+
+						});
 					}
 					else
 					{

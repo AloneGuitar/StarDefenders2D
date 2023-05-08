@@ -42,7 +42,7 @@ class sdAntigravity extends sdEntity
 		
 		if ( this._hea > 0 )
 		{
-			if ( sdBaseShieldingUnit.TestIfDamageShouldPass( this, dmg, initiator ) )
+			if ( dmg = sdBaseShieldingUnit.TestIfDamageShouldPass( this, dmg, initiator ) )
 			{
 				this._hea -= dmg;
 				this._regen_timeout = 60;
@@ -56,7 +56,7 @@ class sdAntigravity extends sdEntity
 	{
 		super( params );
 		
-		this._hmax = 200 * 4;
+		this._hmax = 300;
 		this._hea = this._hmax;
 		this._regen_timeout = 0;
 		

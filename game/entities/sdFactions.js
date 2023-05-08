@@ -361,6 +361,7 @@ class sdFactions extends sdEntity
 			character_entity._jetpack_allowed = true; // Jetpack
 			character_entity._jetpack_fuel_multiplier = 0.25; // Less fuel usage when jetpacking
 			character_entity._ai_team = 4; // AI team 4 is for Sarronian faction
+			character_entity.iron_body = 1;
 		}
 
 		if ( faction === sdFactions.FACTION_VELOX ) // Velox
@@ -495,6 +496,7 @@ class sdFactions extends sdEntity
 				character_entity._matter_regeneration = 5;
 				character_entity._matter_regeneration_multiplier = 10;
 				character_entity._damage_mult = 2;
+				character_entity.iron_body = 2;
 			}
 			if ( character_entity._ai_gun_slot ===  2 && character_entity.s === 120 )
 			{
@@ -639,6 +641,7 @@ class sdFactions extends sdEntity
 			character_entity._jetpack_allowed = true; // Jetpack
 			character_entity._jetpack_fuel_multiplier = 0.25; // Less fuel usage when jetpacking
 			character_entity._ai_team = 8; // AI team 8 is for Tzyrg faction
+			character_entity.iron_body = 2;
 		}
 
 		if ( faction === sdFactions.FACTION_SHURG ) // Shurg
@@ -686,6 +689,7 @@ class sdFactions extends sdEntity
 			character_entity._jetpack_allowed = false; // No jetpack
 			character_entity._ai_team = 9; // AI team 9 is for Shurg faction
 			character_entity._matter_regeneration_multiplier = 5; // Their matter regenerates 10 times faster than normal, unupgraded players
+			character_entity.iron_body = 1;
 		}
 
 		if ( faction === sdFactions.FACTION_KVT )
