@@ -10,6 +10,7 @@ import fs from 'fs';
 //import fs from 'fs-extra';
 
 import sdWorld from '../sdWorld.js';
+import sdShop from '../client/sdShop.js';
 import sdEntity from '../entities/sdEntity.js';
 import sdGun from '../entities/sdGun.js';
 import sdWater from '../entities/sdWater.js';
@@ -772,6 +773,60 @@ class sdModeration
 		if ( parts[ 0 ] === 'admin' || parts[ 0 ] === 'a' || parts[ 0 ] === 'adm' )
 		{
 			socket.emit( 'OPEN_INTERFACE', 'sdAdminPanel' );
+		}
+		else
+		if ( parts[ 0 ] === 'quickstart' )
+		{
+			if ( socket.character )
+			if ( socket.character._score < 5000 )
+			if ( !socket.character._is_being_removed )
+			{
+				let gun = new sdGun({ x:socket.character.x, y:socket.character.y, class:sdGun.CLASS_CREATOR });
+				sdEntity.entities.push( gun );
+
+				gun._hea = 10000;
+
+				socket.character._max_level = 90;
+
+				socket.character.GiveScore( 50000, null, false );
+
+				for ( var i = 0; i < sdShop.options.length; i++ )
+				{
+					if ( sdShop.options[ i ]._category === 'Upgrades' )
+					{
+						let max_level = sdShop.upgrades[ sdShop.options[ i ].upgrade_name ].max_level;
+						let cur_level = ( socket.character._upgrade_counters[ sdShop.options[ i ].upgrade_name ] || 0 );
+						if ( sdShop.options[ i ]._min_build_tool_level <= socket.character.build_tool_level )
+						{
+							for ( var j = cur_level; j < max_level; j++ )
+							{
+								socket.character.InstallUpgrade( sdShop.options[ i ].upgrade_name );
+							}
+						}
+					}
+				}
+				socket.character._matter_capacity_boosters_max = 3600;
+				socket.character._matter_capacity_boosters = socket.character._matter_capacity_boosters_max;
+				socket.character._energy_upgrade = 13900;
+				socket.character._energy_sent = 1500;
+				socket.character._energy_steal = 3600;
+
+				socket.character.hmax += 3000;
+				socket.character.hea = socket.character.hmax;
+				socket.character._damage_mult += 1;
+
+				if ( socket.character.s >= 111 )
+				{
+					socket.character.s += 15;
+				}
+
+				socket.character._acquired_bt_projector = true;
+				socket.character._acquired_bt_mech = true;
+				socket.character._acquired_bt_setr = true;
+
+				socket.character.matter_max = 26250;
+				socket.character.matter = socket.character.matter_max;
+			}
 		}
 		else
 		socket.SDServiceMessage( 'Server: Unknown command "' + parts[ 0 ] + '"' );
