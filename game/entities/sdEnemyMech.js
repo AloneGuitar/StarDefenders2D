@@ -53,7 +53,7 @@ class sdEnemyMech extends sdEntity
 		
 		this._regen_timeout = 0;
 		
-		this._hmax = 30000; // Was 6000 but even 12000 is too easy if you have anything in slot 7
+		this._hmax = 12000; // Was 6000 but even 12000 is too easy if you have anything in slot 7
 		this.hea = this._hmax;
 
 		this._nature_damage = 1000000;
@@ -114,24 +114,12 @@ class sdEnemyMech extends sdEntity
 			this._last_seen_player = sdWorld.time;
 		}
 	}
-	/*GetBleedEffect()
-	{
-		return sdEffect.TYPE_BLOOD_GREEN;
-	}*/
-	/*GetBleedEffectFilter()
-	{
-		return this.filter;
-	}*/
 	CanAttackEnt( ent )
 	{
 		if ( ent === this._current_target && ent._ai_team !== this._ai_team )
 		return true;
 		else
 		{
-			if ( ent.matter_max >= 20000 && ent._ai_team !== this._ai_team || ent.build_tool_level < 2 )
-			{
-			}
-			else
 			if ( ent.matter_max < 20000 && ent._ai_team !== this.ai_team )
 			{
 				this._current_target = ent; // Don't stop targetting if the player has below 800 matter mid fight

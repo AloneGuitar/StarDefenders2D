@@ -71,11 +71,11 @@ class sdFactions extends sdEntity
 				}
 			}
 			if ( character_entity._ai_gun_slot === 2 )
-			character_settings = {"hero_name":"Falkok","color_bright":"#6b0000","color_dark":"#420000","color_bright3":"#6b0000","color_dark3":"#420000","color_visor":"#5577b9","color_suit":"#240000","color_suit2":"#2e0000","color_dark2":"#560101","color_shoes":"#000000","color_skin":"#240000","color_extra1":"#240000","helmet1":false,"helmet2":true,"body60":true,"legs60":true,"voice1":false,"voice2":false,"voice3":true,"voice4":false,"voice5":false,"voice6":true};
+			character_settings = {"hero_name":"Falkok","color_bright":"#6b0000","color_dark":"#420000","color_bright3":"#6b0000","color_dark3":"#420000","color_visor":"#5577b9","color_suit":"#240000","color_suit2":"#2e0000","color_dark2":"#560101","color_shoes":"#000000","color_skin":"#240000","color_extra1":"#240000","helmet1":false,"helmet2":true,"body60":true,"legs60":true,"voice3":false,"voice6":true};
 			if ( character_entity._ai_gun_slot === 3 || character_entity._ai_gun_slot === 4 ) // If Falkok spawns with Raygun or PSI-Cutter, change their looks Phoenix Falkok
-			character_settings = {"hero_name":"Phoenix Falkok","color_bright":"#ffc800","color_dark":"#a37000","color_bright3":"#ffc800","color_dark3":"#a37000","color_visor":"#00234b","color_suit":"#ffc800","color_suit2":"#ffc800","color_dark2":"#a37000","color_shoes":"#ffc800","color_skin":"#a37000","color_extra1":"#00234b","helmet1":false,"helmet12":true,"body11":true,"legs37":true,"voice1":false,"voice2":false,"voice3":true,"voice4":false,"voice5":false,"voice6":true};
+			character_settings = {"hero_name":"Phoenix Falkok","color_bright":"#ffc800","color_dark":"#a37000","color_bright3":"#ffc800","color_dark3":"#a37000","color_visor":"#00234b","color_suit":"#ffc800","color_suit2":"#ffc800","color_dark2":"#a37000","color_shoes":"#ffc800","color_skin":"#a37000","color_extra1":"#00234b","helmet1":false,"helmet12":true,"body11":true,"legs37":true,"voice3":true,"voice6":true};
 			if ( character_entity._ai_gun_slot === 2 && character_entity.s === 120 )
-			character_settings = {"hero_name":"Heavy Falkok","color_bright":"#6b0000","color_dark":"#420000","color_bright3":"#6b0000","color_dark3":"#420000","color_visor":"#5577b9","color_suit":"#240000","color_suit2":"#2e0000","color_dark2":"#560101","color_shoes":"#000000","color_skin":"#240000","color_extra1":"#240000","helmet1":false,"helmet43":true,"body83":true,"legs16":true,"voice1":false,"voice2":false,"voice3":true,"voice4":false,"voice5":false,"voice6":true};
+			character_settings = {"hero_name":"Heavy Falkok","color_bright":"#6b0000","color_dark":"#420000","color_bright3":"#6b0000","color_dark3":"#420000","color_visor":"#5577b9","color_suit":"#240000","color_suit2":"#2e0000","color_dark2":"#560101","color_shoes":"#000000","color_skin":"#240000","color_extra1":"#240000","helmet1":false,"helmet43":true,"body83":true,"legs16":true,"voice3":true,"voice6":true};
 			if ( character_entity._ai_gun_slot === 2 && character_entity.s === 100 ) // If a regular falkok spawns
 			{
 				character_entity.matter = 170;
@@ -153,9 +153,9 @@ class sdFactions extends sdEntity
 				character_entity._ai_gun_slot = 1;
 			}
 				if ( character_entity._ai_gun_slot === 2 || character_entity._ai_gun_slot === 1 )
-				character_settings = {"hero_name":"Erthal","color_bright":"#37a2ff","color_dark":"#000000","color_bright3":"#464646","color_dark3":"#000000","color_visor":"#1664a8","color_suit":"#464646","color_suit2":"#000000","color_dark2":"#464646","color_shoes":"#000000","color_skin":"#1665a8","color_extra1":"#464646","helmet1":false,"helmet4":true,"body3":true,"legs3":true,"voice1":false,"voice2":false,"voice3":true,"voice4":false,"voice5":false,"voice6":false,"voice7":true};
+				character_settings = {"hero_name":"Erthal","color_bright":"#37a2ff","color_dark":"#000000","color_bright3":"#464646","color_dark3":"#000000","color_visor":"#1664a8","color_suit":"#464646","color_suit2":"#000000","color_dark2":"#464646","color_shoes":"#000000","color_skin":"#1665a8","color_extra1":"#464646","helmet1":false,"helmet4":true,"body3":true,"legs3":true,"voice3":false,"voice7":true};
 				if ( character_entity._ai_gun_slot === 5 )
-				character_settings = {"hero_name":"Erthal Brutal Destroyer","color_bright":"#37a2ff","color_dark":"#000000","color_bright3":"#464646","color_dark3":"#000000","color_visor":"#1664a8","color_suit":"#464646","color_suit2":"#000000","color_dark2":"#464646","color_shoes":"#000000","color_skin":"#1665a8","color_extra1":"#464646","helmet1":false,"helmet127":true,"body95":true,"legs95":true,"voice3":false,"voice7":true};
+				character_settings = {"hero_name":"Erthal Brutal Destroyer","color_bright":"#37a2ff","color_dark":"#000000","color_bright3":"#464646","color_dark3":"#000000","color_visor":"#1664a8","color_suit":"#464646","color_suit2":"#000000","color_dark2":"#464646","color_shoes":"#000000","color_skin":"#1665a8","color_extra1":"#464646","helmet1":false,"helmet127":true,"body95":true,"legs95":true,"voice3":false,"voice10":true};
 				if ( character_entity._ai_gun_slot === 2 || character_entity._ai_gun_slot === 1 )
 				{
 					character_entity.matter = 150;
@@ -240,10 +240,10 @@ class sdFactions extends sdEntity
 				character_entity.stability_upgrade = 5;
 			}
 			if ( character_entity.stability_upgrade < 6 )
-			character_settings = {"hero_name":"Council Acolyte","color_bright":"#e1e100","color_dark":"#ffffff","color_bright3":"#ffff00","color_dark3":"#e1e1e1","color_visor":"#ffff00","color_suit":"#ffffff","color_suit2":"#e1e1e1","color_dark2":"#ffe100","color_shoes":"#e1e1e1","color_skin":"#ffffff","color_extra1":"#ffff00","helmet1":false,"helmet23":true,"body11":true,"legs8":true,"voice1":false,"voice2":false,"voice3":true,"voice4":false,"voice5":false,"voice6":false,"voice7":false,"voice8":true};
+			character_settings = {"hero_name":"Council Acolyte","color_bright":"#e1e100","color_dark":"#ffffff","color_bright3":"#ffff00","color_dark3":"#e1e1e1","color_visor":"#ffff00","color_suit":"#ffffff","color_suit2":"#e1e1e1","color_dark2":"#ffe100","color_shoes":"#e1e1e1","color_skin":"#ffffff","color_extra1":"#ffff00","helmet1":false,"helmet23":true,"body11":true,"legs8":true,"voice3":false,"voice8":true};
 
 			if ( character_entity.stability_upgrade > 9 )
-			character_settings = {"hero_name":"Council Vanguard","color_bright":"#e1e100","color_dark":"#ffffff","color_bright3":"#ffff00","color_dark3":"#e1e1e1","color_visor":"#ffff00","color_suit":"#ffffff","color_suit2":"#e1e1e1","color_dark2":"#ffe100","color_shoes":"#e1e1e1","color_skin":"#ffffff","color_extra1":"#ffff00","helmet1":false,"helmet96":true,"body68":true,"legs68":true,"voice1":false,"voice2":false,"voice3":true,"voice4":false,"voice5":false,"voice6":false,"voice7":false,"voice8":true};
+			character_settings = {"hero_name":"Council Vanguard","color_bright":"#e1e100","color_dark":"#ffffff","color_bright3":"#ffff00","color_dark3":"#e1e1e1","color_visor":"#ffff00","color_suit":"#ffffff","color_suit2":"#e1e1e1","color_dark2":"#ffe100","color_shoes":"#e1e1e1","color_skin":"#ffffff","color_extra1":"#ffff00","helmet1":false,"helmet96":true,"body68":true,"legs68":true,"voice3":false,"voice8":true};
 
 			if ( character_entity.stability_upgrade < 6 )
 			{
@@ -315,9 +315,9 @@ class sdFactions extends sdEntity
 				character_entity._ai_gun_slot = 8;
 			}
 			if ( character_entity._ai_gun_slot === 8 )
-			character_settings = {"hero_name":"Sarronian E2 Unit","color_bright":"#202020","color_dark":"#101010","color_bright3":"#000000","color_dark3":"#101010","color_visor":"#FFA000","color_suit":"#202020","color_suit2":"#101010","color_dark2":"#101010","color_shoes":"#000000","color_skin":"#FFFF00","color_extra1":"#00FF00","helmet1":false,"helmet77":true,"voice1":false,"voice2":false,"voice3":false,"voice4":false,"voice10":true,"body18":true, "legs36":true};
+			character_settings = {"hero_name":"Sarronian E2 Unit","color_bright":"#202020","color_dark":"#101010","color_bright3":"#000000","color_dark3":"#101010","color_visor":"#FFA000","color_suit":"#202020","color_suit2":"#101010","color_dark2":"#101010","color_shoes":"#000000","color_skin":"#FFFF00","color_extra1":"#00FF00","helmet1":false,"helmet77":true,"voice3":false,"voice10":true,"body18":true, "legs36":true};
 			if ( character_entity._ai_gun_slot === 8 && character_entity.s === 120 )
-			character_settings = {"hero_name":"Sarronian K4 Unit","color_bright":"#202020","color_dark":"#101010","color_bright3":"#000000","color_dark3":"#101010","color_visor":"#FFA000","color_suit":"#202020","color_suit2":"#101010","color_dark2":"#101010","color_shoes":"#000000","color_skin":"#FFFF00","color_extra1":"#00FF00","helmet1":false,"helmet10":true,"voice1":false,"voice2":false,"voice3":false,"voice4":false,"voice10":true,"body38":true, "legs29":true};
+			character_settings = {"hero_name":"Sarronian K4 Unit","color_bright":"#202020","color_dark":"#101010","color_bright3":"#000000","color_dark3":"#101010","color_visor":"#FFA000","color_suit":"#202020","color_suit2":"#101010","color_dark2":"#101010","color_shoes":"#000000","color_skin":"#FFFF00","color_extra1":"#00FF00","helmet1":false,"helmet10":true,"voice3":false,"voice10":true,"body38":true, "legs29":true};
 			if ( character_entity._ai_gun_slot === 8 ) // If a regular Sarronian soldier
 			{
 				character_entity.matter = 250;
@@ -409,7 +409,7 @@ class sdFactions extends sdEntity
 			"helmet86":true, // Velox helmet
 			"body89":true, // Lite Velox body
 			"legs89":true, // Lite Velox legs
-			"voice7":true };
+			"voice11":true };
 
 			if ( character_entity._ai_gun_slot === 2 && character_entity.s === 100 )
 			character_settings = {"hero_name":"Velox Soldier", // Name // green soldier
@@ -427,7 +427,7 @@ class sdFactions extends sdEntity
 			"helmet86":true, // Velox helmet
 			"body59":true, // Velox body
 			"legs59":true, // Velox legs
-			"voice7":true };
+			"voice11":true };
 
 			if ( character_entity._ai_gun_slot === 4 )
 			character_settings = {"hero_name":"Velox Devastator", // Name
@@ -445,7 +445,7 @@ class sdFactions extends sdEntity
 			"helmet86":true, // Velox helmet
 			"body90":true, // Heavy Velox body
 			"legs90":true, // Heavy Velox legs
-			"voice7":true };
+			"voice11":true };
 
 			if ( character_entity._ai_gun_slot === 2 && character_entity.s === 120 )
 			character_settings = {"hero_name":"Velox Berkerser", // Name
@@ -463,7 +463,7 @@ class sdFactions extends sdEntity
 			"helmet118":true, // Heavy Velox helmet
 			"body90":true, // Heavy Velox body
 			"legs90":true, // Heavy Velox legs
-			"voice7":true };
+			"voice11":true };
 
 			if ( character_entity._ai_gun_slot === 1 || 2 && character_entity.s === 100 ) // If a regular Velox soldier
 			{
@@ -537,9 +537,9 @@ class sdFactions extends sdEntity
 				character_entity._ai_gun_slot = 3;
 			}
 			if ( character_entity._ai_gun_slot === 3 )
-			character_settings = {"hero_name":"Setr Soldier","color_bright":"#0000c0","color_dark":"#404040","color_bright3":"#404040","color_dark3":"#202020","color_visor":"#c8c800","color_suit":"#000080","color_suit2":"#000080","color_dark2":"#404040","color_shoes":"#000000","color_skin":"#000000","helmet1":false,"helmet3":true,"voice1":false,"voice2":false,"voice3":false,"voice4":false,"voice5":false,"voice9":true,"body18":true, "legs22":true};
+			character_settings = {"hero_name":"Setr Soldier","color_bright":"#0000c0","color_dark":"#404040","color_bright3":"#404040","color_dark3":"#202020","color_visor":"#c8c800","color_suit":"#000080","color_suit2":"#000080","color_dark2":"#404040","color_shoes":"#000000","color_skin":"#000000","helmet1":false,"helmet3":true,"voice3":false,"voice9":true,"body18":true, "legs22":true};
 			if ( character_entity._ai_gun_slot === 5 )
-			character_settings = {"hero_name":"Setr Grenadier","color_bright":"#0000c0","color_dark":"#404040","color_bright3":"#404040","color_dark3":"#202020","color_visor":"#c8c800","color_suit":"#000080","color_suit2":"#000080","color_dark2":"#404040","color_shoes":"#000000","color_skin":"#000000","helmet1":false,"helmet61":true,"voice1":false,"voice2":false,"voice3":false,"voice4":false,"voice5":false,"voice9":true,"body19":true, "legs51":true};
+			character_settings = {"hero_name":"Setr Grenadier","color_bright":"#0000c0","color_dark":"#404040","color_bright3":"#404040","color_dark3":"#202020","color_visor":"#c8c800","color_suit":"#000080","color_suit2":"#000080","color_dark2":"#404040","color_shoes":"#000000","color_skin":"#000000","helmet1":false,"helmet61":true,"voice3":false,"voice9":true,"body19":true, "legs51":true};
 			if ( character_entity._ai_gun_slot === 3 ) // If a regular Setr soldier
 			{
 				character_entity.matter = 150;
@@ -601,9 +601,9 @@ class sdFactions extends sdEntity
 				character_entity._ai_gun_slot = 3;
 			}
 			if ( character_entity._ai_gun_slot === 3 )
-			character_settings = {"hero_name":"Tzyrg","color_bright":"#404040","color_dark":"#202020","color_bright3":"#303030","color_dark3":"#202020","color_visor":"#FF0000","color_suit":"#404040","color_suit2":"#383838","color_dark2":"#202020","color_shoes":"#000000","color_skin":"#101010","color_extra1":"#000000","helmet1":false,"helmet69":true,"voice1":false,"voice10":true,"body34":true,"legs36":true};
+			character_settings = {"hero_name":"Tzyrg","color_bright":"#404040","color_dark":"#202020","color_bright3":"#303030","color_dark3":"#202020","color_visor":"#FF0000","color_suit":"#404040","color_suit2":"#383838","color_dark2":"#202020","color_shoes":"#000000","color_skin":"#101010","color_extra1":"#000000","helmet1":false,"helmet69":true,"voice3":false,"voice12":true,"body34":true,"legs36":true};
 			if ( character_entity._ai_gun_slot === 2 || character_entity._ai_gun_slot === 4 )
-			character_settings = {"hero_name":"Tzyrg Elite","color_bright":"#404040","color_dark":"#202020","color_bright3":"#303030","color_dark3":"#202020","color_visor":"#FF0000","color_suit":"#404040","color_suit2":"#383838","color_dark2":"#202020","color_shoes":"#000000","color_skin":"#101010","color_extra1":"#202020","helmet1":false,"helmet29":true,"voice1":false,"voice10":true,"body36":true,"legs83":true};
+			character_settings = {"hero_name":"Tzyrg Elite","color_bright":"#404040","color_dark":"#202020","color_bright3":"#303030","color_dark3":"#202020","color_visor":"#FF0000","color_suit":"#404040","color_suit2":"#383838","color_dark2":"#202020","color_shoes":"#000000","color_skin":"#101010","color_extra1":"#202020","helmet1":false,"helmet29":true,"voice3":false,"voice12":true,"body36":true,"legs83":true};
 
 			if ( character_entity._ai_gun_slot === 3 ) // If a regular Tzyrg
 			{
@@ -764,7 +764,7 @@ class sdFactions extends sdEntity
 			if ( character_entity._ai_gun_slot === 8 || character_entity._ai_gun_slot === 4 )
 			character_settings = {"hero_name":"KVT Marksman","color_bright":"#1a1a1a","color_dark":"#2b2b2b","color_bright3":"#141414","color_dark3":"#2b2b2b","color_visor":"#0fd8fc","color_suit":"#1a1a1a","color_suit2":"#1a1a1a","color_dark2":"#2b2b2b","color_shoes":"#141414","color_skin":"#141414","color_extra1":"#0fd8fc","helmet1":false,"helmet30":true,"body84":true,"legs20":true,"voice1":true,"voice3":false};
 			if ( character_entity._ai_gun_slot === 5 || character_entity.stability_upgrade === 1 )
-			character_settings = {"hero_name":"KVT Rocketman","color_bright":"#1a1a1a","color_dark":"#2b2b2b","color_bright3":"#141414","color_dark3":"#2b2b2b","color_visor":"#0fd8fc","color_suit":"#1a1a1a","color_suit2":"#1a1a1a","color_dark2":"#2b2b2b","color_shoes":"#141414","color_skin":"#141414","color_extra1":"#0fd8fc","helmet1":false,"helmet47":true,"body76":true,"legs67":true,"voice1":true,"voice3":false};
+			character_settings = {"hero_name":"KVT Supporter","color_bright":"#1a1a1a","color_dark":"#2b2b2b","color_bright3":"#141414","color_dark3":"#2b2b2b","color_visor":"#0fd8fc","color_suit":"#1a1a1a","color_suit2":"#1a1a1a","color_dark2":"#2b2b2b","color_shoes":"#141414","color_skin":"#141414","color_extra1":"#0fd8fc","helmet1":false,"helmet47":true,"body76":true,"legs67":true,"voice1":true,"voice3":false};
 			if ( character_entity._ai_gun_slot === 1 )
 			character_settings = {"hero_name":"KVT Captain","color_bright":"#1a1a1a","color_dark":"#2b2b2b","color_bright3":"#141414","color_dark3":"#2b2b2b","color_visor":"#0fd8fc","color_suit":"#1a1a1a","color_suit2":"#1a1a1a","color_dark2":"#2b2b2b","color_shoes":"#141414","color_skin":"#141414","color_extra1":"#0fd8fc","helmet1":false,"helmet51":true,"body51":true,"legs33":true,"voice1":true,"voice3":false};
 			if ( character_entity._ai_gun_slot === 2 || character_entity.stability_upgrade < 1 )

@@ -7478,8 +7478,8 @@ class sdGunClass
 			projectile_velocity_dynamic: ( gun )=> { return Math.min( 64, sdGun.default_projectile_velocity ) },
 			projectile_properties_dynamic: ( gun )=>{ 
 
-				let obj = { time_left: 8, _rail: true, color: '#0000c8', _dirt_mult: 2 };
-				obj._knock_scale = 2 * gun.extra[ ID_DAMAGE_MULT ]; // Make sure guns have _knock_scale otherwise it breaks the game when fired
+				let obj = { time_left: 5, _rail: true, color: '#0000c8' };
+				obj._knock_scale = 1.8 * gun.extra[ ID_DAMAGE_MULT ]; // Make sure guns have _knock_scale otherwise it breaks the game when fired
 				obj._damage = gun.extra[ ID_DAMAGE_VALUE ]; // Damage value is set onMade
 				obj._damage *= gun.extra[ ID_DAMAGE_MULT ];
 				obj._knock_scale *= gun.extra[ ID_RECOIL_SCALE ];
@@ -7503,7 +7503,6 @@ class sdGunClass
 					//UpdateCusomizableGunProperties( gun );
 				}
 			},
-			upgrades: AddGunDefaultUpgrades()
 		};
 
 		// Add new gun classes above this line //
@@ -8600,10 +8599,10 @@ class sdGunClass
 			min_build_tool_level: 51,
 			min_workbench_level: 22,
 			matter_cost: 4040,
-			projectile_properties: { time_left: 60, explosion_radius: 18, model: 'mini_rocket', _damage: 2, color: '#00aaff', ac:0.1, _homing: true, _homing_mult: 0.015, _vehicle_mult:sdGun.default_vehicle_mult_bonus, _dirt_mult: 0.5 },
+			projectile_properties: { time_left: 60, explosion_radius: 12, model: 'mini_rocket', _damage: 2, color: '#00aaff', ac:0.11, _homing: true, _homing_mult: 0.01, _vehicle_mult:sdGun.default_vehicle_mult_bonus, _dirt_mult: 0.5 },
 			projectile_properties_dynamic: ( gun )=>{ 
 				
-				let obj = { time_left: 60, explosion_radius: 18, model: 'mini_rocket', color: '#00aaff', ac:0.1, _homing: true, _homing_mult: 0.015, _vehicle_mult:sdGun.default_vehicle_mult_bonus, _dirt_mult: 0.5 };
+				let obj = { time_left: 60, explosion_radius: 12, model: 'mini_rocket', color: '#00aaff', ac:0.11, _homing: true, _homing_mult: 0.01, _vehicle_mult:sdGun.default_vehicle_mult_bonus, _dirt_mult: 0.5 };
 				obj._knock_scale = 0.01 * 8 * gun.extra[ ID_DAMAGE_MULT ];
 				obj._damage = gun.extra[ ID_DAMAGE_VALUE ];
 				obj._damage *= gun.extra[ ID_DAMAGE_MULT ];

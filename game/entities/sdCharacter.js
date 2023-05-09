@@ -367,32 +367,26 @@ class sdCharacter extends sdEntity
 	
 	GetBleedEffect()
 	{
-		if ( this._voice.variant === 'whisperf' && this._voice.pitch !== 0 || this._voice.variant === 'croak' && this._voice.pitch === 1 || this._voice.variant ==='f5' || this._voice.variant ==='m2' )
+		if ( this._voice.variant === 'whisperf' && this._voice.pitch === 20 || this._voice.variant === 'croak' || this._voice.variant ==='f5' || this._voice.variant ==='m2' || this._voice.variant ==='m3' )
 		return sdEffect.TYPE_BLOOD_GREEN;
 		
-		if ( this._voice.variant === 'klatt3' || this._voice.variant === 'silence' || this._voice.variant === 'whisperf' && this._voice.pitch === 0 )
+		if ( this._voice.variant === 'klatt3' || this._voice.variant === 'klatt2' || this._voice.variant === 'silence' || ( this._voice.variant === 'whisperf' && ( this._voice.pitch === 0 || this._voice.pitch === 50 ) ) || this._voice.variant ==='f3' )
 		return sdEffect.TYPE_WALL_HIT;
 	
 		return sdEffect.TYPE_BLOOD;
 	}
 	GetBleedEffectHue()
 	{
-		if ( this._voice.variant === 'croak' && this._voice.pitch === 1 )
+		if ( this._voice.variant === 'f3' || this._voice.variant === 'm3' || this._voice.variant === 'croak' )
 		return -73;
-	
+
 		if ( this._voice.variant === 'whisperf' && this._voice.pitch !== 0 )
 		return 73;
 
 		if ( this._voice.variant === 'm2' && this._voice.pitch === 40 )
 		return 133;
 
-		if ( this._voice.variant === 'm2' && this._voice.pitch === 20 )
-		return -73;
-
-		if ( this._voice.variant === 'f5' && this._voice.pitch === 70 )
-		return -73;
-
-		if ( this._voice.variant === 'f5' && this._voice.pitch === 90 )
+		if ( this._voice.variant === 'f5' )
 		return 61;
 	
 		return 0;
@@ -2213,7 +2207,7 @@ class sdCharacter extends sdEntity
 			
 			if ( this.hea <= 0 && was_alive )
 			{
-				if ( this._voice.variant === 'croak' && this._voice.speed === 140 )
+				if ( this._voice.variant === 'croak' )
 				{
 					sdSound.PlaySound({ name:'council_death', x:this.x, y:this.y, volume:1, pitch:this.GetVoicePitch(), channel:this._voice_channel });
 				}
@@ -2228,29 +2222,34 @@ class sdCharacter extends sdEntity
 					sdSound.PlaySound({ name:'f_death' + ~~(1+Math.random() * 3), x:this.x, y:this.y, volume:0.4, channel:this._voice_channel });
 				}
 				else
-				if ( this._voice.variant === 'f5' && this._voice.pitch === 70 )
+				if ( this._voice.variant === 'f3' )
 				{
-					sdSound.PlaySound({ name:'crystal_crab_death', x:this.x, y:this.y, volume:1, channel:this._voice_channel });
+					sdSound.PlaySound({ name:'cut_droid_death', x:this.x, y:this.y, pitch:this.GetVoicePitch() / 1.5, volume:1.25, channel:this._voice_channel });
 				}
 				else
-				if ( this._voice.variant === 'f5' && this._voice.pitch === 90 )
+				if ( this._voice.variant === 'f5' )
 				{
-					sdSound.PlaySound({ name:'guanako_death', x:this.x, y:this.y, volume:1, channel:this._voice_channel });
+					sdSound.PlaySound({ name:'guanako_death', x:this.x, y:this.y, volume:2, channel:this._voice_channel });
 				}
 				else
-				if ( this._voice.variant === 'croak' && this._voice.pitch === 20 )
+				if ( this._voice.variant === 'klatt2' )
+				{
+					sdSound.PlaySound({ name:'tzyrg_death', x:this.x, y:this.y, pitch:this.GetVoicePitch() / 3, volume:1, channel:this._voice_channel });
+				}
+				else
+				if ( this._voice.variant === 'whisper' )
 				{
 					sdSound.PlaySound({ name:'overlord_deathC', x:this.x, y:this.y, volume:1, channel:this._voice_channel });
 				}
 				else
-				if ( this._voice.variant === 'm2' && this._voice.pitch === 20 )
+				if ( this._voice.variant === 'm3' )
 				{
 					sdSound.PlaySound({ name:'octopus_death', x:this.x, y:this.y, volume:1, channel:this._voice_channel });
 				}
 				else
-				if ( this._voice.variant === 'whisperf' && this._voice.pitch === 100 )
+				if ( this._voice.variant === 'whisperf' && this._voice.pitch === 50 )
 				{
-					sdSound.PlaySound({ name:'f_death' + ~~(1+Math.random() * 3), x:this.x, y:this.y, pitch:this.GetVoicePitch(), volume:0.5, channel:this._voice_channel });
+					sdSound.PlaySound({ name:'enemy_mech_death3', x:this.x, y:this.y, pitch:this.GetVoicePitch() * 1.5, volume:2, channel:this._voice_channel });
 				}
 				else
 				if ( this._voice.variant === 'whisperf' && this._voice.pitch === 0 )
@@ -2312,7 +2311,7 @@ class sdCharacter extends sdEntity
 				{
 					if ( this.pain_anim <= 0 && !this.iron_fist )
 					{
-						if ( this._voice.variant === 'croak' && this._voice.speed === 140 )
+						if ( this._voice.variant === 'croak' )
 						{
 							sdSound.PlaySound({ name: ( Math.random() < 0.5 ) ? 'council_hurtA' : 'council_hurtB', x:this.x, y:this.y, pitch:this.GetVoicePitch(), volume:( dmg > 1 )? 1 : 0.5, channel:this._voice_channel }); // less volume for bleeding
 						}
@@ -2322,24 +2321,24 @@ class sdCharacter extends sdEntity
 							this.Say( [ 'Ouch!', 'Aaa!', 'Uh!' ][ ~~( Math.random() * 3 ) ], false, false, true, true );
 						}
 						else
-						if ( this._voice.variant === 'f5' && this._voice.pitch === 70 )
-						{
-							sdSound.PlaySound({ name: 'virus_damage2', x:this.x, y:this.y, volume:( dmg > 1 )? 1 : 0.5, channel:this._voice_channel }); // less volume for bleeding
-						}
-						else
-						if ( this._voice.variant === 'f5' && this._voice.pitch === 90 )
+						if ( this._voice.variant === 'f5' )
 						{
 							sdSound.PlaySound({ name: 'guanako_hurt', x:this.x, y:this.y, volume:( dmg > 1 )? 1 : 0.5, channel:this._voice_channel }); // less volume for bleeding
 						}
 						else
-						if ( this._voice.variant === 'croak' && this._voice.pitch === 20 )
+						if ( this._voice.variant === 'whisper' )
 						{
 							sdSound.PlaySound({ name: ( Math.random() < 0.5 ) ? 'overlord_hurtC' : 'overlord_hurtB2', x:this.x, y:this.y, volume:( dmg > 1 )? 1 : 0.5, channel:this._voice_channel }); // less volume for bleeding
 						}
 						else
-						if ( this._voice.variant === 'm2' && this._voice.pitch === 20 )
+						if ( this._voice.variant === 'm3' )
 						{
-							sdSound.PlaySound({ name: 'octopus_hurt2', x:this.x, y:this.y, volume:( dmg > 1 )? 1 : 0.5, channel:this._voice_channel }); // less volume for bleeding
+							sdSound.PlaySound({ name: 'octopus_hurt2', x:this.x, y:this.y, volume:( dmg > 1 )? 1.25 : 0.5, channel:this._voice_channel }); // less volume for bleeding
+						}
+						else
+						if ( this._voice.variant === 'klatt2' )
+						{
+							sdSound.PlaySound({ name: 'tzyrg_hurt', x:this.x, y:this.y, pitch:this.GetVoicePitch() / 3, volume:( dmg > 1 )? 1 : 0.5, channel:this._voice_channel }); // less volume for bleeding
 						}
 						else
 						if ( this._voice.variant === 'whisperf' && this._voice.pitch === 0 )
@@ -2347,15 +2346,15 @@ class sdCharacter extends sdEntity
 							sdSound.PlaySound({ name: 'cube_hurt', x:this.x, y:this.y, volume:( dmg > 1 )? 1 : 0.5, channel:this._voice_channel }); // less volume for bleeding
 						}
 						else
-						if ( this._voice.variant === 'whisperf' && this._voice.pitch === 100 )
+						if ( this._voice.variant === 'whisperf' && this._voice.pitch === 50 )
 						{
-							sdSound.PlaySound({ name:'f_pain' + ~~(2+Math.random() * 3), x:this.x, y:this.y, pitch:this.GetVoicePitch(), volume:( dmg > 1 )? 1 : 0.5, channel:this._voice_channel }); // less volume for bleeding
+							sdSound.PlaySound({ name: 'enemy_mech_hurt', x:this.x, y:this.y, pitch:this.GetVoicePitch() * 1.5, volume:( dmg > 1 )? 2 : 1, channel:this._voice_channel }); // less volume for bleeding
 						}
 						else
 						if ( this._voice.variant === 'whisperf' && this._voice.pitch === 20 )
 						sdSound.PlaySound({ name:'f_pain' + ~~(2+Math.random() * 3), x:this.x, y:this.y, volume:( ( dmg > 1 )? 1 : 0.5 ) * 0.4, channel:this._voice_channel }); // less volume for bleeding
 						else
-						if ( this._voice.variant !== 'm2' && this._voice.variant !== 'silence' )
+						if ( this._voice.variant !== 'm2' && this._voice.variant !== 'silence' && this._voice.variant !== 'f3' )
 						sdSound.PlaySound({ name:'sd_hurt' + ~~(1+Math.random() * 2), x:this.x, y:this.y, pitch:this.GetVoicePitch(), volume:( dmg > 1 )? 1 : 0.5, channel:this._voice_channel }); // less volume for bleeding
 					
 						this.pain_anim = 10;
@@ -2518,10 +2517,10 @@ class sdCharacter extends sdEntity
 		
 		return false;
 	}
-						
+
 	PlayAIAlertedSound( closest )
 	{
-		if ( this._voice.variant === 'whisperf' )
+		if ( this._ai_team === 1 && this._voice.variant === 'whisperf' )
 		{
 			this.Say( [ 
 				'Get away, Monsters!', 
@@ -2549,7 +2548,7 @@ class sdCharacter extends sdEntity
 				'Say hello to my little ' + ( this._inventory[ this.gun_slot ] ? sdWorld.ClassNameToProperName( this._inventory[ this.gun_slot ].GetClass(), this._inventory[ this.gun_slot ], true ) : 'fists' )
 			][ ~~( Math.random() * 9 ) ], false, false, false );
 		}
-		if ( this._ai_team === 2 )
+		if ( this._ai_team === 2 && this._voice.variant === 'klatt3' )
 		{
 			if ( Math.random() < 0.8 )
 			this.Say( [ 
@@ -2599,6 +2598,17 @@ class sdCharacter extends sdEntity
 				'Jpbitp amlrn! ', 
 				'Monmfig eiayyse.',
 				'Smmems iiedyg.'
+				][ ~~( Math.random() * 5 ) ], false, false, false );
+		}
+		if ( this._ai_team === 8 )
+		{
+			if ( Math.random() < 0.8 )
+			this.Say( [ 
+				'This is my land!', 
+				'I will kill you! ' + sdWorld.ClassNameToProperName( closest.GetClass(), closest, true ) + '!', 
+				'Who can end you all? Me! ' + this.title + '!', 
+				'We, Zombies, undead, never DIE!',
+				'Time to end you! ' + this.title + '!'
 				][ ~~( Math.random() * 5 ) ], false, false, false );
 		}
 	}
