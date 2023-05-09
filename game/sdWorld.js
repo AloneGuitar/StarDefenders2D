@@ -3682,13 +3682,13 @@ class sdWorld
 		sdWorld.ReplaceColorInSDFilter( ret, '#800000', '#000000' ); // hue +73 deg
 
 		if ( player_description['voice11'] )
-		sdWorld.ReplaceColorInSDFilter( ret, '#800000', '#00FFFF' );
+		sdWorld.ReplaceColorInSDFilter( ret, '#800000', '#000000' );
 
 		if ( player_description['voice12'] )
 		sdWorld.ReplaceColorInSDFilter( ret, '#800000', '#000000' );
 
 		if ( player_description['voice13'] )
-		sdWorld.ReplaceColorInSDFilter( ret, '#800000', '#00C000' );
+		sdWorld.ReplaceColorInSDFilter( ret, '#800000', '#000000' );
 
 		if ( player_description['voice15'] )
 		sdWorld.ReplaceColorInSDFilter( ret, '#800000', '#00FFFF' );
@@ -3697,7 +3697,7 @@ class sdWorld
 		sdWorld.ReplaceColorInSDFilter( ret, '#800000', '#00C000' );
 
 		if ( player_description['voice17'] )
-		sdWorld.ReplaceColorInSDFilter( ret, '#800000', '#FFFF00' );
+		sdWorld.ReplaceColorInSDFilter( ret, '#800000', '#00FFFF' );
 
 		return ret;
 	}
@@ -3742,13 +3742,13 @@ class sdWorld
 		sdWorld.ReplaceColorInSDFilter_v2( ret, '#800000', '#000000', false );
 
 		if ( player_description['voice11'] )
-		sdWorld.ReplaceColorInSDFilter_v2( ret, '#800000', '#006480', false );
+		sdWorld.ReplaceColorInSDFilter_v2( ret, '#800000', '#000000', false );
 
 		if ( player_description['voice12'] )
 		sdWorld.ReplaceColorInSDFilter_v2( ret, '#800000', '#000000', false );
 
 		if ( player_description['voice13'] )
-		sdWorld.ReplaceColorInSDFilter_v2( ret, '#800000', '#00C000', false );
+		sdWorld.ReplaceColorInSDFilter_v2( ret, '#800000', '#000000', false );
 
 		if ( player_description['voice15'] )
 		sdWorld.ReplaceColorInSDFilter_v2( ret, '#800000', '#00FFFF', false );
@@ -3757,7 +3757,7 @@ class sdWorld
 		sdWorld.ReplaceColorInSDFilter_v2( ret, '#800000', '#00C000', false );
 
 		if ( player_description['voice17'] )
-		sdWorld.ReplaceColorInSDFilter_v2( ret, '#800000', '#FFFF00', false );
+		sdWorld.ReplaceColorInSDFilter_v2( ret, '#800000', '#00FFFF', false );
 
 		return ret;
 	}
@@ -3932,34 +3932,34 @@ class sdWorld
 		}
 		if ( player_description['voice11'] )
 		{
-			_voice.pitch = 100;
+			_voice.pitch = 50;
 			_voice.speed = 160;
 			_voice.variant = 'whisperf';
 		}
 		if ( player_description['voice12'] )
 		{
 			_voice.pitch = 150;
-			_voice.variant = 'klatt3';
+			_voice.variant = 'klatt2';
 		}
 		if ( player_description['voice13'] )
 		{
-			_voice.pitch = 70;
-			_voice.variant = 'f5';
+			_voice.pitch = 100;
+			_voice.variant = 'f3';
 		}
 		if ( player_description['voice14'] )
 		{
-			_voice.pitch = 20;
+			_voice.pitch = 0;
 			_voice.speed = 150;
-			_voice.variant = 'croak';
+			_voice.variant = 'whisper';
 		}
 		if ( player_description['voice15'] )
 		{
-			_voice.pitch = 90;
+			_voice.pitch = 100;
 			_voice.variant = 'f5';
 		}
 		if ( player_description['voice16'] )
 		{
-			_voice.variant = 'm2';
+			_voice.variant = 'm3';
 			_voice.pitch = 20;
 			_voice.speed = 160;
 		}
