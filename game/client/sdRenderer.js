@@ -1038,19 +1038,6 @@ class sdRenderer
 				for ( let i = 0; i < sdEntity.entities.length; i++ )
 				{
 					const e = sdEntity.entities[ i ];
-					
-					/*if (	e.is( sdEffect ) &&
-								( e._type === sdEffect.TYPE_BEAM || e._type === sdEffect.TYPE_BEAM_CIRCLED ) )
-					{
-						trace( e );
-					}*/
-
-					//e._flag = 0; // Visibility detection
-					
-					/*if ( e.is( sdStatusEffect ) )
-					{
-						debugger;
-					}*/
 
 					if ( !e.IsVisible( sdWorld.my_entity ) )
 					{
@@ -1098,7 +1085,6 @@ class sdRenderer
 
 							let max_dimension = sdWorld.Dist2D_Vector( e._hitbox_x2 - e._hitbox_x1, e._hitbox_y2 - e._hitbox_y1 );
 
-							//if ( sdWorld.inDist2D_Boolean( x, y, ex, ey, sdRenderer.old_visibility_map[ an ] + sdRenderer.visibility_falloff + 32 + max_dimension ) )
 							if ( sdWorld.inDist2D_Boolean( x, y, ex, ey, furthest_an + sdRenderer.visibility_falloff + max_dimension + 32 ) )
 							e._flag = frame_flag_reference;
 						}
@@ -1136,18 +1122,7 @@ class sdRenderer
 				
 				if ( e._flag === frame_flag_reference )
 				if ( e.DrawBG !== void_draw )
-				//if ( e.x + e._hitbox_x2 > min_x )
-				//if ( e.x + e._hitbox_x1 < max_x )
-				//if ( e.y + e._hitbox_y2 > min_y )
-				//if ( e.y + e._hitbox_y1 < max_y )
 				{
-					/*if ( e.GetClass() === 'sdGrass' )
-					{
-						if ( double_draw_catcher.has( e ) )
-						continue;
-						else
-						double_draw_catcher.set( e, 'first' );
-					}*/
 						
 					sdStatusEffect.DrawEffectsFor( e, STATUS_EFFECT_LAYER_BG, STATUS_EFFECT_BEFORE, ctx, false );
 					

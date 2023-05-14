@@ -145,7 +145,6 @@ class sdShop
 				{
 					_min_build_tool_level = 7;
 					_reinforced_level = 1;
-					material = sdBlock.MATERIAL_REINFORCED_WALL_LVL1;
 					texture_id = sdBlock.TEXTURE_ID_REINFORCED_LVL1;
 				}
 				
@@ -153,7 +152,6 @@ class sdShop
 				{
 					_min_build_tool_level = 16;
 					_reinforced_level = 2;
-					material = sdBlock.MATERIAL_REINFORCED_WALL_LVL2; // We probably no longer need 2 kinds of these if we could just switch texture
 					texture_id = sdBlock.TEXTURE_ID_REINFORCED_LVL2;
 				}
 				
@@ -254,9 +252,9 @@ class sdShop
 
 		sdShop.options.push({ _class: 'sdBlock', width: 16, height: 16, material:sdBlock.MATERIAL_GROUND, _category:'Walls' });
 		sdShop.options.push({ _class: 'sdBlock', width: 16, height: 16, material:sdBlock.MATERIAL_ROCK, _category:'Walls' });
-		sdShop.options.push({ _class: 'sdBlock', width: 16, height: 16, material:sdBlock.MATERIAL_SAND, natural: true, _category:'Development tests', _min_build_tool_level:30, _min_workbench_level: 16 });
-		sdShop.options.push({ _class: 'sdBlock', width: 16, height: 16, material:sdBlock.MATERIAL_CORRUPTION, natural: true, _category:'Development tests', _min_build_tool_level:40, _min_workbench_level: 20 });
-		sdShop.options.push({ _class: 'sdBlock', width: 16, height: 16, material:sdBlock.MATERIAL_FLESH, natural: true, _category:'Development tests', _min_build_tool_level:60, _min_workbench_level: 27 });
+		sdShop.options.push({ _class: 'sdBlock', width: 16, height: 16, material:sdBlock.MATERIAL_SAND, _category:'Walls', _min_build_tool_level:30, _min_workbench_level: 16 });
+		sdShop.options.push({ _class: 'sdBlock', width: 16, height: 16, material:sdBlock.MATERIAL_CORRUPTION, _category:'Walls', _min_build_tool_level:40, _min_workbench_level: 20 });
+		sdShop.options.push({ _class: 'sdBlock', width: 16, height: 16, material:sdBlock.MATERIAL_FLESH, _category:'Walls', _min_build_tool_level:60, _min_workbench_level: 27 });
 		sdShop.options.push({ _class: 'sdCom', _category:'Base equipment' });
 		sdShop.options.push({ _class: 'sdCom', variation: 1, _category:'Base equipment', _min_build_tool_level:2 });
 		sdShop.options.push({ _class: 'sdCom', variation: 2, _category:'Base equipment', _min_build_tool_level:4 });
@@ -336,6 +334,7 @@ class sdShop
 		sdShop.options.push({ _class: 'sdTurret', kind:sdTurret.KIND_RAPID_LASER, _category:'Base equipment', _min_build_tool_level: 6 });
 		sdShop.options.push({ _class: 'sdTurret', kind:sdTurret.KIND_SNIPER, _category:'Base equipment', _min_build_tool_level: 13 });
 		sdShop.options.push({ _class: 'sdTurret', kind:sdTurret.KIND_FREEZER, _category:'Base equipment', _min_build_tool_level: 15 });
+		sdShop.options.push({ _class: 'sdManualTurret', _category:'Base equipment', _min_build_tool_level: 20 });
 		sdShop.options.push({ _class: 'sdTurret', kind:sdTurret.KIND_LASER, _category:'Base equipment', type: 1, _min_build_tool_level: 61, _min_workbench_level: 22 });
 		sdShop.options.push({ _class: 'sdTurret', kind:sdTurret.KIND_ROCKET, _category:'Base equipment', type: 1, _min_build_tool_level: 61, _min_workbench_level: 24 });
 		sdShop.options.push({ _class: 'sdTurret', kind:sdTurret.KIND_RAPID_LASER, _category:'Base equipment', type: 1, _min_build_tool_level: 66, _min_workbench_level: 26 });
@@ -521,7 +520,7 @@ class sdShop
 			}
 		}
 		sdShop.options.push({ _class: 'sdBomb', _category:'Equipment' });
-		sdShop.options.push({ _class: 'sdBomb', type:1, _category:'Equipment', _min_build_tool_level:25 });
+		sdShop.options.push({ _class: 'sdBomb', type:1, _category:'Equipment', _min_build_tool_level:15 });
 		sdShop.options.push({ _class: 'sdBarrel', _category:'Equipment', _min_workbench_level: 1, _min_build_tool_level:5 });
 		sdShop.options.push({ _class: 'sdBarrel', color: '#33FFFF', filter: 'hue-rotate(130deg) saturate(10)', variation: 1, _category:'Equipment', _min_build_tool_level:10, _min_workbench_level: 1 });
 		sdShop.options.push({ _class: 'sdBarrel', color: '#ff6633', filter: 'hue-rotate(220deg) saturate(20)', variation: 2, _category:'Equipment', _min_build_tool_level:15, _min_workbench_level: 1 });
@@ -588,6 +587,7 @@ class sdShop
 			sdShop.options.push({ _class: 'sdTzyrgAbsorber', _category:'Development tests' });
 			sdShop.options.push({ _class: 'sdShurgConverter', _category:'Development tests' });
 			sdShop.options.push({ _class: 'sdShurgTurret', _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdShurgTurret', type: 1, _category:'Development tests' });
 			sdShop.options.push({ _class: 'sdBadDog', _category:'Development tests' });
 			sdShop.options.push({ _class: 'sdShark', _category:'Development tests' });
 			sdShop.options.push({ _class: 'sdRift', _category:'Development tests' });
@@ -652,6 +652,8 @@ class sdShop
 		sdShop.options.push({ _class: 'sdFactionTools', type:9, _category:'Admin tools' });
 		sdShop.options.push({ _class: 'sdFactionTools', type:10, _category:'Admin tools' });
 		sdShop.options.push({ _class: 'sdFactionTools', type:11, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdFactionTools', type:12, _category:'Admin tools' });
+		sdShop.options.push({ _class: 'sdFactionTools', type:13, _category:'Admin tools' });
 
 		sdShop.options.push({ _class: 'sdGun', class:sdGun.CLASS_ADMIN_REMOVER, _category:'Admin tools' });
 		sdShop.options.push({ _class: 'sdGun', class:sdGun.CLASS_ADMIN_TELEPORTER, _category:'Admin tools' });
@@ -928,10 +930,10 @@ class sdShop
 			},
 			upgrade_workbench:
 			{
-				max_level: 25,
+				max_level: 30,
 				matter_cost: 1000,
 				min_build_tool_level: 70,
-				min_workbench_level: 27,
+				min_workbench_level: 31,
 				description: 'Easy to build some of the tools without workbench.',
 				action: ( character, level_purchased )=>
 				{
