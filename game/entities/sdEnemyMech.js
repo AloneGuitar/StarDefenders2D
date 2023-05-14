@@ -135,7 +135,7 @@ class sdEnemyMech extends sdEntity
 		/*let x = sdWorld.world_bounds.x1 + Math.random() * ( sdWorld.world_bounds.x2 - sdWorld.world_bounds.x1 );
 		let y = sdWorld.world_bounds.y1 + Math.random() * ( sdWorld.world_bounds.y2 - sdWorld.world_bounds.y1 );
 		
-		let targets_raw = sdWorld.GetAnythingNear( this.x, this.y, 256, null, [ 'sdCharacter', 'sdPlayerDrone', 'sdDrone', 'sdEnemyMech', 'sdSpider', 'sdRoach', 'sdAbomination', 'sdAmphid', 'sdAsp', 'sdBadDog', 'sdBiter', 'sdBot', 'sdCube', 'sdFaceCrab', 'sdGrub', 'sdMimic', 'sdOctopus', 'sdOverlord', 'sdPlayerOverlord', 'sdQuadro', 'sdQuickie', 'sdSandWorm', 'sdSetrDestroyer', 'sdTutel', 'sdSlug', 'sdVirus', 'sdTurret', 'sdCommandCentre' ] );
+		let targets_raw = sdWorld.GetAnythingNear( this.x, this.y, 256, null, [ 'sdCharacter', 'sdPlayerDrone', 'sdDrone', 'sdEnemyMech', 'sdSpider', 'sdRoach', 'sdAbomination', 'sdAmphid', 'sdAsp', 'sdBadDog', 'sdBiter', 'sdBot', 'sdCube', 'sdFaceCrab', 'sdGrub', 'sdMimic', 'sdOctopus', 'sdOverlord', 'sdPlayerOverlord', 'sdQuadro', 'sdQuickie', 'sdSandWorm', 'sdSetrDestroyer', 'sdTutel', 'sdSlug', 'sdVirus', 'sdTurret', 'sdManualTurret', 'sdCommandCentre' ] );
 		for ( let i = 0; i < targets_raw.length; i++ )
 		{
 			i = Math.round( Math.random() * targets_raw.length ); // Randomize it
@@ -543,7 +543,7 @@ class sdEnemyMech extends sdEntity
 
 					//let targets_raw = sdWorld.GetAnythingNear( this.x, this.y, 800 );
 					//let targets_raw = sdWorld.GetCharactersNear( this.x, this.y, null, null, 800 );
-					let targets_raw = sdWorld.GetAnythingNear( this.x, this.y, sdEnemyMech.attack_range, null, [ 'sdCharacter', 'sdPlayerDrone', 'sdDrone', 'sdEnemyMech', 'sdSpider', 'sdRoach', 'sdAbomination', 'sdAmphid', 'sdAsp', 'sdBadDog', 'sdBiter', 'sdBot', 'sdCube', 'sdFaceCrab', 'sdGrub', 'sdMimic', 'sdOctopus', 'sdOverlord', 'sdPlayerOverlord', 'sdQuickie', 'sdSandWorm', 'sdSetrDestroyer', 'sdTutel', 'sdSlug', 'sdVirus', 'sdTurret', 'sdCommandCentre' ] );
+					let targets_raw = sdWorld.GetAnythingNear( this.x, this.y, sdEnemyMech.attack_range, null, [ 'sdCharacter', 'sdPlayerDrone', 'sdDrone', 'sdEnemyMech', 'sdSpider', 'sdRoach', 'sdAbomination', 'sdAmphid', 'sdAsp', 'sdBadDog', 'sdBiter', 'sdBot', 'sdCube', 'sdFaceCrab', 'sdGrub', 'sdMimic', 'sdOctopus', 'sdOverlord', 'sdPlayerOverlord', 'sdQuickie', 'sdSandWorm', 'sdSetrDestroyer', 'sdTutel', 'sdSlug', 'sdVirus', 'sdTurret', 'sdManualTurret', 'sdCommandCentre' ] );
 
 					let targets = [];
 
@@ -565,6 +565,7 @@ class sdEnemyMech extends sdEntity
 						 ( targets_raw[ i ].GetClass() === 'sdSlug' ) ||
 						 ( targets_raw[ i ].GetClass() === 'sdVirus' ) ||
 						 ( targets_raw[ i ].GetClass() === 'sdTurret' ) ||
+						 ( targets_raw[ i ].GetClass() === 'sdManualTurret' ) ||
 						 ( targets_raw[ i ].GetClass() === 'sdOverlord' ) ||
 						 ( targets_raw[ i ].GetClass() === 'sdSetrDestroyer' ) ||
 						 ( targets_raw[ i ].GetClass() === 'sdSpider' ) ||

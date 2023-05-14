@@ -275,10 +275,11 @@ class sdWorkbench extends sdEntity
 
 			if ( command_name === 'UPG_WB2' )
 			{
-				if ( exectuter_character.matter > 20000 )
+				if ( exectuter_character.matter > 20000 && this.level < 32 )
 				{
-					this.UpgradeWorkbench();
-					this.metal_shards = this.metal_shards_max;
+					this.level = 32;
+					this.metal_shards = 165;
+					this.metal_shards_max = 165;
 					exectuter_character.matter = exectuter_character.matter - 20000;
 				}
 				else

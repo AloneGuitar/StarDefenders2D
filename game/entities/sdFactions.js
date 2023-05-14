@@ -6,8 +6,10 @@ import sdEffect from './sdEffect.js';
 import sdGun from './sdGun.js';
 import sdWater from './sdWater.js';
 import sdCom from './sdCom.js';
+import sdTask from './sdTask.js';
 import sdBullet from './sdBullet.js';
 import sdCharacter from './sdCharacter.js';
+import sdStatusEffect from './sdStatusEffect.js';
 
 class sdFactions extends sdEntity
 {
@@ -24,6 +26,8 @@ class sdFactions extends sdEntity
 		sdFactions.FACTION_KVT = 9;
 		sdFactions.FACTION_SD = 10;
 		sdFactions.FACTION_SWORD_BOT = 11;
+		sdFactions.FACTION_TIME_SHIFTER = 12;
+		sdFactions.FACTION_SSO = 13;
 		sdWorld.entity_classes[ this.name ] = this; // Register for object spawn
 	}
 
@@ -240,10 +244,40 @@ class sdFactions extends sdEntity
 				character_entity.stability_upgrade = 5;
 			}
 			if ( character_entity.stability_upgrade < 6 )
-			character_settings = {"hero_name":"Council Acolyte","color_bright":"#e1e100","color_dark":"#ffffff","color_bright3":"#ffff00","color_dark3":"#e1e1e1","color_visor":"#ffff00","color_suit":"#ffffff","color_suit2":"#e1e1e1","color_dark2":"#ffe100","color_shoes":"#e1e1e1","color_skin":"#ffffff","color_extra1":"#ffff00","helmet1":false,"helmet23":true,"body11":true,"legs8":true,"voice3":false,"voice8":true};
+			character_settings = {"hero_name":"Council Acolyte", // Name
+			"color_bright":"#bca63e", // Helmet bright color
+			"color_dark":"#e3d06d", // Helmet dark color
+			"color_visor":"#00ffdf", // Visor color
+			"color_bright3":"#ffea70", // Jetpack (bright shade) color
+			"color_dark3":"#cbba48", // Jetpack (dark shade) color
+			"color_suit":"#003e7a", // Upper suit color
+			"color_suit2":"#af963c", // Lower suit color
+			"color_dark2":"#d0b943", // Lower suit plates color
+			"color_shoes":"#9b7f31", // Shoes color
+			"color_skin":"#1c1c1c", // Gloves and neck color
+			"color_extra1":"#00ffdf", // Extra 1 color
+			"helmet23":true,
+			"body66":true,
+			"legs27":true,
+			"voice8":true };
 
 			if ( character_entity.stability_upgrade > 9 )
-			character_settings = {"hero_name":"Council Vanguard","color_bright":"#e1e100","color_dark":"#ffffff","color_bright3":"#ffff00","color_dark3":"#e1e1e1","color_visor":"#ffff00","color_suit":"#ffffff","color_suit2":"#e1e1e1","color_dark2":"#ffe100","color_shoes":"#e1e1e1","color_skin":"#ffffff","color_extra1":"#ffff00","helmet1":false,"helmet96":true,"body68":true,"legs68":true,"voice3":false,"voice8":true};
+			character_settings = {"hero_name":"Council Vanguard", // Name
+			"color_bright":"#bca63e", // Helmet bright color
+			"color_dark":"#e3d06d", // Helmet dark color
+			"color_visor":"#00ffdf", // Visor color
+			"color_bright3":"#ffea70", // Jetpack (bright shade) color
+			"color_dark3":"#cbba48", // Jetpack (dark shade) color
+			"color_suit":"#003e7a", // Upper suit color
+			"color_suit2":"#af963c", // Lower suit color
+			"color_dark2":"#d0b943", // Lower suit plates color
+			"color_shoes":"#9b7f31", // Shoes color
+			"color_skin":"#1c1c1c", // Gloves and neck color
+			"color_extra1":"#00ffdf", // Extra 1 color
+			"helmet96":true,
+			"body68":true,
+			"legs68":true,
+			"voice8":true };
 
 			if ( character_entity.stability_upgrade < 6 )
 			{
@@ -924,6 +958,116 @@ class sdFactions extends sdEntity
 			character_entity._matter_regeneration_multiplier = 10; // Their matter regenerates 10 times faster than normal, unupgraded players
 			character_entity.s = 250;
 			character_entity._jetpack_power = 4;
+			character_entity._allow_despawn = false;
+		}
+
+		if ( faction === sdFactions.FACTION_TIME_SHIFTER )
+		{
+			{
+				sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_TELEPORT_SWORD }) );
+				character_entity._ai_gun_slot = 0;
+			}
+			if ( character_entity._ai_gun_slot === 0 )
+			character_settings = { "hero_name":"Time Shifter", // Name
+			"color_bright":"#202020", // Helmet bright color
+			"color_dark":"#000000", // Helmet dark color
+			"color_visor":"#FFFFFF", // Visor color
+			"color_bright3":"#202020", // Jetpack (bright shade) color
+			"color_dark3":"#202020", // Jetpack and armor plates (dark shade) color
+			"color_suit":"#000000", // Upper suit color
+			"color_suit2":"#000000", // Lower suit color
+			"color_dark2":"#000000", // Lower suit plates color
+			"color_shoes":"#202020", // Shoes color
+			"color_skin":"#202020", // Gloves and neck color
+			"color_extra1":"#202020", // Extra 1 color
+			"helmet36":true,
+			"body1":true,
+			"legs3":true,
+			"voice1":true };
+
+			if ( character_entity._ai_gun_slot === 0 )
+			{
+			character_entity.matter = 1000;
+			character_entity.matter_max = 1000;
+			character_entity.hea = 2500;
+			character_entity.hmax = 2500;
+			}
+
+			character_entity._ai = { direction: ( Math.random() < 0.5 ) ? -1 : 1 };
+			character_entity._ai_level =  4; // AI Level
+			character_entity._matter_regeneration = 50; // At least some ammo regen
+			character_entity._jetpack_allowed = false; // No jetpack, he can fly with his blade if he needs it after all
+			character_entity._ai_team = 10; // AI team 10 is for the time shifter
+			character_entity._matter_regeneration_multiplier = 50; // Their matter regenerates 50 times faster than normal, unupgraded players
+			character_entity._allow_despawn = false;
+			character_entity.ApplyStatusEffect({ type: sdStatusEffect.TYPE_TIME_SHIFTER_PROPERTIES, charges_left: 2 }); // Give him the Time Shifter properties / status effect
+		}
+
+		if ( faction === sdFactions.FACTION_SSO )
+		{
+			if ( Math.random() < 0.5 )
+			{
+				if ( Math.random() < 0.2 )
+				{
+					sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_CUBE_SPEAR }) );
+					character_entity._ai_gun_slot = 0;
+				}
+				else
+				{
+					sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_FMECH_MINIGUN }) );
+					character_entity._ai_gun_slot = 2;
+				}
+			}
+			else
+			{
+				if ( Math.random() < 0.1 )
+				{
+					sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_SARRONIAN_FOCUS_BEAM }) );
+					character_entity._ai_gun_slot = 8;
+				}
+				else
+				{
+					sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_OVERLORD_BLASTER }) );
+					character_entity._ai_gun_slot = 8;
+				}
+			}
+			character_settings = { "hero_name":"Star Susanoo", // Name
+			"color_bright":"#c0c0c0", // Helmet bright color
+			"color_dark":"#808080", // Helmet dark color
+			"color_visor":"#320000", // Visor color
+			"color_bright3":"#c0c0c0", // Jetpack (bright shade) color
+			"color_dark3":"#808080", // Jetpack and armor plates (dark shade) color
+			"color_suit":"#e1e1e1", // Upper suit color
+			"color_suit2":"#808080", // Lower suit color
+			"color_dark2":"#808080", // Lower suit plates color
+			"color_shoes":"#808080", // Shoes color
+			"color_skin":"#808080", // Gloves and neck color
+			"color_extra1":"#320000", // Extra 1 color
+			"helmet98":true,
+			"body68":true,
+			"legs93":true,
+			"voice14":true };
+			character_entity.matter = 800000;
+			character_entity.matter_max = 800000;
+			character_entity.hea = 70000;
+			character_entity.hmax = 70000;
+			character_entity.s = 150;
+			character_entity.armor = 5000;
+			character_entity.armor_max = 5000;
+			character_entity._armor_absorb_perc = 0.8;
+			character_entity._matter_regeneration = 1000;
+			character_entity._matter_regeneration_multiplier = 500;
+			character_entity._stability_recovery_multiplier = 1 + ( 3 / 10 );
+			character_entity.stability_upgrade = 25;
+			character_entity._damage_mult = 4;
+			character_entity._ai = { direction: ( character_entity.x > ( sdWorld.world_bounds.x1 + sdWorld.world_bounds.x2 ) / 2 ) ? -1 : 1 };
+			character_entity._ai_level = 10;
+			character_entity._jetpack_allowed = true; // Jetpack
+			character_entity._jetpack_fuel_multiplier = 0.25; // Less fuel usage when jetpacking
+			character_entity._ai_team = 6;
+			character_entity._jetpack_power = 6;
+			character_entity.iron_body = 2;
+			character_entity._allow_despawn = false;
 		}
 
 		character_entity.sd_filter = sdWorld.ConvertPlayerDescriptionToSDFilter_v2( character_settings );

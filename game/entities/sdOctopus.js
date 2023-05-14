@@ -389,7 +389,7 @@ class sdOctopus extends sdEntity
 						 from_entity.GetClass() === 'sdAntigravity' ||
 						 from_entity.GetClass() === 'sdMatterContainer' ||
 						 from_entity.GetClass() === 'sdCommandCentre' ||
-						 //( from_entity.GetClass() === 'sdGun' /*&& from_entity.class !== sdGun.CLASS_BUILD_TOOL && from_entity.class !== sdGun.CLASS_MEDIKIT && ( from_entity._held_by === null || from_entity._held_by.gun_slot === sdGun.classes[ from_entity.class ].slot )*/ ) || // Yes, held guns too, but only currently held guns. Except for build tool and medikit
+						 ( from_entity.GetClass() === 'sdGun' /*&& from_entity.class !== sdGun.CLASS_BUILD_TOOL && from_entity.class !== sdGun.CLASS_MEDIKIT && ( from_entity._held_by === null || from_entity._held_by.gun_slot === sdGun.classes[ from_entity.class ].slot )*/ ) || // Yes, held guns too, but only currently held guns. Except for build tool and medikit
 						 from_entity.GetClass() === 'sdTeleport' ||
 						 from_entity.GetClass() === 'sdVirus' ||
 						 ( typeof from_entity.hea !== 'undefined' && from_entity.hea <= 0 ) ||
@@ -409,6 +409,11 @@ class sdOctopus extends sdEntity
 						if ( from_entity.GetClass() === 'sdCharacter' && from_entity.hea > 0 )
 						rank += 1;
 						
+						if ( from_entity._held_by && ( from_entity._held_by._ai_team === 10 || from_entity._held_by.iron_fist ) )
+						{
+						// No cheesing the Time Shifter
+						}
+						else
 						nears.push( { ent: from_entity, rank: rank } );
 					}
 				}

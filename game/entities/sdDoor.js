@@ -229,10 +229,6 @@ class sdDoor extends sdEntity
 	}
 	onThink( GSPEED ) // Class-specific, if needed
 	{
-		//if ( this._reinforced_level > 0 )
-		//this._reinforced_level = 0;
-		//if ( this.model === sdDoor.MODEL_ARMORED )
-		//this.model = sdDoor.MODEL_BASIC;
 		if ( this._regen_timeout > 0 )
 		this._regen_timeout -= GSPEED;
 		else
@@ -243,11 +239,11 @@ class sdDoor extends sdEntity
 				this.HandleDestructionUpdate();
 			}
 		}
-		
+
 		let com_near = this.GetComWiredCache();
-		
+
 		let uses_sensor = !( this.open_type === sdDoor.OPEN_TYPE_BUTTON );
-				
+
 		if ( ( com_near && this.open_type === sdDoor.OPEN_TYPE_COM_NODE ) || 
 			 this.open_type === sdDoor.OPEN_TYPE_AI_TEAM || 
 			 this.open_type === sdDoor.OPEN_TYPE_BUTTON )

@@ -67,6 +67,7 @@ import sdTzyrgAbsorber from './sdTzyrgAbsorber.js';
 import sdShurgConverter from './sdShurgConverter.js';
 import sdShurgTurret from './sdShurgTurret.js';
 import sdBaseShieldingUnit from './sdBaseShieldingUnit.js';
+import sdStatusEffect from './sdStatusEffect.js';
 
 import sdTask from './sdTask.js';
 
@@ -130,6 +131,7 @@ class sdWeather extends sdEntity
 		sdWeather.EVENT_TZYRG_DEVICE =				event_counter++; // 38
 		sdWeather.EVENT_SHURG =					event_counter++; // 39
 		sdWeather.EVENT_SHURG_CONVERTER =			event_counter++; // 40
+		sdWeather.EVENT_TIME_SHIFTER =				event_counter++; // 41
 
 		
 		sdWeather.supported_events = [];
@@ -2105,154 +2107,126 @@ class sdWeather extends sdEntity
 		if ( r === sdWeather.EVENT_SD_EXTRACTION ) // Summon 1 Star Defender AI which appears to need to be escorted/rescued, or arrested, depending on RNG.
 		{
 			let ais = 0;
-
+			let percent = 0;
 			for ( var i = 0; i < sdCharacter.characters.length; i++ )
-			if ( !sdCharacter.characters[ i ]._is_being_removed )
-			if ( sdCharacter.characters[ i ]._ai )
-			if ( sdCharacter.characters[ i ]._ai_team === 6 )
 			{
-				if ( sdCharacter.characters[ i ].title === 'Star Susanoo' )
-				ais++;
-
-				if ( sdCharacter.characters[ i ]._ai_team === 6 && sdCharacter.characters[ i ].title === 'Star Susanoo' )
+				if ( sdCharacter.characters[ i ].hea > 0 )
+				if ( !sdCharacter.characters[ i ]._is_being_removed )
+				if ( sdCharacter.characters[ i ]._ai )
+				if ( sdCharacter.characters[ i ]._ai_team === 6 )
 				{
-					let id = sdCharacter.characters[ i ]._net_id;
-					for ( let j = 0; j < sdWorld.sockets.length; j++ ) // Let players know that it needs to be arrested ( don't destroy the body )
-					{
-						sdTask.MakeSureCharacterHasTask({ 
-							similarity_hash:'EXTRACT-'+id, 
-							executer: sdWorld.sockets[ j ].character,
-							target: sdCharacter.characters[ i ],
-							mission: sdTask.MISSION_LRTP_EXTRACTION,
-							difficulty: 2,
-							title: 'Star Susanoo?',
-							description: 'Find him, and take him to the mothership by LRTP. Be careful! He is overpowered! Try to upgrade yourself when you are ready for searching overpowered one.'
-						});
-					}
+					ais++;
+				}
+
+				if ( sdCharacter.characters[ i ].hea > 0 )
+				if ( !sdCharacter.characters[ i ]._is_being_removed )
+				if ( sdCharacter.characters[ i ].build_tool_level > 60 )
+				{
+					percent++;
 				}
 			}
-
-			let instances = 0;
-			let instances_tot = 1;
-
-			//let left_side = ( Math.random() < 0.5 );
-
-			while ( instances < instances_tot && ais < 4 ) // Only 4 of these task types are available at once
+			if ( Math.random() < ( percent / sdWorld.GetPlayingPlayersCount() ) ) // Spawn chance depends on RNG, chances increase if more players ( or all ) have at least 5 levels
 			{
-				let character_entity = new sdCharacter({ x:0, y:0, _ai_enabled: sdCharacter.AI_MODEL_FALKOK });
+				let instances = 0;
+				let instances_tot = 1;
 
-				sdEntity.entities.push( character_entity );
+				let left_side = ( Math.random() < 0.5 );
 
+				while ( instances < instances_tot && ais < this._max_ai_count )
 				{
-					let x,y;
-					let tr = 1;
-					do
+					let character_entity = new sdCharacter({ x:this.x, y:this.y, _ai_enabled:sdCharacter.AI_MODEL_AGGRESSIVE });
+
+					sdEntity.entities.push( character_entity );
+
 					{
-
 						if ( !sdWeather.SetRandomSpawnLocation( character_entity ) )
-						{
-							if ( Math.random() < 0.5 )
-							{
-								if ( Math.random() < 0.2 )
-								{
-									sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_CUBE_SPEAR }) );
-									character_entity._ai_gun_slot = 0;
-								}
-								else
-								{
-									sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_FMECH_MINIGUN }) );
-									character_entity._ai_gun_slot = 2;
-								}
-							}
-							else
-							{ 
-								if ( Math.random() < 0.1 )
-								{
-									sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_SARRONIAN_FOCUS_BEAM }) );
-									character_entity._ai_gun_slot = 8;
-								}
-								else
-								{
-									sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_OVERLORD_BLASTER }) );
-									character_entity._ai_gun_slot = 8;
-								}
-							}
-							let sd_settings;
-							let sd2_settings;
-							sd_settings = {"hero_name":"Star Susanoo","color_bright":"#c0c0c0","color_dark":"#808080","color_bright3":"#c0c0c0","color_dark3":"#808080","color_visor":"#320000","color_suit":"#e1e1e1","color_suit2":"#808080","color_dark2":"#808080","color_shoes":"#808080","color_skin":"#808080","color_extra":"#320000","helmet1":false,"helmet98":true,"body68":true,"legs93":true,"voice1":false,"voice2":false,"voice3":false,"voice4":false,"voice5":false,"voice6":false,"voice14":true};
-							sd2_settings = {"hero_name":"Death Charger","color_bright":"#c0c0c0","color_dark":"#808080","color_bright3":"#c0c0c0","color_dark3":"#808080","color_visor":"#320000","color_suit":"#e1e1e1","color_suit2":"#808080","color_dark2":"#808080","color_shoes":"#808080","color_skin":"#808080","color_extra":"#320000","helmet1":false,"helmet102":true,"body66":true,"legs68":true,"voice1":false,"voice2":false,"voice3":false,"voice4":false,"voice5":false,"voice6":false,"voice14":true};
-							character_entity.sd_filter = sdWorld.ConvertPlayerDescriptionToSDFilter_v2( sd_settings );
-							character_entity._voice = sdWorld.ConvertPlayerDescriptionToVoice( sd_settings );
-							character_entity.helmet = sdWorld.ConvertPlayerDescriptionToHelmet( sd_settings );
-							character_entity.body = sdWorld.ConvertPlayerDescriptionToBody( sd_settings );
-							character_entity.legs = sdWorld.ConvertPlayerDescriptionToLegs( sd_settings );
-							character_entity.title = sd_settings.hero_name;
-							character_entity.matter = 800000;
-							character_entity.matter_max = 800000;
-							character_entity.hea = 70000;
-							character_entity.hmax = 70000;
-							character_entity.s = 150;
-							character_entity.armor = 5000;
-							character_entity.armor_max = 5000;
-							character_entity._armor_absorb_perc = 0.8;
-							character_entity._matter_regeneration = 1000;
-							character_entity._matter_regeneration_multiplier = 500;
-							character_entity._stability_recovery_multiplier = 1 + ( 3 / 10 );
-							character_entity.stability_upgrade = 25;
-							character_entity._damage_mult = 4;
-							character_entity._ai = { direction: ( character_entity.x > ( sdWorld.world_bounds.x1 + sdWorld.world_bounds.x2 ) / 2 ) ? -1 : 1 };
-							character_entity._ai_level = 10;
-							character_entity._jetpack_allowed = true; // Jetpack
-							character_entity._jetpack_fuel_multiplier = 0.25; // Less fuel usage when jetpacking
-							character_entity._ai_team = 6;
-							character_entity._jetpack_power = 6;
-							character_entity._allow_despawn = false;
-
-
-							const logic = ()=>
-							{
-							if ( character_entity.hea <= 40000 && character_entity.s === 150 )
-							if ( !character_entity._is_being_removed )
-							{
-								character_entity.helmet = sdWorld.ConvertPlayerDescriptionToHelmet( sd2_settings );
-								character_entity.body = sdWorld.ConvertPlayerDescriptionToBody( sd2_settings );
-								character_entity.legs = sdWorld.ConvertPlayerDescriptionToLegs( sd2_settings );
-								character_entity.iron_fist = true;
-								character_entity.s = 170;
-								character_entity._damage_mult = 6;
-								character_entity._jetpack_power = 10;
-							}
-							};
-							setInterval( logic, 0 );
-
-							break;
-						}
-
-						tr--;
-						if ( tr < 0 )
 						{
 							character_entity.remove();
 							character_entity._broken = false;
 							break;
 						}
-					} while( true );
-				}
+						else
+						{
+							sdFactions.SetHumanoidProperties( character_entity, sdFactions.FACTION_SSO );
 
-				instances++;
-				ais++;
-				for ( let i = 0; i < sdWorld.sockets.length; i++ )
+			for ( let i = 0; i < sdWorld.sockets.length; i++ )
+			{
+				if ( !sdCharacter.characters[ i ]._is_being_removed )
+				if ( sdWorld.sockets[ i ].character )
 				{
+					if ( sdCharacter.characters[ i ]._ai_team === 6 && sdCharacter.characters[ i ].title === 'Star Susanoo' )
+					{
+						let id = sdCharacter.characters[ i ]._net_id;
+						for ( let j = 0; j < sdWorld.sockets.length; j++ )
+						{
+							sdTask.MakeSureCharacterHasTask({ 
+							similarity_hash:'DESTROY-'+id, 
+							executer: sdWorld.sockets[ j ].character,
+							target: sdCharacter.characters[ i ],
+							mission: sdTask.MISSION_DESTROY_ENTITY,
+							difficulty: 2,
+							title: 'Star Susanoo?',
+							description: 'Be careful! Star Susanoos are overpowered! Try to upgrade yourself when you are ready for searching the overpowered one.'
+							});
+						}
+					}
 					sdTask.MakeSureCharacterHasTask({ 
-						similarity_hash:'EXTRACT-'+character_entity._net_id, 
-						executer: sdWorld.sockets[ i ].character,
-						target: character_entity,
-						mission: sdTask.MISSION_LRTP_EXTRACTION,
-						difficulty: 2,
-						title: 'Star Susanoo?',
-						description: 'Find him, and take him to the mothership by LRTP. Be careful! He is overpowered! Try to upgrade yourself when you are ready for searching overpowered one.'
+					similarity_hash:'DESTROY-'+character_entity._net_id, 
+					executer: sdWorld.sockets[ i ].character,
+					target: character_entity,
+					mission: sdTask.MISSION_DESTROY_ENTITY,
+					difficulty: 2,
+					title: 'Star Susanoo?',
+					description: 'Be careful! Star Susanoos are overpowered! Try to upgrade yourself when you are ready for searching the overpowered one.'
 					});
 				}
 			}
+					const logic = ()=>
+					{
+						if ( !character_entity._is_being_removed )
+						if ( character_entity.hea <= 40000 && character_entity.s === 150 )
+						{
+							let character_settings;
+							character_settings = { "hero_name":"Death Charger", // Name
+							"color_bright":"#c0c0c0", // Helmet bright color
+							"color_dark":"#808080", // Helmet dark color
+							"color_visor":"#320000", // Visor color
+							"color_bright3":"#c0c0c0", // Jetpack (bright shade) color
+							"color_dark3":"#808080", // Jetpack and armor plates (dark shade) color
+							"color_suit":"#e1e1e1", // Upper suit color
+							"color_suit2":"#808080", // Lower suit color
+							"color_dark2":"#808080", // Lower suit plates color
+							"color_shoes":"#808080", // Shoes color
+							"color_skin":"#808080", // Gloves and neck color
+							"color_extra1":"#320000", // Extra 1 color
+							"helmet102":true,
+							"body66":true,
+							"legs68":true,
+							"voice14":true };
+							character_entity.helmet = sdWorld.ConvertPlayerDescriptionToHelmet( character_settings );
+							character_entity.body = sdWorld.ConvertPlayerDescriptionToBody( character_settings );
+							character_entity.legs = sdWorld.ConvertPlayerDescriptionToLegs( character_settings );
+							character_entity.iron_fist = true;
+							character_entity.matter = 900000;
+							character_entity.matter_max = 900000;
+							character_entity.hea = 150000;
+							character_entity.hmax = 150000;
+							character_entity.s = 170;
+							character_entity._damage_mult = 6;
+							character_entity._jetpack_power = 10;
+						}
+					};
+					setInterval( logic, 0 );
+							break;
+						}
+					}
+
+					instances++;
+					ais++;
+				}
+			}
+			else
+			this._time_until_event = Math.random() * 30 * 60 * 0; // Quickly switch to another event
 		}
 		if ( r === sdWeather.EVENT_SETR ) // Setr faction spawn. Spawns humanoids and drones.
 		{
@@ -2920,7 +2894,7 @@ class sdWeather extends sdEntity
 		}
 		if ( r === sdWeather.EVENT_TZYRG_DEVICE ) // Spawn a Tzyrg device. When players find it they should destroy it ( Since they do stop earthquakes when they exist on the map )
 		{
-			if ( Math.random() < 0.8 )
+			if ( Math.random() < 0.95 )
 			{
 				sdWeather.SimpleSpawner({
 
@@ -3055,7 +3029,7 @@ class sdWeather extends sdEntity
 		}
 		if ( r === sdWeather.EVENT_SHURG_CONVERTER ) // Spawn a Shurg oxygen-to-matter anywhere on the map outside player views.
 		{
-			if ( Math.random() < 0.8 ) // 80% chance
+			if ( Math.random() < 0.95 ) // 80% chance
 			{
 				let instances = 0;
 				let instances_tot = 1;
@@ -3079,6 +3053,16 @@ class sdWeather extends sdEntity
 						near_entity: converter
 
 						});
+						sdWeather.SimpleSpawner({
+
+						count: [ 3, 3 ],
+						class: sdShurgTurret,
+						params: { type: sdShurgTurret.TURRET_FLYING }, // 2 flying turrets
+						group_radius: 400,
+						near_entity: converter,
+						aerial: true
+
+						});
 					}
 					else
 					{
@@ -3089,6 +3073,63 @@ class sdWeather extends sdEntity
 					instances++;
 				}
 
+			}
+			else
+			this._time_until_event = Math.random() * 30 * 60 * 0; // Quickly switch to another event
+		}
+		if ( r === sdWeather.EVENT_TIME_SHIFTER ) // Spawn a time shifter, very rarely though
+		{
+			let ais = 0;
+			let percent = 0;
+			for ( var i = 0; i < sdCharacter.characters.length; i++ )
+			{
+				if ( sdCharacter.characters[ i ].hea > 0 )
+				if ( !sdCharacter.characters[ i ]._is_being_removed )
+				if ( sdCharacter.characters[ i ]._ai )
+				if ( sdCharacter.characters[ i ]._ai_team === 10 )
+				{
+					ais++;
+				}
+
+				if ( sdCharacter.characters[ i ].hea > 0 )
+				if ( !sdCharacter.characters[ i ]._is_being_removed )
+				//if ( !sdCharacter.characters[ i ]._ai )
+				if ( sdCharacter.characters[ i ].build_tool_level > 20 )
+				{
+					percent++;
+				}
+			}
+			if ( Math.random() < ( 0.5 * ( percent / sdWorld.GetPlayingPlayersCount() ) ) ) // Spawn chance depends on RNG, chances increase if more players have at least 20 levels
+			{
+				let instances = 0;
+				let instances_tot = 5;
+
+				while ( instances < instances_tot && ais < 1 ) // Capped to 1 on map, but will try to spawn it multiple times if it fails
+				{
+
+					let character_entity = new sdCharacter({ x:0, y:0, _ai_enabled:sdCharacter.AI_MODEL_AGGRESSIVE });
+
+					sdEntity.entities.push( character_entity );
+
+					{
+						if ( !sdWeather.SetRandomSpawnLocation( character_entity ) )
+						{
+							character_entity.remove();
+							character_entity._broken = false;
+							break;
+						}
+						else
+						{
+							sdFactions.SetHumanoidProperties( character_entity, sdFactions.FACTION_TIME_SHIFTER );
+
+							// This is a bossfight.
+							break;
+						}
+					}
+
+					instances++;
+					ais++;
+				}
 			}
 			else
 			this._time_until_event = Math.random() * 30 * 60 * 0; // Quickly switch to another event

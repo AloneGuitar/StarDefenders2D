@@ -197,11 +197,11 @@ class sdSetrDestroyer extends sdEntity
 	}
 	CanAttackEnt( ent )
 	{
-		if ( ent === this._current_target && ent._ai_team !== this._ai_team )
+		if ( ent === this._current_target && ent._ai_team !== this._ai_team || ent.build_tool_level > 9 )
 		return true;
 		else
 		{
-			if ( ent.matter_max >= 20000 && ent._ai_team !== this._ai_team || ent.build_tool_level < 2 )
+			if ( ent.matter_max >= 20000 && ent._ai_team !== this._ai_team || ent.build_tool_level < 10 )
 			{
 			}
 			else
@@ -217,19 +217,9 @@ class sdSetrDestroyer extends sdEntity
 		if ( this._follow_target ) 
 		return this._follow_target; // If there is already a target it follows, it should stick to it.
 
-		/*let x = sdWorld.world_bounds.x1 + Math.random() * ( sdWorld.world_bounds.x2 - sdWorld.world_bounds.x1 );
-		let y = sdWorld.world_bounds.y1 + Math.random() * ( sdWorld.world_bounds.y2 - sdWorld.world_bounds.y1 );
-		
-		let targets_raw = sdWorld.GetAnythingNear( this.x, this.y, 256, null, [ 'sdCharacter', 'sdPlayerDrone', 'sdPlayerOverlord', 'sdTurret' , 'sdCube', 'sdDrone', 'sdCommandCentre', 'sdSetrDestroyer', 'sdOverlord', 'sdSpider' ] );
-		for ( let i = 0; i < targets_raw.length; i++ )
-		{
-			i = Math.round( Math.random() * targets_raw.length ); // Randomize it
-			return targets_raw[ i ];
-		}*/
-
 		let e = sdEntity.GetRandomEntity();
 
-		if ( [ 'sdCharacter', 'sdPlayerDrone', 'sdDrone', 'sdEnemyMech', 'sdSpider', 'sdRoach', 'sdAbomination', 'sdAmphid', 'sdAsp', 'sdBadDog', 'sdBiter', 'sdBot', 'sdCube', 'sdFaceCrab', 'sdGrub', 'sdMimic', 'sdOctopus', 'sdOverlord', 'sdPlayerOverlord', 'sdQuadro', 'sdQuickie', 'sdSandWorm', 'sdSetrDestroyer', 'sdTutel', 'sdSlug', 'sdVirus', 'sdTurret', 'sdCommandCentre' ].indexOf( e.GetClass() ) !== -1 )
+		if ( [ 'sdCharacter', 'sdPlayerDrone', 'sdDrone', 'sdEnemyMech', 'sdSpider', 'sdRoach', 'sdAbomination', 'sdAmphid', 'sdAsp', 'sdBadDog', 'sdBiter', 'sdBot', 'sdCube', 'sdFaceCrab', 'sdGrub', 'sdMimic', 'sdOctopus', 'sdOverlord', 'sdPlayerOverlord', 'sdQuadro', 'sdQuickie', 'sdSandWorm', 'sdSetrDestroyer', 'sdTutel', 'sdSlug', 'sdVirus', 'sdTurret', 'sdManualTurret', 'sdCommandCentre' ].indexOf( e.GetClass() ) !== -1 )
 		if ( e.IsVisible( this ) )
 		if ( e.IsTargetable( this ) )
 		{
@@ -652,7 +642,7 @@ class sdSetrDestroyer extends sdEntity
 					}
 					//let targets_raw = sdWorld.GetAnythingNear( this.x, this.y, 800 );
 					//let targets_raw = sdWorld.GetCharactersNear( this.x, this.y, null, null, 800 );
-					let targets_raw = sdWorld.GetAnythingNear( this.x, this.y, sdSetrDestroyer.attack_range, null, [ 'sdCharacter', 'sdPlayerDrone', 'sdDrone', 'sdEnemyMech', 'sdSpider', 'sdRoach', 'sdAbomination', 'sdAmphid', 'sdAsp', 'sdBadDog', 'sdBiter', 'sdBot', 'sdCube', 'sdFaceCrab', 'sdGrub', 'sdMimic', 'sdOctopus', 'sdOverlord', 'sdPlayerOverlord', 'sdQuickie', 'sdSandWorm', 'sdTutel', 'sdSlug', 'sdVirus', 'sdTurret', 'sdCommandCentre' ] );
+					let targets_raw = sdWorld.GetAnythingNear( this.x, this.y, sdSetrDestroyer.attack_range, null, [ 'sdCharacter', 'sdPlayerDrone', 'sdDrone', 'sdEnemyMech', 'sdSpider', 'sdRoach', 'sdAbomination', 'sdAmphid', 'sdAsp', 'sdBadDog', 'sdBiter', 'sdBot', 'sdCube', 'sdFaceCrab', 'sdGrub', 'sdMimic', 'sdOctopus', 'sdOverlord', 'sdPlayerOverlord', 'sdQuickie', 'sdSandWorm', 'sdTutel', 'sdSlug', 'sdVirus', 'sdTurret', 'sdManualTurret', 'sdCommandCentre' ] );
 
 					let targets = [];
 
@@ -674,6 +664,7 @@ class sdSetrDestroyer extends sdEntity
 						 ( targets_raw[ i ].GetClass() === 'sdSlug' ) ||
 						 ( targets_raw[ i ].GetClass() === 'sdVirus' ) ||
 						 ( targets_raw[ i ].GetClass() === 'sdTurret' ) ||
+						 ( targets_raw[ i ].GetClass() === 'sdManualTurret' ) ||
 						 ( targets_raw[ i ].GetClass() === 'sdOverlord' ) ||
 						 ( targets_raw[ i ].GetClass() === 'sdSetrDestroyer' ) ||
 						 ( targets_raw[ i ].GetClass() === 'sdSpider' ) ||

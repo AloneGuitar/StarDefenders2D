@@ -6,9 +6,11 @@ import sdEffect from './sdEffect.js';
 import sdGun from './sdGun.js';
 import sdWater from './sdWater.js';
 import sdCom from './sdCom.js';
+import sdTask from './sdTask.js';
 import sdBullet from './sdBullet.js';
 import sdCharacter from './sdCharacter.js';
 import sdFactions from './sdFactions.js';
+import sdStatusEffect from './sdStatusEffect.js';
 
 class sdFactionTools extends sdEntity
 {
@@ -25,6 +27,8 @@ class sdFactionTools extends sdEntity
 		sdFactionTools.img_character_spawner9 = sdWorld.CreateImageFromFile( 'helmets/helmet_cs' );
 		sdFactionTools.img_character_spawner10 = sdWorld.CreateImageFromFile( 'helmets/helmet_star_defender' );
 		sdFactionTools.img_character_spawner11 = sdWorld.CreateImageFromFile( 'helmets/helmet_omega' );
+		sdFactionTools.img_character_spawner12 = sdWorld.CreateImageFromFile( 'helmets/helmet_forge' );
+		sdFactionTools.img_character_spawner13 = sdWorld.CreateImageFromFile( 'helmets/helmet_blackguard' );
 
 		sdFactionTools.FACTIONTOOL_FALKOK = 1; // Falkoks
 		sdFactionTools.FACTIONTOOL_ERTHAL = 2; // Erthals
@@ -37,6 +41,8 @@ class sdFactionTools extends sdEntity
 		sdFactionTools.FACTIONTOOL_KVT = 9;
 		sdFactionTools.FACTIONTOOL_SD = 10;
 		sdFactionTools.FACTIONTOOL_SWORD_BOT = 11;
+		sdFactionTools.FACTIONTOOL_TIME_SHIFTER = 12;
+		sdFactionTools.FACTIONTOOL_SSO = 13;
 
 		sdWorld.entity_classes[ this.name ] = this; // Register for object spawn
 	}
@@ -102,6 +108,14 @@ class sdFactionTools extends sdEntity
 		if ( this.type === sdFactionTools.FACTIONTOOL_SWORD_BOT )
 		{
 			ctx.drawImageFilterCache( sdFactionTools.img_character_spawner11, - 16, - 16, 32,32 );
+		}
+		if ( this.type === sdFactionTools.FACTIONTOOL_TIME_SHIFTER )
+		{
+			ctx.drawImageFilterCache( sdFactionTools.img_character_spawner12, - 16, - 16, 32,32 );
+		}
+		if ( this.type === sdFactionTools.FACTIONTOOL_SSO )
+		{
+			ctx.drawImageFilterCache( sdFactionTools.img_character_spawner13, - 16, - 16, 32,32 );
 		}
 
 		ctx.globalAlpha = 1;
@@ -345,6 +359,133 @@ class sdFactionTools extends sdEntity
 								};
 								setInterval( logic2, 2000 );
 							}
+				}
+			}
+			else
+			if ( this.type === sdFactionTools.FACTIONTOOL_TIME_SHIFTER )
+			{
+				sdSound.PlaySound({ name:'teleport', x:this.x, y:this.y, pitch: 1, volume:1 });
+				sdWorld.SendEffect({ x:this.x, y:this.y, type:sdEffect.TYPE_TELEPORT });
+
+				let character_entity = new sdCharacter({ x:this.x, y:this.y, _ai_enabled:sdCharacter.AI_MODEL_AGGRESSIVE });
+				sdEntity.entities.push( character_entity );
+				{
+					sdFactions.SetHumanoidProperties( character_entity, sdFactions.FACTION_TIME_SHIFTER );
+
+			for ( let i = 0; i < sdWorld.sockets.length; i++ )
+			{
+				if ( !sdCharacter.characters[ i ]._is_being_removed )
+				if ( sdWorld.sockets[ i ].character )
+				if ( sdWorld.sockets[ i ].character.iron_fist )
+				{
+					if ( sdCharacter.characters[ i ]._ai_team === 10 && sdCharacter.characters[ i ].title === 'Time Shifter' )
+					{
+						let id = sdCharacter.characters[ i ]._net_id;
+						for ( let j = 0; j < sdWorld.sockets.length; j++ )
+						{
+							sdTask.MakeSureCharacterHasTask({ 
+							similarity_hash:'DESTROY-'+id, 
+							executer: sdWorld.sockets[ j ].character,
+							target: sdCharacter.characters[ i ],
+							mission: sdTask.MISSION_DESTROY_ENTITY,
+							difficulty: 0,
+							title: 'Fight against the Time Shifter',
+							description: 'Beat the Time Shifter and fight as a warrior, after beaten, you will get one of Time Shifter Blade.'
+							});
+						}
+					}
+					sdTask.MakeSureCharacterHasTask({ 
+					similarity_hash:'DESTROY-'+character_entity._net_id, 
+					executer: sdWorld.sockets[ i ].character,
+					target: character_entity,
+					mission: sdTask.MISSION_DESTROY_ENTITY,
+					difficulty: 0,
+					title: 'Fight against the Time Shifter',
+					description: 'Beat the Time Shifter and fight as a warrior, after beaten, you will get one of Time Shifter Blade.'
+					});
+				}
+			}
+				}
+			}
+			else
+			if ( this.type === sdFactionTools.FACTIONTOOL_SSO )
+			{
+				sdSound.PlaySound({ name:'teleport', x:this.x, y:this.y, pitch: 1, volume:1 });
+				sdWorld.SendEffect({ x:this.x, y:this.y, type:sdEffect.TYPE_TELEPORT });
+
+				let character_entity = new sdCharacter({ x:this.x, y:this.y, _ai_enabled:sdCharacter.AI_MODEL_AGGRESSIVE });
+				sdEntity.entities.push( character_entity );
+				{
+					sdFactions.SetHumanoidProperties( character_entity, sdFactions.FACTION_SSO );
+
+			for ( let i = 0; i < sdWorld.sockets.length; i++ )
+			{
+				if ( !sdCharacter.characters[ i ]._is_being_removed )
+				if ( sdWorld.sockets[ i ].character )
+				{
+					if ( sdCharacter.characters[ i ]._ai_team === 6 && sdCharacter.characters[ i ].title === 'Star Susanoo' )
+					{
+						let id = sdCharacter.characters[ i ]._net_id;
+						for ( let j = 0; j < sdWorld.sockets.length; j++ )
+						{
+							sdTask.MakeSureCharacterHasTask({ 
+							similarity_hash:'DESTROY-'+id, 
+							executer: sdWorld.sockets[ j ].character,
+							target: sdCharacter.characters[ i ],
+							mission: sdTask.MISSION_DESTROY_ENTITY,
+							difficulty: 2,
+							title: 'Star Susanoo?',
+							description: 'Be careful! Star Susanoos are overpowered! Try to upgrade yourself when you are ready for searching the overpowered one.'
+							});
+						}
+					}
+					sdTask.MakeSureCharacterHasTask({ 
+					similarity_hash:'DESTROY-'+character_entity._net_id, 
+					executer: sdWorld.sockets[ i ].character,
+					target: character_entity,
+					mission: sdTask.MISSION_DESTROY_ENTITY,
+					difficulty: 2,
+					title: 'Star Susanoo?',
+					description: 'Be careful! Star Susanoos are overpowered! Try to upgrade yourself when you are ready for searching the overpowered one.'
+					});
+				}
+			}
+					const logic = ()=>
+					{
+						if ( !character_entity._is_being_removed )
+						if ( character_entity.hea <= 40000 && character_entity.s === 150 )
+						{
+							let character_settings;
+							character_settings = { "hero_name":"Death Charger", // Name
+							"color_bright":"#c0c0c0", // Helmet bright color
+							"color_dark":"#808080", // Helmet dark color
+							"color_visor":"#320000", // Visor color
+							"color_bright3":"#c0c0c0", // Jetpack (bright shade) color
+							"color_dark3":"#808080", // Jetpack and armor plates (dark shade) color
+							"color_suit":"#e1e1e1", // Upper suit color
+							"color_suit2":"#808080", // Lower suit color
+							"color_dark2":"#808080", // Lower suit plates color
+							"color_shoes":"#808080", // Shoes color
+							"color_skin":"#808080", // Gloves and neck color
+							"color_extra1":"#320000", // Extra 1 color
+							"helmet102":true,
+							"body66":true,
+							"legs68":true,
+							"voice14":true };
+							character_entity.helmet = sdWorld.ConvertPlayerDescriptionToHelmet( character_settings );
+							character_entity.body = sdWorld.ConvertPlayerDescriptionToBody( character_settings );
+							character_entity.legs = sdWorld.ConvertPlayerDescriptionToLegs( character_settings );
+							character_entity.iron_fist = true;
+							character_entity.matter = 900000;
+							character_entity.matter_max = 900000;
+							character_entity.hea = 150000;
+							character_entity.hmax = 150000;
+							character_entity.s = 170;
+							character_entity._damage_mult = 6;
+							character_entity._jetpack_power = 10;
+						}
+					};
+					setInterval( logic, 0 );
 				}
 			}
 

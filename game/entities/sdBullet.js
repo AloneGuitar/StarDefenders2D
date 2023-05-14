@@ -90,7 +90,7 @@ class sdBullet extends sdEntity
 		if ( target_entity._shielded.enabled )
 		if ( target_entity._shielded.type === sdBaseShieldingUnit.TYPE_DAMAGE_PERCENTAGE ) // Wasn't tested on any else type
 		{
-			target_entity.Damage( bullet._anti_shield_damage_bonus, bullet._owner || bullet._owner2 || null );
+			target_entity.DamageWithEffect( bullet._anti_shield_damage_bonus, bullet._owner || bullet._owner2 || null );
 		}
 	}
 	

@@ -132,14 +132,10 @@ class sdBlock extends sdEntity
 		sdBlock.MATERIAL_CORRUPTION = 7;
 		sdBlock.MATERIAL_CRYSTAL_SHARDS = 8;
 		sdBlock.MATERIAL_FLESH = 9;
-		//sdBlock.MATERIAL_ROCK = 10;
-		//sdBlock.MATERIAL_SAND = 11;
 		sdBlock.MATERIAL_ROCK = 10;
 		sdBlock.MATERIAL_SAND = 11;
 		sdBlock.MATERIAL_BUGGED_CHUNK = 12;
 		
-		//sdBlock.img_ground11 = sdWorld.CreateImageFromFile( 'ground_1x1' );
-		//sdBlock.img_ground44 = sdWorld.CreateImageFromFile( 'ground_4x4' );
 		sdBlock.img_ground88 = sdWorld.CreateImageFromFile( 'ground_8x8' );
 		
 		sdBlock.img_corruption = sdWorld.CreateImageFromFile( 'corruption' );
@@ -331,11 +327,13 @@ class sdBlock extends sdEntity
 		
 		return true;
 	}
-	Damage( dmg, initiator=null )
+	Damage( dmg, initiator=null, headshot=false, affects_armor=true )
 	{
 		if ( !sdWorld.is_server )
 		return;
 
+		// Uses health scale instead now
+		if ( affects_armor )
 		dmg = Math.abs( dmg / ( 1 + this._reinforced_level ) ); // Reinforced blocks have damage reduction
 		
 		if ( this._contains_class === 'sdVirus' || this._contains_class === 'sdQuickie' || this._contains_class === 'sdFaceCrab' || this._contains_class === 'sdAsp' || this._contains_class === 'sdBiter' || this._contains_class === 'weak_ground' )
@@ -650,14 +648,19 @@ class sdBlock extends sdEntity
 		}
 		this._last_damage = 0; // Used by MATERIAL_TRAPSHIELD so far only
 		
+		this._armor_protection_level = 0; // Armor level defines lowest damage upgrade projectile that is able to damage this entity
+		this._reinforced_level = params._reinforced_level || 0;
+		this._max_reinforced_level = this._reinforced_level + 2;
+		this._shielded = null; // Is this entity protected by a base defense unit?
+	
+		/*if ( this._reinforced_level > 0 )
+		{
+			this._hmax *= 1 + this._reinforced_level;
+		}*/
+		
 		this._hea = this._hmax;
 		this._regen_timeout = 0;
 		
-		
-		this._armor_protection_level = 0; // Armor level defines lowest damage upgrade projectile that is able to damage this entity
-		this._reinforced_level = params._reinforced_level || 0;
-		this._max_reinforced_level = this._reinforced_level + 2 ;
-		this._shielded = null; // Is this entity protected by a base defense unit?
 		
 		this._contains_class = params.contains_class || null;
 		this._contains_class_params = null; // Parameters that are passed to this._contains_class entity
@@ -715,7 +718,9 @@ class sdBlock extends sdEntity
 		this.reinforced_frame = 0;
 		this.HandleReinforceUpdate();
 		
-		if ( this.material !== sdBlock.MATERIAL_CORRUPTION && this.material !== sdBlock.MATERIAL_FLESH && this._hea >= this._hmax )
+		if ( this.material !== sdBlock.MATERIAL_CORRUPTION && 
+			 this.material !== sdBlock.MATERIAL_FLESH && 
+			 this._hea >= this._hmax )
 		this.SetHiberState( sdEntity.HIBERSTATE_HIBERNATED, false ); // 2nd parameter is important as it will prevent temporary entities from reacting to world entities around it (which can happen for example during item price measure - something like sdBlock can kill player-initiator and cause server crash)
 		
 		this.InstallBoxCapVisibilitySupport();
@@ -963,10 +968,6 @@ class sdBlock extends sdEntity
 	}
 	onThink( GSPEED ) // Class-specific, if needed
 	{
-		//if ( this._reinforced_level > 0 )
-		//this._reinforced_level = 0;
-		//if ( this.material === sdBlock.MATERIAL_REINFORCED_WALL_LVL1 )
-		//this.material = sdBlock.MATERIAL_WALL;
 		if ( this._regen_timeout > 0 )
 		this._regen_timeout -= GSPEED;
 		else
