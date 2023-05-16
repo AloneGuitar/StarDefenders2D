@@ -67,6 +67,7 @@ class sdWorld
 		
 		sdWorld.allowed_player_classes = [ 'sdCharacter', 'sdPlayerDrone', 'sdPlayerOverlord', 'sdPlayerSpectator' ]; // Options to spawn as
 		
+		sdWorld.server_start_values = {}; // All values are JSON.parse results or strings on parse error, world_slot is one of them as long as it is passed in command line (will be missing if default slot is used, check globalThis.world_slot for relevant value of world slot)
 		sdWorld.server_config = {};
 		
 		sdWorld.time = Date.now(); // Can be important because some entities (sdCommandCentre) use sdWorld.time as default destruction time, which will be instantly without setting this value
@@ -112,7 +113,7 @@ class sdWorld
 		
 		sdWorld.my_entity = null;
 		sdWorld.my_entity_net_id = undefined; // Temporary place
-		sdWorld.my_entity_protected_vars = { look_x:1, look_y:1, x:1, y:1, sx:1, sy:1, act_x:1, act_y:1, flying:1 }; // Client-side variables such as look_x will appear here
+		sdWorld.my_entity_protected_vars = { look_x:1, look_y:1, x:1, y:1, sx:1, sy:1, act_x:1, act_y:1, flying:1, free_flying:1 }; // Client-side variables such as look_x will appear here
 		sdWorld.my_entity_protected_vars_untils = { gun_slot: 0 }; // Whenever player presses some gun slot - it will also save there sdWord.time + ping * 2 for property to prevent it from being accepted by server. Will improve some client-side looks even if allow doing stuff player should not be able to do, locally only.
 		sdWorld.my_score = 0;
 		sdWorld.my_entity_upgrades_later_set_obj = null;
