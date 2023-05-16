@@ -313,12 +313,12 @@ class sdCharacterRagdoll
 		// Body & head
 		this.MoveBone( this.torso, 13, 22 );
 
-		if ( this.character.anim_change === true && ( this.character.act_x === 0 || this.character.speed_up === true ) )
+		if ( this.character.anim_change && ( this.character.act_x === 0 || this.character.speed_up ) )
 		{
 		this.MoveBone( this.torso, 13, 22.75 );
 		}
 
-		if ( this.character.flying === true )
+		if ( this.character.flying || this.character.free_flying )
 		{
 		this.MoveBone( this.torso, 13, 21.75 );
 		}
@@ -422,34 +422,33 @@ class sdCharacterRagdoll
 		let legs_x = 13;
 		let legs_y = 30;
 
-		if ( this.character.anim_change === true )
+		if ( this.character.anim_change )
 		{
 		walk_amplitude_x = 3;
 		legs_x = 12.5;
 		}
 		
-		if ( ( !this.character.stands && this.character._crouch_intens <= 0.25 ) && this.character.flying === false )
+		if ( !this.character.stands )
+		if ( !this.character.flying && !this.character.free_flying )
 		{
 			walk_amplitude_x = 4;
-        
-            legs_x += Math.max( -2, Math.min( 2, this.character.sx ) ) * this.character._side;
+
+			legs_x += Math.max( -2, Math.min( 2, this.character.sx ) ) * this.character._side;
 
 			walk_amplitude_y =  - Math.max( -4, Math.min( 4, this.character.sy ) );
-			
+
 			_anim_walk_arms = 6;
 		}
-		else
-		{
-			if ( this.character._crouch_intens > 0.25 )
+			if ( this.character._crouch_intens > 0.25 && this.character.stands )
 			{
 				legs_x -= 1;
 				legs_y -= 4;
-				
+
 				if ( act_x !== 0 )
 				walk_amplitude_x = act_x * this.character._side * Math.sin( _anim_walk ) * 2 + 4;
 				else
 				walk_amplitude_x = 4;
-			
+
 				_anim_walk_arms = 1;
 			}
 			else
@@ -462,21 +461,20 @@ class sdCharacterRagdoll
 
 					_anim_walk_arms = Math.sin( _anim_walk + 0.2 ) * 6;
 					
-					if ( this.character.speed_up === true && this.character.anim_change === true )
+					if ( this.character.speed_up && this.character.anim_change )
 					{
 						walk_amplitude_x = act_x * this.character._side * Math.sin( _anim_walk ) * 12;
 						walk_amplitude_y = Math.cos( _anim_walk ) * 6;
 						legs_x -= 3;
 						_anim_walk_arms = Math.sin( _anim_walk + 0.2 ) * 12;
 
-						if ( this.character.act_x === this.character._side && this.character.fist_change === true )
+						if ( this.character.act_x === this.character._side && this.character.fist_change )
 						{
 						_anim_walk_arms = 12;
 						}
 					}
 				}
 			}
-		}
 		
 		this.MoveBone( this.ankle1, legs_x + walk_amplitude_x, legs_y - Math.max( 0, walk_amplitude_y ) );
 		this.MoveBone( this.ankle2, legs_x - walk_amplitude_x, legs_y - Math.max( 0, -walk_amplitude_y ) );
@@ -484,13 +482,13 @@ class sdCharacterRagdoll
 		this.MoveBone( this.toes2, legs_x - walk_amplitude_x + 2, legs_y - Math.max( 0, -walk_amplitude_y ) );
 		
 		let leg_len = 8;
-		if ( this.character.flying === true )
+		if ( this.character.flying || this.character.free_flying )
 		leg_len = 7.5;
 
 		this.RespectLength( this.torso, this.ankle1, 1, leg_len );
 		this.RespectLength( this.torso, this.ankle2, 1, leg_len );
 
-		if ( ( !this.character.stands || act_x !== 0 ) && this.character.flying === false )
+		if ( ( !this.character.stands || act_x !== 0 ) && ( !this.character.flying || !this.character.free_flying ) )
 		{
 			this.RespectLength( this.torso, this.toes1, 1, leg_len );
 			this.RespectLength( this.torso, this.toes2, 1, leg_len );
@@ -1265,7 +1263,7 @@ class sdCharacterRagdoll
 					{
 						ctx.drawImageFilterCache( skin_images_by_subgroup[ spring.subgroup ], spring.image,source_y_offset, 32,32, -16,-16, 32,32 );
 
-						if ( this.character.flying )
+						if ( this.character.flying || this.character.free_flying )
 						{
 							if ( spring.image === 32 ) // Body upper
 							{
@@ -1274,7 +1272,6 @@ class sdCharacterRagdoll
 								
 								ctx.apply_shading = false;
 
-								//let frame = ( sdWorld.time % 600 > 400 ) ? 2 : ( sdWorld.time % 600 > 200 ) ? 1 : 0;
 								let frame = ( sdWorld.time % 300 > 200 ) ? 2 : ( sdWorld.time % 300 > 100 ) ? 1 : 0;
 								
 								if ( !this.character.iron_fist )

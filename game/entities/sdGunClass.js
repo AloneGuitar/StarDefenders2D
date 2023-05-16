@@ -3415,11 +3415,8 @@ class sdGunClass
 
 		sdGun.classes[ sdGun.CLASS_KVT_RAILCANNON = 49 ] = // sprite by Ghost581
 		{
-			image: sdWorld.CreateImageFromFile( 'phasercannon_p03' ),
-			image0: [ sdWorld.CreateImageFromFile( 'phasercannon_p03_reload1' ), sdWorld.CreateImageFromFile( 'phasercannon_p03_reload2' ) ],
-			image1: [ sdWorld.CreateImageFromFile( 'phasercannon_p03_reload1' ), sdWorld.CreateImageFromFile( 'phasercannon_p03_reload2' ) ],
-			image2: [ sdWorld.CreateImageFromFile( 'phasercannon_p03_reload1' ), sdWorld.CreateImageFromFile( 'phasercannon_p03_reload2' ) ],
-			has_images: true,
+			image: sdWorld.CreateImageFromFile( './guns/phasercannon_p03' ),
+			spritesheet:true,
 			sound: 'gun_railgun_malicestorm_terrorphaser4',
 			title: 'KVT Railcannon P03 "Stormbringer"',
 			sound_pitch: 1.6, // re-added cause weapon sounds better with the sound pitch. - Ghost581
@@ -4669,7 +4666,7 @@ class sdGunClass
 
 		sdGun.classes[ sdGun.CLASS_COUNCIL_PISTOL = 71 ] = 
 		{
-			image: sdWorld.CreateImageFromFile( 'council_pistol2' ),
+			image: sdWorld.CreateImageFromFile( 'council_pistol3' ),
 			sound: 'cube_attack',
 			sound_pitch: 1.5,
 			title: 'Council Pistol',
@@ -4711,12 +4708,22 @@ class sdGunClass
 					//UpdateCusomizableGunProperties( gun );
 				}
 			},
-			upgrades: AddGunDefaultUpgrades([])
+			upgrades: AddGunDefaultUpgrades(
+			 AddRecolorsFromColorAndCost(
+			 AddRecolorsFromColorAndCost(
+			 AddRecolorsFromColorAndCost(
+			 AddRecolorsFromColorAndCost(
+			 AddRecolorsFromColorAndCost( [],
+			 '#00457a', 15, 'Body' ),
+			 '#00243f', 15, 'Body 2' ),
+			 '#00ffdf', 15, 'Energy' ),
+			 '#d7d133', 15, 'Bright' ),
+			 '#b0a527', 15, 'Bright 2' ) )
 		};
 
 		sdGun.classes[ sdGun.CLASS_COUNCIL_BURST_RAIL = 72 ] = 
 		{
-			image: sdWorld.CreateImageFromFile( 'council_gun' ),
+			image: sdWorld.CreateImageFromFile( 'council_gun2' ),
 			sound: 'cube_attack',
 			sound_pitch: 1.5,
 			title: 'Council Burst Rail',
@@ -4757,7 +4764,15 @@ class sdGunClass
 					//UpdateCusomizableGunProperties( gun );
 				}
 			},
-			upgrades: AddGunDefaultUpgrades([])
+			upgrades: AddGunDefaultUpgrades(
+			 AddRecolorsFromColorAndCost(
+			 AddRecolorsFromColorAndCost(
+			 AddRecolorsFromColorAndCost(
+			 AddRecolorsFromColorAndCost( [],
+			 '#00457a', 15, 'Body' ),
+			 '#00ffdf', 15, 'Energy' ),
+			 '#ebe547', 15, 'Bright' ),
+			 '#b0a527', 15, 'Bright 2' ) )
 		};
 
 		sdGun.classes[ sdGun.CLASS_METAL_SHARD = 73 ] = 
@@ -4965,11 +4980,8 @@ class sdGunClass
 
 		sdGun.classes[ sdGun.CLASS_KVT_AVRS = 77 ] = 
 		{
-			image: sdWorld.CreateImageFromFile( 'kivortec_avrs_p09' ),
-			image0: [ sdWorld.CreateImageFromFile( 'kivortec_avrs_p09_reload1' ), sdWorld.CreateImageFromFile( 'kivortec_avrs_p09_reload2' ) ],
-			image1: [ sdWorld.CreateImageFromFile( 'kivortec_avrs_p09_reload1' ), sdWorld.CreateImageFromFile( 'kivortec_avrs_p09_reload2' ) ],
-			image2: [ sdWorld.CreateImageFromFile( 'kivortec_avrs_p09_reload1' ), sdWorld.CreateImageFromFile( 'kivortec_avrs_p09_reload2' ) ],
-			has_images: true,
+			image: sdWorld.CreateImageFromFile( './guns/kivortec_avrs_p09' ),
+			spritesheet:true,
 			sound: 'gun_railgun_malicestorm_terrorphaser4',
 			sound_pitch: 0.7,
 			title: 'KVT AVRS P09 "Incapacitator"',
@@ -6818,7 +6830,7 @@ class sdGunClass
 
 		sdGun.classes[ sdGun.CLASS_COUNCIL_SHOTGUN = 103 ] = 
 		{
-			image: sdWorld.CreateImageFromFile( 'council_shotgun' ),
+			image: sdWorld.CreateImageFromFile( 'council_shotgun2' ),
 			sound: 'cube_attack',
 			sound_pitch: 1.2,
 			sound_volume: 1.5,
@@ -6901,7 +6913,19 @@ class sdGunClass
 					//UpdateCusomizableGunProperties( gun );
 				}
 			},
-			upgrades: AddGunDefaultUpgrades([])
+			upgrades: AddGunDefaultUpgrades(
+			 AddRecolorsFromColorAndCost(
+			 AddRecolorsFromColorAndCost(
+			 AddRecolorsFromColorAndCost(
+			 AddRecolorsFromColorAndCost(
+			 AddRecolorsFromColorAndCost(
+			 AddRecolorsFromColorAndCost( [],
+			 '#00457a', 15, 'Body' ),
+			 '#00243f', 15, 'Body 2' ),
+			 '#00ffdf', 15, 'Energy' ),
+			 '#d7d133', 15, 'Bright' ),
+			 '#b0a527', 15, 'Bright 2' ),
+			 '#003863', 15, 'Dark' ) )
 		};
 
 		sdGun.classes[ sdGun.CLASS_KVT_ASSAULT_RIFLE = 104 ] = // sprite made by Ghost581
@@ -7404,6 +7428,7 @@ class sdGunClass
 				obj._damage = gun.extra[ ID_DAMAGE_VALUE ]; // Damage value is set onMade
 				obj._damage *= gun.extra[ ID_DAMAGE_MULT ];
 				obj._knock_scale *= gun.extra[ ID_RECOIL_SCALE ];
+				obj._affected_by_gravity = true;
 
 				obj.color = '#004400';
 
@@ -7479,6 +7504,251 @@ class sdGunClass
 					//UpdateCusomizableGunProperties( gun );
 				}
 			},
+			upgrades: AddRecolorsFromColorAndCost(
+			 AddRecolorsFromColorAndCost(
+			 AddRecolorsFromColorAndCost(
+			 AddRecolorsFromColorAndCost(
+			 AddRecolorsFromColorAndCost( [],
+			 '#2f2f2f', 20, 'Body' ),
+			 '#191919', 20, 'Dark' ),
+			 '#000084', 20, 'Pointer' ),
+			 '#0000c8', 20, 'Muzzle' ),
+			 '#c8c800', 20, 'Energy' )
+		};
+
+		sdGun.classes[ sdGun.CLASS_COUNCIL_WORM_GUN = 114 ] = // Sprite by Flora/Gravel
+		{
+			image: sdWorld.CreateImageFromFile( 'council_chargerail' ),
+			//sound: 'supercharge_combined2',
+			title: 'Council Worm Annihilator',
+			//sound_pitch: 0.5,
+			slot: 4,
+			reload_time: 0.3,
+			muzzle_x: 8,
+			ammo_capacity: -1,
+			count: 1,
+			matter_cost: 22600,
+			min_build_tool_level: 90,
+			min_workbench_level: 32,
+			GetAmmoCost: ( gun, shoot_from_scenario )=>
+			{
+				if ( shoot_from_scenario )
+				return 0;
+
+				if ( gun._held_by._auto_shoot_in > 0 )
+				return 0;
+
+				return 6;
+			},
+			onShootAttempt: ( gun, shoot_from_scenario )=>
+			{
+				if ( !shoot_from_scenario )
+				{
+					if ( gun._held_by )
+					if ( gun._held_by._auto_shoot_in <= 0 )
+					{
+						gun._held_by._auto_shoot_in = 750 / 1000 * 30;
+
+						sdSound.PlaySound({ name: 'enemy_mech_charge', x:gun.x, y:gun.y, volume: 1.5, pitch: 0.7 });
+					}
+					return false;
+				}
+				else
+				{
+					//sdSound.PlaySound({ name: 'gun_pistol', x:gun.x, y:gun.y });
+					sdSound.PlaySound({ name:'cube_attack', pitch: 4, x:gun.x, y:gun.y, volume:1.2 });
+
+					if ( gun._held_by.matter >= 6 )
+					if ( gun._held_by._key_states.GetKey( 'Mouse1' ) )
+					{
+						gun._held_by._auto_shoot_in = ( gun._held_by.stim_ef > 0 ) ? ( gun.extra[ ID_FIRE_RATE ] ) : ( 3 * gun.extra[ ID_FIRE_RATE ] ); // Faster rate of fire when shooting more
+						gun._held_by.matter -= 6;
+					}
+				}
+				return true;
+			},
+			projectile_properties: { _rail: true, _damage: 28, color: '#ffff00', _temperature_addition: 200 }, // Combined with fire rate
+			projectile_properties_dynamic: ( gun )=>{ 
+
+				let obj = { _rail: true, _damage: 28, color: '#ffff00', _temperature_addition: 200 };
+				obj._knock_scale = 0.01 * 8 * gun.extra[ ID_DAMAGE_MULT ];
+				obj._damage = gun.extra[ ID_DAMAGE_VALUE ]; // Damage value is set onMade
+				obj._damage *= gun.extra[ ID_DAMAGE_MULT ];
+				obj._knock_scale *= gun.extra[ ID_RECOIL_SCALE ];
+
+				return obj;
+			},
+			onMade: ( gun, params )=> // Should not make new entities, assume gun might be instantly removed once made
+			{
+				if ( !gun.extra )
+				{
+					gun.extra = [];
+					gun.extra[ ID_DAMAGE_MULT ] = 1;
+					gun.extra[ ID_FIRE_RATE ] = 1;
+					gun.extra[ ID_TEMPERATURE_APPLIED ] = 200;
+					gun.extra[ ID_RECOIL_SCALE ] = 1;
+					gun.extra[ ID_DAMAGE_VALUE ] = 28; // Damage value of the bullet, needs to be set here so it can be seen in weapon bench stats
+				}
+			},
+			upgrades: AddGunDefaultUpgrades(
+			 AddRecolorsFromColorAndCost(
+			 AddRecolorsFromColorAndCost(
+			 AddRecolorsFromColorAndCost(
+			 AddRecolorsFromColorAndCost( [],
+			 '#ebe547', 15, 'Body' ),
+			 '#b0a527', 15, 'Body 2' ),
+			 '#00ffdf', 15, 'Energy' ),
+			 '#00457a', 15, 'Dark' ) )
+		};
+
+		sdGun.classes[ sdGun.CLASS_SHURG_SNIPER = 115 ] = 
+		{
+			image: sdWorld.CreateImageFromFile( 'shurg_sniper' ),
+			sound: 'gun_sniper',
+			sound_pitch: 1.7,
+			title: 'Shurg Sniper Rifle',
+			slot: 4,
+			reload_time: 70,
+			muzzle_x: 11,
+			ammo_capacity: -1,
+			count: 1,
+			projectile_velocity: sdGun.default_projectile_velocity * 2,
+			matter_cost: 120,
+			min_build_tool_level: 9,
+			projectile_properties: { _damage: 115, penetrating:true, _dirt_mult: -0.5 },
+			projectile_properties_dynamic: ( gun )=>{ 
+
+				let obj = { penetrating:true, _dirt_mult: -0.5 };
+				obj._knock_scale = 0.01 * 8 * gun.extra[ ID_DAMAGE_MULT ];
+				obj._damage = gun.extra[ ID_DAMAGE_VALUE ]; // Damage value is set onMade
+				obj._damage *= gun.extra[ ID_DAMAGE_MULT ];
+				obj._knock_scale *= gun.extra[ ID_RECOIL_SCALE ];
+				obj._affected_by_gravity = true;
+
+				obj.color = '#004400';
+
+				return obj;
+			},
+			onMade: ( gun, params )=> // Should not make new entities, assume gun might be instantly removed once made
+			{
+				if ( !gun.extra )
+				{
+					gun.extra = [];
+					gun.extra[ ID_DAMAGE_MULT ] = 1;
+					gun.extra[ ID_FIRE_RATE ] = 1;
+					gun.extra[ ID_TEMPERATURE_APPLIED ] = 0;
+					gun.extra[ ID_RECOIL_SCALE ] = 1;
+					gun.extra[ ID_DAMAGE_VALUE ] = 115; // Damage value of the bullet, needs to be set here so it can be seen in weapon bench stats
+				}
+			},
+			upgrades: AddGunDefaultUpgrades(
+			 AddRecolorsFromColorAndCost(
+			 AddRecolorsFromColorAndCost(
+			 AddRecolorsFromColorAndCost(
+			 AddRecolorsFromColorAndCost( [],
+			 '#171717', 15, 'Body' ),
+			 '#323232', 15, 'Bright' ),
+			 '#008000', 15, 'Energy' ),
+			 '#004000', 15, 'Barrel' ) )
+		};
+
+		sdGun.classes[ sdGun.CLASS_SETR_LMG = 116 ] = 
+		{
+			image: sdWorld.CreateImageFromFile( 'setr_lmg' ),
+			title: 'Setr Light Machine Gun',
+			slot: 2,
+			reload_time: 0,
+			muzzle_x: 11,
+			ammo_capacity: -1,
+			count: 1,
+			projectile_velocity: sdGun.default_projectile_velocity * 1.5,
+			matter_cost: 16800,
+			min_build_tool_level: 70,
+			min_workbench_level: 28,
+			GetAmmoCost: ( gun, shoot_from_scenario )=>
+			{
+				if ( shoot_from_scenario )
+				return 0;
+
+				if ( gun._held_by._auto_shoot_in > 0 )
+				return 0;
+
+				return 4;
+			},
+			onShootAttempt: ( gun, shoot_from_scenario )=>
+			{
+				gun._held_by._key_states.SetKey( 'KeyA', 0 );
+				gun._held_by._key_states.SetKey( 'KeyD', 0 );
+				gun._held_by._key_states.SetKey( 'KeyW', 0 );
+				gun._held_by._key_states.SetKey( 'KeyS', 1 ); // Make the user crouch when using this and cripple mobility. It is strong as Ripper after all
+				if ( !shoot_from_scenario )
+				{
+					if ( gun._held_by )
+					if ( gun._held_by._auto_shoot_in <= 0 )
+					{
+						gun._held_by._auto_shoot_in = 1200 / 1000 * 30;
+
+						//sdSound.PlaySound({ name: 'supercharge_combined2', x:gun.x, y:gun.y, volume: 1.5 });
+						sdSound.PlaySound({ name: 'enemy_mech_charge', x:gun.x, y:gun.y, volume: 1.5 });
+					}
+					gun._held_by._key_states.SetKey( 'KeyA', 0 );
+					gun._held_by._key_states.SetKey( 'KeyD', 0 );
+					gun._held_by._key_states.SetKey( 'KeyW', 0 );
+					gun._held_by._key_states.SetKey( 'KeyS', 0 ); // Make the user crouch after charge sequence
+					return false;
+				}
+				else
+				{
+					sdSound.PlaySound({ name:'enemy_mech_attack4', x:gun.x, y:gun.y, volume:1.5, pitch: 1 });
+
+					if ( gun._held_by.matter >= 4 )
+					if ( gun._held_by._key_states.GetKey( 'Mouse1' ) )
+					{
+						gun._held_by._auto_shoot_in = ( gun._held_by.stim_ef > 0 ) ? ( gun.extra[ ID_FIRE_RATE ] ) : ( 4 * gun.extra[ ID_FIRE_RATE ] ); // Faster rate of fire when shooting more
+						gun._held_by.matter -= 4;
+					}
+					else
+					gun._held_by._key_states.SetKey( 'KeyS', 0 ); // Reset crouch state
+				}
+				return true;
+			},
+			projectile_properties: { _damage: 50, _dirt_mult: -0.5 }, // Combined with fire rate
+			projectile_properties_dynamic: ( gun )=>{ 
+
+				let obj = { _dirt_mult: -0.5 };
+				obj._knock_scale = 0.02 * 8 * gun.extra[ ID_DAMAGE_MULT ];
+				obj._damage = gun.extra[ ID_DAMAGE_VALUE ]; // Damage value is set onMade
+				obj._damage *= gun.extra[ ID_DAMAGE_MULT ];
+				obj._knock_scale *= gun.extra[ ID_RECOIL_SCALE ];
+
+				//obj.color = gun.extra[ ID_PROJECTILE_COLOR ];
+
+				return obj;
+			},
+			onMade: ( gun, params )=> // Should not make new entities, assume gun might be instantly removed once made
+			{
+				if ( !gun.extra )
+				{
+					gun.extra = [];
+					gun.extra[ ID_DAMAGE_MULT ] = 1;
+					gun.extra[ ID_FIRE_RATE ] = 1;
+					gun.extra[ ID_TEMPERATURE_APPLIED ] = 0;
+					gun.extra[ ID_RECOIL_SCALE ] = 1;
+					//gun.extra[ ID_SLOT ] = 1;
+					gun.extra[ ID_DAMAGE_VALUE ] = 50; // Damage value of the bullet, needs to be set here so it can be seen in weapon bench stats
+				}
+			},
+			upgrades: AddGunDefaultUpgrades(
+			 AddRecolorsFromColorAndCost(
+			 AddRecolorsFromColorAndCost(
+			 AddRecolorsFromColorAndCost(
+			 AddRecolorsFromColorAndCost(
+			 AddRecolorsFromColorAndCost( [],
+			 '#0000c8', 20, 'Body' ),
+			 '#1d1d1d', 20, 'Dark' ),
+			 '#2f2f2f', 20, 'Ammo' ),
+			 '#191919', 20, 'Pointer' ),
+			 '#000000', 20, 'Muzzle' ) )
 		};
 
 		// Add new gun classes above this line //
@@ -7824,7 +8094,7 @@ class sdGunClass
 			title: 'Council Combat Pistol',
 			slot: 1,
 			reload_time: 4,
-			muzzle_x: 7,
+			muzzle_x: 8,
 			ammo_capacity: -1,
 			count: 1,
 			spread: 0.01,
@@ -7859,7 +8129,19 @@ class sdGunClass
 					//UpdateCusomizableGunProperties( gun );
 				}
 			},
-			upgrades: AddGunDefaultUpgrades([])
+			upgrades: AddGunDefaultUpgrades(
+			 AddRecolorsFromColorAndCost(
+			 AddRecolorsFromColorAndCost(
+			 AddRecolorsFromColorAndCost(
+			 AddRecolorsFromColorAndCost(
+			 AddRecolorsFromColorAndCost(
+			 AddRecolorsFromColorAndCost( [],
+			 '#00457a', 15, 'Body' ),
+			 '#00243f', 15, 'Body 2' ),
+			 '#00ffdf', 15, 'Energy' ),
+			 '#d7d133', 15, 'Bright' ),
+			 '#ebe547', 15, 'Bright 2' ),
+			 '#b0a527', 15, 'Bright 3' ) )
 		};
 		sdGun.classes[ sdGun.CLASS_CUBE_CORE = 1010 ] = 
 		{
@@ -8126,7 +8408,7 @@ class sdGunClass
 			title: 'Council Sniper Gauss Rifle',
 			slot: 4,
 			reload_time: 250,
-			muzzle_x: 14,
+			muzzle_x: 16,
 			ammo_capacity: -1,
 			count: 1,
 			spread: 0.01,
@@ -8179,7 +8461,21 @@ class sdGunClass
 					gun.extra[ ID_DAMAGE_VALUE ] = 425;
 				}
 			},
-			upgrades: AddGunDefaultUpgrades([])
+			upgrades: AddGunDefaultUpgrades(
+			 AddRecolorsFromColorAndCost(
+			 AddRecolorsFromColorAndCost(
+			 AddRecolorsFromColorAndCost(
+			 AddRecolorsFromColorAndCost(
+			 AddRecolorsFromColorAndCost(
+			 AddRecolorsFromColorAndCost(
+			 AddRecolorsFromColorAndCost( [],
+			 '#00457a', 15, 'Body' ),
+			 '#00243f', 15, 'Body 2' ),
+			 '#00ffdf', 15, 'Energy' ),
+			 '#d7d133', 15, 'Bright' ),
+			 '#ebe547', 15, 'Bright 2' ),
+			 '#b0a527', 15, 'Bright 3' ),
+			 '#003863', 15, 'Dark' ) )
 		};
 		sdGun.classes[ sdGun.CLASS_SPEAR = 1103 ] = 
 		{
@@ -9042,24 +9338,24 @@ class sdGunClass
 				{
 							if ( target_entity.GetClass() === 'sdCrystal' )
 							{
-								target_entity.matter_regen = 100000;
+								target_entity.matter_regen = 1000000;
 								target_entity.matter = target_entity.matter_max;
-								target_entity._hmax = 800000;
-								target_entity._hea = 800000;
+								target_entity._hmax = 8000000;
+								target_entity._hea = 8000000;
 							}
 							else
 							if ( target_entity.GetClass() === 'sdHover' )
 							{
-								target_entity.hmax = 800000;
-								target_entity.hea = 800000;
-								target_entity.matter_max = 800000;
-								target_entity.matter = 800000;
+								target_entity.hmax = 8000000;
+								target_entity.hea = 8000000;
+								target_entity.matter_max = 8000000;
+								target_entity.matter = 8000000;
 							}
 							else
 							if ( target_entity.GetClass() === 'sdMatterContainer' )
 							{
-								target_entity._hmax = 800000;
-								target_entity._hea = 800000;
+								target_entity._hmax = 8000000;
+								target_entity._hea = 8000000;
 								target_entity.matter_max = 5120 * 64;
 								target_entity.matter = 5120 * 64;
 							}
@@ -9093,31 +9389,31 @@ class sdGunClass
 					{
 						if ( bullet._owner._god && target_entity.GetClass() !== 'sdVirus' && target_entity.GetClass() !== 'sdTutel' )
 						{
-							if ( target_entity._hmax <= 100000 )
+							if ( target_entity._hmax <= 1000000 )
 							{
-								target_entity._hmax = 100000;
-								if ( target_entity.hea <= 100000 )
+								target_entity._hmax = 1000000;
+								if ( target_entity.hea <= 1000000 )
 								{
-								target_entity.hea = 100000;
+								target_entity.hea = 1000000;
 								}
 								else
-								if ( target_entity._hea <= 100000 )
+								if ( target_entity._hea <= 1000000 )
 								{
-								target_entity._hea = 100000;
+								target_entity._hea = 1000000;
 								}
 							}
 							else
-							if ( target_entity.hmax <= 100000 )
+							if ( target_entity.hmax <= 1000000 )
 							{
-								target_entity.hmax = 100000;
-								if ( target_entity.hea <= 100000 )
+								target_entity.hmax = 1000000;
+								if ( target_entity.hea <= 1000000 )
 								{
-								target_entity.hea = 100000;
+								target_entity.hea = 1000000;
 								}
 								else
-								if ( target_entity._hea <= 100000 )
+								if ( target_entity._hea <= 1000000 )
 								{
-								target_entity._hea = 100000;
+								target_entity._hea = 1000000;
 								}
 							}
 							else

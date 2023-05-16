@@ -310,7 +310,7 @@ class sdFactionTools extends sdEntity
 							{
 								const logic = ()=>
 								{
-									if ( character_entity.hea <= 10000  && character_entity.s === 250 )
+									if ( character_entity.hea <= 5000  && character_entity.s === 250 )
 									if ( !character_entity._is_being_removed )
 									{
 									character_entity.hea = 50000;
@@ -475,6 +475,7 @@ class sdFactionTools extends sdEntity
 							character_entity.helmet = sdWorld.ConvertPlayerDescriptionToHelmet( character_settings );
 							character_entity.body = sdWorld.ConvertPlayerDescriptionToBody( character_settings );
 							character_entity.legs = sdWorld.ConvertPlayerDescriptionToLegs( character_settings );
+							character_entity.title = character_settings.hero_name;
 							character_entity.iron_fist = true;
 							character_entity.matter = 900000;
 							character_entity.matter_max = 900000;

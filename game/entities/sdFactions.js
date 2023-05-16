@@ -82,11 +82,11 @@ class sdFactions extends sdEntity
 			character_settings = {"hero_name":"Heavy Falkok","color_bright":"#6b0000","color_dark":"#420000","color_bright3":"#6b0000","color_dark3":"#420000","color_visor":"#5577b9","color_suit":"#240000","color_suit2":"#2e0000","color_dark2":"#560101","color_shoes":"#000000","color_skin":"#240000","color_extra1":"#240000","helmet1":false,"helmet43":true,"body83":true,"legs16":true,"voice3":true,"voice6":true};
 			if ( character_entity._ai_gun_slot === 2 && character_entity.s === 100 ) // If a regular falkok spawns
 			{
-				character_entity.matter = 170;
-				character_entity.matter_max = 170;
+				character_entity.matter = 100;
+				character_entity.matter_max = 100;
 
-				character_entity.hea = 185;
-				character_entity.hmax = 185;
+				character_entity.hea = 130;
+				character_entity.hmax = 130;
 
 				character_entity.armor = 100;
 				character_entity.armor_max = 100;
@@ -680,29 +680,67 @@ class sdFactions extends sdEntity
 
 		if ( faction === sdFactions.FACTION_SHURG ) // Shurg
 		{
+			if ( Math.random() < 0.3 )
+			{ 
+				sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_SHURG_SNIPER }) );
+				character_entity._ai_gun_slot = 4;
+			}
+			else
 			{ 
 				sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_SHURG_PISTOL }) );
 				character_entity._ai_gun_slot = 1;
 			}
 
 			if ( character_entity._ai_gun_slot === 1 )
-			character_settings = {	"hero_name":"Shurg", // Name
-						"color_bright":"#203020", // Helmet bright color
-						"color_dark":"#102010", // Helmet dark color
-						"color_bright3":"#004000", // Jetpack (bright shade) color
-						"color_dark3":"#002000", // Jetpack and armor plates (dark shade) color
-						"color_visor":"#306000", // Visor color
-						"color_suit":"#003000", // Upper suit color
-						"color_suit2":"#001000", // Lower suit color
-						"color_dark2":"#083008", // Lower suit plates color
-						"color_shoes":"#000000", // Shoes color
-						"color_skin":"#080808", // Gloves and neck color
-						"color_extra1":"#003000", // Extra 1 color
-						"helmet76":true,
-						"voice10":true,
-						"body48":true,
-						"legs17":true };
+			character_settings = {
+			"hero_name":"Shurg", // Name
+			"color_bright":"#203020", // Helmet bright color
+			"color_dark":"#102010", // Helmet dark color
+			"color_bright3":"#004000", // Jetpack (bright shade) color
+			"color_dark3":"#002000", // Jetpack and armor plates (dark shade) color
+			"color_visor":"#109000", // Visor color
+			"color_suit":"#003000", // Upper suit color
+			"color_suit2":"#001000", // Lower suit color
+			"color_dark2":"#083008", // Lower suit plates color
+			"color_shoes":"#000000", // Shoes color
+			"color_skin":"#080808", // Gloves and neck color
+			"color_extra1":"#003000", // Extra 1 color
+			"helmet76":true,
+			"voice10":true,
+			"body48":true,
+			"legs17":true };
 
+			if ( character_entity._ai_gun_slot === 4 ) // Shurg Commander
+			character_settings = {
+			"hero_name":"Shurg Commander", // Name
+			"color_bright":"#203020", // Helmet bright color
+			"color_dark":"#102010", // Helmet dark color
+			"color_visor":"#109000", // Visor color
+			"color_bright3":"#004000", // Jetpack (bright shade) color
+			"color_dark3":"#002000", // Jetpack and armor plates (dark shade) color
+			"color_suit":"#003000", // Upper suit color
+			"color_suit2":"#001000", // Lower suit color
+			"color_dark2":"#083008", // Lower suit plates color
+			"color_shoes":"#000000", // Shoes color
+			"color_skin":"#080808", // Gloves and neck color
+			"color_extra1":"#003000", // Extra 1 color
+			"helmet76":true,
+			"body36":true,
+			"legs25":true,
+			"voice10":true };
+
+			if ( character_entity._ai_gun_slot === 4 ) // Shurg commander
+			{
+				character_entity.matter = 125;
+				character_entity.matter_max = 125;
+
+				character_entity.hea = 350;
+				character_entity.hmax = 350;
+
+				character_entity.armor = 150;
+				character_entity.armor_max = 150;
+				character_entity._armor_absorb_perc = 0.15;
+			}
 			if ( character_entity._ai_gun_slot === 1 )
 			{
 				character_entity.matter = 100;
@@ -941,8 +979,8 @@ class sdFactions extends sdEntity
 			character_entity.matter = 8000;
 			character_entity.matter_max = 8000;
 
-			character_entity.hea = 18000;
-			character_entity.hmax = 18000;
+			character_entity.hea = 8500;
+			character_entity.hmax = 8500;
 			character_entity.stability_upgrade = 25;
 			character_entity.fist_change = true;
 			character_entity._damage_mult = 2.5;

@@ -125,6 +125,8 @@ class sdBullet extends sdEntity
 		
 		this._rail = false;
 		this._rail_circled = false;
+
+		this._affected_by_gravity = false; // Bullet drop?
 		
 		this.explosion_radius = 0;
 		this.model = null; // Custom image model
@@ -441,7 +443,7 @@ class sdBullet extends sdEntity
 			}
 
 
-			if ( this.is_grenade )
+			if ( this.is_grenade || this._affected_by_gravity )
 			{
 				this.sy += sdWorld.gravity * GSPEED;
 

@@ -739,6 +739,7 @@ class sdCharacter extends sdEntity
 		this._weapon_draw_timer = 0;
 		
 		this._in_water = false;
+		this.free_flying = false;
 		
 		this._ledge_holding = false;
 		
@@ -1587,7 +1588,7 @@ class sdCharacter extends sdEntity
 		if ( !sdArea.CheckPointDamageAllowed( this.x, this.y ) )
 		return false;
 	
-		if ( this.flying || this.hea <= 0 || ( this.fire_anim > 0 && this.gun_slot !== 0 && this.gun_slot !== -1 ) || this.pain_anim > 0 || this._auto_shoot_in > 0 || this.time_ef > 0 )
+		if ( this.flying || this.free_flying || this.hea <= 0 || ( this.fire_anim > 0 && this.gun_slot !== 0 && this.gun_slot !== -1 ) || this.pain_anim > 0 || this._auto_shoot_in > 0 || this.time_ef > 0 )
 		return true;
 	
 		if ( observer_character )
@@ -2201,7 +2202,12 @@ class sdCharacter extends sdEntity
 				if ( this.AttemptTeleportOut( initiator ) )
 				return;
 			}
-
+			if ( this._ai_team === 10 && this.hea - damage_to_deal <= 0 ) // Time shifters aren't supposed to die ( prevent barrel/bomb/whatever cheesing )
+			{
+				this.hea = 1;
+				this._dying = false;
+			}
+			else
 			this.hea -= damage_to_deal;
 			this.DamageStability( damage_to_deal * sdCharacter.stability_damage_from_damage_scale );
 			
@@ -3390,9 +3396,9 @@ class sdCharacter extends sdEntity
 		
 		speed_scale *= Math.max( 0.1, this.stability / 100 );
 
-		if ( this.speed_up === true && this.anim_change === true )
+		if ( this.speed_up && this.anim_change )
 		{
-			if ( this.fist_change === true )
+			if ( this.fist_change )
 			{
 			speed_scale *= 2;
 			}
@@ -3457,6 +3463,25 @@ class sdCharacter extends sdEntity
 		let ledge_holding = false;
 		this._ledge_holding = false;
 		
+		if ( sdWorld.is_server || sdWorld.my_entity === this )
+		{
+			if ( this.hea > 0 )
+			if ( this.flying && this._key_states.GetKey( 'Space' ) )
+			{
+				this.free_flying = true;
+				
+				if ( this._socket || this._ai || sdWorld.my_entity === this )
+				if ( this.act_x !== 0 || this.act_y !== 0 )
+				this.PhysWakeUp();
+			}
+			else
+			if ( this.hea > 0 )
+			if ( this._key_states.GetKey( 'KeyS' ) && this._key_states.GetKey( 'Space' ) )
+			{
+				this.free_flying = false;
+			}
+		}
+
 		if ( sdWorld.is_server || sdWorld.my_entity === this )
 		{
 			if ( this.hea > 0 )
@@ -3719,27 +3744,8 @@ class sdCharacter extends sdEntity
 				}
 			}
 
-			//if ( still_stands || !this.CanMoveWithoutOverlap( this.x, this.y + 2, 0.0001 ) )
-			if ( still_stands )//|| !this.CanMoveWithoutOverlap( this.x, this.y + 2, 0.0001 ) )
+			if ( still_stands )
 			{
-				/*let new_hit = sdWorld.last_hit_entity;
-				
-				this.stands = true;
-				
-				if ( this._stands_on !== new_hit )
-                this.Touches( this._stands_on );
-			
-				this._stands_on = new_hit;
-				
-				if ( this._stands_on )
-				if ( !this._in_water )
-				this.y = this._stands_on.y + this._stands_on._hitbox_y1 - this._hitbox_y2;
-
-				this._in_air_timer = 0;
-
-				if ( !old_stands ) // Less calls of cases of moving on top of same surface?
-				this.Touches( new_hit );
-				*/
 				this.stands = true;
 				this._in_air_timer = 0;
 			}
@@ -3787,12 +3793,6 @@ class sdCharacter extends sdEntity
 		
 		if ( ( this._key_states.GetKey( 'KeyX' ) && !this.driver_of ) || ( in_water && !this._can_breathe ) )
 		{
-			//this.tilt_speed += this.act_x * 1 * GSPEED;
-			
-			//this.tilt_speed = sdWorld.MorphWithTimeScale( this.tilt_speed, this.act_x * 30, 0.9, GSPEED );
-			
-			//speed_scale = 0.1 * ( 1 - ( this.armor_speed_reduction / 100 ) );
-			
 			if ( in_water && !this._can_breathe )
 			this.stability = Math.min( 10, this.stability );
 			else
@@ -3812,10 +3812,7 @@ class sdCharacter extends sdEntity
 				this.stability = this.stability_upgrade;
 			}
 		}
-	
-		//this.tilt += this.tilt_speed * GSPEED;
-		
-		
+
 		this.ManagePlayerFlashLight();
 		
 		this.ManagePlayerVehicleEntrance();
@@ -3841,9 +3838,7 @@ class sdCharacter extends sdEntity
 			}
 		}
 		
-		//this.flying = true; // Hack
-		
-		if ( this.flying )
+		if ( this.flying || this.free_flying )
 		{
 			let di = Math.max( 1, sdWorld.Dist2D_Vector( this.act_x, this.act_y ) );
 			
@@ -3852,7 +3847,7 @@ class sdCharacter extends sdEntity
 			
 			let fuel_cost = GSPEED * sdWorld.Dist2D_Vector( x_force, y_force ) * this._jetpack_fuel_multiplier;
 
-			if ( ( this.stands && this.act_y !== -1 ) || this.driver_of || this._in_water || this.act_y !== -1 || this._key_states.GetKey( 'KeyX' ) || this.matter < fuel_cost || this.hea <= 0 )
+			if ( ( this.stands && this.act_y !== -1 ) || this.driver_of || this._in_water || this.free_flying || this.act_y !== -1 || this._key_states.GetKey( 'KeyX' ) || this.matter < fuel_cost || this.hea <= 0 )
 			this.flying = false;
 			else
 			{
@@ -3868,7 +3863,6 @@ class sdCharacter extends sdEntity
 		}
 		else
 		{
-			//if ( sdWorld.is_server )
 			if ( !this.driver_of )
 			if ( this._jetpack_allowed &&
 				 this.act_y === -1 &&
@@ -3876,10 +3870,9 @@ class sdCharacter extends sdEntity
 				 this._in_air_timer > 200 / 1000 * 30 && // after 200 ms
 				 //this._last_act_y !== -1 &&
 				 !last_ledge_holding &&
+				 !this.free_flying &&
 				 !this.stands )
 			this.flying = true;
-		
-			//this._last_act_y = this.act_y;
 		}
 		
 		let can_breathe = false;
@@ -3939,12 +3932,7 @@ class sdCharacter extends sdEntity
 			out_of_bounds = true;
 		}
 
-		/*if ( this._key_states.GetKey( 'KeyA' ) )
-		{
-			trace( { stands:this.stands, stands_on:this._stands_on, sx:this.sx, GSPEED:GSPEED } );
-		}*/
-
-		if ( in_water )
+		if ( in_water || this.free_flying )
 		{
 			this.sx = sdWorld.MorphWithTimeScale( this.sx, 0, 0.93, GSPEED );
 			this.sy = sdWorld.MorphWithTimeScale( this.sy, 0, 0.93, GSPEED );
@@ -3957,17 +3945,37 @@ class sdCharacter extends sdEntity
 				x_force /= di;
 				y_force /= di;
 			}
-			
+
 			this.sx += x_force * 0.2 * GSPEED;
 			this.sy += y_force * 0.2 * GSPEED;
-			/*
-			if ( !sdWorld.CheckWallExists( this.x, this.y + this._hitbox_y1, null, null, sdWater.water_class_array ) )
+
+			if ( this.free_flying )
 			{
-				if ( this.act_y === -1 )
-				this.sy = -3;
+			this.sx += x_force * 0.4 * GSPEED;
+			this.sy += y_force * 0.4 * GSPEED;
+
+				if ( this.anim_change )
+				{
+					this.sx += x_force * 0.4 * GSPEED;
+					this.sy += y_force * 0.4 * GSPEED;
+
+					if ( this.fist_change )
+					{
+						this.sx += x_force * 0.4 * GSPEED;
+						this.sy += y_force * 0.4 * GSPEED;
+					}
+				}
 			}
-			else*/
-					
+
+
+			if ( this.matter > 0 )
+			{
+			}
+			else
+			{
+				this.free_flying = false;
+			}
+
 			if ( can_breathe )
 			if ( sdWorld.CheckWallExists( this.x, this.y + this._hitbox_y1, null, null, sdWater.water_class_array ) )
 			can_breathe = false;
@@ -3993,70 +4001,6 @@ class sdCharacter extends sdEntity
 					this.sy = 0;
 				}
 
-				/*this.tilt_speed = sdWorld.MorphWithTimeScale( this.tilt_speed, 0, 0.9, GSPEED );
-
-				if ( this._key_states.GetKey( 'KeyX' ) && this.hea > 0 )
-				this.tilt_speed += Math.sin( this.tilt / 100 * 2 ) * GSPEED;
-				else
-				{
-					this.tilt -= Math.sin( this.tilt / 100 ) * 4 * GSPEED;
-					this.tilt_speed -= Math.sin( this.tilt / 100 ) * 4 * GSPEED;
-					this.tilt_speed = sdWorld.MorphWithTimeScale( this.tilt_speed, 0, 0.7, GSPEED );
-				}*/
-				
-				/*if ( globalThis.CATCH_ERRORS )
-				{
-					//if ( isNaN( new_leg_height ) || new_leg_height === undefined )
-					//throw new Error( 'new_leg_height is '+new_leg_height );
-				
-					if ( isNaN( leg_height ) || leg_height === undefined )
-					{
-						console.warn([
-							this._hitbox_y2,
-							this.s,
-							this.death_anim,
-							this._crouch_intens,
-							this.tilt,
-							this.hitbox_y2
-						]);
-						
-						throw new Error( 'leg_height is '+leg_height );
-					}
-				
-					if ( isNaN( this.y ) || this.y === undefined )
-					throw new Error( 'this.y is '+this.y );
-				}*/
-				
-				// No longer goes into ground, possibly doe to different hitbox cache handling
-				//if ( new_leg_height !== leg_height )
-				//this.y -= new_leg_height - leg_height;
-			
-				/*if ( new_leg_height > leg_height )
-				{
-					// Stands up from crouch - should be fine
-					this.y -= new_leg_height - leg_height;
-				}
-				else
-				{
-					// Goes into crouch. Should be fine too?
-					this.y -= new_leg_height - leg_height;
-				}*/
-
-				//this.y -= new_leg_height - leg_height; Causes dogs to somehow push player into the ground
-				
-				// Prevent leg shaking when stopping crouch, probably caused by stand target cache delaying fall, especially after step logic applied (it leaves player slightly floating)
-				//if ( new_leg_height - leg_height > 0 )
-				//this.sy += new_leg_height - leg_height;
-
-				/*if ( Math.abs( Math.sin( this.tilt / 100 ) ) > 0.3 )
-				{
-					this._crouch_intens = 1;
-					this.act_y = 1;
-
-					this.sx = sdWorld.MorphWithTimeScale( this.sx, 0, 0.8, GSPEED );
-				}
-				else*/
-				
 				if ( !this.driver_of || !this.driver_of.VehicleHidesDrivers() )
 				{
 					if ( act_y_or_unstable === -1 )
@@ -4074,7 +4018,6 @@ class sdCharacter extends sdEntity
 
 						let old_walk = this._anim_walk;
 						this._anim_walk += Math.abs( this.sx ) * 0.2 / walk_speed_scale * GSPEED;
-						let moving_walk = this._anim_walk;
 
 						if ( this.anim_change === true )
 						this._anim_walk += Math.abs( this.sx ) * 0.04 / walk_speed_scale * GSPEED;
@@ -4091,7 +4034,7 @@ class sdCharacter extends sdEntity
 			}
 			else
 			{
-				if ( ledge_holding && !this.flying )
+				if ( ledge_holding && ( !this.flying || !this.free_flying ) )
 				{
 					if ( Math.sign( this.sx ) !== this.act_x )
 					this.sx = sdWorld.MorphWithTimeScale( this.sx, 0, 0.65, GSPEED );
@@ -4104,9 +4047,6 @@ class sdCharacter extends sdEntity
 					this.sy += act_y_or_unstable * 0.15 * GSPEED;
 					
 					this._side = this.act_x;
-					//this._ledge_holding = 0;
-					//this.look_x = this.x - 100;
-					//this.look_y = this.y;
 					this._ledge_holding = ledge_holding;
 				}
 				else
@@ -4114,7 +4054,7 @@ class sdCharacter extends sdEntity
 					this.sx = sdWorld.MorphWithTimeScale( this.sx, 0, 0.98, GSPEED );
 					this.sy = sdWorld.MorphWithTimeScale( this.sy, 0, 0.98, GSPEED );
 
-					if ( this.flying )
+					if ( this.flying || this.free_flying )
 					{
 					}
 					else
@@ -4194,13 +4134,6 @@ class sdCharacter extends sdEntity
 		this.PositionUpdateAsDriver();
 		else
 		this.ApplyVelocityAndCollisions( GSPEED, this.GetStepHeight(), ( this.hea <= 0 ) );
-		/*
-		if ( sdWorld.last_hit_entity )
-		{
-			if ( sdWorld.last_hit_entity.is( sdBlock ) )
-			if ( sdWorld.last_hit_entity.material === sdBlock.MATERIAL_SHARP )
-			this.DamageWithEffect( Infinity );
-		}*/
 									
 		if ( this._ragdoll )
 		{
@@ -4758,16 +4691,7 @@ class sdCharacter extends sdEntity
 						sdCharacter.last_build_deny_reason = 'This area is currently restricted from combat and building';
 						return false;
 					}
-					
-					//if ( sdWorld.Dist2D( this.x, this.y, this._build_params.x, this._build_params.y ) < 64 )
-					//{
-						//if ( this.stands || this._in_water || this.flying || ( this.hook_relative_to && sdWorld.Dist2D_Vector( this.sx, this.sy ) < 2 ) )
-						return true;
-						//else
-						//sdCharacter.last_build_deny_reason = 'I\'d need to stand on something or at least use jetpack';
-					//}
-					//else
-					//sdCharacter.last_build_deny_reason = 'Can\'t build that far';
+					return true;
 				}
 				else
 				{
@@ -4975,7 +4899,7 @@ class sdCharacter extends sdEntity
 	}
 	Draw( ctx, attached )
 	{
-		if ( ( this._inventory[ this.gun_slot ] && this._inventory[ this.gun_slot ].muzzle > 0 ) || this.flying )
+		if ( ( this._inventory[ this.gun_slot ] && this._inventory[ this.gun_slot ].muzzle > 0 ) || this.flying || this.free_flying )
 		ctx.apply_shading = false;
 		
 		if ( this.ghosting )
@@ -5038,256 +4962,6 @@ class sdCharacter extends sdEntity
 			//ctx.globalAlpha = 0.2;
 		}
 		
-		/*
-		if ( !this.driver_of || attached )
-		{
-		
-			var frame;
-
-			if ( this.death_anim > 0 )
-			{
-				ctx.scale( this._side, 1 );
-
-				if ( this.death_anim > sdCharacter.disowned_body_ttl - 30 )
-				ctx.globalAlpha = 0.5;
-
-				if ( this.death_anim < 10 )
-				{
-					frame = 'img_death1';
-					ctx.drawImageFilterCache( sdCharacter.img_death1, - 16, - 16, 32,32 );
-				}
-				else
-				if ( this.death_anim < 20 )
-				{
-					frame = 'img_death2';
-					ctx.drawImageFilterCache( sdCharacter.img_death2, - 16, - 16, 32,32 );
-				}
-				else
-				if ( this.death_anim < 30 )
-				{
-					frame = 'img_death3';
-					ctx.drawImageFilterCache( sdCharacter.img_death3, - 16, - 16, 32,32 );
-				}
-				else
-				{
-					if ( this._speak_id !== -1 )
-					{
-						meSpeak.stop( this._speak_id );
-						this._speak_id = -1;
-					}
-
-
-
-
-					if ( this.sd_filter !== this._sd_filter_old )
-					{
-						this._sd_filter_old = this.sd_filter;
-
-						this._sd_filter_darkened = Object.assign( {}, this.sd_filter );
-
-						this._sd_filter_darkened[ 255 ][ 0 ][ 0 ][ 0 ] = ~~( this._sd_filter_darkened[ 255 ][ 0 ][ 0 ][ 0 ] * 0.5 );
-						this._sd_filter_darkened[ 255 ][ 0 ][ 0 ][ 1 ] = ~~( this._sd_filter_darkened[ 255 ][ 0 ][ 0 ][ 1 ] * 0.5 );
-						this._sd_filter_darkened[ 255 ][ 0 ][ 0 ][ 2 ] = ~~( this._sd_filter_darkened[ 255 ][ 0 ][ 0 ][ 2 ] * 0.5 );
-					}
-
-					ctx.sd_filter = this._sd_filter_darkened;
-
-
-					frame = 'img_death4';
-					ctx.drawImageFilterCache( sdCharacter.img_death4, - 16, - 16, 32,32 );
-					//ctx.drawImageFilterCache( sdCharacter.img_death4_visor_tint, - 16, - 16, 32,32 );
-				}
-
-				this.DrawHelmet( ctx, frame );
-			}
-			else
-			{
-				var image = sdCharacter.img_legs_idle;
-
-				//ctx.fillRect( -4 + 8 * Math.sin( this.tilt / 100 ), -4 - 8 * Math.cos( this.tilt / 100 ), 8, 8 );
-
-				if ( this.stands )
-				{
-					if ( this._crouch_intens > 0.25 )
-					{
-						if ( Math.abs( this._anim_walk - 5 ) < 5 / 2 * 1 )
-						image = sdCharacter.img_legs_crouch;
-						else
-						image = sdCharacter.img_legs_crouch_walk1;
-					}
-					else
-					if ( this.act_x !== 0 )
-					{
-						if ( Math.abs( this._anim_walk - 5 ) < 5 / 3 * 1 )
-						{
-						}
-						else
-						if ( Math.abs( this._anim_walk - 5 ) < 5 / 3 * 2 )
-						image = sdCharacter.img_legs_walk1;
-						else
-						image = sdCharacter.img_legs_walk2;
-					}
-				}
-				else
-				image = sdCharacter.img_legs_walk2;
-
-				ctx.rotate( this.tilt / 100 );
-
-				ctx.scale( this._side, 1 );
-
-				if ( !attached ) // Hide legs if in vehicle... Simple solution for now
-				ctx.drawImageFilterCache( image, - 16, - 16, 32,32 );
-
-				image = sdCharacter.img_body_idle;
-				frame = 'img_body_idle';
-
-				let gun_offset_x = 0;
-				let gun_offset_y = 0;
-
-				if ( this.pain_anim > 0 )
-				{
-					image = sdCharacter.img_body_hurt;
-					frame = 'img_body_hurt';
-				}
-
-				if ( !this._inventory[ this.gun_slot ] )
-				{
-					if ( this.fire_anim > 5 || this._ledge_holding )
-					{
-						image = sdCharacter.img_body_melee2;
-						frame = 'img_body_melee2';
-						gun_offset_x += 1;
-					}
-					else
-					if ( this.fire_anim > 2.5 )
-					{
-						image = sdCharacter.img_body_melee1;
-						frame = 'img_body_melee1';
-						gun_offset_x += 3;
-					}
-				}
-				else
-				{
-					if ( this.reload_anim > 0 )
-					{
-						if ( this.reload_anim > 30 / 3 * 2 )
-						{
-							image = sdCharacter.img_body_reload2;
-							frame = 'img_body_reload2';
-						}
-						else
-						if ( this.reload_anim > 30 / 3 * 1 )
-						{
-							image = sdCharacter.img_body_reload1;
-							frame = 'img_body_reload1';
-						}
-						else
-						{
-							image = sdCharacter.img_body_reload2;
-							frame = 'img_body_reload2';
-						}
-
-
-						gun_offset_x -= 1;
-						gun_offset_y += 1;
-					}
-					else
-					{
-						if ( this.pain_anim <= 0 )
-						{
-							image = sdCharacter.img_body_armed;
-							frame = 'img_body_armed';
-						}
-
-						if ( this.gun_slot === 0 )
-						{
-							if ( this.fire_anim > 2.5 )
-							{
-								image = sdCharacter.img_body_melee2;
-								frame = 'img_body_melee2';
-								gun_offset_x += 1;
-							}
-							else
-							if ( this.fire_anim > 0 )
-							{
-								image = sdCharacter.img_body_melee1;
-								frame = 'img_body_melee1';
-								gun_offset_x += 3;
-							}
-						}
-						else
-						{
-							if ( this.fire_anim > 2.5 )
-							{
-								image = sdCharacter.img_body_fire2;
-								frame = 'img_body_fire2';
-								gun_offset_x -= 3;
-							}
-							else
-							if ( this.fire_anim > 0 )
-							{
-								image = sdCharacter.img_body_fire1;
-								frame = 'img_body_fire1';
-								gun_offset_x -= 2;
-							}
-						}
-					}
-				}
-
-				if ( image === sdCharacter.img_body_hurt )
-				{
-					gun_offset_x = -1;
-					gun_offset_y = 2;
-				}
-
-				let an = Math.atan2( 
-						( this.y - this.look_y ) , 
-						( ( this.x - this.look_x ) * this._side - 3 * Math.abs( this.y - this.look_y ) ) ) - Math.PI;
-
-				if ( this._ledge_holding )
-				an = 0;
-
-				ctx.translate( - 2, 5 );
-				ctx.rotate( an );
-				ctx.translate( 2,  - 5 );
-
-				if ( this._inventory[ this.gun_slot ] && !attached ) // Hide guns in vehicle too
-				{
-					ctx.sd_filter = null;
-					ctx.save();
-					{
-						ctx.translate( 5 + gun_offset_x, -2 + gun_offset_y );
-
-						ctx.rotate( -an );
-						ctx.rotate( -this.tilt / 100 * this._side );
-
-						ctx.rotate( ( -this.GetLookAngle( true ) ) * this._side + Math.PI / 2 );
-						
-						ctx.filter = 'none';
-						this._inventory[ this.gun_slot ].Draw( ctx, true );
-						ctx.filter = char_filter;
-					}
-					ctx.restore();
-					ctx.sd_filter = this.sd_filter;
-				}
-
-
-				ctx.drawImageFilterCache( image, - 16, - 16, 32,32 );
-
-				this.DrawHelmet( ctx, frame );
-
-				ctx.filter = 'none';
-				ctx.sd_filter = null;
-				if ( this.flying )
-				{
-					let frame = ( sdWorld.time % 600 > 400 ) ? 2 : ( sdWorld.time % 600 > 200 ) ? 1 : 0;
-					ctx.drawImageFilterCache( sdCharacter.img_jetpack, frame * 32, 0, 32, 32, - 16, - 16, 32, 32 );
-				}
-				//ctx.filter = char_filter;
-			}
-
-		}
-		*/
 		ctx.filter = 'none';
 		ctx.sd_filter = null;
 	}
