@@ -488,7 +488,7 @@ class sdCharacterRagdoll
 		this.RespectLength( this.torso, this.ankle1, 1, leg_len );
 		this.RespectLength( this.torso, this.ankle2, 1, leg_len );
 
-		if ( ( !this.character.stands || act_x !== 0 ) && ( !this.character.flying || !this.character.free_flying ) )
+		if ( ( !this.character.stands || act_x !== 0 ) && ( !this.character.flying && !this.character.free_flying ) )
 		{
 			this.RespectLength( this.torso, this.toes1, 1, leg_len );
 			this.RespectLength( this.torso, this.toes2, 1, leg_len );

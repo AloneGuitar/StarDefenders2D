@@ -3847,6 +3847,9 @@ class sdCharacter extends sdEntity
 			
 			let fuel_cost = GSPEED * sdWorld.Dist2D_Vector( x_force, y_force ) * this._jetpack_fuel_multiplier;
 
+			if ( this.free_flying )
+			this.matter -= fuel_cost;
+
 			if ( ( this.stands && this.act_y !== -1 ) || this.driver_of || this._in_water || this.free_flying || this.act_y !== -1 || this._key_states.GetKey( 'KeyX' ) || this.matter < fuel_cost || this.hea <= 0 )
 			this.flying = false;
 			else
@@ -3946,27 +3949,21 @@ class sdCharacter extends sdEntity
 				y_force /= di;
 			}
 
-			this.sx += x_force * 0.2 * GSPEED;
-			this.sy += y_force * 0.2 * GSPEED;
+			this.sx += x_force * 0.2 * this._jetpack_power * GSPEED;
+			this.sy += y_force * 0.2 * this._jetpack_power * GSPEED;
 
 			if ( this.free_flying )
+			if ( this.anim_change )
 			{
-			this.sx += x_force * 0.4 * GSPEED;
-			this.sy += y_force * 0.4 * GSPEED;
+				this.sx += x_force * 0.1 * this._jetpack_power * GSPEED;
+				this.sy += y_force * 0.1 * this._jetpack_power * GSPEED;
 
-				if ( this.anim_change )
+				if ( this.fist_change )
 				{
-					this.sx += x_force * 0.4 * GSPEED;
-					this.sy += y_force * 0.4 * GSPEED;
-
-					if ( this.fist_change )
-					{
-						this.sx += x_force * 0.4 * GSPEED;
-						this.sy += y_force * 0.4 * GSPEED;
-					}
+					this.sx += x_force * 0.1 * this._jetpack_power * GSPEED;
+					this.sy += y_force * 0.1 * this._jetpack_power * GSPEED;
 				}
 			}
-
 
 			if ( this.matter > 0 )
 			{
