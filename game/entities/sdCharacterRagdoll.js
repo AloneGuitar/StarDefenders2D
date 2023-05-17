@@ -318,7 +318,7 @@ class sdCharacterRagdoll
 		this.MoveBone( this.torso, 13, 22.75 );
 		}
 
-		if ( this.character.flying || this.character.free_flying )
+		if ( this.character. free_flying && !this.character.stands )
 		{
 		this.MoveBone( this.torso, 13, 21.75 );
 		}
@@ -428,8 +428,7 @@ class sdCharacterRagdoll
 		legs_x = 12.5;
 		}
 		
-		if ( !this.character.stands )
-		if ( !this.character.flying && !this.character.free_flying )
+		if ( !this.character.stands && !this.character.free_flying )
 		{
 			walk_amplitude_x = 4;
 
@@ -453,11 +452,21 @@ class sdCharacterRagdoll
 			}
 			else
 			{
+				if ( this.character.free_flying || this.character.stands )
 				if ( act_x !== 0 )
 				{
+					if ( this.character.free_flying )
+					{
+						walk_amplitude_x = act_x * this.character._side * 0.5;
+						walk_amplitude_y = ( act_x === this.character._side ? 4 : -4 ) * act_x * this.character._side;
+						legs_x -= act_x * this.character._side * 3;
+					}
+					else
+					{
 					walk_amplitude_x = act_x * this.character._side * Math.sin( _anim_walk ) * 5;
 					walk_amplitude_y = Math.cos( _anim_walk ) * 4;
 					legs_x -= 2.5;
+					}
 
 					_anim_walk_arms = Math.sin( _anim_walk + 0.2 ) * 6;
 					
@@ -465,7 +474,15 @@ class sdCharacterRagdoll
 					{
 						walk_amplitude_x = act_x * this.character._side * Math.sin( _anim_walk ) * 12;
 						walk_amplitude_y = Math.cos( _anim_walk ) * 6;
+
+						if ( this.character.free_flying )
+						{
+							walk_amplitude_x = act_x * this.character._side * 2;
+							legs_x -= act_x * this.character._side * 3;
+						}
+						else
 						legs_x -= 3;
+
 						_anim_walk_arms = Math.sin( _anim_walk + 0.2 ) * 12;
 
 						if ( this.character.act_x === this.character._side && this.character.fist_change )
@@ -482,13 +499,13 @@ class sdCharacterRagdoll
 		this.MoveBone( this.toes2, legs_x - walk_amplitude_x + 2, legs_y - Math.max( 0, -walk_amplitude_y ) );
 		
 		let leg_len = 8;
-		if ( this.character.flying || this.character.free_flying )
+		if ( this.character.free_flying && !this.character.stands )
 		leg_len = 7.5;
 
 		this.RespectLength( this.torso, this.ankle1, 1, leg_len );
 		this.RespectLength( this.torso, this.ankle2, 1, leg_len );
 
-		if ( ( !this.character.stands || act_x !== 0 ) && ( !this.character.flying && !this.character.free_flying ) )
+		if ( ( !this.character.stands || act_x !== 0 ) && !this.character.free_flying )
 		{
 			this.RespectLength( this.torso, this.toes1, 1, leg_len );
 			this.RespectLength( this.torso, this.toes2, 1, leg_len );

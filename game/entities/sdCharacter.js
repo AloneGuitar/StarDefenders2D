@@ -500,6 +500,7 @@ class sdCharacter extends sdEntity
 		if ( prop === '_save_file' ) return true;
 		if ( prop === '_discovered' ) return true;
 		if ( prop === '_user_data' ) return true;
+		if ( prop === '_ai_stay_near_entity' ) return true;
 		if ( prop === '_finished' ) return true;
 
 		return false;
@@ -739,7 +740,6 @@ class sdCharacter extends sdEntity
 		this._weapon_draw_timer = 0;
 		
 		this._in_water = false;
-		this.free_flying = false;
 		
 		this._ledge_holding = false;
 		
@@ -763,6 +763,8 @@ class sdCharacter extends sdEntity
 		this._ai_last_y = 0;
 		this._ai_action_counter = 0; // Counter for AI "actions"
 		this._ai_dig = 0; // Amount of blocks for AI to shoot when stuck; given randomly in AILogic when AITargetBlocks is called
+		this._ai_stay_near_entity = null; // Should AI stay near an entity/protect it?
+		this._ai_stay_distance = params._ai_stay_distance || 128; // Max distance AI can stray from entity it follows/protects.
 		this._allow_despawn = true; // Use to prevent despawn of critically important characters once they are downed (task/mission-related)
 		
 		this.title = params.title || ( 'Random Hero #' + this._net_id );
@@ -888,6 +890,7 @@ class sdCharacter extends sdEntity
 		this._acquired_bt_score = false;
 		this._acquired_bt_projector = false; // Has the character picked up build tool upgrade that the dark matter beam projectors drop?
 		this.flying = false; // Jetpack flying
+		this.free_flying = false;
 		//this._last_act_y = this.act_y; // For mid-air jump jetpack activation
 		
 		this.ghosting = false;
@@ -2647,7 +2650,7 @@ class sdCharacter extends sdEntity
 
 			if ( ( this._ai.direction > 0 && this.x > sdWorld.world_bounds.x2 - 24 ) || ( this._ai.direction < 0 && this.x < sdWorld.world_bounds.x1 + 24 ) )
 			{
-				if ( this._ai_team !== 0 && this._ai_team !== 6)// Prevent SD and Instructor from disappearing
+				if ( this._ai_team !== 0 && this._ai_team !== 6 )// Prevent SD and Instructor from disappearing
 				this.remove();
 				return;
 			}
@@ -2839,6 +2842,25 @@ class sdCharacter extends sdEntity
 				this._key_states.SetKey( 'KeyS', 0 );
 
 				this._key_states.SetKey( 'Mouse1', 0 );
+
+				if ( this._ai_stay_near_entity ) // Is there an entity AI should stay near?
+				{
+					if ( !this._ai_stay_near_entity._is_being_removed && !sdWorld.inDist2D_Boolean( this.x, this.y, this._ai_stay_near_entity.x, this._ai_stay_near_entity.y, this._ai_stay_distance ) ) // Is the AI too far away from the entity?
+					{
+						// Move towards entity
+						if ( this.x > this._ai_stay_near_entity.x )
+						this._key_states.SetKey( 'KeyA', 1 );
+
+						if ( this.x < this._ai_stay_near_entity.x )
+						this._key_states.SetKey( 'KeyD', 1 );
+
+						if ( this.y > this._ai_stay_near_entity.y )
+						this._key_states.SetKey( 'KeyW', 1 );
+
+					}
+				}
+				else
+				this._ai_stay_near_entity = null;
 
 				if ( closest )
 				{
@@ -3462,25 +3484,6 @@ class sdCharacter extends sdEntity
 	 
 		let ledge_holding = false;
 		this._ledge_holding = false;
-		
-		if ( sdWorld.is_server || sdWorld.my_entity === this )
-		{
-			if ( this.hea > 0 )
-			if ( this.flying && this._key_states.GetKey( 'Space' ) )
-			{
-				this.free_flying = true;
-				
-				if ( this._socket || this._ai || sdWorld.my_entity === this )
-				if ( this.act_x !== 0 || this.act_y !== 0 )
-				this.PhysWakeUp();
-			}
-			else
-			if ( this.hea > 0 )
-			if ( this._key_states.GetKey( 'KeyS' ) && this._key_states.GetKey( 'Space' ) )
-			{
-				this.free_flying = false;
-			}
-		}
 
 		if ( sdWorld.is_server || sdWorld.my_entity === this )
 		{
@@ -3492,6 +3495,21 @@ class sdCharacter extends sdEntity
 				if ( this._socket || this._ai || sdWorld.my_entity === this )
 				if ( this.act_x !== 0 || this.act_y !== 0 )
 				this.PhysWakeUp();
+
+				if ( this._jetpack_allowed )
+				if ( this._key_states.GetKey( 'KeyW' ) && this._key_states.GetKey( 'Space' ) )
+				{
+					this.free_flying = true;
+
+					if ( this._socket || this._ai || sdWorld.my_entity === this )
+					if ( this.act_x !== 0 || this.act_y !== 0 )
+					this.PhysWakeUp();
+				}
+				else
+				if ( this._key_states.GetKey( 'KeyS' ) && this._key_states.GetKey( 'Space' ) )
+				{
+					this.free_flying = false;
+				}
 			}
 			else
 			{
@@ -3802,6 +3820,9 @@ class sdCharacter extends sdEntity
 		{
 			if ( this.stability < 100 )
 			{
+				if ( this.stability < 20 )
+				this.free_flying = false;
+
 				if ( can_uncrouch === -1 )
 				can_uncrouch = this.CanUnCrouch();
 
@@ -3838,7 +3859,7 @@ class sdCharacter extends sdEntity
 			}
 		}
 		
-		if ( this.flying || this.free_flying )
+		if ( this.flying )
 		{
 			let di = Math.max( 1, sdWorld.Dist2D_Vector( this.act_x, this.act_y ) );
 			
@@ -3846,9 +3867,6 @@ class sdCharacter extends sdEntity
 			let y_force = ( this.act_y * this._jetpack_power ) / di * 0.1 - sdWorld.gravity;
 			
 			let fuel_cost = GSPEED * sdWorld.Dist2D_Vector( x_force, y_force ) * this._jetpack_fuel_multiplier;
-
-			if ( this.free_flying )
-			this.matter -= fuel_cost;
 
 			if ( ( this.stands && this.act_y !== -1 ) || this.driver_of || this._in_water || this.free_flying || this.act_y !== -1 || this._key_states.GetKey( 'KeyX' ) || this.matter < fuel_cost || this.hea <= 0 )
 			this.flying = false;
@@ -3878,6 +3896,20 @@ class sdCharacter extends sdEntity
 			this.flying = true;
 		}
 		
+		if ( this.free_flying )
+		{
+			let di = Math.max( 1, sdWorld.Dist2D_Vector( this.act_x, this.act_y ) );
+
+			let x_force = ( this.act_x * this._jetpack_power ) / di * 0.1;
+			let y_force = ( this.act_y * this._jetpack_power ) / di * 0.1 - sdWorld.gravity;
+
+			let fuel_cost = GSPEED * sdWorld.Dist2D_Vector( x_force, y_force ) * this._jetpack_fuel_multiplier;
+			this.matter -= fuel_cost;
+
+			if ( this.driver_of || this._in_water || this.matter < fuel_cost || this.hea <= 0 )
+			this.free_flying = false;
+		}
+
 		let can_breathe = false;
 
 		if ( sdWeather.only_instance.air > 0 )
@@ -3949,28 +3981,28 @@ class sdCharacter extends sdEntity
 				y_force /= di;
 			}
 
-			this.sx += x_force * 0.2 * this._jetpack_power * GSPEED;
-			this.sy += y_force * 0.2 * this._jetpack_power * GSPEED;
-
 			if ( this.free_flying )
-			if ( this.anim_change )
 			{
-				this.sx += x_force * 0.1 * this._jetpack_power * GSPEED;
-				this.sy += y_force * 0.1 * this._jetpack_power * GSPEED;
+				this.sx += x_force * 0.2 * this._jetpack_power * GSPEED;
+				this.sy += y_force * 0.2 * this._jetpack_power * GSPEED;
 
-				if ( this.fist_change )
+				if ( this.speed_up )
+				if ( this.anim_change )
 				{
 					this.sx += x_force * 0.1 * this._jetpack_power * GSPEED;
 					this.sy += y_force * 0.1 * this._jetpack_power * GSPEED;
-				}
-			}
 
-			if ( this.matter > 0 )
-			{
+					if ( this.fist_change )
+					{
+						this.sx += x_force * 0.1 * this._jetpack_power * GSPEED;
+						this.sy += y_force * 0.1 * this._jetpack_power * GSPEED;
+					}
+				}
 			}
 			else
 			{
-				this.free_flying = false;
+				this.sx += x_force * 0.2 * GSPEED;
+				this.sy += y_force * 0.2 * GSPEED;
 			}
 
 			if ( can_breathe )

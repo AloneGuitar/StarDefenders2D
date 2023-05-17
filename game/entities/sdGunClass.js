@@ -5606,12 +5606,12 @@ class sdGunClass
 
 		sdGun.classes[ sdGun.CLASS_COMBAT_INSTRUCTOR = 90 ] = 
 		{
-			image: sdWorld.CreateImageFromFile( 'emergency_instructor' ),
+			image: sdWorld.CreateImageFromFile( 'emergency_instructor2' ),
 			sound: 'gun_defibrillator',
-			title: 'Council Captain',
+			title: 'Combat instructor',
 			sound_pitch: 0.5,
 			slot: 7,
-			reload_time: 30 * 3,
+			reload_time: 30 * 30,
 			muzzle_x: null,
 			ammo_capacity: -1,
 			count: 0,
@@ -5622,11 +5622,24 @@ class sdGunClass
 			min_workbench_level: 24,
 			GetAmmoCost: ()=>
 			{
-				return 400;
+				return 800;
 			},
 			onShootAttempt: ( gun, shoot_from_scenario )=>
 			{
 				let owner = gun._held_by;
+
+				for( let i = 0; i < sdCharacter.characters.length; i++ )
+				{
+					let char = sdCharacter.characters[ i ]
+					if ( char.title === 'Combat Instructor' ) // If instructor already exists for this user, remove him and spawn a new one
+					if ( char._ai_stay_near_entity === owner )
+					{
+						sdSound.PlaySound({ name:'teleport', x:char.x, y:char.y, volume:0.5 });
+						sdWorld.SendEffect({ x:char.x, y:char.y, type:sdEffect.TYPE_TELEPORT });
+						char.remove();
+						char._broken = false;
+					}
+				}
 				
 				setTimeout(()=> // Out of loop spawn
 				{
@@ -5660,7 +5673,6 @@ class sdGunClass
 						ent.ApplyArmor({ armor: 1500, _armor_absorb_perc: 0.87, armor_speed_reduction: 10 }) // Level 2 heavy armor
 						ent._matter_regeneration = 20;
 						ent._matter_regeneration_multiplier = 10;
-						//ent._damage_mult = 1 + 3 / 3 * 1;
 						sdEntity.entities.push( ent );
 
 						let ent2 = new sdGun({ x: ent.x, y: ent.y,
@@ -5669,75 +5681,10 @@ class sdGunClass
 						sdEntity.entities.push( ent2 );
 
 						sdSound.PlaySound({ name:'teleport', x:ent.x, y:ent.y, volume:0.5 });
-						
-						let side_set = false;
-						const logic = ()=>
-						{
-							if ( ent._ai )
-							{
-								if ( !side_set )
-								{
-									ent._ai.direction = owner._side;
-									side_set = false;
-								}
-								if ( ent.x > owner.x + 100 )
-								ent._ai.direction = -1;
-							
-								if ( ent.x < owner.x - 100 )
-								ent._ai.direction = 1;
-							} // Stay close to player
-						};
-						
-						const MasterDamaged = ( victim, dmg, enemy )=>
-						{
-							if ( enemy && enemy.IsTargetable( ent ) )
-							if ( dmg > 0 )
-							if ( ent._ai )
-							{
-								if ( !ent._ai.target || Math.random() > 0.5 )
-								ent._ai.target = enemy;
-							}
-						};
-						
-						owner.addEventListener( 'DAMAGE', MasterDamaged );
-						
-						setInterval( logic, 1000 );
-						
-						setTimeout(()=>
-						{
-							if ( ent.hea > 0 )
-							if ( !ent._is_being_removed )
-							{
-								ent.Say( [ 
-									'Was nice seeing you', 
-									'I can\'t stay any longer', 
-									'Thanks for the invite, ' + owner.title, 
-									'Glad I didn\'t die here lol',
-									'Until next time',
-									'You can call be later',
-									'My time is almost out',
-									( ent._inventory[ 4 ] === ent2 ) ? 'You can take my council power' : 'I\'ll miss my council shotgun',
-									'Time for me to go'
-								][ ~~( Math.random() * 9 ) ], false, false, false );
-							}
-						}, 60000 - 4000 );
-						setTimeout(()=>
-						{
-							clearInterval( logic );
-							
-							owner.removeEventListener( 'DAMAGE', MasterDamaged );
-							
-							if ( !ent._is_being_removed )
-							sdSound.PlaySound({ name:'teleport', x:ent.x, y:ent.y, volume:0.5 });
+						sdWorld.SendEffect({ x:ent.x, y:ent.y, type:sdEffect.TYPE_TELEPORT });
 
-							ent.DropWeapons();
-							ent.remove();
-							//ent2.remove();
-
-							ent._broken = false;
-							//ent2._broken = false;
-
-						}, 60000 );
+						ent._ai_stay_near_entity = owner;
+						ent._ai_stay_distance = 96;
 					}
 				}, 1 );
 				
