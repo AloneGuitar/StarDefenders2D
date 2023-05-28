@@ -776,7 +776,7 @@ class sdRenderer
 						ctx.sun.intensity = sdWorld.MorphWithTimeScale( ctx.sun.intensity, ( 1 - ctx.globalAlpha * 0.5 ), 0.98, GSPEED );
 					}
 				}
-				
+
 				let current_camera_scale = ( sdWorld.camera.scale / 4.75 );
 				
 				let offset_scale = sdRenderer.screen_height / 400;
@@ -882,6 +882,7 @@ class sdRenderer
 				
 				ctx.globalAlpha = 1; // Just in case
 				ctx.sd_hue_rotation = 0;
+				}
 			}
 			
 			if ( sdWorld.show_videos )
@@ -967,7 +968,6 @@ class sdRenderer
 					}
 				}
 			}
-		}
 		
 		ctx.translate( sdRenderer.screen_width / 2, sdRenderer.screen_height / 2 );
 		ctx.scale( sdWorld.camera.scale, 
