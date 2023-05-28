@@ -3297,9 +3297,9 @@ class sdGunClass
 			 '#1a1919', 15, 'Muzzle' ) )
 		};
 		
-		sdGun.classes[ sdGun.CLASS_KVT_MMG_MK1 = 47 ] = // sprite by Ghost581
+		sdGun.classes[ sdGun.CLASS_KVT_MMG = 47 ] = // sprite by Ghost581
 		{
-			image: sdWorld.CreateImageFromFile( 'mmg_the_ripper_t2' ),
+			image: sdWorld.CreateImageFromFile( 'kvt_mmg' ),
 			sound: 'gun_the_ripper2',
 			//sound_pitch: 0.7,
 			sound_pitch: 1.6,
@@ -3356,7 +3356,7 @@ class sdGunClass
 
 		sdGun.classes[ sdGun.CLASS_KVT_MMG_MK2 = 48 ] = // sprite by Ghost581
 		{
-			image: sdWorld.CreateImageFromFile( 'mmg_the_ripper_t3' ),
+			image: sdWorld.CreateImageFromFile( 'kvt_mmg_mk2' ),
 			sound: 'gun_the_ripper2',
 			//sound_pitch: 1.6,
 			sound_pitch: 0.7,
@@ -3415,7 +3415,7 @@ class sdGunClass
 
 		sdGun.classes[ sdGun.CLASS_KVT_RAILCANNON = 49 ] = // sprite by Ghost581
 		{
-			image: sdWorld.CreateImageFromFile( './guns/phasercannon_p03' ),
+			image: sdWorld.CreateImageFromFile( 'kvt_railcannon' ),
 			spritesheet:true,
 			sound: 'gun_railgun_malicestorm_terrorphaser4',
 			title: 'KVT Railcannon P03 "Stormbringer"',
@@ -3736,7 +3736,7 @@ class sdGunClass
 		{
 			image: sdWorld.CreateImageFromFile( 'emergency_instructor' ),
 			sound: 'gun_defibrillator',
-			title: 'Council Spawner',
+			title: 'Emergency instructor',
 			sound_pitch: 0.5,
 			slot: 7,
 			reload_time: 30 * 3,
@@ -3762,7 +3762,7 @@ class sdGunClass
 					if ( owner )
 					//if ( owner.is( sdCharacter ) )
 					{
-						let instructor_settings = {"hero_name":"Council Acolyte","color_bright":"#e1e100","color_dark":"#ffffff","color_bright3":"#ffff00","color_dark3":"#e1e1e1","color_visor":"#ffff00","color_suit":"#ffffff","color_suit2":"#e1e1e1","color_dark2":"#ffe100","color_shoes":"#e1e1e1","color_skin":"#ffffff","color_extra1":"#ffff00","helmet1":false,"helmet23":true,"body11":true,"legs8":true,"voice1":false,"voice2":false,"voice3":true,"voice4":false,"voice5":false,"voice6":false,"voice7":false,"voice8":true};
+						let instructor_settings = {"hero_name":"Instructor","color_bright":"#7aadff","color_dark":"#25668e","color_bright3":"#7aadff","color_dark3":"#25668e","color_visor":"#ffffff","color_suit":"#000000","color_shoes":"#303954","color_skin":"#51709a","voice1":true,"voice2":false,"voice3":false,"voice4":false,"voice5":false,"color_suit2":"#000000","color_dark2":"#25668e"};
 
 						let ent = new sdCharacter({ x: owner.x + 16 * owner._side, y: owner.y,
 							_ai_enabled: sdCharacter.AI_MODEL_TEAMMATE, 
@@ -3775,25 +3775,18 @@ class sdGunClass
 							cc_id: owner.cc_id,
 							_owner: owner
 						});
-						ent.s = 110;
-						ent.matter = 600;
-						ent.matter_max = 600;
-						ent.hmax = 1400;
-						ent.hea = 1400;
 						ent.gun_slot = 4;
-						ent.helmet = sdWorld.ConvertPlayerDescriptionToHelmet( instructor_settings );
-						ent.body = sdWorld.ConvertPlayerDescriptionToBody( instructor_settings );
-						ent.legs = sdWorld.ConvertPlayerDescriptionToLegs( instructor_settings );
-						ent._matter_regeneration = 20;
+						ent._matter_regeneration = 5;
 						//ent._damage_mult = 1 + 3 / 3 * 1;
 						sdEntity.entities.push( ent );
 
 						let ent2 = new sdGun({ x: ent.x, y: ent.y,
-							class: sdGun.CLASS_COUNCIL_BURST_RAIL
+							class: sdGun.CLASS_RAILGUN
 						});
 						sdEntity.entities.push( ent2 );
 
 						sdSound.PlaySound({ name:'teleport', x:ent.x, y:ent.y, volume:0.5 });
+						sdWorld.SendEffect({ x:ent.x, y:ent.y, type:sdEffect.TYPE_TELEPORT });
 						
 						let side_set = false;
 						const logic = ()=>
@@ -3841,7 +3834,7 @@ class sdGunClass
 									'Until next time',
 									'You can call be later',
 									'My time is almost out',
-									( ent._inventory[ 4 ] === ent2 ) ? 'You can take my gun' : 'I\'ll miss my gun',
+									( ent._inventory[ 4 ] === ent2 ) ? 'You can take my railgun' : 'I\'ll miss my railgun',
 									'Time for me to go'
 								][ ~~( Math.random() * 9 ) ], false, false, false );
 							}
@@ -4422,9 +4415,9 @@ class sdGunClass
 			//upgrades: AddGunDefaultUpgrades()
 		};
 
-		sdGun.classes[ sdGun.CLASS_KVT_MISSLE_LAUNCHER = 68 ] = 
+		sdGun.classes[ sdGun.CLASS_KVT_MISSILE_LAUNCHER = 68 ] = // sprite by Ghost581
 		{
-			image: sdWorld.CreateImageFromFile( 'missile_launcher_p07' ),
+			image: sdWorld.CreateImageFromFile( 'kvt_missile_launcher' ),
 			sound: 'gun_missile_launcher_p07',
 			title: 'KVT Missile Launcher P07 "Hydra"',
 			sound_volume: 2.4,
@@ -4681,10 +4674,10 @@ class sdGunClass
 			min_workbench_level: 32,
 			//fire_type: 2,
 			projectile_velocity: sdGun.default_projectile_velocity * 1.5,
-			projectile_properties: { _damage: 30, color:'ffff00' },
+			projectile_properties: { _damage: 30, color:'00ffff' },
 			projectile_properties_dynamic: ( gun )=>{ 
 				
-				let obj = { color:'ffff00' };
+				let obj = { color:'00ffff' };
 				obj._knock_scale = 0.01 * 8 * gun.extra[ ID_DAMAGE_MULT ];
 				obj._damage = gun.extra[ ID_DAMAGE_VALUE ]; // Damage value is set onMade
 				obj._damage *= gun.extra[ ID_DAMAGE_MULT ];
@@ -4734,13 +4727,13 @@ class sdGunClass
 			burst: 3,
 			burst_reload: 45,
 			count: 1,
-			projectile_properties: { _rail: true, _damage: 28, color: '#ffff00'/*, _knock_scale:0.01 * 8*/ }, // 84 when all 3 bursts land
+			projectile_properties: { _rail: true, _damage: 28, color: '#00ffff' }, // 84 when all 3 bursts land
 			min_build_tool_level: 87,
 			matter_cost: 6600,
 			min_workbench_level: 32,
 			projectile_properties_dynamic: ( gun )=>{ 
 				
-				let obj = { _rail: true, color: '#ffff00' };
+				let obj = { _rail: true, color: '#00ffff' };
 				obj._knock_scale = 0.01 * 8 * gun.extra[ ID_DAMAGE_MULT ];
 				obj._damage = gun.extra[ ID_DAMAGE_VALUE ]; // Damage value is set onMade
 				obj._damage *= gun.extra[ ID_DAMAGE_MULT ];
@@ -4978,9 +4971,9 @@ class sdGunClass
 			upgrades: AddGunDefaultUpgrades( AppendBasicCubeGunRecolorUpgrades( [] ) )
 		};
 
-		sdGun.classes[ sdGun.CLASS_KVT_AVRS = 77 ] = 
+		sdGun.classes[ sdGun.CLASS_KVT_AVRS = 77 ] = // sprite by Ghost581
 		{
-			image: sdWorld.CreateImageFromFile( './guns/kivortec_avrs_p09' ),
+			image: sdWorld.CreateImageFromFile( 'kvt_avrs' ),
 			spritesheet:true,
 			sound: 'gun_railgun_malicestorm_terrorphaser4',
 			sound_pitch: 0.7,
@@ -5647,11 +5640,13 @@ class sdGunClass
 					if ( owner )
 					//if ( owner.is( sdCharacter ) )
 					{
-						let instructor_settings = {"hero_name":"Council Vanguard","color_bright":"#e1e100","color_dark":"#ffffff","color_bright3":"#ffff00","color_dark3":"#e1e1e1","color_visor":"#ffff00","color_suit":"#ffffff","color_suit2":"#e1e1e1","color_dark2":"#ffe100","color_shoes":"#e1e1e1","color_skin":"#ffffff","color_extra1":"#ffff00","helmet1":false,"body1":false,"legs1":false,"helmet96":true,"body68":true,"legs68":true,"voice1":false,"voice2":false,"voice3":true,"voice4":false,"voice5":false,"voice6":false,"voice7":false,"voice8":true};
+						let instructor_settings = {"hero_name":"Combat Instructor","color_bright":"#7aadff","color_dark":"#25668e","color_bright3":"#7aadff","color_dark3":"#25668e","color_visor":"#ffffff","color_suit":"#000000","color_shoes":"#303954","color_skin":"#51709a","voice1":true,"voice2":false,"voice3":false,"voice4":false,"voice5":false,"color_suit2":"#000000","color_dark2":"#25668e"};
 
 						let ent = new sdCharacter({ x: owner.x + 16 * owner._side, y: owner.y,
+							hmax: 250,
+							hea: 250,
 							_ai_enabled: sdCharacter.AI_MODEL_TEAMMATE, 
-							_ai_gun_slot: 3,
+							_ai_gun_slot: 2,
 							_ai_level: 10,
 							_ai_team: owner.cc_id + 4141,
 							sd_filter: sdWorld.ConvertPlayerDescriptionToSDFilter_v2( instructor_settings ), 
@@ -5660,23 +5655,16 @@ class sdGunClass
 							cc_id: owner.cc_id,
 							_owner: owner
 						});
-						ent.s = 110;
-						ent.hmax = 1750;
-						ent.hea = 1750;
-						ent.matter = 600;
-						ent.matter_max = 600;
-						ent.helmet = sdWorld.ConvertPlayerDescriptionToHelmet( instructor_settings );
-						ent.body = sdWorld.ConvertPlayerDescriptionToBody( instructor_settings );
-						ent.legs = sdWorld.ConvertPlayerDescriptionToLegs( instructor_settings );
-						ent.gun_slot = 3;
+						ent.gun_slot = 2;
 						ent._jetpack_allowed = true;
-						ent.ApplyArmor({ armor: 1500, _armor_absorb_perc: 0.87, armor_speed_reduction: 10 }) // Level 2 heavy armor
-						ent._matter_regeneration = 20;
+						ent.ApplyArmor({ armor: 370, _armor_absorb_perc: 0.55, armor_speed_reduction: 10 }) // Level 2 heavy armor
+						ent._matter_regeneration = 5;
 						ent._matter_regeneration_multiplier = 10;
+						//ent._damage_mult = 1 + 3 / 3 * 1;
 						sdEntity.entities.push( ent );
 
 						let ent2 = new sdGun({ x: ent.x, y: ent.y,
-							class: sdGun.CLASS_COUNCIL_SHOTGUN
+							class: sdGun.CLASS_LMG
 						}); // Even with LMG it seems weak compared to power-stimpack
 						sdEntity.entities.push( ent2 );
 
@@ -6833,10 +6821,10 @@ class sdGunClass
 				}
 				return true;
 			},
-			projectile_properties: { _damage: 30, color:'ffff00' },
+			projectile_properties: { _damage: 30, color:'00ffff' },
 			projectile_properties_dynamic: ( gun )=>{ 
 				
-				let obj = { color:'ffff00' };
+				let obj = { color:'00ffff' };
 				obj._knock_scale = 0.01 * 8 * gun.extra[ ID_DAMAGE_MULT ];
 				obj._damage = gun.extra[ ID_DAMAGE_VALUE ]; // Damage value is set onMade
 				obj._damage *= gun.extra[ ID_DAMAGE_MULT ];
@@ -6875,9 +6863,9 @@ class sdGunClass
 			 '#003863', 15, 'Dark' ) )
 		};
 
-		sdGun.classes[ sdGun.CLASS_KVT_ASSAULT_RIFLE = 104 ] = // sprite made by Ghost581
+		sdGun.classes[ sdGun.CLASS_KVT_RIFLE = 104 ] = // sprite made by Ghost581
 		{
-			image: sdWorld.CreateImageFromFile( 'kvt_ar' ),
+			image: sdWorld.CreateImageFromFile( 'kvt_rifle' ),
 			sound: 'gun_the_ripper2',
 			sound_pitch: 1.3,
 			title: 'KVT Assault Rifle P54 "CER54"',
@@ -6931,7 +6919,7 @@ class sdGunClass
 
 		sdGun.classes[ sdGun.CLASS_KVT_HANDCANNON = 105 ] = // sprite made by LordBored
 		{
-			image: sdWorld.CreateImageFromFile( 'handcannon_iron_bull' ),
+			image: sdWorld.CreateImageFromFile( 'kvt_handcannon' ),
 			sound: 'gun_the_ripper2',
 			sound_pitch: 0.3,
 			title: 'KVT Handcannon P36 "Iron Bull"',
@@ -7514,10 +7502,10 @@ class sdGunClass
 				}
 				return true;
 			},
-			projectile_properties: { _rail: true, _damage: 28, color: '#ffff00', _temperature_addition: 200 }, // Combined with fire rate
+			projectile_properties: { _rail: true, _damage: 28, color: '#00ffff', _temperature_addition: 200 }, // Combined with fire rate
 			projectile_properties_dynamic: ( gun )=>{ 
 
-				let obj = { _rail: true, _damage: 28, color: '#ffff00', _temperature_addition: 200 };
+				let obj = { _rail: true, _damage: 28, color: '#00ffff', _temperature_addition: 200 };
 				obj._knock_scale = 0.01 * 8 * gun.extra[ ID_DAMAGE_MULT ];
 				obj._damage = gun.extra[ ID_DAMAGE_VALUE ]; // Damage value is set onMade
 				obj._damage *= gun.extra[ ID_DAMAGE_MULT ];
@@ -7617,47 +7605,61 @@ class sdGunClass
 				if ( shoot_from_scenario )
 				return 0;
 
-				if ( gun._held_by._auto_shoot_in > 0 )
+				if ( gun._held_by._auto_shoot_in > 0 || ( gun._held_by.free_flying && !gun._held_by.iron_fist ) )
 				return 0;
 
 				return 4;
 			},
 			onShootAttempt: ( gun, shoot_from_scenario )=>
 			{
-				gun._held_by._key_states.SetKey( 'KeyA', 0 );
-				gun._held_by._key_states.SetKey( 'KeyD', 0 );
-				gun._held_by._key_states.SetKey( 'KeyW', 0 );
-				gun._held_by._key_states.SetKey( 'KeyS', 1 ); // Make the user crouch when using this and cripple mobility. It is strong as Ripper after all
-				if ( !shoot_from_scenario )
+				if ( gun._held_by )
 				{
-					if ( gun._held_by )
-					if ( gun._held_by._auto_shoot_in <= 0 )
+					if ( !gun._held_by.iron_fist )
 					{
-						gun._held_by._auto_shoot_in = 1200 / 1000 * 30;
-
-						//sdSound.PlaySound({ name: 'supercharge_combined2', x:gun.x, y:gun.y, volume: 1.5 });
-						sdSound.PlaySound({ name: 'enemy_mech_charge', x:gun.x, y:gun.y, volume: 1.5 });
-					}
 					gun._held_by._key_states.SetKey( 'KeyA', 0 );
 					gun._held_by._key_states.SetKey( 'KeyD', 0 );
 					gun._held_by._key_states.SetKey( 'KeyW', 0 );
-					gun._held_by._key_states.SetKey( 'KeyS', 0 ); // Make the user crouch after charge sequence
-					return false;
-				}
-				else
-				{
-					sdSound.PlaySound({ name:'enemy_mech_attack4', x:gun.x, y:gun.y, volume:1.5, pitch: 1 });
+					gun._held_by._key_states.SetKey( 'KeyS', 1 ); // Make the user crouch when using this and cripple mobility. It is strong as Ripper after all
+					}
 
-					if ( gun._held_by.matter >= 4 )
-					if ( gun._held_by._key_states.GetKey( 'Mouse1' ) )
+					if ( !shoot_from_scenario )
 					{
-						gun._held_by._auto_shoot_in = ( gun._held_by.stim_ef > 0 ) ? ( gun.extra[ ID_FIRE_RATE ] ) : ( 4 * gun.extra[ ID_FIRE_RATE ] ); // Faster rate of fire when shooting more
-						gun._held_by.matter -= 4;
+						if ( gun._held_by )
+						if ( gun._held_by._auto_shoot_in <= 0 )
+						{
+							gun._held_by._auto_shoot_in = 1200 / 1000 * 30;
+
+							sdSound.PlaySound({ name: 'supercharge_combined2', x:gun.x, y:gun.y, volume: 1, pitch: 1.5 });
+							sdSound.PlaySound({ name: 'enemy_mech_charge', x:gun.x, y:gun.y, volume: 1.5, pitch: 1.2 });
+						}
+
+						if ( !gun._held_by.iron_fist )
+						{
+						gun._held_by._key_states.SetKey( 'KeyA', 0 );
+						gun._held_by._key_states.SetKey( 'KeyD', 0 );
+						gun._held_by._key_states.SetKey( 'KeyW', 0 );
+						gun._held_by._key_states.SetKey( 'KeyS', 0 ); // Make the user crouch after charge sequence
+						}
+						return false;
 					}
 					else
-					gun._held_by._key_states.SetKey( 'KeyS', 0 ); // Reset crouch state
-				}
+					{
+						sdSound.PlaySound({ name: 'gun_pistol', x:gun.x, y:gun.y,volume:0.8, pitch: 1.2 });
+						sdSound.PlaySound({ name:'enemy_mech_attack4', x:gun.x, y:gun.y, volume:1.5, pitch: 0.7 });
+
+						if ( gun._held_by.matter >= 4 )
+						if ( gun._held_by._key_states.GetKey( 'Mouse1' ) )
+						{
+						gun._held_by._auto_shoot_in = ( gun._held_by.stim_ef > 0 ) ? ( gun.extra[ ID_FIRE_RATE ] ) : ( 4 * gun.extra[ ID_FIRE_RATE ] ); // Faster rate of fire when shooting more
+							gun._held_by.matter -= 4;
+						}
+						else
+						if ( !gun._held_by.iron_fist )
+						gun._held_by._key_states.SetKey( 'KeyS', 0 ); // Reset crouch state
+					}
 				return true;
+				}
+				return false;
 			},
 			projectile_properties: { _damage: 50, _dirt_mult: -0.5 }, // Combined with fire rate
 			projectile_properties_dynamic: ( gun )=>{ 
@@ -8046,13 +8048,13 @@ class sdGunClass
 			count: 1,
 			spread: 0.01,
 			projectile_velocity: 30,
-			projectile_properties: { _rail: true, _damage: 34, color:'#ffff00'/*, _knock_scale:0.01 * 8*/  },
+			projectile_properties: { _rail: true, _damage: 34, color:'#00ffff'  },
 			min_build_tool_level: 87,
 			matter_cost: 6500,
 			min_workbench_level: 32,
 			projectile_properties_dynamic: ( gun )=>{ 
 				
-				let obj = { _rail: true, color: '#ffff00' };
+				let obj = { _rail: true, color: '#00ffff' };
 				obj._knock_scale = 0.01 * 8 * gun.extra[ ID_DAMAGE_MULT ];
 				obj._damage = gun.extra[ ID_DAMAGE_VALUE ]; // Damage value is set onMade
 				obj._damage *= gun.extra[ ID_DAMAGE_MULT ];
@@ -8360,7 +8362,7 @@ class sdGunClass
 			count: 1,
 			spread: 0.01,
 			projectile_velocity: 30,
-			projectile_properties: { _rail: true, _damage: 425, color:'#ffff00', explosion_radius: 30 },
+			projectile_properties: { _rail: true, _damage: 425, color:'#00ffff', explosion_radius: 30 },
 			min_build_tool_level: 90,
 			matter_cost: 19800,
 			min_workbench_level: 32,
@@ -8387,7 +8389,7 @@ class sdGunClass
 			},
 			projectile_properties_dynamic: ( gun )=>{ 
 				
-				let obj = { _rail: true, color: '#ffff00', explosion_radius: 30, _rail_circled: true };
+				let obj = { _rail: true, color: '#00ffff', explosion_radius: 30, _rail_circled: true };
 				obj._knock_scale = 0.0001 * 8 * gun.extra[ ID_DAMAGE_MULT ];
 				obj._damage = gun.extra[ ID_DAMAGE_VALUE ]; // Damage value is set onMade
 				obj._damage *= gun.extra[ ID_DAMAGE_MULT ];

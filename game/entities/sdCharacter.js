@@ -3906,7 +3906,7 @@ class sdCharacter extends sdEntity
 			let fuel_cost = GSPEED * sdWorld.Dist2D_Vector( x_force, y_force ) * this._jetpack_fuel_multiplier;
 			this.matter -= fuel_cost;
 
-			if ( this.driver_of || this._in_water || this.matter < fuel_cost || this.hea <= 0 )
+			if ( this.driver_of || this.stands || this._in_water || this.matter < fuel_cost || this.hea <= 0 )
 			this.free_flying = false;
 		}
 
@@ -5302,7 +5302,7 @@ class sdCharacter extends sdEntity
 							}
 							else
 							{
-								executer_socket.SDServiceMessage( 'Player controlling of hash ID is not allowed.' );
+								executer_socket.SDServiceMessage( 'Controlling no AI player is not allowed.' );
 							}
 						}
 					}
@@ -5526,7 +5526,7 @@ class sdCharacter extends sdEntity
 					this.AddContextOption( 'Remove', 'ADMIN_REMOVE', [], true, { color:'ff0000' } );
 
 					this.AddContextOption( 'Start controlling', 'ADMIN_CONTROL', [], { color:'ff0000' } );
-					this.AddContextOption( 'Start controlling by hash ID', 'ADMIN_CONTROLB', [], { color:'ff0000' } );
+					this.AddContextOption( 'Start controlling ( AI Only )', 'ADMIN_CONTROLB', [], { color:'ff0000' } );
 				}
 
 

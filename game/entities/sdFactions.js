@@ -560,21 +560,29 @@ class sdFactions extends sdEntity
 
 		if ( faction === sdFactions.FACTION_SETR ) // Setr
 		{
-			if ( Math.random() < 0.3 )
-			{
-				sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_SETR_ROCKET }) );
-				character_entity._ai_gun_slot = 5;
+			if ( Math.random() < 0.2 )
+			{ 
+				sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_SETR_LMG }) );
+				character_entity._ai_gun_slot = 2;
 			}
 			else
 			{
-				sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_SETR_PLASMA_SHOTGUN }) );
-				character_entity._ai_gun_slot = 3;
+				if ( Math.random() < 0.3 )
+				{
+					sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_SETR_ROCKET }) );
+					character_entity._ai_gun_slot = 5;
+				}
+				else
+				{
+					sdEntity.entities.push( new sdGun({ x:character_entity.x, y:character_entity.y, class:sdGun.CLASS_SETR_PLASMA_SHOTGUN }) );
+					character_entity._ai_gun_slot = 3;
+				}
 			}
-			if ( character_entity._ai_gun_slot === 3 )
+			if ( character_entity._ai_gun_slot === 3 || character_entity._ai_gun_slot === 2 )
 			character_settings = {"hero_name":"Setr Soldier","color_bright":"#0000c0","color_dark":"#404040","color_bright3":"#404040","color_dark3":"#202020","color_visor":"#c8c800","color_suit":"#000080","color_suit2":"#000080","color_dark2":"#404040","color_shoes":"#000000","color_skin":"#000000","helmet1":false,"helmet3":true,"voice3":false,"voice9":true,"body18":true, "legs22":true};
 			if ( character_entity._ai_gun_slot === 5 )
 			character_settings = {"hero_name":"Setr Grenadier","color_bright":"#0000c0","color_dark":"#404040","color_bright3":"#404040","color_dark3":"#202020","color_visor":"#c8c800","color_suit":"#000080","color_suit2":"#000080","color_dark2":"#404040","color_shoes":"#000000","color_skin":"#000000","helmet1":false,"helmet61":true,"voice3":false,"voice9":true,"body19":true, "legs51":true};
-			if ( character_entity._ai_gun_slot === 3 ) // If a regular Setr soldier
+			if ( character_entity._ai_gun_slot === 3 || character_entity._ai_gun_slot === 2 ) // If a regular Setr soldier
 			{
 				character_entity.matter = 150;
 				character_entity.matter_max = 150;
@@ -584,7 +592,7 @@ class sdFactions extends sdEntity
 
 				character_entity.armor = 350;
 				character_entity.armor_max = 350;
-				character_entity._armor_absorb_perc = 0.1; // 70% damage absorption
+				character_entity._armor_absorb_perc = 0.1;
 				character_entity._matter_regeneration = 6; // At least some ammo regen
 				character_entity._matter_regeneration_multiplier = 10; // Their matter regenerates 10 times faster than normal, unupgraded players
 			}
