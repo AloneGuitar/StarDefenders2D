@@ -17,7 +17,7 @@ class sdServerConfigShort
 	// If this all looks scary and you are using NetBeans - use "Ctrl + -" and "Ctrl + *" to hide big methods.
 	
 	static password = ''; // Restrict connection access by asking players for password?
-	static only_admins_can_spectate = true;
+	static only_admins_can_spectate = false;
 	
 	static make_server_public = ( this.password === '' ); // By default it is public if password was not set. Public means server will send its' URL to www.gevanni.com to be potentially listed in servers list in future. Sent URL is told by first browser that has successfully connected to this server.
 	
