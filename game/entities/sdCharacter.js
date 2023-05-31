@@ -175,6 +175,7 @@ class sdCharacter extends sdEntity
 			{ file:'helmets/helmet_erthal', name:'Brutal Dragon' },
 			{ file:'helmets/helmet_milk', name:'White Liuqid' },
 			{ file:'helmets/helmet_cubed', name:'Cubed' }, //  by LordBored, 3rd party developer
+			{ file:'helmets/helmet_proxy', name:'Proxy' }, //  forgot the name...
 
 			// Add new values at the end
 			// Note: Commas -> , are important since this is just a big Array: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array
@@ -299,7 +300,7 @@ class sdCharacter extends sdEntity
 			{ file:'skins/glass', name:'Glass' },
 			{ file:'skins/erthal', name:'Brutal Dragon' },
 			{ file:'skins/milk', name:'White Liuqid' },
-			{ file:'skins/cubed', name:'Cubed' }, // by LordBored, 3rd party developer
+			{ file:'skins/proxy', name:'Proxy' }, // forgot the name...
 		];
 		sdCharacter.skins = [];
 		for ( let i = 0; i < sdCharacter.skin_file_names_with_actual_names.length; i++ )
@@ -3422,11 +3423,11 @@ class sdCharacter extends sdEntity
 		{
 			if ( this.fist_change )
 			{
-			speed_scale *= 2;
+			speed_scale *= 3;
 			}
 			else
 			{
-			speed_scale *= 1.5;
+			speed_scale *= 2;
 			}
 		}
 

@@ -501,7 +501,7 @@ class sdCouncilMachine extends sdEntity
          {
             ctx.drawImageFilterCache( sdCouncilMachine.img_council_pm, 0, 0, 64, 64, - 64, - 64, 128, 128 );
             ctx.globalAlpha = Math.min( 1, this.glow_animation / 30 );
-            ctx.filter = ' drop-shadow(0px 0px 8px #FFF000)';
+            ctx.filter = ' drop-shadow(0px 0px 8px #00FFFF)';
             ctx.drawImageFilterCache( sdCouncilMachine.img_council_pm, 64, 0, 64, 64, - 64, - 64, 128, 128 );
         }
 		ctx.globalAlpha = 1;

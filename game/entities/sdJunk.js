@@ -65,7 +65,7 @@ class sdJunk extends sdEntity
 		sdJunk.bounds_by_type[ sdJunk.TYPE_ALIEN_BATTERY ] = { x1: -6, x2: 5, y1: -8, y2: 8 };
 		sdJunk.bounds_by_type[ sdJunk.TYPE_LOST_CONTAINER ] = { x1: -6, x2: 5, y1: -8, y2: 8 };
 		sdJunk.bounds_by_type[ sdJunk.TYPE_PLANETARY_MATTER_DRAINER ] = { x1: -28, x2: 28, y1: 0, y2: 23 };
-		sdJunk.bounds_by_type[ sdJunk.TYPE_COUNCIL_BOMB ] = { x1: -11, x2: 11, y1: -30, y2: 31 };
+		sdJunk.bounds_by_type[ sdJunk.TYPE_COUNCIL_BOMB ] = { x1: -9, x2: 9, y1: -26, y2: 31 };
 		sdJunk.bounds_by_type[ sdJunk.TYPE_ERTHAL_DISTRESS_BEACON ] = { x1: -11, x2: 11, y1: -21, y2: 29 };
 		sdJunk.bounds_by_type[ sdJunk.TYPE_ADVANCED_MATTER_CONTAINER ] = { x1: -11, x2: 11, y1: -15, y2: 17 };
 		sdJunk.bounds_by_type[ sdJunk.TYPE_FREEZE_BARREL ] = { x1: -8, x2: 8, y1: -8, y2: 8 };
@@ -660,8 +660,8 @@ class sdJunk extends sdEntity
 								mission: sdTask.MISSION_DESTROY_ENTITY,
 								difficulty: 0.334 * sdTask.GetTaskDifficultyScaler(),
 								time_left: ( this.detonation_in - 30 * 2 ),
-								title: 'Disarm Council bomb',
-								description: 'Looks like Council paid us a visit and decided to bomb some parts of the planet. Stop them!'
+								title: 'Save the Mars!',
+								description: 'Looks like Council paid us a visit and decided to invade the planet. Stop them, or they will call the doom of dangerous weapon!'
 							});
 						}
 					}
@@ -1020,7 +1020,7 @@ class sdJunk extends sdEntity
 		}
 		if ( this.type === sdJunk.TYPE_COUNCIL_BOMB )
 		{
-			sdEntity.TooltipUntranslated( ctx, T("Council bomb")+" (" + ~~( this.detonation_in / ( 30 * 60 ) ) + " minutes, "+  ~~ ~~( this.detonation_in % ( 30 * 60 ) / 30 ) + " seconds)", 0, -32 );
+			sdEntity.TooltipUntranslated( ctx, T("Council Worm Spawner")+" (" + ~~( this.detonation_in / ( 30 * 60 ) ) + " minutes, "+  ~~ ~~( this.detonation_in % ( 30 * 60 ) / 30 ) + " seconds)", 0, -32 );
 			this.DrawHealthBar( ctx );
 		}
 		if ( this.type === sdJunk.TYPE_ERTHAL_DISTRESS_BEACON )
@@ -1091,14 +1091,14 @@ class sdJunk extends sdEntity
 				{
 					ctx.drawImageFilterCache( sdJunk.img_council_bomb2, 0, 0, 64, 96, - 32, - 48, 64, 96 );
 					ctx.globalAlpha = Math.min( 1, this.glow_animation / 30 );
-					ctx.filter = ' drop-shadow(0px 0px 8px #FFF000)';
+					ctx.filter = ' drop-shadow(0px 0px 8px #00FFFF)';
 					ctx.drawImageFilterCache( sdJunk.img_council_bomb2, 64, 0, 64, 96, - 32, - 48, 64, 96 );
 				}
 				else
 				{
 					ctx.drawImageFilterCache( sdJunk.img_council_bomb, 0, 0, 64, 96, - 32, - 48, 64, 96 );
 					ctx.globalAlpha = Math.min( 1, this.glow_animation / 30 );
-					ctx.filter = ' drop-shadow(0px 0px 8px #FFF000)';
+					ctx.filter = ' drop-shadow(0px 0px 8px #00FFFF)';
 					ctx.drawImageFilterCache( sdJunk.img_council_bomb, 64, 0, 64, 96, - 32, - 48, 64, 96 );
 				}
 			}

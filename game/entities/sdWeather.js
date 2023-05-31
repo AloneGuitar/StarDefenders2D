@@ -66,6 +66,7 @@ import sdFactions from './sdFactions.js';
 import sdTzyrgAbsorber from './sdTzyrgAbsorber.js';
 import sdShurgConverter from './sdShurgConverter.js';
 import sdShurgTurret from './sdShurgTurret.js';
+import sdShurgExcavator from './sdShurgExcavator.js';
 import sdBaseShieldingUnit from './sdBaseShieldingUnit.js';
 import sdStatusEffect from './sdStatusEffect.js';
 
@@ -1420,74 +1421,10 @@ class sdWeather extends sdEntity
 			sdWeather.SimpleSpawner({
 
 				count: [ 1, 1 ],
-				class: sdObelisk
+				class: sdObelisk,
+				params: { type: 1 + Math.round( Math.random() * 7 ) }
 
 			});
-
-			/*let instances = 1;
-			while ( instances > 0 && sdObelisk.obelisks_counter < 17 )
-			{
-
-				let obelisk = new sdObelisk({ x:0, y:0 });
-				obelisk.type = Math.round( 1 + Math.random() * 7 );
-
-				sdEntity.entities.push( obelisk );
-
-				{
-					let x,y,i;
-					let tr = 1000;
-					do
-					{
-						x = sdWorld.world_bounds.x1 + Math.random() * ( sdWorld.world_bounds.x2 - sdWorld.world_bounds.x1 );
-						y = sdWorld.world_bounds.y1 + Math.random() * ( sdWorld.world_bounds.y2 - sdWorld.world_bounds.y1 );
-
-						if ( obelisk.CanMoveWithoutOverlap( x, y, 0 ) )
-						if ( !obelisk.CanMoveWithoutOverlap( x, y + 32, 0 ) )
-						if ( sdWorld.last_hit_entity )
-						if ( sdWorld.last_hit_entity.GetClass() === 'sdBlock' && sdWorld.last_hit_entity.DoesRegenerate() && sdWorld.last_hit_entity._natural )
-						if ( !sdWorld.CheckWallExistsBox( 
-								x + obelisk._hitbox_x1 - 16, 
-								y + obelisk._hitbox_y1 - 16, 
-								x + obelisk._hitbox_x2 + 16, 
-								y + obelisk._hitbox_y2 + 16, null, null, [ 'sdWater' ], null ) )
-						{
-							let proper_distnace = true;
-										
-							for ( i = 0; i < sdWorld.sockets.length; i++ )
-							if ( sdWorld.sockets[ i ].character )
-							{
-								let di = sdWorld.Dist2D( sdWorld.sockets[ i ].character.x, sdWorld.sockets[ i ].character.y, x, y );
-											
-								if ( di < 500 )
-								{
-									proper_distnace = false;
-									break;
-								}
-							}
-										
-							if ( proper_distnace )
-							{
-								obelisk.x = x;
-								obelisk.y = y;
-
-								break;
-							}
-						}
-									
-
-
-						tr--;
-						if ( tr < 0 )
-							{
-							obelisk.remove();
-							obelisk._broken = false;
-							break;
-						}
-					} while( true );
-				}
-
-				instances--;
-			}*/
 		}
 		
 		if ( r === 13 ) // Ground corruption start from random block
@@ -3009,23 +2946,11 @@ class sdWeather extends sdEntity
 					instances++;
 					ais++;
 				}
+				sdWeather.SimpleSpawner({
 
-				//let drones = 0;
-				//let drones_tot = Math.min( 6 ,Math.ceil( ( Math.random() * 2 * sdWorld.GetPlayingPlayersCount() ) ) );
-
-
-				/*while ( drones < drones_tot && sdDrone.drones_tot < this._max_drone_count )
-				{
-					let drone = new sdDrone({ x:0, y:0 , _ai_team: 8, type: ( Math.random() < 0.1 ) ? sdDrone.DRONE_TZYRG_WATCHER : sdDrone.DRONE_TZYRG });
-					sdEntity.entities.push( drone );
-					if ( !sdWeather.SetRandomSpawnLocation( drone ) )
-					{
-						drone.remove();
-						drone._broken = false;
-						break;
-					}
-					drones++;
-				}*/
+					count: [ 2, 4 ],
+					class: sdShurgExcavator
+				});
 			}
 		}
 		if ( r === sdWeather.EVENT_SHURG_CONVERTER ) // Spawn a Shurg oxygen-to-matter anywhere on the map outside player views.
