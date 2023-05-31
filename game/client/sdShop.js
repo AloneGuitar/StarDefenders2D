@@ -467,7 +467,12 @@ class sdShop
 			sdShop.options.push({ _class: 'sdBG', width: 16, height: 32, filter: filter2, texture_id: sdBG.TEXTURE_STRIPES, _category:'Background walls' });
 			sdShop.options.push({ _class: 'sdBG', width: 16, height: 16, filter: filter2, texture_id: sdBG.TEXTURE_STRIPES, _category:'Background walls' });
 		}
-		
+
+			sdShop.options.push({ _class: 'sdBG', width: 32, height: 32, filter: 'none', texture_id: sdBG.TEXTURE_WINDOW, _category:'Background walls' });
+			sdShop.options.push({ _class: 'sdBG', width: 32, height: 32, filter: 'invert(0.25)', texture_id: sdBG.TEXTURE_WINDOW, _category:'Background walls' });
+			sdShop.options.push({ _class: 'sdBG', width: 32, height: 32, filter: 'invert(0.5)', texture_id: sdBG.TEXTURE_WINDOW, _category:'Background walls' });
+			sdShop.options.push({ _class: 'sdBG', width: 32, height: 32, filter: 'invert(0.75)', texture_id: sdBG.TEXTURE_WINDOW, _category:'Background walls' });
+			sdShop.options.push({ _class: 'sdBG', width: 32, height: 32, filter: 'invert(1)', texture_id: sdBG.TEXTURE_WINDOW, _category:'Background walls' });
 		
 		sdShop.options.push({ _class: 'sdBG', width: 16, height: 16, filter: filter, texture_id: sdBG.TEXTURE_GLOWING, _category:'Background walls' });
 		//sdShop.options.push({ _class: 'sdWater' });
@@ -594,6 +599,7 @@ class sdShop
 			sdShop.options.push({ _class: 'sdShurgConverter', _category:'Development tests' });
 			sdShop.options.push({ _class: 'sdShurgTurret', _category:'Development tests' });
 			sdShop.options.push({ _class: 'sdShurgTurret', type: 1, _category:'Development tests' });
+			sdShop.options.push({ _class: 'sdShurgExcavator', _category:'Development tests' });
 			sdShop.options.push({ _class: 'sdBadDog', _category:'Development tests' });
 			sdShop.options.push({ _class: 'sdShark', _category:'Development tests' });
 			sdShop.options.push({ _class: 'sdRift', _category:'Development tests' });
