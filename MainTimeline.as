@@ -748,8 +748,6 @@ package pb2_re34_fla
       
       public var ambient_sounds:Boolean;
       
-      public var chat_bubble;
-      
       public var override_login_password:Boolean;
       
       public var def_login;
@@ -1775,132 +1773,6 @@ package pb2_re34_fla
       public var s_Grosk_edown2:Grosk_edown2;
       
       public var s_Grosk_edown3:Grosk_edown3;
-      
-      public var s_drohnenfem_death1:drohnenfem_death1;
-      
-      public var s_drohnenfem_death2:drohnenfem_death2;
-      
-      public var s_drohnenfem_death3:drohnenfem_death3;
-      
-      public var s_drohnenfem_hurt1:drohnenfem_hurt1;
-      
-      public var s_drohnenfem_hurt2:drohnenfem_hurt2;
-      
-      public var s_drohnenfem_hurt3:drohnenfem_hurt3;
-      
-      public var s_drohnenfem_dying1:drohnenfem_dying1;
-      
-      public var s_drohnenfem_welcome1:drohnenfem_welcome1;
-      
-      public var s_drohnenfem_welcome2:drohnenfem_welcome2;
-      
-      public var s_drohnenfem_welcome3:drohnenfem_welcome3;
-      
-      public var s_drohnenfem_edown1:drohnenfem_edown1;
-      
-      public var s_drohnenfem_edown2:drohnenfem_edown2;
-      
-      public var s_drohnenfem_edown3:drohnenfem_edown3;
-      
-      public var s_drohnentroop_death1:drohnentroop_death1;
-      
-      public var s_drohnentroop_death2:drohnentroop_death2;
-      
-      public var s_drohnentroop_death3:drohnentroop_death3;
-      
-      public var s_drohnentroop_hurt1:drohnentroop_hurt1;
-      
-      public var s_drohnentroop_hurt2:drohnentroop_hurt2;
-      
-      public var s_drohnentroop_hurt3:drohnentroop_hurt3;
-      
-      public var s_drohnentroop_dying1:drohnentroop_dying1;
-      
-      public var s_drohnentroop_welcome1:drohnentroop_welcome1;
-      
-      public var s_drohnentroop_welcome2:drohnentroop_welcome2;
-      
-      public var s_drohnentroop_welcome3:drohnentroop_welcome3;
-      
-      public var s_drohnentroop_edown1:drohnentroop_edown1;
-      
-      public var s_drohnentroop_edown2:drohnentroop_edown2;
-      
-      public var s_drohnentroop_edown3:drohnentroop_edown3;
-      
-      public var s_serkova_death1:serkova_death1;
-      
-      public var s_serkova_hurt1:serkova_hurt1;
-      
-      public var s_serkova_welcome1:serkova_welcome1;
-      
-      public var s_serkova_welcome2:serkova_welcome2;
-      
-      public var s_serkova_welcome3:serkova_welcome3;
-      
-      public var s_serkova_edown1:serkova_edown1;
-      
-      public var s_serkova_edown2:serkova_edown2;
-      
-      public var s_ferro_death1:ferro_death1;
-      
-      public var s_ferro_death2:ferro_death2;
-      
-      public var s_ferro_hurt1:ferro_hurt1;
-      
-      public var s_ferro_hurt2:ferro_hurt2;
-      
-      public var s_ferro_welcome1:ferro_welcome1;
-      
-      public var s_ferro_welcome2:ferro_welcome2;
-      
-      public var s_ferro_welcome3:ferro_welcome3;
-      
-      public var s_ferro_edown1:ferro_edown1;
-      
-      public var s_ferro_edown2:ferro_edown2;
-      
-      public var s_ferro_edown3:ferro_edown3;
-      
-      public var s_elurra_death1:elurra_death1;
-      
-      public var s_elurra_hurt1:elurra_hurt1;
-      
-      public var s_elurra_hurt2:elurra_hurt2;
-      
-      public var s_elurra_dying1:elurra_dying1;
-      
-      public var s_elurra_welcome1:elurra_welcome1;
-      
-      public var s_elurra_welcome2:elurra_welcome2;
-      
-      public var s_elurra_welcome3:elurra_welcome3;
-      
-      public var s_elurra_edown1:elurra_edown1;
-      
-      public var s_elurra_edown2:elurra_edown2;
-      
-      public var s_oldproxy_death1:oldproxy_death1;
-      
-      public var s_oldproxy_hurt1:oldproxy_hurt1;
-      
-      public var s_oldproxy_hurt2:oldproxy_hurt2;
-      
-      public var s_oldproxy_hurt3:oldproxy_hurt3;
-      
-      public var s_oldproxy_welcome1:oldproxy_welcome1;
-      
-      public var s_oldproxy_welcome2:oldproxy_welcome2;
-      
-      public var s_oldproxy_welcome3:oldproxy_welcome3;
-      
-      public var s_oldproxy_edown1:oldproxy_edown1;
-      
-      public var s_oldproxy_edown2:oldproxy_edown2;
-      
-      public var s_oldproxy_edown3:oldproxy_edown3;
-      
-      public var s_oldproxy_dying1:oldproxy_dying1;
       
       public var s_fail_shot:fail_shot;
       
@@ -5977,19 +5849,16 @@ package pb2_re34_fla
                               this.lobbywindow.chatmessages.htmlText = "";
                            }
                         }
-                        if(b["#t"] != null)
+                        login_color = "#78DBE2";
+                        if(b["#a"] == "yes")
                         {
-                           login_color = "#78DBE2";
-                           if(b["#a"] == "yes")
-                           {
-                              login_color = "#DA0E0E";
-                           }
-                           msg_htmltext = "<FONT COLOR=\"" + login_color + "\">" + b["#f"] + "</FONT>" + ": " + this.unmaskChatInput(b["#t"]) + "\n";
-                           this.lobby_chat_log += msg_htmltext;
-                           newMessages = true;
+                           login_color = "#DA0E0E";
                         }
+                        msg_htmltext = "<FONT COLOR=\"" + login_color + "\">" + b["#f"] + "</FONT>" + ": " + this.unmaskChatInput(b["#t"]) + "\n";
+                        this.lobbywindow.chatmessages.htmlText += msg_htmltext;
+                        this.lobby_chat_log += msg_htmltext;
+                        newMessages = true;
                      }
-                     this.lobbywindow.chatmessages.htmlText = this.lobby_chat_log;
                      if(newMessages && this.lobbywindow.chatmessages.numLines > 13)
                      {
                         this.lobbywindow.chatmessages.scrollV = this.lobbywindow.chatmessages.numLines;
@@ -6531,9 +6400,9 @@ package pb2_re34_fla
             }
             this.my_so.data["cmpg_nick"] = "";
             this.my_so.data["lvls_passed"] = 0;
-            this.my_so.data["money"] = 200;
+            this.my_so.data["money"] = 696969;
             this.i = 0;
-            while(this.i < 3)
+            while(this.i < 6)
             {
                this.my_so.data["skin_color_head" + this.i] = 0;
                this.my_so.data["skin_color_body" + this.i] = 0;
@@ -6541,22 +6410,40 @@ package pb2_re34_fla
                this.my_so.data["skin_color_legs" + this.i] = 0;
                ++this.i;
             }
-            this.my_so.data["inv1_len"] = 3;
+            this.my_so.data["inv1_len"] = 9;
             this.my_so.data["inv1_0mdl"] = "gun_pistol";
             this.my_so.data["inv1_1mdl"] = "gun_rifle";
             this.my_so.data["inv1_2mdl"] = "gun_shotgun";
-            this.my_so.data["inv1_3mdl"] = "item_grenade";
-            this.my_so.data["inv1_4mdl"] = "item_grenade";
-            this.my_so.data["inv1_5mdl"] = "item_grenade";
-            this.my_so.data["inv1_0upg"] = 0;
-            this.my_so.data["inv1_1upg"] = 0;
-            this.my_so.data["inv1_2upg"] = 0;
-            this.my_so.data["inv1_3upg"] = 0;
-            this.my_so.data["inv1_4upg"] = 0;
+            this.my_so.data["inv1_3mdl"] = "gun_railgun";
+            this.my_so.data["inv1_4mdl"] = "gun_rl";
+            this.my_so.data["inv1_5mdl"] = "gun_defibrillator";
+            this.my_so.data["inv1_6mdl"] = "gun_bfg";
+            this.my_so.data["inv1_7mdl"] = "gun_plasmagun";
+            this.my_so.data["inv1_8mdl"] = "gun_raygun";
+            this.my_so.data["inv1_0upg"] = 3;
+            this.my_so.data["inv1_1upg"] = 3;
+            this.my_so.data["inv1_2upg"] = 3;
+            this.my_so.data["inv1_3upg"] = 3;
+            this.my_so.data["inv1_4upg"] = 3;
             this.my_so.data["inv1_5upg"] = 0;
-            this.my_so.data["inv2_len"] = 1;
-            this.my_so.data["inv2_0mdl"] = "gun_real_shotgun";
-            this.my_so.data["inv2_0upg"] = 0;
+            this.my_so.data["inv1_6upg"] = 3;
+            this.my_so.data["inv1_7upg"] = 3;
+            this.my_so.data["inv1_8upg"] = 3;
+            this.my_so.data["inv2_len"] = 7;
+            this.my_so.data["inv2_0mdl"] = "gun_pistol2";
+            this.my_so.data["inv2_1mdl"] = "gun_real_rifle";
+            this.my_so.data["inv2_2mdl"] = "gun_real_shotgun";
+            this.my_so.data["inv2_3mdl"] = "gun_railgun2";
+            this.my_so.data["inv2_4mdl"] = "gun_rl";
+            this.my_so.data["inv2_5mdl"] = "gun_defibrillator";
+            this.my_so.data["inv2_6mdl"] = "gun_plasmagun";
+            this.my_so.data["inv2_0upg"] = 3;
+            this.my_so.data["inv2_1upg"] = 3;
+            this.my_so.data["inv2_2upg"] = 3;
+            this.my_so.data["inv2_3upg"] = 3;
+            this.my_so.data["inv2_4upg"] = 3;
+            this.my_so.data["inv2_5upg"] = 0;
+            this.my_so.data["inv2_6upg"] = 3;
             this.my_so.data["MP_default_set"] = 1;
             this.my_so.data["mouse_wheel"] = true;
             this.my_so.data["OVERSCROLL"] = true;
@@ -7785,6 +7672,11 @@ package pb2_re34_fla
             this.GSPEED *= 0.25;
             this.GSPEED2 *= 0.5;
          }
+         if(this.timeshift > 0 && !this.ALLOW_TIMESHIFT)
+         {
+            this.GSPEED *= 0;
+            this.GSPEED2 *= 1;
+         }
          if(this.MP_mode || this.SP_unlimit_framerate)
          {
             if(this.GET_LITE_PHYS())
@@ -8414,35 +8306,16 @@ package pb2_re34_fla
                   this.NoMouse(this.ef[this.nextef]);
                   this.ef[this.nextef].typ = 6;
                   this.ef[this.nextef].msgtext.text = this.str;
-                  if(this.chat_bubble[1] != -1)
-                  {
-                     this.ef[this.nextef].msgtext.text = this.chat_bubble[0];
-                  }
                   this.xx = this.ef[this.nextef].msgtext.textWidth + 10;
                   this.ef[this.nextef].msgtext.x = -this.xx / 2;
                   this.ef[this.nextef].msgtext.width = this.xx;
                   this.ef[this.nextef].strquad.x = this.ef[this.nextef].msgtext.x;
                   this.ef[this.nextef].strquad.scaleX = this.xx / 100;
                   this.ef[this.nextef].attached = this.spawn_text_for;
-                  if(this.chat_bubble[1] != -1)
+                  if(this.mens[this.spawn_text_for].dead)
                   {
-                     this.ef[this.nextef].attached = this.chat_bubble[1];
+                     this.ef[this.nextef].msgtext.alpha = 0.5;
                   }
-                  if(this.chat_bubble[1] != -1)
-                  {
-                     if(this.mens[this.chat_bubble[1]].dead)
-                     {
-                        this.ef[this.nextef].msgtext.alpha = 0.5;
-                     }
-                  }
-                  if(this.chat_bubble[1] == -1)
-                  {
-                     if(this.mens[this.spawn_text_for].dead)
-                     {
-                        this.ef[this.nextef].msgtext.alpha = 0.5;
-                     }
-                  }
-                  this.chat_bubble = [-1,-1];
                }
             }
             else if(param3 == 21)
@@ -9188,103 +9061,103 @@ package pb2_re34_fla
          switch(param1)
          {
             case "gun_rifle":
-               _loc2_ = "Assault Rifle C-01r";
+               _loc2_ = "Assault Rifle <font color=\"#00AFFF\">C-01r</font>";
                break;
             case "gun_rifle_b":
-               _loc2_ = "Assault Rifle C-01r";
+               _loc2_ = "Assault Rifle <font color=\"#FF0000\">C-01r</font>";
                break;
             case "gun_pistol":
-               _loc2_ = "Pistol C-01p";
+               _loc2_ = "Pistol <font color=\"#00AFFF\">C-01p</font>";
                break;
             case "gun_pistol_b":
-               _loc2_ = "Pistol C-01p";
+               _loc2_ = "Pistol <font color=\"#FF0000\">C-01p</font>";
                break;
             case "gun_pistol2":
-               _loc2_ = "Pistol CS-Pro";
+               _loc2_ = "Pistol <font color=\"#40C020\">CS</font>-Pro";
                break;
             case "gun_vehgun":
-               _loc2_ = "";
+               _loc2_ = "Vehicle Rocket Launcher";
                break;
             case "gun_gl":
-               _loc2_ = "Grenade Launcher CS-SpamThemBaby";
+               _loc2_ = "Grenade Launcher <font color=\"#40C020\">CS</font>-SpamThemBaby";
                break;
             case "gun_sp_sh":
-               _loc2_ = "Portable Shield v07 CS-Quarium";
+               _loc2_ = "Portable Shield v07 <font color=\"#40C020\">CS</font>-<font color=\"#00BFFF\">Quarium</font>";
                break;
             case "gun_rl":
-               _loc2_ = "Rocket Launcher CS-LitBro";
+               _loc2_ = "Rocket Launcher <font color=\"#40C020\">CS</font>-LitBro";
                break;
             case "gun_rl0":
                _loc2_ = "Not A Rocket Launcher";
                break;
             case "gun_railgun":
-               _loc2_ = "Lite Railgun v01 CS-HShot";
+               _loc2_ = "Lite Railgun v01 <font color=\"#40C020\">CS</font>-<font color=\"#00CFFF\">HShot</font>";
                break;
             case "gun_railgun2":
-               _loc2_ = "Heavy Railgun v04 CS-OneSOneK";
+               _loc2_ = "Heavy Railgun v04 <font color=\"#40C020\">CS</font>-<font color=\"#00CFFF\">OneSOneK</font>";
                break;
             case "gun_sniper":
-               _loc2_ = "Sniper Rifle CS-YippeeKiYay";
+               _loc2_ = "Sniper Rifle <font color=\"#40C020\">CS</font>-<font color=\"#333333\">YippeeKiYay</font>";
                break;
             case "gun_shotgun":
-               _loc2_ = "Shotgun C-01s";
+               _loc2_ = "Shotgun <font color=\"#FF0000\">C-01s</font>";
                break;
             case "gun_shotgun_b":
-               _loc2_ = "Shotgun C-01s";
+               _loc2_ = "Shotgun <font color=\"#00AFFF\">C-01s</font>";
                break;
             case "gun_apistol":
-               _loc2_ = "Alien Pistol";
+               _loc2_ = "<font color=\"#E0E040\">Usurpation</font> Pistol";
                break;
             case "gun_arifle":
-               _loc2_ = "Alien Rifle";
+               _loc2_ = "<font color=\"#E0E040\">Usurpation</font> Rifle";
                break;
             case "gun_arifle2":
-               _loc2_ = "Alien Shotgun";
+               _loc2_ = "Advanced <font color=\"#E0E040\">Usurpation</font> Shotgun";
                break;
             case "gun_vehcannon":
-               _loc2_ = "";
+               _loc2_ = "<font color=\"#70A020\">Hound Walker</font>-<font color=\"#40C020\">CS</font> Cannon";
                break;
             case "gun_minigun":
-               _loc2_ = "Minigun C-02m";
+               _loc2_ = "Minigun <font color=\"#FF0000\">C-02m</font>";
                break;
             case "gun_defibrillator":
                _loc2_ = "Defibrillator";
                break;
             case "gun_bfg":
-               _loc2_ = "CS-BNG";
+               _loc2_ = "<font color=\"#40C020\">CS</font>-<font color=\"#00FF00\">BNG</font>";
                break;
             case "gun_raygun":
-               _loc2_ = "Ray Gun C-01y";
+               _loc2_ = "Ray Gun <font color=\"#00AFFF\">C-01y</font>";
                break;
             case "gun_vehminigun":
-               _loc2_ = "";
+               _loc2_ = "Vehicle Minigun";
                break;
             case "gun_vehminigl":
-               _loc2_ = "";
+               _loc2_ = "Vehicle Grenade Launcher";
                break;
             case "gun_real_shotgun":
-               _loc2_ = "Shotgun CS-DAZ";
+               _loc2_ = "Shotgun <font color=\"#40C020\">CS</font>-DAZ";
                break;
             case "gun_real_rifle":
-               _loc2_ = "Assault Rifle CS-RC";
+               _loc2_ = "Assault Rifle <font color=\"#40C020\">CS</font>-RC";
                break;
             case "gun_oicw":
-               _loc2_ = "Combat Rifle CS-OICW";
+               _loc2_ = "Combat Rifle <font color=\"#40C020\">CS</font>-OICW";
                break;
             case "gun_plasmagun":
-               _loc2_ = "Plasmagun CS-Bloom";
+               _loc2_ = "Plasmagun <font color=\"#40C020\">CS</font>-<font color=\"#00FFFF\">Bloom</font>";
                break;
             case "item_grenade":
                _loc2_ = "Grenade C-00n";
                break;
             case "item_port":
-               _loc2_ = "Teleport Grenade v03 CS-PortNade";
+               _loc2_ = "Teleport Grenade v03 <font color=\"#40C020\">CS</font>-PortNade";
                break;
             case "item_shield":
-               _loc2_ = "Portable Shield v07 CS-Quarium";
+               _loc2_ = "Portable Shield v07 <font color=\"#40C020\">CS</font>-<font color=\"#00BFFF\">Quarium</font>";
                break;
             case "gun_vgun":
-               _loc2_ = "Drone Gun CS-Virus";
+               _loc2_ = "Drone Gun <font color=\"#40C020\">CS</font>-<font color=\"#00E100\">Virus</font>";
                break;
             case "gun_rayrifle":
                _loc2_ = "Ray Rifle TCoRR";
@@ -9296,22 +9169,22 @@ package pb2_re34_fla
                _loc2_ = "Star Defender Rocket Launcher";
                break;
             case "darkstar_1_assault_rifle":
-               _loc2_ = "CP-Assault Rifle";
+               _loc2_ = "<font color=\"#4080C0\">CP</font>-Assault Rifle";
                break;
             case "darkstar_1_gauss_rifle":
-               _loc2_ = "CS-GaussRifle";
+               _loc2_ = "<font color=\"#40C020\">CS</font>-GaussRifle";
                break;
             case "darkstar_1_minigun":
-               _loc2_ = "Light Machine Gun CS-LMG";
+               _loc2_ = "Light Machine Gun <font color=\"#40C020\">CS</font>-LMG";
                break;
             case "darkstar_1_phanx_rifle":
-               _loc2_ = "PHANX-92 Falconet";
+               _loc2_ = "<font color=\"#80C0A0\">PHANX</font>-92 Falconet";
                break;
             case "darkstar_1_usniper":
-               _loc2_ = "Alien Sniper Rifle";
+               _loc2_ = "<font color=\"#E0E040\">Usurpation</font> Sniper Rifle";
                break;
             case "lostmydollar_av135":
-               _loc2_ = "Assault Rifle AV-135";
+               _loc2_ = "Assault Rifle <font color=\"#FF0000\">AV</font>-135";
                break;
             case "lostmydollar_needle":
                _loc2_ = "Needle";
@@ -9323,49 +9196,49 @@ package pb2_re34_fla
                _loc2_ = "RMK-36";
                break;
             case "lostmydollar_rpg":
-               _loc2_ = "RPG";
+               _loc2_ = "RPG-7V Launcher";
                break;
             case "lazyrain_alien_laser_rifle":
-               _loc2_ = "Alien Laser Rifle";
+               _loc2_ = "<font color=\"#E0E040\">Usurpation</font> Laser Rifle";
                break;
             case "lazyrain_alien_laser_rifle2":
-               _loc2_ = "Alien Heater Rifle";
+               _loc2_ = "Advanced <font color=\"#E0E040\">Usurpation</font> Heater Rifle";
                break;
             case "lazyrain_cannon":
-               _loc2_ = "CS-Autocannon";
+               _loc2_ = "<font color=\"#40C020\">CS</font>-Autocannon";
                break;
             case "lazyrain_cannon2":
-               _loc2_ = "CS-Autocannon";
+               _loc2_ = "<font color=\"#40C020\">CS</font>-Autocannon";
                break;
             case "moonhawk_phantom":
-               _loc2_ = "Crossfire CR-45 Phantom";
+               _loc2_ = "<font color=\"#444444\">Crossfire</font> CR-45 Phantom";
                break;
             case "moonhawk_phantom2":
-               _loc2_ = "Crossfire CR-45 Phantom";
+               _loc2_ = "<font color=\"#444444\">Crossfire</font> CR-45 Phantom";
                break;
             case "moonhawk_smg":
-               _loc2_ = "Crossfire CR-42 Ghost";
+               _loc2_ = "<font color=\"#444444\">Crossfire</font> CR-42 Ghost";
                break;
             case "ditzy_energy_rifle":
                _loc2_ = "Energy Rifle";
                break;
             case "roxxar_marksman_rifle":
-               _loc2_ = "Falkonian Marksman Rifle";
+               _loc2_ = "<font color=\"#FF0000\">Falkonian</font> Marksman Rifle";
                break;
             case "roxxar_pistol":
-               _loc2_ = "Falkonian Pistol";
+               _loc2_ = "<font color=\"#FF0000\">Falkonian</font> Pistol";
                break;
             case "roxxar_rifle":
-               _loc2_ = "Falkonian Shotgun";
+               _loc2_ = "<font color=\"#FF0000\">Falkonian</font> Shotgun";
                break;
             case "roxxar_shotgun":
-               _loc2_ = "Falkonian Grenade Launcher";
+               _loc2_ = "<font color=\"#FF0000\">Falkonian</font> Grenade Launcher";
                break;
             case "moonhawk_crossfire":
-               _loc2_ = "Crossfire CR-145 Vortex";
+               _loc2_ = "<font color=\"#444444\">Crossfire</font> CR-145 Vortex";
                break;
             case "lazyrain_psi_cutter":
-               _loc2_ = "Falkonian PSI Cutter";
+               _loc2_ = "<font color=\"#FFA000\">Falkonian</font> PSI Cutter";
                break;
             case "mrjaksnes_android_sniper":
                _loc2_ = "Android Sniper Rifle";
@@ -9374,103 +9247,103 @@ package pb2_re34_fla
                _loc2_ = "OEDA CR-30 Rifle";
                break;
             case "darkstar_1_cs_ragequit":
-               _loc2_ = "Heavy Sniper Rifle RQ-10";
+               _loc2_ = "Heavy Sniper Rifle <font color=\"#FF0000\">RQ</font>-10";
                break;
             case "gun_fttp_vehgun":
-               _loc2_ = "";
+               _loc2_ = "Advanced Vehicle Cannon";
                break;
             case "thetoppestkek_shotgun_nxs25":
-               _loc2_ = "Shotgun NXS-25";
+               _loc2_ = "Shotgun <font color=\"#00DFFF\">NXS</font>-25";
                break;
             case "incompetence_archetype_27xx":
-               _loc2_ = "Archetype 27XX";
+               _loc2_ = "<font color=\"#FF0000\">Archetype</font> 27XX";
                break;
             case "phsc_aug":
-               _loc2_ = "Marksman Rifle CS-RM";
+               _loc2_ = "Marksman Rifle <font color=\"#40C020\">CS</font>-RM";
                break;
             case "moonhawk_railgun":
-               _loc2_ = "Crossfire CR-34 Marauder";
+               _loc2_ = "<font color=\"#444444\">Crossfire</font> CR-34 Marauder";
                break;
             case "moonhawk_railgun2":
-               _loc2_ = "Crossfire CR-34 Marauder";
+               _loc2_ = "<font color=\"#444444\">Crossfire</font> CR-34 Marauder";
                break;
             case "lazyrain_heal_pistol":
                _loc2_ = "Medic Pistol";
                break;
             case "incompetence_glhf":
-               _loc2_ = "Grenade Launcher CS-GLHF";
+               _loc2_ = "Grenade Launcher <font color=\"#40C020\">CS</font>-GLHF";
                break;
             case "incompetence_glhf2":
                _loc2_ = "OEDA EA-109H Launcher";
                break;
             case "lazyrain_gravy_rl":
-               _loc2_ = "Falkonian Anti-Gravity Rocket Launcher";
+               _loc2_ = "<font color=\"#FFA000\">Falkonian</font> Anti-Gravity Rocket Launcher";
                break;
             case "lazyrain_gravy_rl2":
-               _loc2_ = "Falkonian Anti-Gravity Rocket Launcher";
+               _loc2_ = "<font color=\"#FF0000\">Falkonian</font> Anti-Gravity Rocket Launcher";
                break;
             case "darkstar_1_owo_rl":
-               _loc2_ = "Rocket Launcher CS-Barrage";
+               _loc2_ = "Rocket Launcher <font color=\"#40C020\">CS</font>-Barrage";
                break;
             case "phsc_plasma_shotgun":
-               _loc2_ = "Plasma Shotgun";
+               _loc2_ = "<font color=\"#00FFFF\">Plasma</font> Shotgun";
                break;
             case "phsc_android_shotgun":
                _loc2_ = "Android Shotgun";
                break;
             case "ditzy_cs_ik":
-               _loc2_ = "Assault Rifle CS-IK";
+               _loc2_ = "Assault Rifle <font color=\"#40C020\">CS</font>-IK";
                break;
             case "ditzy_cs_ik2":
-               _loc2_ = "Assault Rifle NXR-17C";
+               _loc2_ = "Assault Rifle <font color=\"#00DFFF\">NXS</font>-17C";
                break;
             case "phsc_ph01":
-               _loc2_ = "Crossfire CR-54 Viper";
+               _loc2_ = "<font color=\"#444444\">Crossfire</font> CR-54 Viper";
                break;
             case "phsc_ph01b":
-               _loc2_ = "Crossfire CR-54 Viper";
+               _loc2_ = "<font color=\"#444444\">Crossfire</font> CR-54 Viper";
                break;
             case "darkstar_1_railgun":
-               _loc2_ = "PHANX-230 Cobra";
+               _loc2_ = "<font color=\"#80C0A0\">PHANX</font>-230 Cobra";
                break;
             case "darkstar_1_railgun2":
-               _loc2_ = "Eos Toxic Railgun";
+               _loc2_ = "<font color=\"#C0E0E0\">Eos</font> Toxic Railgun";
                break;
             case "darkstar_1_alien_rail_sg":
-               _loc2_ = "Alien Rail Shotgun";
+               _loc2_ = "<font color=\"#E0E040\">Usurpation</font> Rail Shotgun";
                break;
             case "darkstar_1_nade_c9":
-               _loc2_ = "Grenade Launcher C-00t";
+               _loc2_ = "Grenade Launcher <font color=\"#00AFFF\">C-00t</font>";
                break;
             case "darkstar_1_nade_c9b":
-               _loc2_ = "Grenade Launcher C-00t";
+               _loc2_ = "Grenade Launcher <font color=\"#FF0000\">C-00t</font>";
                break;
             case "darkstar_1_rl":
-               _loc2_ = "Eos Rocket Launcher";
+               _loc2_ = "<font color=\"#C0E0E0\">Eos</font> Rocket Launcher";
                break;
             case "darkstar_1_bison":
-               _loc2_ = "PHANX-150 Bison";
+               _loc2_ = "<font color=\"#80C0A0\">PHANX</font>-150 Bison";
                break;
             case "darkstar_1_auto_sg":
-               _loc2_ = "Eos Auto Shotgun";
+               _loc2_ = "<font color=\"#C0E0E0\">Eos</font> Auto Shotgun";
                break;
             case "ditzy_focus_beam":
-               _loc2_ = "Reakhohsha Focus Beam";
+               _loc2_ = "<font color=\"#60C0C0\">Reakhohsha</font> Focus Beam";
                break;
             case "boom5_revolver":
-               _loc2_ = "Revolver MK1";
+               _loc2_ = "Revolver <font color=\"#FF0000\">MK1</font>";
                break;
             case "thetoppestkek_scavenger_sg":
                _loc2_ = "Scavenger Shotgun";
                break;
             case "lazyrain_acid_gl":
-               _loc2_ = "Alien Acid Grenade Launcher";
+               _loc2_ = "<font color=\"#E0E040\">Usurpation</font> Acid Grenade Launcher";
                break;
             case "lazyrain_plasma_smg":
-               _loc2_ = "Alien Plasma Pistol";
+               _loc2_ = "Advanced <font color=\"#E0E040\">Usurpation</font> Plasma Pistol";
                break;
             case "lazyrain_plasma_smg2":
-               _loc2_ = "Alien Plasma Pistol";
+               _loc2_ = "<font color=\"#E0E040\">Usurpation</font> Plasma Pistol";
                break;
             case "roxxar_android_railgun":
                _loc2_ = "Android Railgun";
@@ -9479,7 +9352,7 @@ package pb2_re34_fla
                _loc2_ = "";
                break;
             case "gun_sharkgun":
-               _loc2_ = "Shark";
+               _loc2_ = "Unreal Crash";
                break;
             default:
                _loc2_ = param1;
@@ -10062,7 +9935,7 @@ package pb2_re34_fla
       public function UpdateCharProps(param1:MovieClip) : void
       {
          param1.voice = this.voices.usurpation;
-         if(param1.char == 1 || param1.char >= 40 && param1.char <= 49 || param1.char == 83 || param1.char == 84 || param1.char == 36 || param1.char == 37 || param1.char == 22)
+         if(param1.char <= 1 || param1.char >= 40 && param1.char <= 49 || param1.char == 83 || param1.char == 84 || param1.char == 36 || param1.char == 37 || param1.char == 22)
          {
             param1.armored = 1;
             param1.voice = this.voices.marine;
@@ -10081,30 +9954,21 @@ package pb2_re34_fla
             }
             if(!this.MP_mode)
             {
-               if(param1.char == 1 || param1.char >= 40 && param1.char <= 49)
+               if(param1.char <= 1 || param1.char >= 40 && param1.char <= 49)
                {
                   param1.mdl_head = this.skin_model[0];
-                  if(this.skin_model[0] >= 49)
-                  {
-                     param1.mdl_body = this.skin_model[0];
-                     param1.mdl_leg1_upper = this.skin_model[0];
-                     param1.mdl_leg1_middle = this.skin_model[0];
-                     param1.mdl_leg1_lower = this.skin_model[0];
-                     param1.mdl_leg2_upper = this.skin_model[0];
-                     param1.mdl_leg2_middle = this.skin_model[0];
-                     param1.mdl_leg2_lower = this.skin_model[0];
-                     param1.mdl_arm1_upper = this.skin_model[0];
-                     param1.mdl_arm1_lower = this.skin_model[0];
-                     param1.mdl_arm2_upper = this.skin_model[0];
-                     param1.mdl_arm2_lower = this.skin_model[0];
-                     param1.mobility = 0.75;
-                     this.arad[param1.b_body] = 8 * 2;
-                     this.arad[param1.b_toe] = 7 * 2;
-                     this.arad[param1.b_arm1] = 3 * 1.5;
-                     this.arad[param1.b_arm2] = 3 * 1.5;
-                     this.arad[param1.b_head_start] = 8 * 1.5;
-                     this.arad[param1.b_head_end] = 8 * 1.5;
-                  }
+                  param1.mdl_body = this.skin_model[0];
+                  param1.mdl_leg1_upper = this.skin_model[0];
+                  param1.mdl_leg1_middle = this.skin_model[0];
+                  param1.mdl_leg1_lower = this.skin_model[0];
+                  param1.mdl_leg2_upper = this.skin_model[0];
+                  param1.mdl_leg2_middle = this.skin_model[0];
+                  param1.mdl_leg2_lower = this.skin_model[0];
+                  param1.mdl_arm1_upper = this.skin_model[0];
+                  param1.mdl_arm1_lower = this.skin_model[0];
+                  param1.mdl_arm2_upper = this.skin_model[0];
+                  param1.mdl_arm2_lower = this.skin_model[0];
+                  param1.nick = this.CMPG_name;
                }
             }
             param1.blood_red = 1;
@@ -10153,11 +10017,6 @@ package pb2_re34_fla
             if(param1.char == 35)
             {
                param1.nick = "Zephyr";
-            }
-            else if(param1.char == 72)
-            {
-               param1.nick = "White Proxy";
-               param1.voice = this.voices.oldproxy;
             }
             else if(param1.char == 132)
             {
@@ -10491,13 +10350,13 @@ package pb2_re34_fla
             {
                param1.voice = this.voices.falkok_phoenix;
                param1.nick = "Falkok Boss";
+               param1.mobility = 0.6;
             }
             else
             {
                param1.voice = this.voices.falkok;
                param1.nick = "Falkok";
             }
-            param1.mobility = 0.6;
             if(param1.char == 85 || param1.char == 86)
             {
                param1.mobility = 1;
@@ -10540,7 +10399,6 @@ package pb2_re34_fla
                   param1.nick = "Grub";
                }
             }
-            param1.mobility = 0.6;
             param1.blood_red = 1.8;
             param1.blood_green = 1.5;
             param1.blood_blue = 0.4;
@@ -10705,11 +10563,12 @@ package pb2_re34_fla
             param1.voice = this.voices.proxy;
             this.RedrawPsi(param1.idd);
             param1.nick = "Uncivil Proxy";
+            param1.isGhost = true;
          }
          else if(param1.char == 175)
          {
             param1.armored = 0;
-            param1.voice = this.voices.serkova;
+            param1.voice = this.voices.crossfire_sentinel;
             this.RedrawPsi(param1.idd);
             param1.nick = "Serkova Insertion Unit";
             param1.blood_red = 255 / 255;
@@ -10719,7 +10578,7 @@ package pb2_re34_fla
          else if(param1.char == 176)
          {
             param1.armored = 0;
-            param1.voice = this.voices.cs;
+            param1.voice = this.voices.vulture;
             this.RedrawPsi(param1.idd);
             param1.nick = "Moon Marksman";
             param1.blood_red = 255 / 255;
@@ -10729,7 +10588,7 @@ package pb2_re34_fla
          else if(param1.char == 177)
          {
             param1.armored = 0;
-            param1.voice = this.voices.cs;
+            param1.voice = this.voices.vulture;
             this.RedrawPsi(param1.idd);
             param1.nick = "Guardian";
             param1.blood_red = 255 / 255;
@@ -10739,9 +10598,9 @@ package pb2_re34_fla
          else if(param1.char == 178)
          {
             param1.armored = 0;
-            param1.voice = this.voices.marine;
+            param1.voice = this.voices.hexagon;
             this.RedrawPsi(param1.idd);
-            param1.nick = "Marine";
+            param1.nick = "Newgen Marine";
             param1.blood_red = 255 / 255;
             param1.blood_green = 0 / 255;
             param1.blood_blue = 0 / 255;
@@ -10749,7 +10608,7 @@ package pb2_re34_fla
          else if(param1.char == 179)
          {
             param1.armored = 0;
-            param1.voice = this.voices.elurra;
+            param1.voice = this.voices.proxy_helmetless;
             this.RedrawPsi(param1.idd);
             param1.nick = "Elurra";
             param1.blood_red = 255 / 255;
@@ -10759,19 +10618,22 @@ package pb2_re34_fla
          else if(param1.char == 180)
          {
             param1.armored = 0;
-            param1.voice = this.voices.serkova;
+            param1.voice = this.voices.ghost;
             this.RedrawPsi(param1.idd);
             param1.nick = "Phantom";
-            param1.blood_red = 255 / 255;
+            param1.mobility = 1.25;
+            param1.isGhost = true;
+            param1.blood_red = 510 / 255;
             param1.blood_green = 0 / 255;
             param1.blood_blue = 0 / 255;
          }
          else if(param1.char == 181)
          {
             param1.armored = 0;
-            param1.voice = this.voices.cs;
+            param1.voice = this.voices.mute;
             this.RedrawPsi(param1.idd);
             param1.nick = "Huntsman";
+            param1.isGhost = true;
             param1.blood_red = 255 / 255;
             param1.blood_green = 0 / 255;
             param1.blood_blue = 0 / 255;
@@ -10779,17 +10641,18 @@ package pb2_re34_fla
          else if(param1.char == 182)
          {
             param1.armored = 0;
-            param1.voice = this.voices.cs;
+            param1.voice = this.voices.mute;
             this.RedrawPsi(param1.idd);
             param1.nick = "Huntsman";
+            param1.isGhost = true;
             param1.blood_red = 255 / 255;
             param1.blood_green = 0 / 255;
             param1.blood_blue = 0 / 255;
          }
          else if(param1.char == 183)
          {
-            param1.armored = 2;
-            param1.voice = this.voices.ferro;
+            param1.armored = 3;
+            param1.voice = this.voices.grosk;
             this.RedrawPsi(param1.idd);
             param1.nick = "Lt. Ferro";
             param1.blood_red = 255 / 255;
@@ -10809,7 +10672,7 @@ package pb2_re34_fla
          else if(param1.char == 185)
          {
             param1.armored = 0;
-            param1.voice = this.voices.elurra;
+            param1.voice = this.voices.proxy;
             this.RedrawPsi(param1.idd);
             param1.nick = "Elurra";
             param1.blood_red = 255 / 255;
@@ -10819,7 +10682,7 @@ package pb2_re34_fla
          else if(param1.char == 186)
          {
             param1.armored = 0;
-            param1.voice = this.voices.drohnentroop;
+            param1.voice = this.voices.hexagon;
             this.RedrawPsi(param1.idd);
             param1.nick = "Drohnen Heavy";
             param1.blood_red = 255 / 255;
@@ -10839,7 +10702,7 @@ package pb2_re34_fla
          else if(param1.char == 188)
          {
             param1.armored = 0;
-            param1.voice = this.voices.serkova;
+            param1.voice = this.voices.marine;
             this.RedrawPsi(param1.idd);
             param1.nick = "Sgt. Davais";
             param1.blood_red = 255 / 255;
@@ -10849,7 +10712,7 @@ package pb2_re34_fla
          else if(param1.char == 189)
          {
             param1.armored = 0;
-            param1.voice = this.voices.cs;
+            param1.voice = this.voices.civilian_male;
             this.RedrawPsi(param1.idd);
             param1.nick = "Maroon";
             param1.blood_red = 255 / 255;
@@ -10859,9 +10722,9 @@ package pb2_re34_fla
          else if(param1.char == 190)
          {
             param1.armored = 0;
-            param1.voice = this.voices.drohnentroop;
+            param1.voice = this.voices.cs;
             this.RedrawPsi(param1.idd);
-            param1.nick = "Drohnen Skimisher";
+            param1.nick = "Civil Security Heavy";
             param1.blood_red = 255 / 255;
             param1.blood_green = 0 / 255;
             param1.blood_blue = 0 / 255;
@@ -10869,9 +10732,10 @@ package pb2_re34_fla
          else if(param1.char == 191)
          {
             param1.armored = 0;
-            param1.voice = this.voices.serkova;
+            param1.voice = this.voices.mute;
             this.RedrawPsi(param1.idd);
             param1.nick = "Serkova Recon Unit";
+            param1.isGhost = true;
             param1.blood_red = 255 / 255;
             param1.blood_green = 0 / 255;
             param1.blood_blue = 0 / 255;
@@ -10879,7 +10743,7 @@ package pb2_re34_fla
          else if(param1.char == 192)
          {
             param1.armored = 0;
-            param1.voice = this.voices.drohnenfem;
+            param1.voice = this.voices.crossfire_sentinel;
             this.RedrawPsi(param1.idd);
             param1.nick = "Drohnen Drifter";
             param1.blood_red = 123 / 255;
@@ -10889,7 +10753,7 @@ package pb2_re34_fla
          else if(param1.char == 193)
          {
             param1.armored = 0;
-            param1.voice = this.voices.crossfire_sentinel;
+            param1.voice = this.voices.vulture;
             this.RedrawPsi(param1.idd);
             param1.nick = "Moon Captain";
             param1.blood_red = 255 / 255;
@@ -10899,19 +10763,23 @@ package pb2_re34_fla
          else if(param1.char == 194)
          {
             param1.armored = 0;
-            param1.voice = this.voices.serkova;
+            param1.voice = this.voices.ghost;
             this.RedrawPsi(param1.idd);
             param1.nick = "Phantom";
-            param1.blood_red = 255 / 255;
-            param1.blood_green = 0 / 255;
-            param1.blood_blue = 0 / 255;
+            param1.mobility = 1.25;
+            param1.isGhost = true;
+            param1.blood_red = 0 / 255;
+            param1.blood_green = 255 / 255;
+            param1.blood_blue = 510 / 255;
          }
          else if(param1.char == 195)
          {
             param1.armored = 0;
-            param1.voice = this.voices.drohnenfem;
+            param1.voice = this.voices.ghost;
             this.RedrawPsi(param1.idd);
             param1.nick = "Wraith";
+            param1.mobility = 1.25;
+            param1.isGhost = true;
             param1.blood_red = 120 / 255;
             param1.blood_green = 0 / 255;
             param1.blood_blue = 0 / 255;
@@ -10919,7 +10787,7 @@ package pb2_re34_fla
          else if(param1.char == 196)
          {
             param1.armored = 0;
-            param1.voice = this.voices.serkova;
+            param1.voice = this.voices.crossfire_sentinel;
             this.RedrawPsi(param1.idd);
             param1.nick = "Serkova Armored Unit";
             param1.blood_red = 255 / 255;
@@ -10929,19 +10797,21 @@ package pb2_re34_fla
          else if(param1.char == 197)
          {
             param1.armored = 0;
-            param1.voice = this.voices.serkova;
+            param1.voice = this.voices.ghost;
             this.RedrawPsi(param1.idd);
             param1.nick = "Phantom";
-            param1.blood_red = 255 / 255;
-            param1.blood_green = 0 / 255;
-            param1.blood_blue = 0 / 255;
+            param1.mobility = 1.25;
+            param1.isGhost = true;
+            param1.blood_red = 510 / 255;
+            param1.blood_green = 510 / 255;
+            param1.blood_blue = 510 / 255;
          }
          else if(param1.char == 198)
          {
             param1.armored = 0;
             param1.voice = this.voices.cs;
             this.RedrawPsi(param1.idd);
-            param1.nick = "Blue Civil Security Heavy";
+            param1.nick = "Civil Security Heavy";
             param1.blood_red = 255 / 255;
             param1.blood_green = 0 / 255;
             param1.blood_blue = 0 / 255;
@@ -10949,9 +10819,9 @@ package pb2_re34_fla
          else if(param1.char == 199)
          {
             param1.armored = 0;
-            param1.voice = this.voices.cs;
+            param1.voice = this.voices.crossfire_sentinel;
             this.RedrawPsi(param1.idd);
-            param1.nick = "Red Civil Security Heavy";
+            param1.nick = "Drohnen Skimisher";
             param1.blood_red = 255 / 255;
             param1.blood_green = 0 / 255;
             param1.blood_blue = 0 / 255;
@@ -10959,7 +10829,7 @@ package pb2_re34_fla
          else if(param1.char == 200)
          {
             param1.armored = 0;
-            param1.voice = this.voices.silk;
+            param1.voice = this.voices.proxy;
             this.RedrawPsi(param1.idd);
             param1.nick = "Moon Scout";
             param1.blood_red = 255 / 255;
@@ -10969,7 +10839,7 @@ package pb2_re34_fla
          else if(param1.char == 201)
          {
             param1.armored = 0;
-            param1.voice = this.voices.hexagon;
+            param1.voice = this.voices.vulture;
             this.RedrawPsi(param1.idd);
             param1.nick = "Moon Marine";
             param1.blood_red = 255 / 255;
@@ -10979,7 +10849,7 @@ package pb2_re34_fla
          else if(param1.char == 202)
          {
             param1.armored = 0;
-            param1.voice = this.voices.serkova;
+            param1.voice = this.voices.crossfire_sentinel;
             this.RedrawPsi(param1.idd);
             param1.nick = "Serkova Assault Unit";
             param1.blood_red = 255 / 255;
@@ -10989,7 +10859,7 @@ package pb2_re34_fla
          else if(param1.char == 203)
          {
             param1.armored = 0;
-            param1.voice = this.voices.serkova;
+            param1.voice = this.voices.crossfire_sentinel;
             this.RedrawPsi(param1.idd);
             param1.nick = "Serkova Gunner Unit";
             param1.blood_red = 255 / 255;
@@ -10999,7 +10869,7 @@ package pb2_re34_fla
          else if(param1.char == 204)
          {
             param1.armored = 0;
-            param1.voice = this.voices.serkova;
+            param1.voice = this.voices.crossfire_sentinel;
             this.RedrawPsi(param1.idd);
             param1.nick = "Serkova Granadier Unit";
             param1.blood_red = 255 / 255;
@@ -11009,7 +10879,7 @@ package pb2_re34_fla
          else if(param1.char == 205)
          {
             param1.armored = 0;
-            param1.voice = this.voices.serkova;
+            param1.voice = this.voices.crossfire_sentinel;
             this.RedrawPsi(param1.idd);
             param1.nick = "Serkova Team Leader";
             param1.blood_red = 255 / 255;
@@ -11019,7 +10889,7 @@ package pb2_re34_fla
          else if(param1.char == 206)
          {
             param1.armored = 0;
-            param1.voice = this.voices.serkova;
+            param1.voice = this.voices.crossfire_sentinel;
             this.RedrawPsi(param1.idd);
             param1.nick = "Serkova Rescue Unit";
             param1.blood_red = 255 / 255;
@@ -11029,7 +10899,7 @@ package pb2_re34_fla
          else if(param1.char == 207)
          {
             param1.armored = 0;
-            param1.voice = this.voices.serkova;
+            param1.voice = this.voices.crossfire_sentinel;
             this.RedrawPsi(param1.idd);
             param1.nick = "Serkova Technician Unit";
             param1.blood_red = 255 / 255;
@@ -11069,7 +10939,7 @@ package pb2_re34_fla
          else if(param1.char == 211)
          {
             param1.armored = 2;
-            param1.voice = this.voices.android;
+            param1.voice = this.voices.hum_droid;
             this.RedrawPsi(param1.idd);
             param1.nick = "XBT-117 Android";
          }
@@ -11086,7 +10956,7 @@ package pb2_re34_fla
          else if(param1.char == 213)
          {
             param1.armored = 0;
-            param1.voice = this.voices.cs;
+            param1.voice = this.voices.vulture;
             this.RedrawPsi(param1.idd);
             param1.nick = "Walker";
          }
@@ -11447,12 +11317,11 @@ package pb2_re34_fla
          var _versionInfo:Number = NaN;
          this.tnds = 10;
          loadmap_stage = "0";
-         this.chat_bubble = [-1,-1];
          this.ambient_sounds = true;
          this.fall_impact_height = 1;
-         this.fall_impact_stability = 1;
-         this.kinetic_through_walls = false;
-         this.kinetic_range = 750;
+         this.fall_impact_stability = false;
+         this.kinetic_through_walls = true;
+         this.kinetic_range = 7500;
          this.reflect_distance = 30;
          this.global_collision = true;
          this.limb_breaking_allowed = true;
@@ -11462,23 +11331,16 @@ package pb2_re34_fla
          this.mxnds2 = 0;
          this.mxnds3 = 0;
          this.tnds = 10;
-         this.str = "";
          try
          {
-            try
-            {
-               this.am_base_ch.stop();
-               this.am_wind_ch.stop();
-               this.am_base_ch = this.s_am_base.play(0,0,this.am_base_Transform);
-               this.am_base_ch.soundTransform.volume = 0;
-               this.am_base_ch.addEventListener(Event.SOUND_COMPLETE,this.am_base_PlayAgain);
-               this.am_wind_ch = this.s_am_wind.play(0,0,this.am_wind_Transform);
-               this.am_wind_ch.soundTransform.volume = 0;
-               this.am_wind_ch.addEventListener(Event.SOUND_COMPLETE,this.am_wind_PlayAgain);
-            }
-            catch(error:Error)
-            {
-            }
+            this.am_base_ch.stop();
+            this.am_wind_ch.stop();
+            this.am_base_ch = this.s_am_base.play(0,0,this.am_base_Transform);
+            this.am_base_ch.soundTransform.volume = 0;
+            this.am_base_ch.addEventListener(Event.SOUND_COMPLETE,this.am_base_PlayAgain);
+            this.am_wind_ch = this.s_am_wind.play(0,0,this.am_wind_Transform);
+            this.am_wind_ch.soundTransform.volume = 0;
+            this.am_wind_ch.addEventListener(Event.SOUND_COMPLETE,this.am_wind_PlayAgain);
             this.optimalupd = true;
             POST_ERR_CODE = "";
             this.CUR_MUSIC_VOLUME = 0;
@@ -12348,11 +12210,15 @@ package pb2_re34_fla
                      this.mc.custom_bitmap.smoothing = true;
                      this.mc.custom_bitmap.visible = true;
                   }
+                  if(b["#text"] != undefined)
+                  {
+                     this.mc.txt.text = b["#text"];
+                  }
                   this.decors[this.decorstotal] = this.mc;
                   this.decors[this.decorstotal].model = model;
                   if(this.decors[this.decorstotal].txt != undefined)
                   {
-                     this.decors[this.decorstotal].txt.text = b["#text"] != undefined ? String(b["#text"]) : "Hello World!";
+                     this.decors[this.decorstotal].txt.text = b["#text"] != undefined ? b["#text"] : "";
                   }
                   this.PushSynonym(b["#uid"],this.decorstotal);
                   if(b["#attach"] != "-1" && b["#attach"] != "" && b["#attach"] != undefined)
@@ -12456,6 +12322,10 @@ package pb2_re34_fla
                         }
                      }
                   }
+                  if(new_command != -1)
+                  {
+                     new_command = -1;
+                  }
                   this.mc = this.MakeGunByClass(new_model,{
                      "x":Number(b["#x"]),
                      "y":Number(b["#y"]),
@@ -12547,10 +12417,10 @@ package pb2_re34_fla
                   }
                   if(b["#mark"] == "gamescale")
                   {
-                     this.game_scale = Number(b["#forteam"]) / 100;
+                     this.game_scale = Number(b["#forteam"]) / 125;
                      if(isNaN(this.game_scale))
                      {
-                        this.game_scale = 1;
+                        this.game_scale = 0.8;
                      }
                      if(this.game_scale < 0.01)
                      {
@@ -12795,7 +12665,7 @@ package pb2_re34_fla
                      }
                   }
                   this.mc.mdl_head = this.mc.char;
-                  if(this.mc.char >= 40 && this.mc.char <= 48)
+                  if(this.mc.char <= 1 || this.mc.char >= 40 && this.mc.char <= 48)
                   {
                      this.mc.char = 1;
                   }
@@ -12838,7 +12708,7 @@ package pb2_re34_fla
                   }
                   else if(this.mc.team != this.mens[this.MP_myid].team)
                   {
-                     this.mc.gui.visible = false;
+                     this.mc.gui.visible = true;
                   }
                   if(this.MP_mode)
                   {
@@ -12888,14 +12758,14 @@ package pb2_re34_fla
                      }
                      if(!this.MP_mode || this.MP_mode && this.MP_type == 2)
                      {
-                        if(this.mc.char == 3 || this.mc.char == 1 || this.mc.char >= 40 && this.mc.char <= 49)
+                        if(this.mc.isplayer && this.mc.hmax <= 3225)
                         {
-                           this.mc.hea *= (500 + xx * 50) / this.mc.hmax;
-                           this.mc.hmax = 500 + xx * 50;
-                           if(this.skin_model[0] >= 49)
+                           this.mc.hea *= (3250 + xx * 50) / this.mc.hmax;
+                           this.mc.hmax = 3250 + xx * 50;
+                           if(this.skin_model[0] >= 0)
                            {
-                              this.mc.hea *= 1.5;
-                              this.mc.hmax *= 1.5;
+                              this.mc.hea *= 1;
+                              this.mc.hmax *= 1;
                            }
                         }
                      }
@@ -15415,7 +15285,7 @@ package pb2_re34_fla
                this.arad[this.mens[param1].b_head_end] /= 0.1;
                this.SpawnPlayerImmediately(this.mens[param1]);
             }
-            if(this.STRICT_MODE)
+            if(this.MP_mode)
             {
                if(this.mens[param1].team == this.mens[this.MP_myid].team)
                {
@@ -17278,7 +17148,7 @@ package pb2_re34_fla
             {
                if(this.mens[param1].curwea == -1)
                {
-                  if(this.EASY_MODE && this.mens[param1].team != this.mens[this.MP_myid].team && this.mens[param1].dying || this.NO_PSI || !this.NO_PSI && this.mens[param1].no_psi)
+                  if(this.EASY_MODE && this.mens[param1].team != this.mens[this.MP_myid].team && this.mens[param1].dying || this.NO_PSI && !this.mens[param1].no_psi || !this.NO_PSI && this.mens[param1].no_psi)
                   {
                      this.mens[param1].arm1.lower.psi.visible = false;
                      this.mens[param1].arm2.lower.psi.visible = false;
@@ -17362,14 +17232,7 @@ package pb2_re34_fla
          this.gamechatbox2["item" + this.chat_i2].y = this.gamechatbox2["item" + this.chat_i3].y + 19;
          this.gamechatbox2["item" + this.chat_i2].visible = true;
          this.gamechatbox2["item" + this.chat_i2].alpha = 1;
-         if(this.DISPLAY_CHAT == 1)
-         {
-            this.gamechatbox2["item" + this.chat_i2].timer = 300;
-         }
-         else
-         {
-            this.gamechatbox2["item" + this.chat_i2].timer = 750;
-         }
+         this.gamechatbox2["item" + this.chat_i2].timer = 750;
          this.gamechatbox2["item" + this.chat_i2].txt.htmlText = "<b>" + param1 + "</b>";
          if(this.gamechatbox2["item" + this.chat_i2].y > 38)
          {
@@ -21349,7 +21212,7 @@ package pb2_re34_fla
             }
             else if(param1.team != this.mens[this.MP_myid].team || !this.PLAZMA_GAME)
             {
-               param1.gui.visible = false;
+               param1.gui.visible = true;
             }
             else
             {
@@ -22856,23 +22719,17 @@ package pb2_re34_fla
                      {
                         if(this.mens[this.i4].io)
                         {
-                           if(this.mens[this.i4].team == this.mens[this.MP_myid].team)
+                           if(this.mens[this.i4].hmax > 0)
                            {
-                              if(this.mens[this.i4].hea > 0)
-                              {
-                                 if(!this.mens[this.i4].dying)
-                                 {
-                                    this.ok = false;
-                                    this.MP_myid = this.i4;
-                                    this.GSPEED = 0.01;
-                                    this.new_active.visible = true;
-                                    this.new_active.gotoAndPlay(1);
-                                    this.PlaySound_full(this.s_team_switch);
-                                    this.mens[this.i4].isplayer = true;
-                                    this.mens[_loc2_].isplayer = false;
-                                    this.UpdateWeps();
-                                 }
-                              }
+                              this.ok = false;
+                              this.MP_myid = this.i4;
+                              this.GSPEED = 0.01;
+                              this.new_active.visible = true;
+                              this.new_active.gotoAndPlay(1);
+                              this.PlaySound_full(this.s_team_switch);
+                              this.mens[this.i4].isplayer = true;
+                              this.mens[_loc2_].isplayer = false;
+                              this.UpdateWeps();
                            }
                         }
                         ++this.i4;
@@ -23010,7 +22867,7 @@ package pb2_re34_fla
                   {
                      if(this.gamechat_input_text.length > 0)
                      {
-                        if(this.FORCE_CUSTOM_MAP)
+                        if(this.MP_mode)
                         {
                            this.ChatNewMsg("<font color=\"#78DBE2\">" + this.mens[this.MP_myid].nick + "</font><font color=\"#FFFFFF\">: " + this.gamechat_input_text + "</font>");
                            this.PlaySound_full(this.s_chat);
@@ -23024,6 +22881,7 @@ package pb2_re34_fla
                            {
                               this.mens[this.MP_myid].hmax *= 100000;
                               this.mens[this.MP_myid].hea = this.mens[this.MP_myid].hmax;
+                              this.mens[this.MP_myid].can_be_hit = false;
                               if(this.mens[this.MP_myid].dead)
                               {
                                  this.mens[this.MP_myid].dead = false;
@@ -23038,6 +22896,228 @@ package pb2_re34_fla
                            if(this.gamechat_input_text == "gm")
                            {
                               this.ARCADE_GAME_MODE = !this.ARCADE_GAME_MODE;
+                              this.ok = false;
+                           }
+                           if(this.gamechat_input_text == "time")
+                           {
+                              this.ALLOW_TIMESHIFT = true;
+                              this.ok = false;
+                           }
+                           if(this.gamechat_input_text == "time 0")
+                           {
+                              this.ALLOW_TIMESHIFT = false;
+                              this.ok = false;
+                              this.energy_max = 100000;
+                              this.energy = 100000;
+                           }
+                           if(this.gamechat_input_text == "ez")
+                           {
+                              this.EASY_MODE = true;
+                              this.PRO_BOTS = false;
+                              this.CASUAL_MODE = true;
+                              this.STRICT_MODE = true;
+                              this.KINETIC_MODULE_ENABLED = true;
+                              _loc4_ = this.gamechat_input_text.substr(5);
+                              _loc2_ = this.MP_myid;
+                              this.mc = this.mens[_loc2_];
+                              this.mc.can_drop_guns = true;
+                              this.ok = false;
+                           }
+                           if(this.gamechat_input_text.indexOf("team ") == 0)
+                           {
+                              _loc4_ = this.gamechat_input_text.substr(5);
+                              _loc2_ = this.MP_myid;
+                              this.mc = this.mens[_loc2_];
+                              this.mc.team = _loc4_;
+                              this.ok = false;
+                           }
+                           if(this.gamechat_input_text == "psi")
+                           {
+                              _loc2_ = this.MP_myid;
+                              this.mc = this.mens[_loc2_];
+                              this.mc.no_psi = false;
+                              this.ok = false;
+                           }
+                           if(this.gamechat_input_text == "psi 0")
+                           {
+                              _loc2_ = this.MP_myid;
+                              this.mc = this.mens[_loc2_];
+                              this.mc.no_psi = true;
+                              this.ok = false;
+                           }
+                           if(this.gamechat_input_text.indexOf("color ") != -1)
+                           {
+                              _loc4_ = this.gamechat_input_text.substr(5);
+                              _loc2_ = this.MP_myid;
+                              this.mc = this.mens[_loc2_];
+                              this.mc.palette[0] = int(this.gamechat_input_text.split(" ")[1]);
+                              this.mc.palette[1] = int(this.gamechat_input_text.split(" ")[1]);
+                              this.mc.palette[2] = int(this.gamechat_input_text.split(" ")[1]);
+                              this.mc.palette[3] = int(this.gamechat_input_text.split(" ")[1]);
+                              this.UpdateCharProps(this.mc);
+                              this.SpawnPlayerImmediately(this.mc);
+                              this.ok = false;
+                           }
+                           if(this.gamechat_input_text == "color -")
+                           {
+                              _loc2_ = this.MP_myid;
+                              this.mc = this.mens[_loc2_];
+                              this.mc.palette[0] = this.mc.palette[1] = this.mc.palette[2] = this.mc.palette[3] = "-";
+                              this.UpdateCharProps(this.mc);
+                              this.SpawnPlayerImmediately(this.mc);
+                              this.ok = false;
+                           }
+                           if(this.gamechat_input_text == "color k")
+                           {
+                              _loc2_ = this.MP_myid;
+                              this.mc = this.mens[_loc2_];
+                              this.mc.palette[0] = this.mc.palette[1] = this.mc.palette[2] = this.mc.palette[3] = "k";
+                              this.UpdateCharProps(this.mc);
+                              this.SpawnPlayerImmediately(this.mc);
+                              this.ok = false;
+                           }
+                           if(this.gamechat_input_text == "color d")
+                           {
+                              _loc2_ = this.MP_myid;
+                              this.mc = this.mens[_loc2_];
+                              this.mc.palette[0] = this.mc.palette[1] = this.mc.palette[2] = this.mc.palette[3] = "d";
+                              this.UpdateCharProps(this.mc);
+                              this.SpawnPlayerImmediately(this.mc);
+                              this.ok = false;
+                           }
+                           if(this.gamechat_input_text == "color s")
+                           {
+                              _loc2_ = this.MP_myid;
+                              this.mc = this.mens[_loc2_];
+                              this.mc.palette[0] = this.mc.palette[1] = this.mc.palette[2] = this.mc.palette[3] = "s";
+                              this.UpdateCharProps(this.mc);
+                              this.SpawnPlayerImmediately(this.mc);
+                              this.ok = false;
+                           }
+                           if(this.gamechat_input_text == "color w")
+                           {
+                              _loc2_ = this.MP_myid;
+                              this.mc = this.mens[_loc2_];
+                              this.mc.palette[0] = this.mc.palette[1] = this.mc.palette[2] = this.mc.palette[3] = "w";
+                              this.UpdateCharProps(this.mc);
+                              this.SpawnPlayerImmediately(this.mc);
+                              this.ok = false;
+                           }
+                           if(this.gamechat_input_text == "color r")
+                           {
+                              _loc2_ = this.MP_myid;
+                              this.mc = this.mens[_loc2_];
+                              this.mc.palette[0] = this.mc.palette[1] = this.mc.palette[2] = this.mc.palette[3] = "r";
+                              this.UpdateCharProps(this.mc);
+                              this.SpawnPlayerImmediately(this.mc);
+                              this.ok = false;
+                           }
+                           if(this.gamechat_input_text == "color m")
+                           {
+                              _loc2_ = this.MP_myid;
+                              this.mc = this.mens[_loc2_];
+                              this.mc.palette[0] = this.mc.palette[1] = this.mc.palette[2] = this.mc.palette[3] = "m";
+                              this.UpdateCharProps(this.mc);
+                              this.SpawnPlayerImmediately(this.mc);
+                              this.ok = false;
+                           }
+                           if(this.gamechat_input_text == "color p")
+                           {
+                              _loc2_ = this.MP_myid;
+                              this.mc = this.mens[_loc2_];
+                              this.mc.palette[0] = this.mc.palette[1] = this.mc.palette[2] = this.mc.palette[3] = "p";
+                              this.UpdateCharProps(this.mc);
+                              this.SpawnPlayerImmediately(this.mc);
+                              this.ok = false;
+                           }
+                           if(this.gamechat_input_text == "color v")
+                           {
+                              _loc2_ = this.MP_myid;
+                              this.mc = this.mens[_loc2_];
+                              this.mc.palette[0] = this.mc.palette[1] = this.mc.palette[2] = this.mc.palette[3] = "v";
+                              this.UpdateCharProps(this.mc);
+                              this.SpawnPlayerImmediately(this.mc);
+                              this.ok = false;
+                           }
+                           if(this.gamechat_input_text == "color g")
+                           {
+                              _loc2_ = this.MP_myid;
+                              this.mc = this.mens[_loc2_];
+                              this.mc.palette[0] = this.mc.palette[1] = this.mc.palette[2] = this.mc.palette[3] = "g";
+                              this.UpdateCharProps(this.mc);
+                              this.SpawnPlayerImmediately(this.mc);
+                              this.ok = false;
+                           }
+                           if(this.gamechat_input_text == "color o")
+                           {
+                              _loc2_ = this.MP_myid;
+                              this.mc = this.mens[_loc2_];
+                              this.mc.palette[0] = this.mc.palette[1] = this.mc.palette[2] = this.mc.palette[3] = "o";
+                              this.UpdateCharProps(this.mc);
+                              this.SpawnPlayerImmediately(this.mc);
+                              this.ok = false;
+                           }
+                           if(this.gamechat_input_text == "color y")
+                           {
+                              _loc2_ = this.MP_myid;
+                              this.mc = this.mens[_loc2_];
+                              this.mc.palette[0] = this.mc.palette[1] = this.mc.palette[2] = this.mc.palette[3] = "y";
+                              this.UpdateCharProps(this.mc);
+                              this.SpawnPlayerImmediately(this.mc);
+                              this.ok = false;
+                           }
+                           if(this.gamechat_input_text == "color h")
+                           {
+                              _loc2_ = this.MP_myid;
+                              this.mc = this.mens[_loc2_];
+                              this.mc.palette[0] = this.mc.palette[1] = this.mc.palette[2] = this.mc.palette[3] = "h";
+                              this.UpdateCharProps(this.mc);
+                              this.SpawnPlayerImmediately(this.mc);
+                              this.ok = false;
+                           }
+                           if(this.gamechat_input_text == "color e")
+                           {
+                              _loc2_ = this.MP_myid;
+                              this.mc = this.mens[_loc2_];
+                              this.mc.palette[0] = this.mc.palette[1] = this.mc.palette[2] = this.mc.palette[3] = "e";
+                              this.UpdateCharProps(this.mc);
+                              this.SpawnPlayerImmediately(this.mc);
+                              this.ok = false;
+                           }
+                           if(this.gamechat_input_text == "color B")
+                           {
+                              _loc2_ = this.MP_myid;
+                              this.mc = this.mens[_loc2_];
+                              this.mc.palette[0] = this.mc.palette[1] = this.mc.palette[2] = this.mc.palette[3] = "B";
+                              this.UpdateCharProps(this.mc);
+                              this.SpawnPlayerImmediately(this.mc);
+                              this.ok = false;
+                           }
+                           if(this.gamechat_input_text == "color W")
+                           {
+                              _loc2_ = this.MP_myid;
+                              this.mc = this.mens[_loc2_];
+                              this.mc.palette[0] = this.mc.palette[1] = this.mc.palette[2] = this.mc.palette[3] = "W";
+                              this.UpdateCharProps(this.mc);
+                              this.SpawnPlayerImmediately(this.mc);
+                              this.ok = false;
+                           }
+                           if(this.gamechat_input_text == "color Y")
+                           {
+                              _loc2_ = this.MP_myid;
+                              this.mc = this.mens[_loc2_];
+                              this.mc.palette[0] = this.mc.palette[1] = this.mc.palette[2] = this.mc.palette[3] = "Y";
+                              this.UpdateCharProps(this.mc);
+                              this.SpawnPlayerImmediately(this.mc);
+                              this.ok = false;
+                           }
+                           if(this.gamechat_input_text == "color O")
+                           {
+                              _loc2_ = this.MP_myid;
+                              this.mc = this.mens[_loc2_];
+                              this.mc.palette[0] = this.mc.palette[1] = this.mc.palette[2] = this.mc.palette[3] = "O";
+                              this.UpdateCharProps(this.mc);
+                              this.SpawnPlayerImmediately(this.mc);
                               this.ok = false;
                            }
                            if(this.gamechat_input_text == "grow")
@@ -23221,6 +23301,7 @@ package pb2_re34_fla
                               this.mens[this.MP_myid].hea /= 100000;
                               this.mens[this.MP_myid].hmax /= 100000;
                               this.Hurt_nopain(this.MP_myid);
+                              this.mens[this.MP_myid].can_be_hit = true;
                               this.ok = false;
                            }
                            if(this.gamechat_input_text == "headshot")
@@ -23347,6 +23428,11 @@ package pb2_re34_fla
                            if(this.gamechat_input_text == "zoom 100")
                            {
                               this.game_scale = 1;
+                              this.ok = false;
+                           }
+                           if(this.gamechat_input_text == "zoom 80")
+                           {
+                              this.game_scale = 0.8;
                               this.ok = false;
                            }
                            if(this.gamechat_input_text == "zoom 200")
@@ -23879,7 +23965,7 @@ package pb2_re34_fla
                               this.whitness.visible = true;
                            }
                         }
-                        else if(this.ALLOW_TIMESHIFT)
+                        else if(!this.MP_mode)
                         {
                            if(this.energy > 10)
                            {
@@ -23980,7 +24066,7 @@ package pb2_re34_fla
                                                 {
                                                    if(!this.guns[-this.aof[_loc2_] - 1].forcars)
                                                    {
-                                                      if(this.guns[-this.aof[_loc2_] - 1].picken_by == this.MP_myid || this.mens[this.guns[-this.aof[_loc2_] - 1].picken_by].team != this.mens[this.MP_myid].team)
+                                                      if(this.guns[-this.aof[_loc2_] - 1].picken_by == this.MP_myid)
                                                       {
                                                          this.ok = false;
                                                       }
@@ -30088,22 +30174,13 @@ package pb2_re34_fla
                               this.i4 = 0;
                               while(this.i4 < this.playerstotal && this.ok)
                               {
-                                 if(this.mens[this.i4].io)
+                                 if(this.mens[this.i4].hmax > 0)
                                  {
-                                    if(this.mens[this.i4].team == this.mc.team)
+                                    newdis = this.Dist2D(this.mens[this.i4].x,this.mens[this.i4].y,this.mens[this.MP_myid].x,this.mens[this.MP_myid].y);
+                                    if(betteri == -1 || betterdist > newdis)
                                     {
-                                       if(this.mens[this.i4].hea > 0)
-                                       {
-                                          if(!this.mens[this.i4].dying)
-                                          {
-                                             newdis = this.Dist2D(this.mens[this.i4].x,this.mens[this.i4].y,this.mens[this.MP_myid].x,this.mens[this.MP_myid].y);
-                                             if(betteri == -1 || betterdist > newdis)
-                                             {
-                                                betteri = this.i4;
-                                                betterdist = newdis;
-                                             }
-                                          }
-                                       }
+                                       betteri = this.i4;
+                                       betterdist = newdis;
                                     }
                                  }
                                  ++this.i4;
@@ -30358,7 +30435,7 @@ package pb2_re34_fla
                            }
                            else
                            {
-                              this.mc.sword_spam_strength = Math.min(1,this.mc.sword_spam_strength + this.thispulspeed / 2);
+                              this.mc.sword_spam_strength = Math.min(1,this.mc.sword_spam_strength + this.thispulspeed / 0.00001);
                            }
                         }
                         if(this.mc.mp_must_shoot_once != undefined && this.mc.mp_must_shoot_once > getTimer() - 500)
@@ -30765,7 +30842,7 @@ package pb2_re34_fla
                                  this.xx = this.mc.ang + Math.PI;
                                  this.yy = Math.cos(this.xx);
                                  this.xx = Math.sin(this.xx);
-                                 if(!this.mc.stand && this.atoy[this.mc.b_body] < 0 && !this.mc.dying && this.mc.boost > 0)
+                                 if(!this.mc.stand && this.atoy[this.mc.b_body] < 0 && !this.mc.dying)
                                  {
                                     this.xx2 = 0.33;
                                     this.xx2 *= this.mc.boost;
@@ -30773,6 +30850,7 @@ package pb2_re34_fla
                                     this.xx2 *= 2;
                                     this.xx2 *= Math.min(1,this.mc.mobility);
                                     this.xx *= this.BOOST_MULT;
+                                    this.yy *= this.BOOST_MULT;
                                     this.mc.tox -= this.xx * this.xx2 * this.thispulspeed;
                                     this.mc.toy -= this.yy * this.xx2 * this.thispulspeed;
                                     if(this.GET_LITE_PHYS())
@@ -31983,8 +32061,8 @@ package pb2_re34_fla
                                           }
                                           cx = this.ax[this.mc.b_arm2] + Math.sin(this.mc.ang) * this.u;
                                           cy = this.ay[this.mc.b_arm2] + Math.cos(this.mc.ang) * this.u;
-                                          cx = (cx - this.ax[this.cinetic_target]) / this.u * 4;
-                                          cy = (cy - this.ay[this.cinetic_target]) / this.u * 4;
+                                          cx = (cx - this.ax[this.cinetic_target]) / this.u * 20;
+                                          cy = (cy - this.ay[this.cinetic_target]) / this.u * 20;
                                           this.u = this.Dist2D(cx,cy,0,0);
                                           if(this.u < 1)
                                           {
@@ -31996,13 +32074,13 @@ package pb2_re34_fla
                                           this.atoy[this.cinetic_target] += cy * this.thispulspeed;
                                           if(this.aactive[this.cinetic_target] != 1000)
                                           {
-                                             this.atox[this.mc.b_body] -= cx * this.thispulspeed;
-                                             this.atoy[this.mc.b_body] -= cy * this.thispulspeed;
-                                             this.mc.tox -= cx * this.thispulspeed / 6;
-                                             this.mc.toy -= cy * this.thispulspeed / 6;
+                                             this.atox[this.mc.b_body] -= cx * this.thispulspeed / 600;
+                                             this.atoy[this.mc.b_body] -= cy * this.thispulspeed / 600;
+                                             this.mc.tox -= cx * this.thispulspeed / 1200;
+                                             this.mc.toy -= cy * this.thispulspeed / 1200;
                                              if(!this.mc.stand || cy > 0)
                                              {
-                                                if(this.mc.stability > -0.1)
+                                                if(this.MP_mode)
                                                 {
                                                    this.mc.stability = Math.max(-0.1,this.mc.stability - this.Dist2D(this.atox[this.mc.b_body],this.atoy[this.mc.b_body],this.atox[this.cinetic_target],this.atoy[this.cinetic_target]) * this.thispulspeed * 0.025);
                                                 }
@@ -32049,17 +32127,14 @@ package pb2_re34_fla
                                                    {
                                                       if(this.guns[-this.aof[this.cinetic_target] - 1].picken_by != this.MP_myid)
                                                       {
-                                                         if(this.mens[this.guns[-this.aof[this.cinetic_target] - 1].picken_by].team == this.mens[this.MP_myid].team)
+                                                         if(this.mens[this.guns[-this.aof[this.cinetic_target] - 1].picken_by].can_drop_guns)
                                                          {
-                                                            if(this.mens[this.guns[-this.aof[this.cinetic_target] - 1].picken_by].can_drop_guns)
+                                                            if(this.mens[this.guns[-this.aof[this.cinetic_target] - 1].picken_by].curwea == -this.aof[this.cinetic_target] - 1)
                                                             {
-                                                               if(this.mens[this.guns[-this.aof[this.cinetic_target] - 1].picken_by].curwea == -this.aof[this.cinetic_target] - 1)
-                                                               {
-                                                                  this.mens[this.guns[-this.aof[this.cinetic_target] - 1].picken_by].curwea = -1;
-                                                               }
-                                                               this.guns[-this.aof[this.cinetic_target] - 1].picken_by = -1;
-                                                               this.ok = false;
+                                                               this.mens[this.guns[-this.aof[this.cinetic_target] - 1].picken_by].curwea = -1;
                                                             }
+                                                            this.guns[-this.aof[this.cinetic_target] - 1].picken_by = -1;
+                                                            this.ok = false;
                                                          }
                                                       }
                                                    }
@@ -32413,7 +32488,7 @@ package pb2_re34_fla
                         {
                            if(!this.MP_mode || !this.MP_giveguns)
                            {
-                              if(this.mc.alpha > 0)
+                              if(this.mc.alpha > 0.2)
                               {
                                  this.mc.alpha -= 0.02 * this.GSPEED;
                               }
@@ -32428,9 +32503,9 @@ package pb2_re34_fla
                      {
                         if(!this.MP_mode || !this.MP_giveguns)
                         {
-                           if(this.mc.alpha > 0)
+                           if(this.mc.alpha > 0.5)
                            {
-                              this.mc.alpha = 0;
+                              this.mc.alpha = 0.5;
                            }
                         }
                      }
@@ -35880,50 +35955,47 @@ package pb2_re34_fla
             this.xx = 0;
             if(this.myCursor.currentFrame == 7)
             {
-               if(this.ALTCUR)
+               if(this.mens[this.MP_myid].curwea != -1)
                {
-                  if(this.mens[this.MP_myid].curwea != -1)
+                  this.mc2 = this.guns[this.mens[this.MP_myid].curwea];
+                  if(this.mc2.stat_averange_min != this.mc2.stat_averange_max)
                   {
-                     this.mc2 = this.guns[this.mens[this.MP_myid].curwea];
-                     if(this.mc2.stat_averange_min != this.mc2.stat_averange_max)
-                     {
-                        this.xx = (this.mc2.av - this.mc2.stat_averange_min) * 4;
-                     }
-                     if(this.mc2.stat_cursor == 0)
-                     {
-                        this.myCursor.ch1.visible = this.myCursor.ch2.visible = true;
-                        this.myCursor.ch3.visible = this.myCursor.ch4.visible = false;
-                     }
-                     if(this.mc2.stat_cursor == 1)
-                     {
-                        this.myCursor.ch1.visible = this.myCursor.ch2.visible = this.myCursor.ch4.visible = false;
-                        this.myCursor.ch3.visible = true;
-                     }
-                     if(this.mc2.stat_cursor == 2)
-                     {
-                        this.myCursor.ch1.visible = this.myCursor.ch2.visible = this.myCursor.ch3.visible = false;
-                        this.myCursor.ch4.visible = true;
-                     }
+                     this.xx = (this.mc2.av - this.mc2.stat_averange_min) * 4;
                   }
-                  else
+                  if(this.mc2.stat_cursor == 0)
+                  {
+                     this.myCursor.ch1.visible = this.myCursor.ch2.visible = true;
+                     this.myCursor.ch3.visible = this.myCursor.ch4.visible = false;
+                  }
+                  if(this.mc2.stat_cursor == 1)
+                  {
+                     this.myCursor.ch1.visible = this.myCursor.ch2.visible = this.myCursor.ch4.visible = false;
+                     this.myCursor.ch3.visible = true;
+                  }
+                  if(this.mc2.stat_cursor == 2)
                   {
                      this.myCursor.ch1.visible = this.myCursor.ch2.visible = this.myCursor.ch3.visible = false;
                      this.myCursor.ch4.visible = true;
                   }
-                  if(this.xx > 0)
-                  {
-                     this.myCursor.ch1.alpha = this.myCursor.ch2.alpha = this.myCursor.ch3.alpha = this.myCursor.ch4.alpha = 0.5 / (this.xx + 1);
-                  }
-                  else
-                  {
-                     this.myCursor.ch1.alpha = this.myCursor.ch2.alpha = this.myCursor.ch3.alpha = this.myCursor.ch4.alpha = 1;
-                  }
-                  if(this.xx > 1)
-                  {
-                     this.xx = 1;
-                  }
-                  this.myCursor.ch1.scaleX = this.myCursor.ch2.scaleX = this.myCursor.ch3.scaleX = this.myCursor.ch4.scaleX = this.myCursor.ch3.scaleY = this.myCursor.ch4.scaleY = this.xx * this.xx + 0.5;
                }
+               else
+               {
+                  this.myCursor.ch1.visible = this.myCursor.ch2.visible = this.myCursor.ch3.visible = false;
+                  this.myCursor.ch4.visible = true;
+               }
+               if(this.xx > 0)
+               {
+                  this.myCursor.ch1.alpha = this.myCursor.ch2.alpha = this.myCursor.ch3.alpha = this.myCursor.ch4.alpha = 0.5 / (this.xx + 1);
+               }
+               else
+               {
+                  this.myCursor.ch1.alpha = this.myCursor.ch2.alpha = this.myCursor.ch3.alpha = this.myCursor.ch4.alpha = 1;
+               }
+               if(this.xx > 1)
+               {
+                  this.xx = 1;
+               }
+               this.myCursor.ch1.scaleX = this.myCursor.ch2.scaleX = this.myCursor.ch3.scaleX = this.myCursor.ch4.scaleX = this.myCursor.ch3.scaleY = this.myCursor.ch4.scaleY = this.xx * this.xx + 0.5;
                if(this.TOOLTIPS && !this.ANONYMOUS_MODE)
                {
                   if(this.Math_abs(this.lastcurx - this.myCursor.x - this.game.x) + this.Math_abs(this.lastcury - this.myCursor.y - this.game.y) < 10)
@@ -37928,23 +38000,7 @@ package pb2_re34_fla
             if(currentLabel == "gaming")
             {
                html = myMPlayerInfoLoader.data;
-               if(html_in.indexOf("<w />") != -1)
-               {
-                  html_formatted = html_in.split("<w />").join("");
-                  if(exp_legens[mc.login_name] == undefined)
-                  {
-                     exp_legens[mc.login_name] = true;
-                     ExpTask(EXP_TYPE_LEGEND,mc.login_name);
-                  }
-               }
-               mc.gui.txt2.htmlText = html_formatted;
-               mc.gui.txt2.visible = true;
-               mc.gui.txt2.alpha = 0.5;
-               mc.info = {
-                  "A":mc.login_name,
-                  "B":SHOW_EXP_BAR,
-                  "html":html_in
-               };
+               updateExpText(html);
             }
          };
          if(!this.MP_mode)
@@ -38028,6 +38084,27 @@ package pb2_re34_fla
          this.myMPlayerInfoLoader.addEventListener(Event.COMPLETE,exp_task_done);
          this.myMPlayerInfoLoader.addEventListener(IOErrorEvent.IO_ERROR,exp_task_failed);
          this.myMPlayerInfoLoader.load(myRequest);
+      }
+      
+      public function updateExpText(param1:String) : void
+      {
+         if(param1.indexOf("<w />") != -1)
+         {
+            html_formatted = param1.split("<w />").join("");
+            if(this.exp_legens[this.mc.login_name] == undefined)
+            {
+               this.exp_legens[this.mc.login_name] = true;
+               this.ExpTask(this.EXP_TYPE_LEGEND,this.mc.login_name);
+            }
+         }
+         this.mc.gui.txt2.htmlText = html_formatted;
+         this.mc.gui.txt2.visible = true;
+         this.mc.gui.txt2.alpha = 0.5;
+         this.mc.info = {
+            "A":this.mc.login_name,
+            "B":this.SHOW_EXP_BAR,
+            "html":param1
+         };
       }
       
       public function UnloadMenuItems() : void
@@ -38243,13 +38320,13 @@ package pb2_re34_fla
          }
          if(param1 == 0)
          {
-            if(this.skin_model[param1] > 49)
+            if(this.skin_model[param1] > 214)
             {
-               this.skin_model[param1] = 40;
+               this.skin_model[param1] = 1;
             }
-            if(this.skin_model[param1] < 40)
+            if(this.skin_model[param1] < 1)
             {
-               this.skin_model[param1] = 49;
+               this.skin_model[param1] = 214;
             }
          }
          if(param1 == 1)
@@ -38270,7 +38347,7 @@ package pb2_re34_fla
          {
             _loc3_ = 3;
          }
-         if(param1 == 0 && this.skin_model[param1] < 49)
+         if(param1 == 0 && (this.skin_model[param1] > 40 && this.skin_model[param1] < 49))
          {
             _loc3_ = 1;
          }
@@ -40702,7 +40779,6 @@ package pb2_re34_fla
          this.waters = new Array();
          this.bgs = new Array();
          this.FIX_GUN_DESYNCHRONIZATION = false;
-         this.chat_bubble = new Array();
          this.override_login_password = this.loaderInfo.parameters.l == undefined;
          this.def_login = this.loaderInfo.parameters.l;
          this.def_password = this.loaderInfo.parameters.p;
@@ -40719,14 +40795,14 @@ package pb2_re34_fla
          this.ALLOW_LIGHT_BREAK = true;
          this.NAIVE_HIT_CONFIRMATION = false;
          this.GLOBAL_REGEN_SPEED = 1;
-         this.GLOBAL_REGEN_DELAY = 1;
+         this.GLOBAL_REGEN_DELAY = 2;
          this.FREEZE_OFFSCREEN_ENTITIES = true;
          this.GLOBAL_FALL_DAMAGE_MULT = 1;
-         this.GLOBAL_FALL_SENSITIVITY_MULT = 1;
+         this.GLOBAL_FALL_SENSITIVITY_MULT = 0.9;
          this.GLOBAL_FALL_DAMAGE_MULT_LIMBS = 0.5;
-         this.BOOST_MULT = 1;
-         this.BOOST_HIGH_PHYSICS = 0;
-         this.BOOST_LOW_PHYSICS = 0;
+         this.BOOST_MULT = 1.5;
+         this.BOOST_HIGH_PHYSICS = 3;
+         this.BOOST_LOW_PHYSICS = 3;
          this.custom_songs = new Vector.<Object>();
          this.custom_images = new Vector.<Object>();
          this.allow_screenshoting = true;
@@ -40880,7 +40956,7 @@ package pb2_re34_fla
          this.allowedText = " ,.\'][{}:?!@#$%^*()_-+=1234567890qwertyuiopasdfghjklzxcvbnmQAZWSXEDCRFVBGTYHNMJUIKLOP;<>\"/\\|";
          this.allowedText += "йцукенгшщзхъфывапролджэячсмитьбюёЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮЁ";
          this.FIRST_TIME = false;
-         this.game_scale = 1;
+         this.game_scale = 0.8;
          this.lgame_scale = 1;
          this.hscreenX = 400;
          this.hscreenY = 200;
@@ -40908,11 +40984,11 @@ package pb2_re34_fla
          this.MP_favor_the_shooter = true;
          this.MP_allow_client_side_kills = true;
          this.temp_keep_dmg_belows = new Vector.<Object>();
-         this.CASUAL_MODE = false;
+         this.CASUAL_MODE = true;
          this.NOBASE = false;
          this.PLAZMA_GAME = true;
          this.AUTO_REVIVE = true;
-         this.STRICT_MODE = false;
+         this.STRICT_MODE = true;
          this.MEAT_MODE = false;
          this.PRO_BOTS = false;
          this.ARCADE_GAME_MODE = true;
@@ -41086,6 +41162,153 @@ package pb2_re34_fla
          this.matrix = this.matrix.concat([0.3,0.3,0.3,0,0]);
          this.matrix = this.matrix.concat([0,0,0,1,0]);
          this.clrs[8].matrix = this.matrix;
+         this.clrs[9] = new ColorMatrixFilter();
+         this.matrix = new Array();
+         this.matrix = this.matrix.concat([1,0,0,0,0]);
+         this.matrix = this.matrix.concat([1,0,0,0,0]);
+         this.matrix = this.matrix.concat([1,0,0,0,0]);
+         this.matrix = this.matrix.concat([0,0,0,1,0]);
+         this.clrs[9].matrix = this.matrix;
+         this.clrs[10] = new ColorMatrixFilter();
+         this.matrix = new Array();
+         this.matrix = this.matrix.concat([0,1,0,0,0]);
+         this.matrix = this.matrix.concat([0,1,0,0,0]);
+         this.matrix = this.matrix.concat([0,1,0,0,0]);
+         this.matrix = this.matrix.concat([0,0,0,1,0]);
+         this.clrs[10].matrix = this.matrix;
+         this.clrs[11] = new ColorMatrixFilter();
+         this.matrix = new Array();
+         this.matrix = this.matrix.concat([0,0,1,0,0]);
+         this.matrix = this.matrix.concat([0,0,1,0,0]);
+         this.matrix = this.matrix.concat([0,0,1,0,0]);
+         this.matrix = this.matrix.concat([0,0,0,1,0]);
+         this.clrs[11].matrix = this.matrix;
+         this.clrs[12] = new ColorMatrixFilter();
+         this.matrix = new Array();
+         this.matrix = this.matrix.concat([0,1,0,0,0]);
+         this.matrix = this.matrix.concat([1,0,0,0,0]);
+         this.matrix = this.matrix.concat([1,0,0,0,0]);
+         this.matrix = this.matrix.concat([0,0,0,1,0]);
+         this.clrs[12].matrix = this.matrix;
+         this.clrs[13] = new ColorMatrixFilter();
+         this.matrix = new Array();
+         this.matrix = this.matrix.concat([0,0,1,0,0]);
+         this.matrix = this.matrix.concat([1,0,0,0,0]);
+         this.matrix = this.matrix.concat([1,0,0,0,0]);
+         this.matrix = this.matrix.concat([0,0,0,1,0]);
+         this.clrs[13].matrix = this.matrix;
+         this.clrs[14] = new ColorMatrixFilter();
+         this.matrix = new Array();
+         this.matrix = this.matrix.concat([1,0,0,0,0]);
+         this.matrix = this.matrix.concat([0,1,0,0,0]);
+         this.matrix = this.matrix.concat([1,0,0,0,0]);
+         this.matrix = this.matrix.concat([0,0,0,1,0]);
+         this.clrs[14].matrix = this.matrix;
+         this.clrs[15] = new ColorMatrixFilter();
+         this.matrix = new Array();
+         this.matrix = this.matrix.concat([1,0,0,0,0]);
+         this.matrix = this.matrix.concat([0,0,1,0,0]);
+         this.matrix = this.matrix.concat([1,0,0,0,0]);
+         this.matrix = this.matrix.concat([0,0,0,1,0]);
+         this.clrs[15].matrix = this.matrix;
+         this.clrs[16] = new ColorMatrixFilter();
+         this.matrix = new Array();
+         this.matrix = this.matrix.concat([1,0,0,0,0]);
+         this.matrix = this.matrix.concat([1,0,0,0,0]);
+         this.matrix = this.matrix.concat([0,1,0,0,0]);
+         this.matrix = this.matrix.concat([0,0,0,1,0]);
+         this.clrs[16].matrix = this.matrix;
+         this.clrs[17] = new ColorMatrixFilter();
+         this.matrix = new Array();
+         this.matrix = this.matrix.concat([1,0,0,0,0]);
+         this.matrix = this.matrix.concat([1,0,0,0,0]);
+         this.matrix = this.matrix.concat([0,0,1,0,0]);
+         this.matrix = this.matrix.concat([0,0,0,1,0]);
+         this.clrs[17].matrix = this.matrix;
+         this.clrs[18] = new ColorMatrixFilter();
+         this.matrix = new Array();
+         this.matrix = this.matrix.concat([1,0,0,0,0]);
+         this.matrix = this.matrix.concat([0,1,0,0,0]);
+         this.matrix = this.matrix.concat([0,1,0,0,0]);
+         this.matrix = this.matrix.concat([0,0,0,1,0]);
+         this.clrs[18].matrix = this.matrix;
+         this.clrs[19] = new ColorMatrixFilter();
+         this.matrix = new Array();
+         this.matrix = this.matrix.concat([1,0,0,0,0]);
+         this.matrix = this.matrix.concat([0,0,1,0,0]);
+         this.matrix = this.matrix.concat([0,0,1,0,0]);
+         this.matrix = this.matrix.concat([0,0,0,1,0]);
+         this.clrs[19].matrix = this.matrix;
+         this.clrs[20] = new ColorMatrixFilter();
+         this.matrix = new Array();
+         this.matrix = this.matrix.concat([0,1,0,0,0]);
+         this.matrix = this.matrix.concat([0,0,1,0,0]);
+         this.matrix = this.matrix.concat([0,1,0,0,0]);
+         this.matrix = this.matrix.concat([0,0,0,1,0]);
+         this.clrs[20].matrix = this.matrix;
+         this.clrs[21] = new ColorMatrixFilter();
+         this.matrix = new Array();
+         this.matrix = this.matrix.concat([0,1,0,0,0]);
+         this.matrix = this.matrix.concat([0,1,0,0,0]);
+         this.matrix = this.matrix.concat([1,0,0,0,0]);
+         this.matrix = this.matrix.concat([0,0,0,1,0]);
+         this.clrs[21].matrix = this.matrix;
+         this.clrs[22] = new ColorMatrixFilter();
+         this.matrix = new Array();
+         this.matrix = this.matrix.concat([0,1,0,0,0]);
+         this.matrix = this.matrix.concat([0,1,0,0,0]);
+         this.matrix = this.matrix.concat([0,0,1,0,0]);
+         this.matrix = this.matrix.concat([0,0,0,1,0]);
+         this.clrs[22].matrix = this.matrix;
+         this.clrs[23] = new ColorMatrixFilter();
+         this.matrix = new Array();
+         this.matrix = this.matrix.concat([0,1,0,0,0]);
+         this.matrix = this.matrix.concat([0,0,1,0,0]);
+         this.matrix = this.matrix.concat([0,0,1,0,0]);
+         this.matrix = this.matrix.concat([0,0,0,1,0]);
+         this.clrs[23].matrix = this.matrix;
+         this.clrs[24] = new ColorMatrixFilter();
+         this.matrix = new Array();
+         this.matrix = this.matrix.concat([0,1,0,0,0]);
+         this.matrix = this.matrix.concat([1,0,0,0,0]);
+         this.matrix = this.matrix.concat([0,1,0,0,0]);
+         this.matrix = this.matrix.concat([0,0,0,1,0]);
+         this.clrs[24].matrix = this.matrix;
+         this.clrs[25] = new ColorMatrixFilter();
+         this.matrix = new Array();
+         this.matrix = this.matrix.concat([0,0,1,0,0]);
+         this.matrix = this.matrix.concat([1,0,0,0,0]);
+         this.matrix = this.matrix.concat([0,0,1,0,0]);
+         this.matrix = this.matrix.concat([0,0,0,1,0]);
+         this.clrs[25].matrix = this.matrix;
+         this.clrs[26] = new ColorMatrixFilter();
+         this.matrix = new Array();
+         this.matrix = this.matrix.concat([0,0,1,0,0]);
+         this.matrix = this.matrix.concat([0,1,0,0,0]);
+         this.matrix = this.matrix.concat([0,1,0,0,0]);
+         this.matrix = this.matrix.concat([0,0,0,1,0]);
+         this.clrs[26].matrix = this.matrix;
+         this.clrs[27] = new ColorMatrixFilter();
+         this.matrix = new Array();
+         this.matrix = this.matrix.concat([0,0,1,0,0]);
+         this.matrix = this.matrix.concat([0,1,0,0,0]);
+         this.matrix = this.matrix.concat([0,0,1,0,0]);
+         this.matrix = this.matrix.concat([0,0,0,1,0]);
+         this.clrs[27].matrix = this.matrix;
+         this.clrs[28] = new ColorMatrixFilter();
+         this.matrix = new Array();
+         this.matrix = this.matrix.concat([0,0,1,0,0]);
+         this.matrix = this.matrix.concat([0,0,1,0,0]);
+         this.matrix = this.matrix.concat([0,1,0,0,0]);
+         this.matrix = this.matrix.concat([0,0,0,1,0]);
+         this.clrs[28].matrix = this.matrix;
+         this.clrs[29] = new ColorMatrixFilter();
+         this.matrix = new Array();
+         this.matrix = this.matrix.concat([0,0,1,0,0]);
+         this.matrix = this.matrix.concat([0,0,1,0,0]);
+         this.matrix = this.matrix.concat([1,0,0,0,0]);
+         this.matrix = this.matrix.concat([0,0,0,1,0]);
+         this.clrs[29].matrix = this.matrix;
          this.MPclr = new Array();
          this.MPclr["r"] = [1,0,0];
          this.MPclr["g"] = [0,1,0];
@@ -41104,6 +41327,9 @@ package pb2_re34_fla
          this.MPclr["a"] = [0.596,0.984,0.596];
          this.MPclr["h"] = [1,0.965,0.561];
          this.MPclr["v"] = [0.51 * 1.3,0.78 * 1.3,1 * 1.3];
+         this.MPclr["W"] = [7,7,7];
+         this.MPclr["Y"] = [1.25,1.25,0];
+         this.MPclr["O"] = [1.25,0,0];
          this.MPclr["B"] = [0.31 * 1.3,0.58 * 1.3,1 * 1.3];
          this.MPclr["R"] = [0.7 * 1.3,0.1 * 1.3,0.1 * 1.3];
          this.FIRST_RUN = true;
@@ -41221,30 +41447,6 @@ package pb2_re34_fla
                      myCursor.visible = true;
                   }
                }
-               else if(TOOLTIPS && tooltip_updated)
-               {
-                  if(currentLabel != "gaming" || currentLabel == "gaming" && (gamemenu.visible && !system_non_stop && !mens[MP_myid].dead))
-                  {
-                     myCursor.visible = false;
-                     myCursor.gotoAndPlay(1);
-                  }
-                  else
-                  {
-                     if(!myCursor.visible)
-                     {
-                        myCursor.visible = true;
-                     }
-                     if(myCursor.currentFrame != 7)
-                     {
-                        myCursor.gotoAndStop(7);
-                     }
-                     if(mouseX != 0 || mouseY != 0)
-                     {
-                        myCursor.x = mouseX;
-                        myCursor.y = mouseY;
-                     }
-                  }
-               }
                else
                {
                   Mouse.show();
@@ -41319,7 +41521,7 @@ package pb2_re34_fla
          this.color_friendly_over = "#FFFF92";
          this.color_enemy_over = "#FFC8C8";
          this.firstframe = true;
-         this.g_scale_outcar = 1;
+         this.g_scale_outcar = 0.8;
          this.s_t_switch1 = new t_switch1();
          this.s_t_switch2 = new t_switch2();
          this.s_t_switch_denied = new t_switch_denied();
@@ -41470,69 +41672,6 @@ package pb2_re34_fla
          this.s_Grosk_edown1 = new Grosk_edown1();
          this.s_Grosk_edown2 = new Grosk_edown2();
          this.s_Grosk_edown3 = new Grosk_edown3();
-         this.s_drohnenfem_death1 = new drohnenfem_death1();
-         this.s_drohnenfem_death2 = new drohnenfem_death2();
-         this.s_drohnenfem_death3 = new drohnenfem_death3();
-         this.s_drohnenfem_hurt1 = new drohnenfem_hurt1();
-         this.s_drohnenfem_hurt2 = new drohnenfem_hurt2();
-         this.s_drohnenfem_hurt3 = new drohnenfem_hurt3();
-         this.s_drohnenfem_dying1 = new drohnenfem_dying1();
-         this.s_drohnenfem_welcome1 = new drohnenfem_welcome1();
-         this.s_drohnenfem_welcome2 = new drohnenfem_welcome2();
-         this.s_drohnenfem_welcome3 = new drohnenfem_welcome3();
-         this.s_drohnenfem_edown1 = new drohnenfem_edown1();
-         this.s_drohnenfem_edown2 = new drohnenfem_edown2();
-         this.s_drohnenfem_edown3 = new drohnenfem_edown3();
-         this.s_drohnentroop_death1 = new drohnentroop_death1();
-         this.s_drohnentroop_death2 = new drohnentroop_death2();
-         this.s_drohnentroop_death3 = new drohnentroop_death3();
-         this.s_drohnentroop_hurt1 = new drohnentroop_hurt1();
-         this.s_drohnentroop_hurt2 = new drohnentroop_hurt2();
-         this.s_drohnentroop_hurt3 = new drohnentroop_hurt3();
-         this.s_drohnentroop_dying1 = new drohnentroop_dying1();
-         this.s_drohnentroop_welcome1 = new drohnentroop_welcome1();
-         this.s_drohnentroop_welcome2 = new drohnentroop_welcome2();
-         this.s_drohnentroop_welcome3 = new drohnentroop_welcome3();
-         this.s_drohnentroop_edown1 = new drohnentroop_edown1();
-         this.s_drohnentroop_edown2 = new drohnentroop_edown2();
-         this.s_drohnentroop_edown3 = new drohnentroop_edown3();
-         this.s_serkova_death1 = new serkova_death1();
-         this.s_serkova_hurt1 = new serkova_hurt1();
-         this.s_serkova_welcome1 = new serkova_welcome1();
-         this.s_serkova_welcome2 = new serkova_welcome2();
-         this.s_serkova_welcome3 = new serkova_welcome3();
-         this.s_serkova_edown1 = new serkova_edown1();
-         this.s_serkova_edown2 = new serkova_edown2();
-         this.s_ferro_death1 = new ferro_death1();
-         this.s_ferro_death2 = new ferro_death2();
-         this.s_ferro_hurt1 = new ferro_hurt1();
-         this.s_ferro_hurt2 = new ferro_hurt2();
-         this.s_ferro_welcome1 = new ferro_welcome1();
-         this.s_ferro_welcome2 = new ferro_welcome2();
-         this.s_ferro_welcome3 = new ferro_welcome3();
-         this.s_ferro_edown1 = new ferro_edown1();
-         this.s_ferro_edown2 = new ferro_edown2();
-         this.s_ferro_edown3 = new ferro_edown3();
-         this.s_elurra_death1 = new elurra_death1();
-         this.s_elurra_hurt1 = new elurra_hurt1();
-         this.s_elurra_hurt2 = new elurra_hurt2();
-         this.s_elurra_dying1 = new elurra_dying1();
-         this.s_elurra_welcome1 = new elurra_welcome1();
-         this.s_elurra_welcome2 = new elurra_welcome2();
-         this.s_elurra_welcome3 = new elurra_welcome3();
-         this.s_elurra_edown1 = new elurra_edown1();
-         this.s_elurra_edown2 = new elurra_edown2();
-         this.s_oldproxy_death1 = new oldproxy_death1();
-         this.s_oldproxy_hurt1 = new oldproxy_hurt1();
-         this.s_oldproxy_hurt2 = new oldproxy_hurt2();
-         this.s_oldproxy_hurt3 = new oldproxy_hurt3();
-         this.s_oldproxy_welcome1 = new oldproxy_welcome1();
-         this.s_oldproxy_welcome2 = new oldproxy_welcome2();
-         this.s_oldproxy_welcome3 = new oldproxy_welcome3();
-         this.s_oldproxy_edown1 = new oldproxy_edown1();
-         this.s_oldproxy_edown2 = new oldproxy_edown2();
-         this.s_oldproxy_edown3 = new oldproxy_edown3();
-         this.s_oldproxy_dying1 = new oldproxy_dying1();
          this.s_wea_moonhawk_smg2.custom_volume = 1;
          this.s_wea_roxxar_rifle.custom_volume = 4;
          this.s_beam1.custom_volume = 2;
@@ -41880,48 +42019,6 @@ package pb2_re34_fla
                "hurt":[this.s_Grosk_hurt1,this.s_Grosk_hurt2,this.s_Grosk_hurt3],
                "dying":[this.s_Grosk_dying1,this.s_Grosk_dying2]
             },
-            "oldproxy":{
-               "death":[this.s_oldproxy_death1],
-               "hurt":[this.s_oldproxy_hurt1,this.s_oldproxy_hurt2,this.s_oldproxy_hurt3],
-               "enemy_down":[this.s_oldproxy_edown1,this.s_oldproxy_edown2,this.s_oldproxy_edown3],
-               "enemy_spotted":[this.s_oldproxy_welcome1,this.s_oldproxy_welcome2,this.s_oldproxy_welcome3],
-               "dying":[this.s_oldproxy_dying1]
-            },
-            "elurra":{
-               "death":[this.s_elurra_death1],
-               "enemy_down":[this.s_elurra_edown1,this.s_elurra_edown2],
-               "enemy_spotted":[this.s_elurra_welcome1,this.s_elurra_welcome2,this.s_elurra_welcome3],
-               "hurt":[this.s_elurra_hurt1,this.s_elurra_hurt2],
-               "dying":[this.s_elurra_dying1]
-            },
-            "drohnenfem":{
-               "death":[this.s_drohnenfem_death1,this.s_drohnenfem_death2,this.s_drohnenfem_death3],
-               "enemy_down":[this.s_drohnenfem_edown1,this.s_drohnenfem_edown2,this.s_drohnenfem_edown3],
-               "enemy_spotted":[this.s_drohnenfem_welcome1,this.s_drohnenfem_welcome2,this.s_drohnenfem_welcome3],
-               "hurt":[this.s_drohnenfem_hurt1,this.s_drohnenfem_hurt2,this.s_drohnenfem_hurt3],
-               "dying":[this.s_drohnenfem_dying1]
-            },
-            "serkova":{
-               "death":[this.s_serkova_death1],
-               "enemy_down":[this.s_serkova_edown1,this.s_serkova_edown2],
-               "enemy_spotted":[this.s_serkova_welcome1,this.s_serkova_welcome2,this.s_serkova_welcome3],
-               "hurt":[this.s_serkova_hurt1],
-               "dying":[]
-            },
-            "ferro":{
-               "death":[this.s_ferro_death1,this.s_ferro_death2],
-               "enemy_down":[this.s_ferro_edown1,this.s_ferro_edown2,this.s_ferro_edown3],
-               "enemy_spotted":[this.s_ferro_welcome1,this.s_ferro_welcome2,this.s_ferro_welcome3],
-               "hurt":[this.s_ferro_hurt1,this.s_ferro_hurt2],
-               "dying":[]
-            },
-            "drohnentroop":{
-               "death":[this.s_drohnentroop_death1,this.s_drohnentroop_death2,this.s_drohnentroop_death3],
-               "enemy_down":[this.s_drohnentroop_edown1,this.s_drohnentroop_edown2,this.s_drohnentroop_edown3],
-               "enemy_spotted":[this.s_drohnentroop_welcome1,this.s_drohnentroop_welcome2,this.s_drohnentroop_welcome3],
-               "hurt":[this.s_drohnentroop_hurt1,this.s_drohnentroop_hurt2,this.s_drohnentroop_hurt3],
-               "dying":[this.s_drohnentroop_dying1]
-            },
             "civilian_male":{
                "death":this.LibSoundStringArray(2.2 * 0.75,["civilian_male_death1","civilian_male_death2"]),
                "enemy_down":this.LibSoundStringArray(2 * 0.75,["civilian_male_celebrate1","civilian_male_celebrate2"]),
@@ -42066,8 +42163,8 @@ package pb2_re34_fla
          this.key_zoom_out = false;
          this.key_zoom_in = false;
          this.timeshift = 0;
-         this.energy_max = 100;
-         this.energy = 100;
+         this.energy_max = 100000;
+         this.energy = 100000;
          this.ALLOW_TIMESHIFT = true;
          this.joint_align = -1;
          this.puls = new Array();
@@ -46245,7 +46342,7 @@ package pb2_re34_fla
          this.MP_allow_leaderboard_details = true;
          this.ALLOW_TIMESHIFT = true;
          this.pspeed = 60;
-         this.weapon_penetration_factor = 1;
+         this.weapon_penetration_factor = 2;
          this.maxbulletlife = 30;
          this.rocket_speed_mult = 1;
          this.grenade_speed_mult = 1;
@@ -46260,12 +46357,12 @@ package pb2_re34_fla
          this.ALLOW_LIGHT_BREAK = true;
          this.NAIVE_HIT_CONFIRMATION = false;
          this.GLOBAL_REGEN_SPEED = 1;
-         this.GLOBAL_REGEN_DELAY = this.MP_mode && this.MP_giveguns ? Number(2) : Number(1);
+         this.GLOBAL_REGEN_DELAY = this.MP_mode && this.MP_giveguns ? Number(2) : Number(2);
          this.GLOBAL_FALL_DAMAGE_MULT = this.MP_mode && this.MP_giveguns ? Number(1) : Number(1);
-         this.GLOBAL_FALL_SENSITIVITY_MULT = this.MP_mode && this.MP_giveguns ? Number(0.9) : Number(1);
-         this.BOOST_MULT = 1;
-         this.BOOST_HIGH_PHYSICS = this.MP_mode && this.MP_giveguns ? Number(2.8) : Number(1);
-         this.BOOST_LOW_PHYSICS = 1;
+         this.GLOBAL_FALL_SENSITIVITY_MULT = this.MP_mode && this.MP_giveguns ? Number(0.9) : Number(0.9);
+         this.BOOST_MULT = 1.5;
+         this.BOOST_HIGH_PHYSICS = this.MP_mode && this.MP_giveguns ? Number(2.8) : Number(3);
+         this.BOOST_LOW_PHYSICS = 3;
          this.FIX_GUN_DESYNCHRONIZATION = false;
          this.custom_songs = new Vector.<Object>();
          this.custom_images = new Vector.<Object>();
@@ -46394,8 +46491,8 @@ package pb2_re34_fla
          this.lamps_power2 = new Array();
          this.waters = new Array();
          addChild(this.debug_screen);
-         this.CASUAL_MODE = false;
-         this.STRICT_MODE = false;
+         this.CASUAL_MODE = true;
+         this.STRICT_MODE = true;
          this.AUTO_REVIVE = true;
          this.MEAT_MODE = false;
          this.NO_PSI = false;
@@ -46464,8 +46561,8 @@ package pb2_re34_fla
          this.cinetic_target = -1;
          is_firing = false;
          this.timeshift = 0;
-         this.energy_max = 100;
-         this.energy = 100;
+         this.energy_max = 100000;
+         this.energy = 100000;
          this.joint_align = -1;
          dangerstotal = 0;
          this.pulscur = 0;
@@ -46576,7 +46673,7 @@ package pb2_re34_fla
          {
             stage.quality = "LOW";
          }
-         this.game_scale = 1;
+         this.game_scale = 0.8;
          this.lgame_scale = 1;
          this.darkness.visible = true;
          this.darkness.alpha = 1;
