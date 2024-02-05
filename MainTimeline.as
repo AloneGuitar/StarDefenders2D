@@ -1344,6 +1344,10 @@ package pb2_re34_fla
       
       public var tooltip_updated:Boolean;
       
+      public var TOOLTIPS:Boolean;
+      
+      public var HINTS:Boolean;
+      
       public var gamechat_input_text:String;
       
       public var MP_playerstotal:int;
@@ -1875,6 +1879,28 @@ package pb2_re34_fla
       public var s_elurra_edown1:elurra_edown1;
       
       public var s_elurra_edown2:elurra_edown2;
+      
+      public var s_oldproxy_death1:oldproxy_death1;
+      
+      public var s_oldproxy_hurt1:oldproxy_hurt1;
+      
+      public var s_oldproxy_hurt2:oldproxy_hurt2;
+      
+      public var s_oldproxy_hurt3:oldproxy_hurt3;
+      
+      public var s_oldproxy_welcome1:oldproxy_welcome1;
+      
+      public var s_oldproxy_welcome2:oldproxy_welcome2;
+      
+      public var s_oldproxy_welcome3:oldproxy_welcome3;
+      
+      public var s_oldproxy_edown1:oldproxy_edown1;
+      
+      public var s_oldproxy_edown2:oldproxy_edown2;
+      
+      public var s_oldproxy_edown3:oldproxy_edown3;
+      
+      public var s_oldproxy_dying1:oldproxy_dying1;
       
       public var s_fail_shot:fail_shot;
       
@@ -5160,7 +5186,7 @@ package pb2_re34_fla
       
       public function UpdateFramerate() : void
       {
-         stage.frameRate = this.FRAMERATE == 1 ? Number(20) : (this.FRAMERATE == 2 ? Number(30) : Number(60));
+         stage.frameRate = this.FRAMERATE == 1 ? Number(20) : (this.FRAMERATE == 2 ? Number(30) : Number(120));
       }
       
       public function AskForCache(param1:MovieClip) : void
@@ -6515,22 +6541,22 @@ package pb2_re34_fla
                this.my_so.data["skin_color_legs" + this.i] = 0;
                ++this.i;
             }
-            this.my_so.data["inv1_len"] = 3;
+            this.my_so.data["inv1_len"] = 6;
             this.my_so.data["inv1_0mdl"] = "gun_pistol";
             this.my_so.data["inv1_1mdl"] = "gun_rifle";
             this.my_so.data["inv1_2mdl"] = "gun_shotgun";
-            this.my_so.data["inv1_3mdl"] = "item_grenade";
-            this.my_so.data["inv1_4mdl"] = "item_grenade";
+            this.my_so.data["inv1_3mdl"] = "darkstar_1_nade_c9";
+            this.my_so.data["inv1_4mdl"] = "gun_raygun";
             this.my_so.data["inv1_5mdl"] = "item_grenade";
-            this.my_so.data["inv1_0upg"] = 0;
-            this.my_so.data["inv1_1upg"] = 0;
-            this.my_so.data["inv1_2upg"] = 0;
-            this.my_so.data["inv1_3upg"] = 0;
-            this.my_so.data["inv1_4upg"] = 0;
+            this.my_so.data["inv1_0upg"] = 3;
+            this.my_so.data["inv1_1upg"] = 3;
+            this.my_so.data["inv1_2upg"] = 3;
+            this.my_so.data["inv1_3upg"] = 3;
+            this.my_so.data["inv1_4upg"] = 3;
             this.my_so.data["inv1_5upg"] = 0;
             this.my_so.data["inv2_len"] = 1;
             this.my_so.data["inv2_0mdl"] = "gun_real_shotgun";
-            this.my_so.data["inv2_0upg"] = 0;
+            this.my_so.data["inv2_0upg"] = 3;
             this.my_so.data["MP_default_set"] = 1;
             this.my_so.data["mouse_wheel"] = true;
             this.my_so.data["OVERSCROLL"] = true;
@@ -6667,8 +6693,8 @@ package pb2_re34_fla
          this.EASY_MODE = Boolean(this.my_so.data["easy_mode"]);
          this.LOW_HPS = Boolean(this.my_so.data["LOW_HPS"]);
          this.PRO_BOTS = Boolean(this.my_so.data["pro_bots"]);
-         HINTS = Boolean(this.my_so.data["hints"]);
-         TOOLTIPS = Boolean(this.my_so.data["tooltips"]);
+         this.HINTS = Boolean(this.my_so.data["hints"]);
+         this.TOOLTIPS = Boolean(this.my_so.data["tooltips"]);
          if(this.my_so.data["mouse_wheel"] == undefined)
          {
             this.MOUSE_WHEEL = true;
@@ -6945,8 +6971,8 @@ package pb2_re34_fla
          this.my_so.data["easy_mode"] = this.EASY_MODE;
          this.my_so.data["LOW_HPS"] = this.LOW_HPS;
          this.my_so.data["pro_bots"] = this.PRO_BOTS;
-         this.my_so.data["hints"] = HINTS;
-         this.my_so.data["tooltips"] = TOOLTIPS;
+         this.my_so.data["hints"] = this.HINTS;
+         this.my_so.data["tooltips"] = this.TOOLTIPS;
          this.my_so.data["MP_default_set"] = this.MP_default_set;
          this.my_so.data["menu_hue"] = this.menu_hue;
          this.my_so.data["map_qp_sp"] = this.map_qp_sp;
@@ -10115,7 +10141,7 @@ package pb2_re34_fla
                param1.blood_blue = 2;
             }
          }
-         else if(param1.char == 3 || param1.char == 61 || param1.char == 72 || param1.char == 75 || param1.char == 76 || param1.char == 35 || param1.char == 132 || param1.char == 135 || param1.char == 136 || param1.char == 138 || param1.char == 180)
+         else if(param1.char == 3 || param1.char == 61 || param1.char == 72 || param1.char == 75 || param1.char == 76 || param1.char == 35 || param1.char == 132 || param1.char == 135 || param1.char == 136 || param1.char == 138)
          {
             param1.armored = 1;
             this.RedrawPsi(param1.idd);
@@ -10123,6 +10149,11 @@ package pb2_re34_fla
             if(param1.char == 35)
             {
                param1.nick = "Zephyr";
+            }
+            else if(param1.char == 72)
+            {
+               param1.nick = "White Proxy";
+               param1.voice = this.voices.oldproxy;
             }
             else if(param1.char == 132)
             {
@@ -10322,7 +10353,7 @@ package pb2_re34_fla
             param1.blood_green = 0;
             param1.blood_blue = 0;
          }
-         else if(param1.char == 9 || param1.char == 81 || param1.char == 82 || param1.char == 194)
+         else if(param1.char == 9 || param1.char == 81 || param1.char == 82)
          {
             param1.armored = 2;
             param1.voice = this.voices.android;
@@ -10331,7 +10362,14 @@ package pb2_re34_fla
             {
                param1.nick = "Android SLC-56";
             }
-            param1.mobility = 2;
+            if(param1.char == 9)
+            {
+               param1.mobility = 2;
+            }
+            else
+            {
+               param1.mobility = 1;
+            }
             param1.blood_red = 0;
             param1.blood_green = 0;
             param1.blood_blue = 0;
@@ -10370,7 +10408,14 @@ package pb2_re34_fla
             param1.voice = this.voices.noir_lime;
             this.RedrawPsi(param1.idd);
             param1.nick = this.NOIR_NAME;
-            param1.mobility = 1;
+            if(param1.char == 13)
+            {
+               param1.mobility = 0.85;
+            }
+            else
+            {
+               param1.mobility = 1;
+            }
             if(param1.char == 38)
             {
                param1.blood_red = 2;
@@ -10562,12 +10607,14 @@ package pb2_re34_fla
             param1.armored = 1;
             param1.voice = this.voices.marine;
             this.RedrawPsi(param1.idd);
+            param1.nick = "Blue Heavy Hero";
          }
          else if(param1.char == 165)
          {
             param1.armored = 1;
             param1.voice = this.voices.marine;
             this.RedrawPsi(param1.idd);
+            param1.nick = "Red Heavy Hero";
          }
          else if(param1.char == 166)
          {
@@ -10615,12 +10662,12 @@ package pb2_re34_fla
             param1.armored = 1;
             param1.voice = this.voices.grub;
             this.RedrawPsi(param1.idd);
-            param1.nick = "Cyber Grub";
+            param1.nick = "CyberGrub S1lk";
          }
          else if(param1.char == 172)
          {
             param1.armored = 1;
-            param1.voice = this.voices.grosk;
+            param1.voice = this.voices.Grosk;
             this.RedrawPsi(param1.idd);
             param1.nick = "Grosk";
          }
@@ -10637,8 +10684,7 @@ package pb2_re34_fla
             param1.voice = this.voices.proxy;
             this.RedrawPsi(param1.idd);
             param1.nick = "Uncivil Proxy";
-            param1.mobility = 1.25;
-            param1.isGhost = true;
+            param1.isghost = true;
          }
          else if(param1.char == 175)
          {
@@ -10653,7 +10699,7 @@ package pb2_re34_fla
          else if(param1.char == 176)
          {
             param1.armored = 0;
-            param1.voice = this.voices.cs;
+            param1.voice = this.voices.vulture;
             this.RedrawPsi(param1.idd);
             param1.nick = "Moon Marksman";
             param1.blood_red = 255 / 255;
@@ -10673,8 +10719,9 @@ package pb2_re34_fla
          else if(param1.char == 178)
          {
             param1.armored = 0;
-            param1.voice = this.voices.marine;
+            param1.voice = this.voices.hexagon;
             this.RedrawPsi(param1.idd);
+            param1.nick = "Marine";
             param1.blood_red = 255 / 255;
             param1.blood_green = 0 / 255;
             param1.blood_blue = 0 / 255;
@@ -10689,12 +10736,26 @@ package pb2_re34_fla
             param1.blood_green = 0 / 255;
             param1.blood_blue = 0 / 255;
          }
+         else if(param1.char == 180)
+         {
+            param1.armored = 0;
+            param1.voice = this.voices.ghost;
+            this.RedrawPsi(param1.idd);
+            param1.nick = "Phantom";
+            param1.isghost = true;
+            param1.mobility = 1.25;
+            param1.blood_red = 510 / 255;
+            param1.blood_green = 0 / 255;
+            param1.blood_blue = 0 / 255;
+         }
          else if(param1.char == 181)
          {
             param1.armored = 0;
             param1.voice = this.voices.mute;
             this.RedrawPsi(param1.idd);
             param1.nick = "Huntsman";
+            param1.isghost = true;
+            param1.mobility = 1.25;
             param1.blood_red = 255 / 255;
             param1.blood_green = 0 / 255;
             param1.blood_blue = 0 / 255;
@@ -10705,6 +10766,8 @@ package pb2_re34_fla
             param1.voice = this.voices.mute;
             this.RedrawPsi(param1.idd);
             param1.nick = "Huntsman";
+            param1.isghost = true;
+            param1.mobility = 1.25;
             param1.blood_red = 255 / 255;
             param1.blood_green = 0 / 255;
             param1.blood_blue = 0 / 255;
@@ -10772,7 +10835,7 @@ package pb2_re34_fla
          else if(param1.char == 189)
          {
             param1.armored = 0;
-            param1.voice = this.voices.vulture;
+            param1.voice = this.voices.civilian_male;
             this.RedrawPsi(param1.idd);
             param1.nick = "Maroon";
             param1.blood_red = 255 / 255;
@@ -10806,7 +10869,6 @@ package pb2_re34_fla
             param1.voice = this.voices.drohnenfem;
             this.RedrawPsi(param1.idd);
             param1.nick = "Drohnen Drifter";
-            param1.mobility = 1.25;
             param1.blood_red = 123 / 255;
             param1.blood_green = 104 / 255;
             param1.blood_blue = 238 / 255;
@@ -10814,12 +10876,24 @@ package pb2_re34_fla
          else if(param1.char == 193)
          {
             param1.armored = 0;
-            param1.voice = this.voices.crossfire_sentinel;
+            param1.voice = this.voices.vulture;
             this.RedrawPsi(param1.idd);
             param1.nick = "Moon Captain";
             param1.blood_red = 255 / 255;
             param1.blood_green = 0 / 255;
             param1.blood_blue = 0 / 255;
+         }
+         else if(param1.char == 194)
+         {
+            param1.armored = 0;
+            param1.voice = this.voices.ghost;
+            this.RedrawPsi(param1.idd);
+            param1.nick = "Phantom";
+            param1.isghost = true;
+            param1.mobility = 1.25;
+            param1.blood_red = 0 / 255;
+            param1.blood_green = 255 / 255;
+            param1.blood_blue = 510 / 255;
          }
          else if(param1.char == 195)
          {
@@ -10827,7 +10901,6 @@ package pb2_re34_fla
             param1.voice = this.voices.drohnenfem;
             this.RedrawPsi(param1.idd);
             param1.nick = "Wraith";
-            param1.mobility = 1.25;
             param1.blood_red = 120 / 255;
             param1.blood_green = 0 / 255;
             param1.blood_blue = 0 / 255;
@@ -10848,17 +10921,18 @@ package pb2_re34_fla
             param1.voice = this.voices.ghost;
             this.RedrawPsi(param1.idd);
             param1.nick = "Phantom";
+            param1.isghost = true;
             param1.mobility = 1.25;
-            param1.blood_red = 255 / 255;
-            param1.blood_green = 0 / 255;
-            param1.blood_blue = 0 / 255;
+            param1.blood_red = 510 / 255;
+            param1.blood_green = 510 / 255;
+            param1.blood_blue = 510 / 255;
          }
          else if(param1.char == 198)
          {
             param1.armored = 0;
             param1.voice = this.voices.cs;
             this.RedrawPsi(param1.idd);
-            param1.nick = "Civil Security Heavy";
+            param1.nick = "Blue Civil Security Heavy";
             param1.blood_red = 255 / 255;
             param1.blood_green = 0 / 255;
             param1.blood_blue = 0 / 255;
@@ -10868,7 +10942,7 @@ package pb2_re34_fla
             param1.armored = 0;
             param1.voice = this.voices.cs;
             this.RedrawPsi(param1.idd);
-            param1.nick = "Civil Security Heavy";
+            param1.nick = "Red Civil Security Heavy";
             param1.blood_red = 255 / 255;
             param1.blood_green = 0 / 255;
             param1.blood_blue = 0 / 255;
@@ -10876,7 +10950,7 @@ package pb2_re34_fla
          else if(param1.char == 200)
          {
             param1.armored = 0;
-            param1.voice = this.voices.proxy;
+            param1.voice = this.voices.oldproxy;
             this.RedrawPsi(param1.idd);
             param1.nick = "Moon Scout";
             param1.blood_red = 255 / 255;
@@ -10886,7 +10960,7 @@ package pb2_re34_fla
          else if(param1.char == 201)
          {
             param1.armored = 0;
-            param1.voice = this.voices.hexagon;
+            param1.voice = this.voices.vulture;
             this.RedrawPsi(param1.idd);
             param1.nick = "Moon Marine";
             param1.blood_red = 255 / 255;
@@ -10978,7 +11052,7 @@ package pb2_re34_fla
             param1.armored = 2;
             param1.voice = this.voices.grub;
             this.RedrawPsi(param1.idd);
-            param1.nick = "Serkova Devastator Grub";
+            param1.nick = "Serkova Devastator Grub ";
             param1.blood_red = 255 / 255;
             param1.blood_green = 255 / 255;
             param1.blood_blue = 0 / 255;
@@ -11019,25 +11093,14 @@ package pb2_re34_fla
          }
          else if(param1.char == 215)
          {
-            param1.armored = 0;
-            param1.voice = this.voices.ghost;
+            param1.armored = 1;
+            param1.voice = this.voices.xin;
             this.RedrawPsi(param1.idd);
-            param1.nick = "Phantom";
-            param1.mobility = 1.25;
-            param1.blood_red = 255 / 255;
-            param1.blood_green = 0 / 255;
-            param1.blood_blue = 0 / 255;
-         }
-         else if(param1.char == 216)
-         {
-            param1.armored = 0;
-            param1.voice = this.voices.ghost;
-            this.RedrawPsi(param1.idd);
-            param1.nick = "Phantom";
-            param1.mobility = 1.25;
-            param1.blood_red = 255 / 255;
-            param1.blood_green = 0 / 255;
-            param1.blood_blue = 0 / 255;
+            param1.mobility = 1;
+            param1.nick = "Chaos Security Boss";
+            param1.blood_red = 0;
+            param1.blood_green = 0;
+            param1.blood_blue = 0;
          }
          else
          {
@@ -11047,7 +11110,7 @@ package pb2_re34_fla
             param1.blood_green = 0;
             param1.blood_blue = 0;
          }
-         if(param1.charset_by_user || this.MP_mode && this.MP_type != 2)
+         if(param1.charset_by_user && (this.MP_mode || this.MP_type != 2))
          {
             param1.mobility = 1;
             param1.isGhost = false;
@@ -11389,9 +11452,9 @@ package pb2_re34_fla
          this.chat_bubble = [-1,-1];
          this.ambient_sounds = true;
          this.fall_impact_height = 1;
-         this.fall_impact_stability = false;
+         this.fall_impact_stability = 1;
          this.kinetic_through_walls = true;
-         this.kinetic_range = 750000;
+         this.kinetic_range = 75000;
          this.reflect_distance = 30;
          this.global_collision = true;
          this.limb_breaking_allowed = true;
@@ -12027,7 +12090,7 @@ package pb2_re34_fla
                   {
                      this.mc = this.game.addChildAt(new veh_hh(),this.game.numChildren);
                      n = 6;
-                     if(!HINTS)
+                     if(!this.HINTS)
                      {
                         origin.visible = false;
                      }
@@ -12457,7 +12520,7 @@ package pb2_re34_fla
                   if(b["#mark"] == "strict_casual")
                   {
                      this.CASUAL_MODE = true;
-                     this.MP_mode = true;
+                     this.STRICT_MODE = true;
                      this.new_active.visible = true;
                      this.new_active.gotoAndPlay(1);
                   }
@@ -12694,7 +12757,7 @@ package pb2_re34_fla
                   this.mc.charset_by_user = false;
                   if(this.MP_myid == this.mc.idd)
                   {
-                     if(this.MP_mode)
+                     if(!this.MP_mode)
                      {
                         if(this.MP_type != 1)
                         {
@@ -12778,12 +12841,12 @@ package pb2_re34_fla
                   {
                      if(!this.mc.isplayer || this.ANONYMOUS_MODE && this.MP_myid != this.mc.idd)
                      {
-                        this.mc.gui.visible = true;
+                        this.mc.gui.visible = false;
                      }
                   }
                   else if(this.mc.team != this.mens[this.MP_myid].team)
                   {
-                     this.mc.gui.visible = false;
+                     this.mc.gui.visible = true;
                   }
                   if(this.MP_mode)
                   {
@@ -14898,7 +14961,7 @@ package pb2_re34_fla
             param1.hea = 70;
             param1.hmax = 70;
             param1.attached = -1;
-            if(!HINTS)
+            if(!this.HINTS)
             {
                param1.origin.visible = false;
             }
@@ -15375,7 +15438,7 @@ package pb2_re34_fla
                            if(this.mens[param1].dead)
                            {
                               this.LAST_ERROR = "YOUR TEAMMATE DIED.";
-                              if(HINTS)
+                              if(this.HINTS)
                               {
                                  this.SetHint("Your teammate died.");
                               }
@@ -15383,7 +15446,7 @@ package pb2_re34_fla
                            else
                            {
                               this.LAST_ERROR = "YOUR TEAMMATE IS CRITICALLY INJURED.";
-                              if(HINTS)
+                              if(this.HINTS)
                               {
                                  this.SetHint("Your teammate is critically injured.");
                               }
@@ -23380,8 +23443,8 @@ package pb2_re34_fla
                            {
                               this.mens[this.MP_myid].hea /= 100000;
                               this.mens[this.MP_myid].hmax /= 100000;
+                              this.mens[this.MP_myid].can_be_hit = true;
                               this.Hurt_nopain(this.MP_myid);
-                              this.mens[this.MP_myid].can_be_hit = false;
                               this.ok = false;
                            }
                            if(this.gamechat_input_text == "headshot")
@@ -23510,7 +23573,7 @@ package pb2_re34_fla
                               this.game_scale = 1;
                               this.ok = false;
                            }
-                           if(this.gamechat_input_text == "zoom 90")
+                           if(this.gamechat_input_text == "zoom 80")
                            {
                               this.game_scale = 0.8;
                               this.ok = false;
@@ -24129,7 +24192,7 @@ package pb2_re34_fla
                         {
                            if(this.aio[_loc2_] == true || this.aio[_loc2_] == false)
                            {
-                              if(this.aof[_loc2_] >= 0 && this.aof[_loc2_] < 100 && this.mens[this.aof[_loc2_]].incar == -1 && this.aof[_loc2_] != this.MP_myid || this.aof[_loc2_] >= 100 || this.aof[_loc2_] > -200 && this.aof[_loc2_] <= -100 || this.aof[_loc2_] < 0 && this.aof[_loc2_] > -100 && this.guns[-this.aof[_loc2_] - 1].alpha > 0)
+                              if(this.aof[_loc2_] >= 0 && this.aof[_loc2_] < 100 && this.mens[this.aof[_loc2_]].incar == -1 && this.aof[_loc2_] != this.MP_myid || this.aof[_loc2_] >= 100 || this.aof[_loc2_] > -200 && this.aof[_loc2_] <= -100 || this.aof[_loc2_] < 0 && this.aof[_loc2_] > -100 && !this.guns[-this.aof[_loc2_] - 1].forcars && this.guns[-this.aof[_loc2_] - 1].alpha > 0)
                               {
                                  if(this.arad[_loc2_] < 16)
                                  {
@@ -24144,10 +24207,12 @@ package pb2_re34_fla
                                              {
                                                 if(this.guns[-this.aof[_loc2_] - 1].picken_by != -1)
                                                 {
-                                                   if(this.guns[-this.aof[_loc2_] - 1].picken_by == this.MP_myid)
+                                                   if(!this.guns[-this.aof[_loc2_] - 1].forcars)
                                                    {
-                                                      this.guns[-this.aof[_loc2_] - 1].forcars = false;
-                                                      this.ok = false;
+                                                      if(this.guns[-this.aof[_loc2_] - 1].picken_by == this.MP_myid)
+                                                      {
+                                                         this.ok = false;
+                                                      }
                                                    }
                                                 }
                                              }
@@ -25876,6 +25941,36 @@ package pb2_re34_fla
                            }
                            this.ok = true;
                            _loc4_ = 0;
+                           while(_loc4_ < this.regionstotal)
+                           {
+                              if(this.regions[_loc4_].use_on == 16)
+                              {
+                                 if(this.puls[_loc1_].x > this.regions[_loc4_].x)
+                                 {
+                                    if(this.puls[_loc1_].x < this.regions[_loc4_].x + this.regions[_loc4_].w)
+                                    {
+                                       if(this.puls[_loc1_].y > this.regions[_loc4_].y)
+                                       {
+                                          if(this.puls[_loc1_].y < this.regions[_loc4_].y + this.regions[_loc4_].h)
+                                          {
+                                             if(this.regions[_loc4_].use_target != -1 && !this.regions[_loc4_].uses_timer)
+                                             {
+                                                this.triggers[this.regions[_loc4_].use_target].forcehyperjump = false;
+                                                this.EXEC_TRIGGER(this.regions[_loc4_].use_target);
+                                             }
+                                             else if(this.regions[_loc4_].use_target != -1 && this.regions[_loc4_].uses_timer && !this.timers[this.regions[_loc4_].use_target].enabledd)
+                                             {
+                                                this.timers[this.regions[_loc4_].use_target].forcehyperjump = false;
+                                                this.timers[this.regions[_loc4_].use_target].enabledd = true;
+                                             }
+                                          }
+                                       }
+                                    }
+                                 }
+                              }
+                              _loc4_++;
+                           }
+                           _loc4_ = 0;
                            while(_loc4_ < this.watertotal)
                            {
                               if(this.puls[_loc1_].x > this.wax[_loc4_])
@@ -26527,47 +26622,44 @@ package pb2_re34_fla
                                              {
                                                 this.mc2 = this.mens[_loc4_];
                                                 this.i3 = -1;
-                                                if(this.Dist2D(this.puls[_loc1_].x,this.puls[_loc1_].y,this.mc2.x,this.mc2.y) < 300 * this.mc2.scale)
+                                                if(this.CheckHit(_loc1_,this.mc2.b_head_end) || this.CheckHit(_loc1_,this.mc2.b_head_start))
                                                 {
-                                                   if(this.CheckHit(_loc1_,this.mc2.b_head_end) || this.CheckHit(_loc1_,this.mc2.b_head_start))
-                                                   {
-                                                      this.i3 = this.mc2.b_head_end;
-                                                      this.str = "head";
-                                                   }
-                                                   else if(this.CheckHit(_loc1_,this.mc2.b_body) || !this.mc2.brk_body && this.CheckCross(this.puls[_loc1_].lx,this.puls[_loc1_].ly,this.puls[_loc1_].nx,this.puls[_loc1_].ny,this.ax[this.mc2.b_body],this.ay[this.mc2.b_body],this.ax[this.mc2.b_toe],this.ay[this.mc2.b_toe],_loc1_))
-                                                   {
-                                                      this.i3 = this.mc2.b_body;
-                                                      this.str = "body";
-                                                   }
-                                                   else if(this.CheckHit(_loc1_,this.mc2.b_toe))
-                                                   {
-                                                      this.i3 = this.mc2.b_toe;
-                                                      this.str = "legs";
-                                                   }
-                                                   else if(this.CheckHit(_loc1_,this.mc2.b_arm1))
-                                                   {
-                                                      this.i3 = this.mc2.b_arm1;
-                                                      this.str = "arms";
-                                                   }
-                                                   else if(this.CheckHit(_loc1_,this.mc2.b_arm2))
-                                                   {
-                                                      this.i3 = this.mc2.b_arm2;
-                                                      this.str = "arms";
-                                                   }
-                                                   else if(this.CheckHit(_loc1_,this.mc2.b_leg1) || this.CheckCross(this.puls[_loc1_].lx,this.puls[_loc1_].ly,this.puls[_loc1_].nx,this.puls[_loc1_].ny,this.ax[this.mc2.b_toe],this.ay[this.mc2.b_toe],this.ax[this.mc2.b_leg1],this.ay[this.mc2.b_leg1],_loc1_))
-                                                   {
-                                                      this.i3 = this.mc2.b_leg1;
-                                                      this.str = "legs";
-                                                   }
-                                                   else if(this.CheckHit(_loc1_,this.mc2.b_leg2) || this.CheckCross(this.puls[_loc1_].lx,this.puls[_loc1_].ly,this.puls[_loc1_].nx,this.puls[_loc1_].ny,this.ax[this.mc2.b_toe],this.ay[this.mc2.b_toe],this.ax[this.mc2.b_leg2],this.ay[this.mc2.b_leg2],_loc1_))
-                                                   {
-                                                      this.i3 = this.mc2.b_leg2;
-                                                      this.str = "legs";
-                                                   }
-                                                   else
-                                                   {
-                                                      this.i3 = -1;
-                                                   }
+                                                   this.i3 = this.mc2.b_head_end;
+                                                   this.str = "head";
+                                                }
+                                                else if(this.CheckHit(_loc1_,this.mc2.b_body) || !this.mc2.brk_body && this.CheckCross(this.puls[_loc1_].lx,this.puls[_loc1_].ly,this.puls[_loc1_].nx,this.puls[_loc1_].ny,this.ax[this.mc2.b_body],this.ay[this.mc2.b_body],this.ax[this.mc2.b_toe],this.ay[this.mc2.b_toe],_loc1_))
+                                                {
+                                                   this.i3 = this.mc2.b_body;
+                                                   this.str = "body";
+                                                }
+                                                else if(this.CheckHit(_loc1_,this.mc2.b_toe))
+                                                {
+                                                   this.i3 = this.mc2.b_toe;
+                                                   this.str = "legs";
+                                                }
+                                                else if(this.CheckHit(_loc1_,this.mc2.b_arm1))
+                                                {
+                                                   this.i3 = this.mc2.b_arm1;
+                                                   this.str = "arms";
+                                                }
+                                                else if(this.CheckHit(_loc1_,this.mc2.b_arm2))
+                                                {
+                                                   this.i3 = this.mc2.b_arm2;
+                                                   this.str = "arms";
+                                                }
+                                                else if(this.CheckHit(_loc1_,this.mc2.b_leg1) || this.CheckCross(this.puls[_loc1_].lx,this.puls[_loc1_].ly,this.puls[_loc1_].nx,this.puls[_loc1_].ny,this.ax[this.mc2.b_toe],this.ay[this.mc2.b_toe],this.ax[this.mc2.b_leg1],this.ay[this.mc2.b_leg1],_loc1_))
+                                                {
+                                                   this.i3 = this.mc2.b_leg1;
+                                                   this.str = "legs";
+                                                }
+                                                else if(this.CheckHit(_loc1_,this.mc2.b_leg2) || this.CheckCross(this.puls[_loc1_].lx,this.puls[_loc1_].ly,this.puls[_loc1_].nx,this.puls[_loc1_].ny,this.ax[this.mc2.b_toe],this.ay[this.mc2.b_toe],this.ax[this.mc2.b_leg2],this.ay[this.mc2.b_leg2],_loc1_))
+                                                {
+                                                   this.i3 = this.mc2.b_leg2;
+                                                   this.str = "legs";
+                                                }
+                                                else
+                                                {
+                                                   this.i3 = -1;
                                                 }
                                                 if(this.i3 != -1)
                                                 {
@@ -30265,7 +30357,7 @@ package pb2_re34_fla
                                  {
                                     this.LEVEL_END_FORCE = "failed";
                                     this.LAST_ERROR = "YOUR TEAM IS DEAD.";
-                                    if(HINTS)
+                                    if(this.HINTS)
                                     {
                                        this.SetHint("Your team is dead.");
                                     }
@@ -30291,7 +30383,7 @@ package pb2_re34_fla
                                  if(this.mens[this.MP_myid].lastshotby == this.MP_myid || this.mens[this.MP_myid].lastshotby == -1)
                                  {
                                     this.LAST_ERROR = "BAD LUCK, YOU DIED.";
-                                    if(HINTS)
+                                    if(this.HINTS)
                                     {
                                        this.SetHint("Try not to kill yourself.");
                                     }
@@ -30299,7 +30391,7 @@ package pb2_re34_fla
                                  else
                                  {
                                     this.LAST_ERROR = "YOU ARE DEAD.";
-                                    if(HINTS)
+                                    if(this.HINTS)
                                     {
                                        this.SetHint("You are dead.");
                                     }
@@ -30895,7 +30987,8 @@ package pb2_re34_fla
                                  this.xx = Math.sin(this.xx);
                                  if(!this.mc.stand)
                                  {
-                                    this.xx2 = 0.66;
+                                    this.xx2 = 0.33;
+                                    this.xx2 *= 2;
                                     this.xx *= this.BOOST_MULT;
                                     this.yy *= this.BOOST_MULT;
                                     this.mc.tox -= this.xx * this.xx2 * this.thispulspeed;
@@ -32181,15 +32274,20 @@ package pb2_re34_fla
                                                 if(this.guns[-this.aof[this.cinetic_target] - 1].picken_by != -1)
                                                 {
                                                    this.ok = true;
-                                                   if(this.guns[-this.aof[this.cinetic_target] - 1].picken_by != this.MP_myid)
+                                                   if(!this.guns[-this.aof[this.cinetic_target] - 1].forcars)
                                                    {
-                                                      if(this.mens[this.guns[-this.aof[this.cinetic_target] - 1].picken_by].curwea == -this.aof[this.cinetic_target] - 1)
+                                                      if(this.guns[-this.aof[this.cinetic_target] - 1].picken_by != this.MP_myid)
                                                       {
-                                                         this.mens[this.guns[-this.aof[this.cinetic_target] - 1].picken_by].curwea = -1;
+                                                         if(this.mens[this.guns[-this.aof[this.cinetic_target] - 1].picken_by].can_drop_guns)
+                                                         {
+                                                            if(this.mens[this.guns[-this.aof[this.cinetic_target] - 1].picken_by].curwea == -this.aof[this.cinetic_target] - 1)
+                                                            {
+                                                               this.mens[this.guns[-this.aof[this.cinetic_target] - 1].picken_by].curwea = -1;
+                                                            }
+                                                            this.guns[-this.aof[this.cinetic_target] - 1].picken_by = -1;
+                                                            this.ok = false;
+                                                         }
                                                       }
-                                                      this.guns[-this.aof[this.cinetic_target] - 1].picken_by = -1;
-                                                      this.guns[-this.aof[this.cinetic_target] - 1].forcars = false;
-                                                      this.ok = false;
                                                    }
                                                    if(this.ok)
                                                    {
@@ -32521,7 +32619,7 @@ package pb2_re34_fla
                               this.mc.gui.h.scaleX = this.mc.hea / this.mc.hmax;
                            }
                         }
-                        else if(this.mc.gui.alpha > 0.2)
+                        else if(this.mc.gui.alpha > 0)
                         {
                            this.mc.gui.h.scaleX = 0;
                            this.mc.gui.alpha -= 0.1 * this.GSPEED;
@@ -34881,7 +34979,7 @@ package pb2_re34_fla
                                        }
                                        if(allow_reload)
                                        {
-                                          this.guns[i].gotoAndStop(1);
+                                          this.MakeGunByClass(this.guns[i].model,this.guns[i],true);
                                        }
                                     }
                                  }
@@ -36052,7 +36150,7 @@ package pb2_re34_fla
                   }
                   this.myCursor.ch1.scaleX = this.myCursor.ch2.scaleX = this.myCursor.ch3.scaleX = this.myCursor.ch4.scaleX = this.myCursor.ch3.scaleY = this.myCursor.ch4.scaleY = this.xx * this.xx + 0.5;
                }
-               if(TOOLTIPS && !this.ANONYMOUS_MODE)
+               if(this.TOOLTIPS && !this.ANONYMOUS_MODE)
                {
                   if(this.Math_abs(this.lastcurx - this.myCursor.x - this.game.x) + this.Math_abs(this.lastcury - this.myCursor.y - this.game.y) < 10)
                   {
@@ -38056,22 +38154,22 @@ package pb2_re34_fla
             if(currentLabel == "gaming")
             {
                html = myMPlayerInfoLoader.data;
-               if(html.indexOf("<w />") != -1)
+               if(html_in.indexOf("<w />") != -1)
                {
-                  html = html.split("<w />").join("");
+                  html_formatted = html_in.split("<w />").join("");
                   if(exp_legens[mc.login_name] == undefined)
                   {
                      exp_legens[mc.login_name] = true;
                      ExpTask(EXP_TYPE_LEGEND,mc.login_name);
                   }
                }
-               mc.gui.txt2.htmlText = html;
+               mc.gui.txt2.htmlText = html_formatted;
                mc.gui.txt2.visible = true;
                mc.gui.txt2.alpha = 0.5;
                mc.info = {
                   "A":mc.login_name,
                   "B":SHOW_EXP_BAR,
-                  "html":myMPlayerInfoLoader.data
+                  "html":html_in
                };
             }
          };
@@ -38371,13 +38469,13 @@ package pb2_re34_fla
          }
          if(param1 == 0)
          {
-            if(this.skin_model[param1] > 216)
+            if(this.skin_model[param1] > 215)
             {
                this.skin_model[param1] = 1;
             }
             if(this.skin_model[param1] < 1)
             {
-               this.skin_model[param1] = 216;
+               this.skin_model[param1] = 215;
             }
          }
          if(param1 == 1)
@@ -38499,7 +38597,7 @@ package pb2_re34_fla
          var upg_level:int = 0;
          this.creds.text = "$ " + this.CMPG_money;
          this.xx = 186;
-         this.yy = this.game.sample.y;
+         this.yy = this.game.sample.y + -75;
          this.ok = true;
          this.i3 = 0;
          this.i6 = 0;
@@ -38724,7 +38822,7 @@ package pb2_re34_fla
                   PlaySound_full(ss_info_off);
                });
             }
-            this.yy += 17;
+            this.yy += 12;
             ++this.i;
          }
          this.firstframe = false;
@@ -38743,7 +38841,7 @@ package pb2_re34_fla
       {
          this.creds.text = "$ " + this.CMPG_money;
          this.xx = 186;
-         this.yy = this.game.sample.y;
+         this.yy = this.game.sample.y + -75;
          this.ok = true;
          this.i3 = 0;
          this.i6 = 0;
@@ -38967,7 +39065,7 @@ package pb2_re34_fla
                   PlaySound_full(ss_info_off);
                });
             }
-            this.yy += 17;
+            this.yy += 12;
             ++this.i;
          }
          this.firstframe = false;
@@ -41045,7 +41143,7 @@ package pb2_re34_fla
          this.PRO_BOTS = false;
          this.ARCADE_GAME_MODE = true;
          this.KINETIC_MODULE_ENABLED = false;
-         this.LEVELS_TOTAL = 42;
+         this.LEVELS_TOTAL = 58;
          this.LEVELS_PASSED = 0;
          this.CMPG_THIS_LEVEL = -1;
          this.AWARD = false;
@@ -41127,30 +41225,71 @@ package pb2_re34_fla
          this.AddItemToHero3("gun_pistol",3);
          this.AddItemToHero3("gun_pistol2",3);
          this.AddItemToHero3("gun_apistol",3);
+         this.AddItemToHero3("roxxar_pistol",3);
          this.AddItemToHero3("gun_rifle",3);
          this.AddItemToHero3("gun_real_rifle",3);
          this.AddItemToHero3("gun_arifle",3);
+         this.AddItemToHero3("gun_minigun",3);
+         this.AddItemToHero3("gun_rayrifle",3);
+         this.AddItemToHero3("gun_oicw",3);
          this.AddItemToHero3("gun_shotgun",3);
          this.AddItemToHero3("gun_arifle2",3);
-         this.AddItemToHero3("gun_rl",3);
-         this.AddItemToHero3("gun_raygun",3);
-         this.AddItemToHero3("gun_plasmagun",3);
+         this.AddItemToHero3("gun_real_shotgun",3);
          this.AddItemToHero3("gun_railgun",3);
-         this.AddItemToHero3("gun_bfg",3);
+         this.AddItemToHero3("gun_railgun2",3);
+         this.AddItemToHero3("gun_sniper",3);
+         this.AddItemToHero3("darkstar_1_cs_ragequit",3);
+         this.AddItemToHero3("darkstar_1_usniper",3);
+         this.AddItemToHero3("lazyrain_psi_cutter",3);
+         this.AddItemToHero3("gun_rl",3);
+         this.AddItemToHero3("darkstar_1_nade_c9",3);
+         this.AddItemToHero3("incompetence_glhf",3);
+         this.AddItemToHero3("darkstar_1_owo_rl",3);
+         this.AddItemToHero3("lazyrain_cannon2",3);
+         this.AddItemToHero3("lazyrain_gravy_rl",3);
+         this.AddItemToHero3("gun_gl",3);
          this.AddItemToHero3("gun_defibrillator",3);
-         this.AddItemToHero3("item_grenade",3);
+         this.AddItemToHero3("lazyrain_heal_pistol",3);
+         this.AddItemToHero3("gun_bfg",3);
+         this.AddItemToHero3("gun_sp_sh",3);
+         this.AddItemToHero3("gun_plasmagun",3);
+         this.AddItemToHero3("lazyrain_alien_laser_rifle2",3);
+         this.AddItemToHero3("gun_raygun",3);
+         this.AddItemToHero3("gun_vgun",3);
+         this.AddItemToHero4("gun_pistol",3);
          this.AddItemToHero4("gun_pistol2",3);
          this.AddItemToHero4("gun_apistol",3);
+         this.AddItemToHero4("roxxar_pistol",3);
+         this.AddItemToHero4("gun_rifle",3);
          this.AddItemToHero4("gun_real_rifle",3);
          this.AddItemToHero4("gun_arifle",3);
-         this.AddItemToHero4("gun_real_shotgun",3);
+         this.AddItemToHero4("gun_minigun",3);
+         this.AddItemToHero4("gun_rayrifle",3);
+         this.AddItemToHero4("gun_oicw",3);
+         this.AddItemToHero4("gun_shotgun",3);
          this.AddItemToHero4("gun_arifle2",3);
-         this.AddItemToHero4("gun_rl",3);
-         this.AddItemToHero4("gun_plasmagun",3);
+         this.AddItemToHero4("gun_real_shotgun",3);
          this.AddItemToHero4("gun_railgun",3);
          this.AddItemToHero4("gun_railgun2",3);
+         this.AddItemToHero4("gun_sniper",3);
+         this.AddItemToHero4("darkstar_1_cs_ragequit",3);
+         this.AddItemToHero4("darkstar_1_usniper",3);
+         this.AddItemToHero4("lazyrain_psi_cutter",3);
+         this.AddItemToHero4("gun_rl",3);
+         this.AddItemToHero4("darkstar_1_nade_c9",3);
+         this.AddItemToHero4("incompetence_glhf",3);
+         this.AddItemToHero4("darkstar_1_owo_rl",3);
+         this.AddItemToHero4("lazyrain_cannon2",3);
+         this.AddItemToHero4("lazyrain_gravy_rl",3);
+         this.AddItemToHero4("gun_gl",3);
          this.AddItemToHero4("gun_defibrillator",3);
-         this.AddItemToHero4("item_grenade",3);
+         this.AddItemToHero4("lazyrain_heal_pistol",3);
+         this.AddItemToHero4("gun_bfg",3);
+         this.AddItemToHero4("gun_sp_sh",3);
+         this.AddItemToHero4("gun_plasmagun",3);
+         this.AddItemToHero4("lazyrain_alien_laser_rifle2",3);
+         this.AddItemToHero4("gun_raygun",3);
+         this.AddItemToHero4("gun_vgun",3);
          this.clrs[0] = new ColorMatrixFilter();
          this.matrix = new Array();
          this.matrix = this.matrix.concat([1,0,0,0,0]);
@@ -41536,7 +41675,7 @@ package pb2_re34_fla
                }
                else if(TOOLTIPS && tooltip_updated)
                {
-                  if(currentLabel != "gaming" || currentLabel == "gaming" && (gamemenu.visible && !mens[MP_myid].dead))
+                  if(currentLabel != "gaming" || currentLabel == "gaming" && (gamemenu.visible && !system_non_stop && !mens[MP_myid].dead))
                   {
                      myCursor.visible = false;
                      myCursor.gotoAndPlay(1);
@@ -41578,6 +41717,8 @@ package pb2_re34_fla
          this.MP_round = 0;
          this.MP_gamestate = 0;
          this.tooltip_updated = false;
+         this.TOOLTIPS = true;
+         this.HINTS = true;
          this.gamechat_input_text = "";
          this.MP_playerstotal = 0;
          this.PLAYER_WIDTH = 10;
@@ -41833,6 +41974,17 @@ package pb2_re34_fla
          this.s_elurra_welcome3 = new elurra_welcome3();
          this.s_elurra_edown1 = new elurra_edown1();
          this.s_elurra_edown2 = new elurra_edown2();
+         this.s_oldproxy_death1 = new oldproxy_death1();
+         this.s_oldproxy_hurt1 = new oldproxy_hurt1();
+         this.s_oldproxy_hurt2 = new oldproxy_hurt2();
+         this.s_oldproxy_hurt3 = new oldproxy_hurt3();
+         this.s_oldproxy_welcome1 = new oldproxy_welcome1();
+         this.s_oldproxy_welcome2 = new oldproxy_welcome2();
+         this.s_oldproxy_welcome3 = new oldproxy_welcome3();
+         this.s_oldproxy_edown1 = new oldproxy_edown1();
+         this.s_oldproxy_edown2 = new oldproxy_edown2();
+         this.s_oldproxy_edown3 = new oldproxy_edown3();
+         this.s_oldproxy_dying1 = new oldproxy_dying1();
          this.s_wea_moonhawk_smg2.custom_volume = 1;
          this.s_wea_roxxar_rifle.custom_volume = 4;
          this.s_beam1.custom_volume = 2;
@@ -41959,6 +42111,17 @@ package pb2_re34_fla
          this.s_elurra_welcome3.custom_volume = 3;
          this.s_elurra_edown1.custom_volume = 3;
          this.s_elurra_edown2.custom_volume = 3;
+         this.s_oldproxy_death1.custom_volume = 3;
+         this.s_oldproxy_hurt1.custom_volume = 3;
+         this.s_oldproxy_hurt2.custom_volume = 3;
+         this.s_oldproxy_hurt3.custom_volume = 3;
+         this.s_oldproxy_dying1.custom_volume = 3;
+         this.s_oldproxy_welcome1.custom_volume = 3;
+         this.s_oldproxy_welcome2.custom_volume = 3;
+         this.s_oldproxy_welcome3.custom_volume = 3;
+         this.s_oldproxy_edown1.custom_volume = 3;
+         this.s_oldproxy_edown2.custom_volume = 3;
+         this.s_oldproxy_edown3.custom_volume = 3;
          this.s_Grosk_death1.custom_volume = 3;
          this.s_Grosk_death2.custom_volume = 3;
          this.s_Grosk_hurt1.custom_volume = 3;
@@ -42247,12 +42410,19 @@ package pb2_re34_fla
                "hurt":[this.s_arrin_hurt1,this.s_arrin_hurt2],
                "dying":[this.s_arrin_dying]
             },
-            "grosk":{
+            "Grosk":{
                "death":[this.s_Grosk_death1,this.s_Grosk_death2],
                "enemy_down":[this.s_Grosk_edown1,this.s_Grosk_edown2,this.s_Grosk_edown3],
                "enemy_spotted":[this.s_Grosk_welcome1,this.s_Grosk_welcome2,this.s_Grosk_welcome3],
                "hurt":[this.s_Grosk_hurt1,this.s_Grosk_hurt2,this.s_Grosk_hurt3],
                "dying":[this.s_Grosk_dying1,this.s_Grosk_dying2]
+            },
+            "oldproxy":{
+               "death":[this.s_oldproxy_death1],
+               "hurt":[this.s_oldproxy_hurt1,this.s_oldproxy_hurt2,this.s_oldproxy_hurt3],
+               "enemy_down":[this.s_oldproxy_edown1,this.s_oldproxy_edown2,this.s_oldproxy_edown3],
+               "enemy_spotted":[this.s_oldproxy_welcome1,this.s_oldproxy_welcome2,this.s_oldproxy_welcome3],
+               "dying":[this.s_oldproxy_dying1]
             },
             "elurra":{
                "death":[this.s_elurra_death1],
@@ -42290,18 +42460,18 @@ package pb2_re34_fla
                "dying":[this.s_drohnentroop_dying1]
             },
             "civilian_male":{
-               "death":this.LibSoundStringArray(2.2 * 0.75,["civilian_male_death1","civilian_male_death2"]),
-               "enemy_down":this.LibSoundStringArray(2 * 0.75,["civilian_male_celebrate1","civilian_male_celebrate2"]),
-               "enemy_spotted":this.LibSoundStringArray(2 * 0.75,["civilian_male_welcome1","civilian_male_welcome2"]),
-               "hurt":this.LibSoundStringArray(2.2 * 0.75,["civilian_male_hurt1","civilian_male_hurt2","civilian_male_hurt3","civilian_male_hurt4"]),
-               "dying":this.LibSoundStringArray(2 * 0.75,["civilian_male_dying2"])
+               "death":this.LibSoundStringArray(2.2,["civilian_male_death1","civilian_male_death2"]),
+               "enemy_down":this.LibSoundStringArray(2,["civilian_male_celebrate1","civilian_male_celebrate2"]),
+               "enemy_spotted":this.LibSoundStringArray(2,["civilian_male_welcome1","civilian_male_welcome2"]),
+               "hurt":this.LibSoundStringArray(2.2,["civilian_male_hurt1","civilian_male_hurt2","civilian_male_hurt3","civilian_male_hurt4"]),
+               "dying":this.LibSoundStringArray(2,["civilian_male_dying2"])
             },
             "vulture":{
-               "death":this.LibSoundStringArray(2 * 0.66,["vulture_death1","vulture_death2"]),
-               "enemy_down":this.LibSoundStringArray(2 * 0.66,["vulture_celebrate1","vulture_celebrate2","vulture_celebrate3"]),
-               "enemy_spotted":this.LibSoundStringArray(2 * 0.66,["vulture_welcome1","vulture_welcome2","vulture_welcome3"]),
-               "hurt":this.LibSoundStringArray(2 * 0.66,["vulture_hurt1","vulture_hurt2","vulture_hurt3","vulture_hurt4"]),
-               "dying":this.LibSoundStringArray(2 * 0.66,["vulture_dying"])
+               "death":this.LibSoundStringArray(2,["vulture_death1","vulture_death2"]),
+               "enemy_down":this.LibSoundStringArray(2,["vulture_celebrate1","vulture_celebrate2","vulture_celebrate3"]),
+               "enemy_spotted":this.LibSoundStringArray(2,["vulture_welcome1","vulture_welcome2","vulture_welcome3"]),
+               "hurt":this.LibSoundStringArray(2,["vulture_hurt1","vulture_hurt2","vulture_hurt3","vulture_hurt4"]),
+               "dying":this.LibSoundStringArray(2,["vulture_dying"])
             },
             "crossfire_sentinel":{
                "death":this.LibSoundStringArray(2,["crossfire_sentinel_death1","crossfire_sentinel_death2","crossfire_sentinel_death3"]),
@@ -42373,8 +42543,8 @@ package pb2_re34_fla
          this.ainwater_shape = new Array();
          this.atom_first_position_corrections = new Vector.<Object>();
          this.pspeed = 0;
-         this.weapon_penetration_factor = 2;
-         this.rocket_speed_mult = 1;
+         this.weapon_penetration_factor = 0;
+         this.rocket_speed_mult = 2;
          this.grenade_speed_mult = 1;
          this.plasma_speed_mult = 1;
          this.chtypa = new Array();
@@ -42639,48 +42809,6 @@ package pb2_re34_fla
             this.START_CUSTOM_MAP = true;
          }
          this.CACHED_MAPS = new Array();
-         this.CACHED_MAPS["c0a"] = "<q.^f-502^*199^A0^B0^C800^D800^q0^r1^F1^E3^k0^l-1\"^c-161^-6^.107^,310^T1\"^c-560^-43^.266^,410^T1\"^c-264^-5^.4^,150^T0^4-216^*150^i^/2^s-1^L3-178^-5^.18^,1150^T1^3-180^*19^.4^,13^_-197^*16^.19^,8^_-199^*19^.4^,140^T0\"^d-150^*300^u1^t0\" /><vehicle x=\"-43^*110^r-1^jveh_drone^A0^B0\" hpp=\"20^1-43^*69^A0^B0^C100^D100^q2^r-1^F5^E-2^k0^l-1^3-299^-20^.17^,1000^T1^3-630^-^.100^,500^T1^3-180^-3^.4^,4^_-261^-3^.4^,40^T0\" /><barrel x=\"-283^-30^jbar_orange^A0^B0\" /><barrel x=\"-279^-30^jbar_orange^A0^B0^3-202^*12^.7^,4^_-242^*19^.4^,14^_-259^*16^.19^,8^_-261^*19^.4^,130^T0\" /><vehicle x=\"-273^-20^r1^jveh_crate^A0^B0\" hpp=\"100\" /><vehicle x=\"-267^-20^r1^jveh_crate^A0^B0\" hpp=\"100\" /><barrel x=\"-182^-80^jbar_orange^A0^B0^3-222^*15^.4^,90^T0\"^d-280^*200^u1^t0\" /><barrel x=\"-236^*140^jbar_orange^A0^B0\" /><barrel x=\"-183^*180^jbar_orange^A0^B0^360^-47^.20^,73^_60^!1^.20^,18^_69^-51^.93^,69^_79^*33^.83^,480^T0^127^-51^A0^B0^C70^D70^q1^r-1^F2^E-1^k0^l-1^427^-20^ia^/^s-1^L267^-28^.9^,200^x^y0^z0^h4^I\" /><vehicle x=\"-502^*230^r1^jveh_capsule^A0^B10\" hpp=\"100^5-630^*240^.100^,2400^A1^B0^Y100^g0\"^d36^-0^u1^t0^3-10^-^.20^,18^_-50^-^.20^,180^T0^1-53^*59^A0^B0^C100^D100^q2^r-1^F5^E-2^k0^l-1\" /><vehicle x=\"-53^*100^r-1^jveh_drone^A0^B0\" hpp=\"20^4-53^*80^ivehminigun^s-1^L1-191^*159^A0^B0^C100^D100^q2^r-1^F7^E-1^k2^l-1^1-216^*119^A0^B0^C70^D70^q2^r-1^F8^E-1^k2^l-1^1-248^*159^A0^B0^C100^D100^q2^r1^F7^E-1^k0^l-1^4-42^*90^ivehminigun^s-1^L4-248^*180^i^&^#^s-1^L4-191^*180^i^&^#^s-1^L4-248^*190^i^/2^s-1^L4-191^*190^i^/2^s-1^L3-331^-20^.35^,300^T1^3-365^-31^.41^,310^T1^3-387^-40^.37^,270^T1^3-406^-50^.24^,130^T2^3-431^-63^.14^,290^T2^3-484^-73^.72^,190^T2^3-427^-69^.12^,140^T2^3-630^-80^.365^,400^T2\"^d-426^-260^u0.5^t0^3-480^-40^.60^,100^T1^3-630^-32^.80^,690^T2\"^d-477^-300^u0.3^t0\"^d-504^-300^u0.3^t0\"^d-399^-260^u0.5^t0^3-497^-62^.19^,250^T2^3-526^-70^.33^,250^T2^+-550^-74^.20^,60^g0^+-412^-74^.102^,60^g0^3-501^-67^.8^,80^T2^3-530^-73^.8^,110^T2^3-310^-70^.13^,140^T2^3-458^-46^.15^,80^T2^6-295^!40^jstone^U-1^O0^P0^2-301^!2^.14^,10^(H^2-372^-36^.9^,6^(H^6-368^-370^jstone2^U-1^O0^P0^2-298^-9^.12^,13^(H^2-300^!0^.14^,10^(H^2-370^-34^.10^,6^(H\" /><inf x=\"-502^*230^Zhero1_guns^;0^369^-8^.93^,14^_6^-50^.64^,700^T0^114^-51^A0^B0^C70^D70^q1^r-1^F2^E-1^k0^l-1^414^-20^ia^/^s-1^M0\"^c64^!6^.98^,44^_110^*90^.52^,700^T0^4-307^-690^jitem_grenade^s-1^L4-301^-690^jitem_grenade^s-1^L4-201^*130^jitem_grenade^s-1^L4-197^*200^jitem_grenade^s-1^M0\"^d-310^-510^u0.4^t1^7^G1^m1^o7^m1^p1^m1^nc1a^>\"^e31^-27^.37^,230^K0^J6^1-224^*119^A0^B0^C70^D70^q2^r-1^F8^E-1^k2^l-1^4-224^*140^i^/2^s-1^L4-264^-20^jitem_grenade^s-1^L4-276^!0^jitem_grenade^s-1^L3-263^*12^.5^,40^T0^4-264^-30^jitem_grenade^s-1^L3-60^-5^.91^,1150^T1^3-166^-30^.125^,900^T2^1-81^-201^A0^B0^C70^D70^q1^r-1^F2^E-1^k0^l-1^4-81^!90^ia^/^s-1^L1-70^-301^A0^B0^C70^D70^q1^r-1^F2^E-1^k0^l-1^4-70^-290^ia^/^s-1^L3-160^-27^.40^,10^_-90^-20^.10^,15^_-170^-24^.40^,10^_-173^-21^.33^,10^_-173^!8^.23^,10^_-140^-^.30^,100^T1^3-289^-5^.30^,1150^T1^3-100^-^.30^,100^T1\"^c-114^!^.18^,50^T1\"^d-105^*300^u1^t0\"^d-59^*300^u1^t0\" /><barrel x=\"-186^-80^jbar_orange^A0^B0^3-336^-53^.8^,130^T1^3-343^!8^.26^,160^T1\" /><barrel x=\"-532^-780^jbar_blue^A0^B0\" /><barrel x=\"-535^-780^jbar_blue^A0^B0^1-287^-91^A-5^B3^C0^D0^q1^r1^F2^E-1^k0^l-1^1-296^!31^A-8^B3^C0^D0^q1^r1^F2^E-1^k0^l-1^4-298^-80^ia^#^s-1^L4-311^!90^ia^#^s-1^L2-352^-20^.12^,13^(H^2-354^-21^.14^,10^(H^2-355^-23^.14^,10^(H^6-349^-250^jstone^U-1^O0^P0^3-225^*12^.10^,4^_-241^*12^.7^,40^T0\"^d-230^*500^u1^t0\"^d-207^*500^u1^t0\"^c-260^*15^.21^,40^T0\"^c-198^*15^.21^,4^_-270^!0^.100^,1100^T0\" /><barrel x=\"-255^-80^jbar_orange^A0^B0\" /><barrel x=\"-252^-80^jbar_orange^A0^B0^3-225^-3^.10^,4^_-222^-5^.4^,80^T0\"^c-177^-5^.4^,150^T0\"^c-260^*11^.83^,31^_-484^-64^.61^,140^T2^5110^*240^.52^,1500^A-2^B0^Y100^g0\" /><inf x=\"-482^*50^Znobase^;0\" />";
-         this.CACHED_MAPS["c1a"] = "<q.^f35^*179^A0^B2^C800^D800^q0^r1^F1^E-1^k0^l-1^3-10^-5^.79^,1360^T0\"^c64^*26^.416^,146^_60^-2^.20^,38^_60^*34^.20^,18^_70^-6^.50^,13^_69^*37^.146^,14^_78^*80^.147^,480^T0^192^-61\" uid=\"#player^A0^B0^C70^D70^q1^r-1^F2^E-1^k0^l-1^1105^!\" uid=\"#player^A0^B0^C70^D70^q1^r-1^F2^E-1^k0^l-1^3100^-^.8^,10^_116^*31^.21^,17^_116^*3^.21^,120^T0^267^*17^.9^,200\" uid=\"#doori^x^y0^z0^h4^I\"^e58^*17^.7^,250\" uid=\"#region_193^K1^J2\"^e67^!^.9^,200\" uid=\"#region_195^K-1^J4^3181^*27^.34^,18^_135^-24^.33^,29^_133^-^.7^,6^_204^*53^.21^,136^_181^-4^.24^,6^_180^-2^.3^,8^_150^*14^.4^,20^_194^-24^.11^,6^_193^-22^.3^,80^T0^1186^-41\" uid=\"#player^A0^B0^C70^D70^q1^r-1^F2^E-1^k2^l-1^4186^!0\" uid=\"#gun_183^ia^#^s-1^L1137^-241\" uid=\"#player^A0^B0^C70^D70^q1^r1^F2^E-1^k3^l-1^1169^-241\" uid=\"#player^A0^B0^C140^D140^q1^r-1^F6^E-1^k3^l-1^4137^-210\" uid=\"#gun_183^ia^#^s-1^L3153^!^.9^,50^T0^1158^!1\" uid=\"#player^A0^B0^C70^D70^q1^r-1^F2^E-1^k2^l-1^4158^*20\" uid=\"#gun_183^ia^#^s-1^L3194^-44^.11^,6^_116^-6^.10^,7^_110^-33^.30^,70^T0\"^d97^*22^~d160^*22^~d179^-6^~d192^-26^~d95^-200^u0.4^t1^3120^-50^.10^,7^_103^-50^.7^,7^_60^-50^.30^,25^_60^-70^.108^,500^T0^4169^-210\" uid=\"#gun_183^ia^#2^s-1^L3143^!8^.5^,9^_166^-64^.4^,47^_166^-24^.4^,370^T0^1160^-691\" uid=\"#player^A0^B0^C70^D70^q1^r1^F2^E-1^k3^l-1^4160^-660\" uid=\"#gun_183^ia^#^s-1^M0\"^d192^-450^u0.4^t1^3193^-41^.3^,9^_194^-64^.16^,16^_193^-62^.3^,180^T0\"^d192^-660^u0.4^t1^1199^-641\" uid=\"#player^A0^B0^C70^D70^q1^r-1^F2^E-1^k2^l-1^4199^-610\" uid=\"#gun_183^ia^#^s-1^L2172^-25^.19^,50\" uid=\"#door2^x^y0^z0^h2^I\"^e172^-95^.19^,50\" uid=\"#regionT^K-1^J4^7^G1^m1^o0^m1^p1^m1^n2^m2^o28^m2^p13^m2^n4^m3^o28^m3^p13^m3^n5^m4^o28^m4^p14^m4^n6^m5^o43^m5^p0^m5^n0^m6^o-1^m6^p0^m6^n0^m7^o-1^m7^p0^m7^n0^m8^o-1^m8^p0^m8^n0^m9^o-1^m9^p0^m9^n0^m10^o-1^m10^p0^m10^n0\"^e143^-59^.12^,110\" uid=\"#region_334^K0^J1\" /><barrel x=\"153^*160\" uid=\"#barrel^jbar_orange^A0^B0\" /><barrel x=\"154^-220\" uid=\"#barrel^jbar_orange^A0^B0\" /><barrel x=\"150^-220\" uid=\"#barrel^jbar_orange^A0^B0\" /><barrel x=\"127^-480\" uid=\"#barrel^jbar_orange^A0^B0\" /><barrel x=\"131^-680\" uid=\"#barrel^jbar_orange^A0^B0\" /><barrel x=\"135^-680\" uid=\"#barrel^jbar_orange^A0^B0\" /><barrel x=\"95^-680\" uid=\"#barrel^jbar_orange^A0^B0\" /><barrel x=\"83^-480\" uid=\"#barrel^jbar_orange^A0^B0\" /><barrel x=\"203^-620\" uid=\"#barrel^jbar_orange^A0^B0\" /><barrel x=\"173^-230\" uid=\"#barrel^jbar_orange^A0^B0^354^!01^.143^,40^_191^-95^.45^,46^_240^-60^.40^,60^_220^*58^.50^,98^_315^*80^.95^,110^_310^-52^.10^,28^_270^-90^.140^,40^_340^-60^.70^,40^_369^*40^.111^,80^_372^-58^.30^,16^_376^-56^.30^,16^_380^-54^.30^,16^_384^-52^.96^,680^T0^+280^-62^.30^,280\" uid=\"#water^g0^+310^-80^.10^,100\" uid=\"#water^g0^+320^-62^.20^,280\" uid=\"#water^g0^1349^-601\" uid=\"#player^A0^B0^C70^D70^q1^r1^F2^E-1^k0^l-1^4349^-570\" uid=\"#gun_183^ia^#^s-1^L1283^-351\" uid=\"#player^A0^B0^C70^D70^q1^r1^F2^E-1^k0^l-1^4283^-320\" uid=\"#gun_183^ia^#^s-1^L1254^-601\" uid=\"#player^A0^B0^C70^D70^q1^r1^F2^E-1^k0^l-1^4254^-570\" uid=\"#gun_183^ia^#^s-1^M0\"^d245^-41^~d266^-41^~d290^-89^~d330^-89^~d380^-410^u0.4^t1^3131^-28^.6^,70^T0^1108^-501\" uid=\"#player^A0^B0^C70^D70^q1^r-1^F2^E-1^k3^l-1^4108^-470\" uid=\"#gun_183^ia^#^s-1^L492^-30\" uid=\"#gun_183^ia^/^s-1^L4105^*30\" uid=\"#gun_183^ia^/^s-1^L3210^*80^.60^,50^T0^1235^*579\" uid=\"#player_305^A0^B0^C70^D70^q1^r-1^F2^E-1^k0^l-1^4236^*610\" uid=\"#gun_183^ia^#^s-1^M0\"^e175^-23^.5^,20\" uid=\"#region_307^K-1^J4\"^e183^-23^.6^,20\" uid=\"#region_308^K-1^J4^1249^*579\" uid=\"#player_305B^A0^B0^C70^D70^q1^r1^F2^E-1^k0^l-1^4250^*610\" uid=\"#gun_183^ia^#^s-1^M0\"^e122^-43^.6^,50\" uid=\"#region_311^K-1^J4^3267^-35^.17^,60^T0^174^-501\" uid=\"#player^A0^B0^C140^D140^q1^r1^F6^E-1^k0^l-1^475^-470\" uid=\"#gun_183^ia^#2^s-1^M0\" /><inf x=\"35^*210\" uid=\"#engine_mark^Zhero1_guns^;0^3-60^*40^.91^,1810^T1^531^*70^.29^,400\" uid=\"#pusher^A0^B2^Y100^g0^5-60^*70^.91^,300\" uid=\"#pusher_408^A2^B0^Y100^g0^560^*70^.18^,360\" uid=\"#pusher_408^A-2^B0^Y100^g0\"^d36^*450^u1^t0^7^G1^m1^o0^m1^p0^m1^n1^>^1277^-601\" uid=\"#player^A0^B0^C140^D140^q1^r-1^F6^E-1^k0^l-1^4278^-570\" uid=\"#gun_183^ia^#2^s-1^M0\"^e387^-39^.63^,160\" uid=\"#region_462^K2^J6^7^G1^m1^o7^m1^p1^m1^nc2a^>^2400^-39^.3^,140\" uid=\"#door^x^y0^z0^h1^I^383^-60^.11^,15^_77^-33^.6^,7^_100^-47^.5^,10^_191^-76^.4^,40^T0\"^c69^*16^.5^,180^T4\"^c174^-27^.1^,710^T4\"^c188^-27^.1^,710^T4^3260^*80^.70^,100^_286^!1^.14^,190^T0^1275^-351\" uid=\"#player^A0^B0^C70^D70^q1^r1^F2^E-1^k0^l-1^4275^-320\" uid=\"#gun_183^ia^#^s-1^L3310^!^.10^,370^T0\" /><barrel x=\"272^-330\" uid=\"#barrel^jbar_orange^A0^B0\"^e206^-78^.40^,210\" uid=\"#region_277^K3^J6^7^G-1^m1^o43^m1^pRun, then only hold your jump key on walls to perform wall jumps.^m1^n0^>\"^e137^-52^.13^,200\" uid=\"#region_2863^K4^J6^7^G1^m1^o43^m1^pPress the E key to activate panel boards.^m1^n0^>\"^e217^-37^.30^,260\" uid=\"#region_278^K5^J6^7^G-1^m1^o43^m1^p0^m1^n0^>\"^d149^-640^u0.4^t0^3168^-48^.4^,4^_166^-95^.6^,9^_230^-99^.70^,42^_180^*27^.3^,210^T0^6315^-520\" uid=\"#decor^jray_floor^U-1^O0^P0^6315^-380\" uid=\"#decor^jray_ceil^U-1^O0^P0^5314^-35^.2^,190\" uid=\"#pusher_613^A0^B0^Y0^g-1000\"^d315^-390^u0.2^t0\"^d315^-510^u0.2^t0^4202^-30\" uid=\"#gun_156^jitem_grenade^s-1^L4197^-30\" uid=\"#gun_156^jitem_grenade^s-1^M0\" />";
-         this.CACHED_MAPS["c2a"] = "<q.^f-98^*479^A0^B0^C100^D100^q0^r1^F1^E-1^k0^l-1\"^c-200^*90^.470^,276^_-200^*100^.133^,40^_-200^*48^.141^,180^T0^2-112^*73^.3^,140^x^y0^z0^h10^I^3-81^*100^.91^,23^_-140^*40^.90^,20^_-3^*100^.43^,40^_-10^*48^.50^,18^_-20^*40^.80^,20^_10^*100^.50^,700^T0\" /><inf x=\"-98^*510^Zhero1_guns^;0\"^e-112^*61^.3^,140^K-1^J4^7^G1^m1^o0^m1^p0^m1^n0^>^9^G1^X0^W0\" /><barrel x=\"-57^*420^jbar_orange^A0^B0\" /><barrel x=\"-12^*420^jbar_orange^A0^B0\"^e-3^*61^.12^,140^K1^J1^2-50^*38^.30^,40^x^y0^z0^h4^I^3-20^-^.40^,20^_-90^-^.40^,20^_50^*100^.30^,190^_-200^*40^.80^,180^_-130^-40^.80^,20^_-20^-40^.80^,200^T0\"^e-50^-^.30^,40^K2^J5\"^d-10^*76^~d-60^*76^~d-49^*30^~d-21^*30^~d-49^!0^~d-21^!0^~d-49^-50^~d-21^-500^u0.4^t1^7^G1^m1^o0^m1^p1^m1^n2^>^7^G1^m1^o25^m1^p1^m1^n0^m2^o25^m2^p2^m2^n0^m3^o43^m3^pPress the Z or PageDown key to switch between slow and normal speed.^m3^n0^m4^o-1^m4^p0^m4^n0^$^a^G1^X3^W60^2-55^*10^.4^,110^x^y0^z0^h5^I^2-55^*21^.4^,110^x^y0^z0^h5^I^2-19^*10^.4^,110^x^y0^z0^h5^I^2-19^*21^.4^,110^x^y0^z0^h5^I^a^G1^X4^W120^7^G1^m1^o0^m1^p3^m1^n3^m2^o0^m2^p2^m2^n4^)^7^G1^m1^o0^m1^p5^m1^n5^m2^o0^m2^p4^m2^n6^)\"^e-55^*30^.4^,110^K-1^J4\"^e-55^*1^.4^,110^K-1^J4\"^e-19^*30^.4^,110^K-1^J4\"^e-19^*1^.4^,110^K-1^J4\"^d-80^*19^~d10^*19^~d49^!0^~d-91^!00^u0.4^t1^1-65^!^A0^B0^C140^D140^q1^r1^F6^E-1^k0^l-1^4-65^*30^ia^#2^s-1^L1-72^!^A0^B0^C100^D100^q1^r1^F2^E-1^k0^l-1^4-72^*30^ia^#^s-1^L1-7^!^A0^B0^C140^D140^q1^r-1^F6^E-1^k0^l-1^12^!^A0^B0^C100^D100^q1^r-1^F2^E-1^k0^l-1^4-7^*30^ia^#2^s-1^L42^*30^ia^#^s-1^L1-70^-401^A0^B0^C100^D100^q1^r-1^F2^E-1^k0^l-1^1-60^-401^A0^B0^C100^D100^q1^r-1^F2^E-1^k0^l-1^4-60^-370^ia^#^s-1^L4-70^-370^ia^#^s-1^L1-10^-401^A0^B0^C100^D100^q1^r1^F2^E-1^k0^l-1^1^-401^A0^B0^C100^D100^q1^r1^F2^E-1^k0^l-1^4-10^-370^ia^#^s-1^L4^-370^ia^#^s-1^L3-100^-^.15^,4^_-125^!6^.15^,8^_15^-^.15^,4^_39^!6^.15^,80^T0^1-118^-401^A0^B0^C100^D100^q1^r1^F2^E-1^k0^l-1^4-118^-370^ia^#^s-1^L148^-401^A0^B0^C100^D100^q1^r-1^F2^E-1^k0^l-1^448^-370^ia^#^s-1^M0\" /><barrel x=\"-111^!40^jbar_orange^A0^B0\" /><barrel x=\"40^!40^jbar_orange^A0^B0^3-130^-80^.80^,20^_-20^-80^.80^,20^_-20^!20^.60^,20^_-130^!20^.80^,200^T0\"^d-49^-90^~d-21^-90^~d-49^!30^~d-21^!300^u0.4^t1^2-55^-59^.4^,11^(I^2-55^-70^.4^,11^(I^2-55^-99^.4^,11^(I^2-55^!10^.4^,11^(I^2-19^!10^.4^,11^(I^2-19^-99^.4^,11^(I^2-19^-70^.4^,11^(I^2-19^-59^.4^,11^(I^3-200^!30^.130^,80^_-110^!70^.190^,40^_^!60^.70^,40^_^!30^.30^,20^_30^-90^.30^,35^_50^!44^.57^,47^_90^!24^.27^,30^_100^!30^.70^,61^_140^-70^.140^,110^_55^-70^.62^,320^T0^+40^!29^.50^,150^g0^+30^!40^.10^,100^g0^+40^!44^.10^,60^g0^+^!50^.50^,100^g0^+-70^!40^.70^,300^g0^+-50^!29^.30^,110^g0\"^d10^!51^~d10^!59^~d61^!24^~e-50^-80^.30^,90^K5^J6\"^e-50^!20^.30^,90^K6^J6^1-116^!201^A0^B0^C100^D100^q1^r1^F2^E-1^k0^l-1^4-116^!170^ia^#^s-1^L7^G1^m1^o28^m1^p11^m1^n9^m2^o28^m2^p11^m2^n10^)^8^G1^m1^o28^m1^p11^m1^n12^m2^o28^m2^p11^m2^n11^)\"^e-50^-69^.3^,30^K-1^J4\"^e-23^-69^.3^,30^K-1^J4\"^e-23^!09^.3^,30^K-1^J4\"^e-50^!09^.3^,30^K-1^J4^443^-390^jitem_grenade^s-1^L4-113^-390^jitem_grenade^s-1^L2117^-96^.23^,60^x^y0^z0^h3^I\"^e117^-70^.23^,60^K-1^J4\"^e93^!01^.23^,240^K8^J6\"^e118^!13^.21^,180^K7^J6\"^d118^-80^~d139^-80^~d139^!100^u0.4^t1^7^G1^m1^o0^m1^p14^m1^n13^m2^o22^m2^p8^m2^n1^)^7^G1^m1^o0^m1^p14^m1^n16^m2^o22^m2^p7^m2^n1^)\"^e117^!24^.23^,60^K-1^J4^1123^-961^A0^B0^C100^D100^q1^r-1^F2^E-1^k0^l-1^1135^-961^A0^B0^C100^D100^q1^r-1^F2^E-1^k0^l-1^4123^-930^ia^#^s-1^L4135^-930^ia^#^s-1^L3104^-64^.7^,9^_91^-47^.7^,11^_77^-49^.18^,6^_150^-60^.40^,14^_110^-35^.4^,5^_141^-40^.9^,5^_145^-64^.11^,100^T0^189^-491^A0^B0^C140^D140^q1^r1^F6^E-1^k0^l9^489^-460^irl^s-1^L370^*100^.110^,119^_164^*100^.116^,1300^T0\" /><barrel x=\"113^-680^jbar_orange^A0^B0\" /><barrel x=\"84^-470^jbar_orange^A0^B0\" /><barrel x=\"112^-330^jbar_orange^A0^B0\" /><barrel x=\"143^-380^jbar_orange^A0^B0\" /><barrel x=\"90^-680^jbar_orange^A0^B0\" /><barrel x=\"95^-680^jbar_orange^A0^B0\" /><barrel x=\"148^-620^jbar_orange^A0^B0^7^G1^m1^o0^m1^p15^m1^n17^>^2170^-29^.6^,320^x^y0^z0^h2^I\"^e170^!^.6^,320^K-1^J4\"^d99^-52^~d146^-20^~d116^-20^~e180^-30^.10^,300^K10^J6^7^G1^m1^o7^m1^p1^m1^nc3a^>^3112^-50^.11^,4^_135^-43^.9^,11^_110^-45^.4^,9^_131^-50^.9^,40^T0\"^c-112^*60^.3^,120^T4\"^c-55^*20^.4^,200^T4\"^c-19^*20^.4^,200^T4\"^c-19^-20^.4^,200^T4\"^c-55^-20^.4^,200^T4\"^c119^-72^.2^,560^T4\"^c136^-72^.2^,560^T4\"^c170^-30^.6^,300^T4\"^c-48^*37^.1^,1610^T4\"^c-23^*37^.1^,1610^T4\"^e-53^-50^.36^,170^K11^J6^7^G1^m1^o43^m1^p0^m1^n0^>\" />";
-         this.CACHED_MAPS["c3a"] = "<q.^f-158^*99^A0^B0^C100^D100^q0^r1^F1^E-1^k0^l-1\"^c392^*100^.115^,1550^T0\"^c-260^*50^.168^,58^_-260^-^.168^,80^_-260^*70^.170^,30^_-260^*10^.110^,200^T0^2-170^*41^.6^,32^(I\" /><vehicle x=\"-129^*160^r1^jveh_drone^A0^B0\" hpp=\"20\" /><inf x=\"-158^*140^Zhero1_guns^;0^3-120^-4^.180^,760^T1^1-3^-41^A0^B0^C100^D100^q1^r1^F2^E-1^k0^l-1^4-3^-20^ia^#^s1^L1-22^-41^A0^B0^C140^D140^q1^r1^F6^E-1^k0^l-1^4-22^-20^ia^#2^s1^L3150^-4^.250^,760^T1^350^!1^.115^,690^T2\"^c54^-5^.102^,130^T1^+60^-6^.90^,50^g0\"^d52^*300^u1^t0\"^d157^*300^u1^t0\"^d-70^*500^u1^t0^3250^*13^.20^,4^_248^-2^.4^,4^_248^*15^.4^,8^_268^*15^.7^,8^_268^-2^.4^,40^T0\"^c250^*29^.80^,40^_248^*32^.4^,8^_250^*30^.20^,4^_268^*32^.4^,80^T0^1266^*129^A0^B0^C300^D300^q2^r-1^F7^E-1^k0^l-1^1266^*299^A0^B0^C300^D300^q2^r-1^F7^E-1^k0^l-1^1254^-41^A0^B0^C150^D150^q2^r-1^F8^E-1^k0^l-1^4266^*330^irailgun^s-1^L4266^*160^irl^s-1^L4254^!0^i^&^#^s-1^L1266^-41^A0^B0^C150^D150^q2^r-1^F8^E-1^k0^l-1^4266^!0^i^&^#^s-1^L3308^-2^.4^,4^_328^-2^.4^,4^_305^*15^.7^,8^_328^*15^.4^,8^_308^*32^.4^,8^_328^*32^.4^,8^_310^*30^.20^,4^_310^*13^.20^,40^T0^1315^*129^A0^B0^C300^D300^q2^r-1^F7^E-1^k0^l-1^1315^*299^A0^B0^C300^D300^q2^r-1^F7^E-1^k0^l-1^4315^*330^irailgun^s-1^L1314^-41^A0^B0^C150^D150^q2^r-1^F8^E-1^k0^l-1^4314^!0^i^&^#^s-1^M0\"^d230^*400^u1^t0\"^d350^*400^u1^t0^3160^*2^.6^,9^_286^*7^.7^,13^_286^*45^.7^,20^_268^*47^.44^,4^_268^*47^.4^,6^_308^*47^.4^,60^T0\"^c270^*46^.40^,17^_282^-^.15^,6^_284^*4^.11^,70^T0^4255^*310^jitem_grenade^s-1^L4287^*480^jitem_grenade^s-1^L4325^*310^jitem_grenade^s-1^L4293^*480^jitem_grenade^s-1^L3390^-^.54^,80^_420^*4^.24^,30^_430^*8^.17^,18^_440^*12^.10^,92^_439^*30^.17^,5^_391^*27^.3^,7^_391^*40^.3^,7^_389^*105^.19^,69^_404^*27^.3^,7^_404^*40^.3^,7^_390^*24^.23^,7^_445^*50^.5^,11^_404^*120^.86^,760^T0^1396^*239^A0^B0^C300^D300^q2^r-1^F7^E-1^k0^l-1^4396^*270^irailgun^s-1^L1443^*299^A0^B0^C300^D300^q2^r-1^F7^E-1^k0^l-1^4443^*330^irailgun^s-1^L1411^*239^A0^B0^C300^D300^q2^r1^F7^E-1^k0^l-1^4411^*270^irailgun^s-1^L1409^!^A0^B0^C150^D150^q2^r-1^F8^E-1^k0^l-1^4409^*30^i^&^#^s-1^L1415^!^A0^B0^C150^D150^q2^r-1^F8^E-1^k0^l-1^1426^*39^A0^B0^C150^D150^q2^r-1^F8^E-1^k0^l-1^1436^*79^A0^B0^C150^D150^q2^r-1^F8^E-1^k0^l-1^4415^*30^i^&^#^s-1^L4436^*110^i^&^#^s-1^L2392^*18^.6^,19^(I\"^e392^-^.6^,190^K-1^J4\"^e380^*20^.23^,240^K0^J4^7^G1^m1^o0^m1^p1^m1^n0^>^3438^*32^.3^,70^T0\" /><barrel x=\"273^*170^jbar_orange^A0^B0\" /><barrel x=\"307^*170^jbar_orange^A0^B0\" /><barrel x=\"302^-20^jbar_orange^A0^B0\" /><barrel x=\"299^-20^jbar_orange^A0^B0\" /><barrel x=\"304^*490^jbar_orange^A0^B0\" /><barrel x=\"307^*490^jbar_orange^A0^B0\" /><barrel x=\"326^*150^jbar_orange^A0^B0^1452^*299^A0^B0^C150^D150^q2^r1^F8^E-1^k0^l-1\"^e490^*12^.10^,40^K2^J5^2450^*12^.10^,40^x^y0^z0^h3^I^3500^*100^.46^,180^_446^-50^.59^,300^T0\"^e490^*90^.10^,40^K-1^J4^7^G1^m1^o0^m1^p2^m1^n2^>\"^e451^*22^.8^,100^K1^J1^7^G1^m1^o0^m1^p2^m1^n3^>^1490^-31^A0^B0^C150^D150^q2^r-1^F8^E-1^k0^l-1^4490^-0^i^&^#^s-1^L3487^-3^.15^,50^T0^1498^-31^A0^B0^C150^D150^q2^r-1^F8^E-1^k0^l-1^4498^-0^i^&^#^s-1^L3455^*32^.3^,7^_487^*46^.3^,210^T0\"^e490^*70^.10^,200^K3^J6^7^G1^m1^o7^m1^p1^m1^nc4a^>\" /><barrel x=\"403^*260^jbar_orange^A0^B0\" /><barrel x=\"429^*60^jbar_orange^A0^B0\" /><barrel x=\"446^*320^jbar_orange^A0^B0\" /><barrel x=\"448^*320^jbar_orange^A0^B0^3448^-3^.12^,50^T0^1453^-31^A0^B0^C150^D150^q2^r-1^F8^E-1^k0^l-1^+450^!1^.50^,390^g10^4315^*160^irl^s-1^L4453^-0^irl^s-1^L4426^*70^irl^s-1^L4452^*330^irl^s-1^M0\"^d294^*28^~d285^*28^~d425^*43^~d471^*43^~d499^!0^~d451^!00^u0.4^t1^1-129^*119^A0^B0^C100^D100^q1^r1^F5^E-2^k0^l-1^4-129^*150^ivehminigl^s-1^M0\" /><vehicle x=\"45^*180^r-1^jveh_walker^A0^B0\" hpp=\"50^145^*149^A0^B0^C150^D150^q2^r-1^F8^E-2^k0^l-1^445^*170^ivehcannon^s-1^M1^5404^*190^.80^,700^A-3^B0^Y100^g0^3-260^*80^.160^,190^T0^5-200^*162^.100^,820^A3^B0^Y100^g0^445^*190^i^/2^s-1^L338^-8^.23^,180^T2^3149^-8^.23^,180^T2^1223^*149^A0^B0^C150^D150^q2^r-1^F8^E-2^k0^l-1\" /><vehicle x=\"223^*180^r-1^jveh_walker^A0^B0\" hpp=\"50^4223^*170^ivehcannon^s-1^M1^4223^*190^i^/2^s-1^L1-58^-41^A0^B0^C100^D100^q1^r1^F2^E-1^k0^l-1^1-47^-41^A0^B0^C100^D100^q1^r1^F2^E-1^k0^l-1^4-47^-20^ia^#^s1^L4-58^-20^ia^#^s1^M0\"^e-120^*15^.130^,240^K4^J6^7^G1^m1^o29^m1^p22^m1^n6^>^4103^!00^jitem_grenade^s-1^L491^!00^jitem_grenade^s-1^L3-94^*44^.4^,8^_-94^*4^.4^,110^T0\"^c392^*17^.6^,170^T4\"^c451^*10^.48^,10^T4\"^c498^*100^.1^,900^T4\"^c491^*100^.1^,900^T4^6494^-30^jantigravity0^U-1^O0^P0\"^e451^*6^.8^,100^K5^J1^7^G1^m1^o34^m1^p0^m1^nantigravity^m2^o36^m2^p2^m2^n-1^)^5490^*100^.10^,1040^A0^B0^Y0^g0^2489^-2^.10^,2^(H\"^e270^*42^.40^,150^K6^J6^7^G-1^m1^o43^m1^pPress the G or Ins0 key to throw grenades.^m1^n0^>\"^e352^*56^.18^,670^K7^J6^7^G-1^m1^o43^m1^p0^m1^n0^>\"^e426^*45^.17^,390^K8^J6^7^G-1^m1^o43^m1^pI\'m warning you, that stuff isn\'t water...^m1^n0^>\"^e489^*45^.13^,250^K9^J6^7^G-1^m1^o43^m1^p0^m1^n0^>\" />";
-         this.CACHED_MAPS["c4a"] = "<q.^f5^-501^A0^B0^C100^D100^q0^r1^F1^E-1^k0^l-1\"^c-175^*65^.295^,155^_10^-30^.110^,600^T0^2^-50^.10^,40^x^y0^z0^h3^I\"^e^-30^.10^,40^K-1^J4^9^G1^X0^W0^7^G1^m1^o0^m1^p0^m1^n0^>^310^*27^.110^,37^_22^-24^.4^,11^_22^-7^.4^,7^_44^-^.76^,40^_-30^*24^.50^,24^_-50^-^.30^,5^_-33^-27^.6^,13^_-120^-37^.106^,53^_-72^-31^.20^,9^_-120^-27^.30^,33^_-230^*30^.80^,120^_-111^-^.19^,5^_-120^*24^.19^,31^_-120^*24^.30^,7^_-101^*28^.21^,11^_-60^*28^.33^,11^_-30^*30^.20^,10^_-30^*58^.20^,10^_-50^*80^.64^,26^_10^*80^.110^,29^_-184^*54^.21^,33^_-184^*80^.34^,33^_-120^*80^.30^,330^T0^131^-301^A0^B0^C300^D300^q1^r-1^F7^E-1^k0^l-1^1-36^-351^A0^B0^C150^D150^q1^r1^F8^E-1^k0^l-1^1-41^-351^A0^B0^C150^D150^q1^r1^F8^E-1^k0^l-1^1-46^-351^A0^B0^C150^D150^q1^r1^F8^E-1^k0^l-1^1-77^-351^A0^B0^C300^D300^q1^r1^F7^E-1^k0^l-1^1-143^*49^A0^B0^C300^D300^q1^r1^F7^E-1^k0^l-1^4-143^*80^irl^s-1^L431^-270^irailgun^s-1^M0\" /><barrel x=\"40^-280^jbar_orange^A0^B0\" /><barrel x=\"37^-280^jbar_orange^A0^B0\" /><inf x=\"5^-470^Zhero1_guns^;0^1-85^!41^A0^B0^C300^D300^q1^r1^F7^E-1^k0^l-1^1-92^!^A0^B0^C300^D300^q1^r1^F7^E-1^k0^l-1^4-92^*30^irl^s-1^L1-46^!^A0^B0^C300^D300^q1^r-1^F7^E-1^k0^l-1^1-37^!^A0^B0^C300^D300^q1^r-1^F7^E-1^k0^l-1^4-46^*30^irailgun^s-1^L4-37^*30^irl^s-1^L3-110^-20^.8^,12^_-30^*20^.10^,27^_-82^*2^.7^,5^_-65^*2^.7^,5^_-93^!4^.29^,40^T0^1-78^*19^A0^B0^C300^D300^q1^r1^F7^E-1^k0^l-1^1-98^-271^A0^B0^C300^D300^q1^r1^F7^E-1^k0^l-1^4-98^-240^irl^s-1^L3-8^-27^.6^,6^_-160^*70^.18^,10^_-128^*70^.18^,100^T0^4-159^*310^jitem_grenade^s-1^L4-113^*250^jitem_grenade^s-1^L4-160^*810^jitem_grenade^s-1^L2-149^*5^.28^,40^x^y0^z0^h3^I^3-230^*110^.60^,940^T0^4-161^*810^jitem_grenade^s-1^M0\"^e-147^!4^.24^,150^K2^J6\"^e-149^-28^.28^,40^K-1^J4^3-100^*100^.10^,300^T0^5-230^*140^.60^,300^A2^B0^Y100^g0^5-50^*140^.30^,600^A-2^B0^Y100^g0^5-229^*196^.209^,560^A0^B2^Y100^g0^1-85^*279^A0^B0^C300^D300^q1^r-1^F7^E-1^k0^l-1^1-159^*299^A0^B0^C150^D150^q1^r1^F8^E-1^k0^l-1^1-113^*239^A0^B0^C150^D150^q1^r-1^F8^E-1^k0^l-1^1-49^*279^A0^B0^C300^D300^q1^r-1^F7^E-1^k0^l-1^1-36^*279^A0^B0^C300^D300^q1^r-1^F7^E-1^k0^l-1\"^e-149^*23^.28^,40^K3^J5^3-160^-60^.50^,300^T0^+-150^-35^.30^,250^g10\"^e-119^-6^.17^,220^K1^J6^7^G-1^m1^o0^m1^p1^m1^n2^m2^o19^m2^p1^m2^n0^m3^o20^m3^p2^m3^n0^m4^o-1^m4^p0^m4^n0^$^8^G-1^m1^o0^m1^p1^m1^n3^m2^o19^m2^p2^m2^n0^m3^o20^m3^p1^m3^n0^m4^o-1^m4^p0^m4^n0^$^4-85^!10^i^&^#^s-1^L4-78^*50^i^&^#^s-1^L4-85^*310^i^&^#^s-1^L4-49^*310^i^&^#^s-1^L4-36^*310^i^&^#^s-1^L239^*52^.10^,26^(I^2-81^*23^.22^,40^x^y0^z0^h10^I\"^e-59^*23^.22^,40^K-1^J4^7^G1^m1^o0^m1^p3^m1^n5^>^433^-290^jitem_grenade^s-1^L3-30^-30^.30^,600^T0\"^d-136^*800^u1^t0\"^d-80^*800^u0.5^t0\"^d-60^*800^u0.5^t0\"^d-4^!^~d-100^*10^~d-31^*10^~d-47^-6^~d-78^-4^~d^*530^u0.4^t1^4-77^-320^irailgun^s-1^L14^*239^A0^B0^C300^D300^q1^r-1^F7^E-1^k0^l-1^44^*290^irl^s-1^L7^G1^m1^o7^m1^p1^m1^nc5a^>\"^e30^*53^.9^,270^K4^J6\"^c1^-31^.1^,590^T4\"^c8^-31^.1^,590^T4\"^c-80^*23^.20^,40^T4\"^c-148^*22^.2^,530^T4\"^c-124^*22^.2^,530^T4\" />";
-         this.CACHED_MAPS["c5a"] = "<q.^f-197^*699^A0^B0^C100^D100^q0^r1^F1^E-1^k0^l-1\"^c71^*94^.129^,280^T0\"^c100^*38^.14^,220^T0\"^c-30^*98^.55^,430^T0\"^c-5^*55^.30^,560^T0\"^c-300^*100^.270^,104^_-270^*70^.90^,20^_-280^*110^.210^,160^T0^2-214^*95^.11^,26^(I^3-80^*110^.52^,30^_-70^*60^.40^,20^_-140^*30^.40^,50^_-110^*20^.80^,40^_-170^*30^.10^,50^_-200^*30^.10^,50^_-230^*30^.10^,50^_-170^*70^.18^,7^_-137^*66^.37^,19^_-160^*52^.26^,50^T0\" /><inf x=\"-197^*730^Zhero1_guns^;0^3-120^*69^.12^,19^_-73^*60^.6^,4^_-270^*30^.20^,50^_-280^*70^.20^,90^_-270^*10^.140^,30^_-156^*79^.11^,13^_-73^*30^.6^,200^T0^2-160^*12^.20^,32^(I^2-190^*12^.20^,32^(I^2-220^*12^.20^,32^(I^2-250^*12^.20^,32^(I^2-250^*29^.10^,40^x^y0^z0^h5^I^2-240^*29^.10^,40^x^y0^z0^h5^I^2-220^*29^.10^,40^x^y0^z0^h5^I^2-210^*29^.10^,40^x^y0^z0^h5^I^2-190^*29^.10^,40^x^y0^z0^h5^I^2-180^*29^.10^,40^x^y0^z0^h5^I^2-160^*29^.10^,40^x^y0^z0^h5^I^2-150^*29^.10^,40^x^y0^z0^h5^I\"^e-140^*29^.10^,40^K-1^J4\"^e-170^*29^.10^,40^K-1^J4\"^e-200^*29^.10^,40^K-1^J4\"^e-230^*29^.10^,40^K-1^J4\"^e-260^*29^.10^,40^K-1^J4\"^e-160^*27^.20^,40^K-1^J4\"^e-190^*27^.20^,40^K-1^J4\"^e-220^*27^.20^,40^K-1^J4\"^e-250^*27^.20^,40^K-1^J4\"^e-170^*40^.10^,110^K3^J1\"^e-200^*40^.10^,110^K2^J1\"^e-230^*40^.10^,110^K1^J1\"^e-260^*40^.10^,110^K0^J1^7^G1^m1^o0^m1^p5^m1^n4^m2^o0^m2^p6^m2^n3^m3^o0^m3^p4^m3^n8^m4^o-1^m4^p9^m4^n1^m5^o-1^m5^p9^m5^n0^m6^o-1^m6^p0^m6^n0^m7^o-1^m7^p0^m7^n0^m8^o-1^m8^p0^m8^n0^m9^o-1^m9^p0^m9^n0^m10^o-1^m10^p0^m10^n0^7^G1^m1^o0^m1^p7^m1^n3^m2^o0^m2^p8^m2^n2^m3^o0^m3^p3^m3^n7^m4^o-1^m4^p0^m4^n0^$^7^G1^m1^o0^m1^p9^m1^n2^m2^o0^m2^p10^m2^n1^m3^o0^m3^p2^m3^n6^m4^o32^m4^p4^m4^n1^m5^o32^m5^p2^m5^n1^m6^o33^m6^p4^m6^n0^m7^o33^m7^p2^m7^n0^m8^o43^m8^pThese prisoners are your allies now.^m8^n0^m9^o-1^m9^p0^m9^n0^m10^o-1^m10^p0^m10^n0^7^G1^m1^o0^m1^p11^m1^n1^m2^o0^m2^p12^m2^n0^m3^o0^m3^p1^m3^n5^m4^o-1^m4^p0^m4^n0^$^1-210^*119^A0^B0^C100^D100^q2^r1^F2^E-1^k2^l-1^1-178^*119^A0^B0^C300^D300^q3^r1^F8^E-1^k2^l-1^1-150^*119^A0^B0^C100^D100^q2^r1^F2^E-1^k2^l-1^1-182^*119^A0^B0^C300^D300^q3^r1^F8^E-1^k2^l-1^4-180^*300^i^/2^s-1^L4-180^*310^i^/2^s-1^L3-187^*55^.13^,50^T0^5-96^*59^.22^,390^A0^B-0.8^Y0^g0^5-74^*58^.4^,290^A-1^B0^Y0^g0^1-108^*299^A0^B0^C150^D150^q1^r1^F8^E-1^k0^l-1^1-121^*299^A0^B0^C300^D300^q1^r1^F7^E-1^k0^l-1^1-122^*659^A0^B0^C300^D300^q1^r-1^F7^E-1^k0^l-1^1-111^*699^A0^B0^C300^D300^q1^r-1^F7^E-1^k0^l-1^4-122^*690^irailgun^s-1^L1-242^*119^A0^B0^C140^D140^q2^r1^F6^E-1^k2^l-1^4-240^*300^i^/2^s-1^L4-121^*330^i^&^#^s-1^L4-108^*330^i^&^#^s-1^L1-143^*719^A0^B0^C300^D300^q1^r1^F7^E-1^k0^l-1^4-143^*740^i^&^#^s-1^L1-103^*299^A0^B0^C150^D150^q1^r1^F8^E-1^k0^l-1^4-103^*330^i^&^#^s-1^L1-60^*599^A0^B0^C300^D300^q1^r-1^F7^E-1^k0^l-1^4-60^*630^irl^s-1^L1-50^*599^A0^B0^C300^D300^q1^r-1^F7^E-1^k0^l-1^4-50^*630^irailgun^s-1^L1-233^*289^A0^B0^C150^D150^q1^r1^F8^E-1^k0^l-1^4-233^*320^i^&^#^s-1^L3-143^*57^.13^,10^_-150^*72^.9^,4^_-103^*60^.6^,40^T0^5-100^*58^.4^,110^A1^B0^Y0^g0^3-136^*99^.63^,13^_-84^*91^.8^,80^T0^2-40^*81^.5^,220^x^y0^z0^h6^I\"^e-50^*81^.10^,220^K4^J6^7^G1^m1^o0^m1^p13^m1^n14^m2^o43^m2^p0^m2^n0^)\"^e-40^*101^.5^,220^K-1^J4^3-40^*60^.40^,10^_20^*70^.6^,36^_20^*8^.6^,6^_-6^*53^.6^,19^_-6^*24^.6^,6^_-6^*8^.6^,6^_-38^*3^.188^,230^T1^1-14^*599^A0^B0^C300^D300^q1^r-1^F7^E-1^k0^l-1^4-14^*630^igl^s1^L1-2^*699^A0^B0^C300^D300^q1^r-1^F7^E-1^k0^l-1^4-2^*710^irailgun^s-1^L485^*710^irl^s-1^L322^*70^.18^,90^T0^660^*30^jship^U-1^O0^P0^5^*70^.20^,670^A0^B-0.45^Y0^g0^246^*10^.11^,7^(H^264^*7^.10^,4^(H^259^*6^.7^,3^(H^254^*8^.8^,5^(H^465^*80^iraygun^s0^L461^*90^irl^s0^L449^*110^jitem_grenade^s0^L457^*100^jitem_grenade^s0^L3-70^*58^.20^,48^_-33^*24^.3^,11^_-33^*45^.3^,150^T0\"^d-160^*93^~d-110^*85^~d-60^*79^~d12^*910^u1^t0\"^d-71^*40^~d-225^*49^~d-194^*49^~d-135^*46^~d-165^*620^u0.4^t1^1-36^*199^A0^B0^C300^D300^q1^r1^F7^E-1^k0^l-1^1-45^*199^A0^B0^C300^D300^q1^r1^F7^E-1^k0^l-1^4-36^*220^irailgun^s-1^L4-45^*220^irl^s-1^L133^*29^A0^B0^C150^D150^q1^r1^F8^E-1^k0^l-1^441^*50^i^&^#^s-1^L141^*29^A0^B0^C150^D150^q1^r1^F8^E-1^k0^l-1^433^*50^i^&^#^s-1^L4-111^*720^irailgun^s-1^L4-143^*750^i^/2^s-1^M0\"^d31^*170^u0.4^t0^170^*69^A0^B0^C150^D150^q1^r1^F8^E-1^k0^l-1^470^*90^i^&^#^s-1^M0\" /><barrel x=\"-49^*220^jbar_orange^A0^B0^3100^*20^.50^,30^_100^*70^.100^,36^_100^*24^.3^,11^_100^*45^.3^,150^T0^1106^*199^A0^B0^C300^D300^q1^r-1^F7^E-1^k0^l-1^370^*70^.36^,9^_110^*50^.90^,70^_-35^*99^.35^,90^T0\"^d-17^*310^u0.4^t0^3100^*110^.100^,20^_70^*99^.36^,90^T0^2120^*93^.5^,26^(I^320^*99^.20^,9^_-10^*70^.10^,140^T0\"^c25^*98^.14^,320^T0^470^*80^irailgun^s-1^L441^*40^irailgun^s-1^L433^*40^irailgun^s-1^L5-70^*176^.42^,660^A3^B0^Y100^g0^5100^*170^.42^,600^A-3^B0^Y100^g0^185^*699^A0^B0^C300^D300^q1^r-1^F7^E-1^k0^l-1^1-237^*289^A0^B0^C150^D150^q1^r1^F8^E-1^k0^l-1^4-237^*320^i^&^#^s-1^M0\"^e110^*92^.10^,250^K5^J6^7^G1^m1^o7^m1^p1^m1^nc6a^>^4106^*210^igl^s1^L4-36^*210^igl^s1^L453^*110^jitem_grenade^s0^L6-90^*200^jantigravity^U-1^O0^P0^6-80^*200^jantigravity^U-1^O0^P0^66^*30^jantigravity^U-1^O0^P0^614^*30^jantigravity^U-1^O0^P0\" /><inf x=\"-188^*750^Zshadowmap_size^;35\"^d56^*850^u1^t0^2-330^!0^.530^,40^(I^2-330^*110^.60^,160^(I\"^c-40^*80^.5^,200^T4\"^c-250^*28^.110^,20^T4\" />";
-         this.CACHED_MAPS["c6a"] = "<q.^f-83^*299^A0^B0^C100^D100^q0^r1^F1^E-1^k0^l-1\"^c-60^*9^.120^,240^T0\"^c-60^*130^.160^,1210^T0\"^c140^*10^.40^,500^T0\"^e-130^*114^.60^,240^K-1^J4^3-150^*30^.100^,70^_-150^*90^.100^,400^T0^2-90^*51^.5^,22^(I\" /><inf x=\"-83^*340^Zhero1_guns^;0^3-60^*80^.39^,16^_-20^*18^.23^,6^_-26^*20^.16^,8^_-20^*55^.10^,15^_40^*20^.100^,60^_-20^-^.68^,40^_35^*10^.20^,20^_-60^*9^.30^,190^T0^2-51^*53^.32^,20^x^y0^z0^h5^I\"^e-82^*53^.32^,20^K-1^J4^7^G1^m1^o0^m1^p1^m1^n1^>^143^*199^A0^B0^C400^D400^q3^r-1^F9^E-1^k0^l-1^1-47^*529^A0^B0^C400^D400^q3^r1^F9^E-1^k0^l-1^1-7^!^A0^B0^C400^D400^q3^r1^F9^E-1^k0^l-1^1-28^*529^A0^B0^C400^D400^q3^r1^F9^E-1^k0^l-1\"^e-70^*51^.10^,220^K0^J6^4-28^*550^irailgun^s-1^L443^*210^irailgun^s-1^L4-7^*10^irailgun^s-1^L4-47^*550^irailgun^s-1^L390^*57^.50^,180^T0^1-13^*199^A0^B0^C150^D150^q1^r1^F8^E-1^k0^l-1^4-13^*210^i^&^#^s-1^L1-20^*199^A0^B0^C300^D300^q1^r1^F7^E-1^k0^l-1^4-20^*210^irl^s-1^L319^*42^.5^,21^_-19^*44^.15^,4^_14^*44^.11^,4^_21^*83^.99^,5^_-55^*30^.20^,4^_-32^*15^.12^,30^T0^1-7^*439^A0^B0^C400^D400^q3^r1^F9^E-1^k0^l-1^117^*439^A0^B0^C400^D400^q3^r1^F9^E-1^k0^l-1^4-7^*450^irailgun^s-1^L417^*450^irailgun^s-1^L3-7^*42^.24^,1^_-43^*54^.9^,4^_19^*18^.5^,5^_-61^-3^.47^,37^_^*16^.5^,60^T0^1-19^!^A0^B0^C400^D400^q3^r-1^F9^E-1^k0^l-1^4-19^*10^irailgun^s-1^L3113^*61^.7^,7^_-14^*58^.2^,2^_-14^*64^.2^,2^_-14^*61^.2^,2^_23^*47^.2^,2^_23^*50^.2^,2^_20^*53^.5^,2^_-23^*67^.11^,20^T0\" /><vehicle x=\"56^*780^r1^jveh_rope^A0^B0\" hpp=\"100^323^*77^.2^,2^_23^*74^.2^,2^_23^*71^.2^,2^_-13^*80^.2^,2^_-13^*83^.2^,2^_-13^*86^.2^,2^_-13^*89^.2^,2^_-30^*94^.19^,40^T0\" /><vehicle x=\"-48^*820^r1^jveh_crate^A0^B0\" hpp=\"100^3^*110^.18^,5^_40^*110^.18^,5^_20^*94^.10^,16^_70^*94^.7^,13^_-60^*137^.50^,17^_70^*137^.121^,17^_75^*87^.6^,6^_75^*89^.4^,4^_79^*85^.4^,4^_-58^*110^.18^,40^T0^1-38^*799^A0^B0^C400^D400^q3^r1^F9^E-1^k0^l-1^4-38^*810^irl^s-1^L1-43^*1099^A0^B0^C400^D400^q3^r1^F9^E-1^k0^l-1^4-43^*1110^irl^s-1^L113^*1099^A0^B0^C400^D400^q3^r-1^F9^E-1^k0^l-1^413^*1110^irl^s-1^L187^*829^A0^B0^C400^D400^q3^r-1^F9^E-1^k0^l-1^487^*850^irl^s-1^L3113^*83^.7^,9^_110^*125^.81^,440^T0\"^e100^*100^.10^,180^K1^J1^7^G1^m1^o0^m1^p2^m1^n4^>^2114^*75^.5^,15^(I\"^e114^*89^.5^,150^K-1^J4^377^*34^.3^,4^_77^*58^.3^,40^T0^580^*58^.10^,380^A0^B-0.45^Y0^g0^377^*50^.3^,4^_77^*42^.3^,4^_-150^*137^.100^,23^_-70^*118^.20^,12^_-150^*123^.20^,40^_-120^*93^.10^,70^T0^4-115^*940^iplasmagun^s0^L3-100^*97^.6^,130^T0^2-69^*123^.4^,18^(I\"^e-69^*108^.4^,180^K3^J5\"^e-120^*108^.10^,150^K2^J6^7^G1^m1^o0^m1^p3^m1^n5^>^2-130^*90^.60^,24^(I^7^G1^m1^o0^m1^p4^m1^n0^>^5-60^*180^.50^,430^A3^B0^Y100^g0^570^*180^.50^,430^A-3^B0^Y100^g0^5-60^*220^.180^,400^A0^B3^Y100^g0^193^*829^A0^B0^C400^D400^q3^r-1^F9^E-1^k0^l-1^493^*850^irl^s-1^L3-120^*117^.10^,70^T0\"^d26^*420^u0.6^t1^3170^*137^.80^,1770^T0\"^d10^*1400^u0.5^t0\"^d30^*1400^u0.5^t0\"^d50^*1400^u0.5^t0\"^d-72^*49^~d-13^*39^~d-5^*11^~d-22^*11^~d130^*80^~d97^*770^u0.6^t1\"^d-9^*500^u0.6^t1\"^d19^*85^~d-118^*109^~d-112^*109^~d-55^*105^~c-136^*120^.76^,400^T0\"^c100^*130^.20^,1200^T0\"^c120^*90^.60^,800^T0\"^c-150^*60^.90^,400^T0^2-203^*137^.53^,87^(I\" /><barrel x=\"-27^*170^jbar_orange^A0^B0\" /><barrel x=\"7^*20^jbar_orange^A0^B0\" /><barrel x=\"11^*20^jbar_orange^A0^B0\" /><barrel x=\"1^*200^jbar_orange^A0^B0\" /><barrel x=\"-14^*960^jbar_orange^A0^B0\" /><barrel x=\"-18^*960^jbar_orange^A0^B0\" /><barrel x=\"108^*850^jbar_orange^A0^B0\" /><barrel x=\"105^*850^jbar_orange^A0^B0\" /><barrel x=\"-48^*110^jbar_orange^A0^B0\" /><barrel x=\"61^*220^jbar_orange^A0^B0^3130^*57^.20^,97^_90^*34^.3^,4^_90^*42^.3^,40^T0\" /><barrel x=\"105^*220^jbar_orange^A0^B0\" /><barrel x=\"102^*220^jbar_orange^A0^B0^3115^*24^.5^,70^T0^1124^*199^A0^B0^C400^D400^q3^r-1^F9^E-1^k0^l-1^4124^*210^irailgun^s-1^L685^*200^jantigravity^U-1^O0^P0^1129^*569^A0^B0^C400^D400^q3^r-1^F9^E-1^k0^l-1^1133^*569^A0^B0^C400^D400^q3^r-1^F9^E-1^k0^l-1^1137^*569^A0^B0^C400^D400^q3^r-1^F9^E-1^k0^l-1\"^e149^*30^.22^,270^K4^J6^7^G1^m1^o7^m1^p1^m1^nc7a^>\"^c-50^*53^.30^,20^T4\"^c-69^*106^.4^,160^T4\"^c-129^*113^.2^,240^T4\"^c-73^*113^.2^,240^T4\"^c-91^*113^.2^,240^T4\"^c-107^*113^.2^,240^T4\"^c114^*74^.5^,130^T4^3-10^*89^.29^,20^T0\"^e49^*78^.14^,280^K5^J6^7^G-1^m1^o43^m1^pPress the Left and Right key to swing ropes. Press E or X to release yourself from it.^m1^n0^>\"^e21^*80^.10^,420^K6^J6^7^G-1^m1^o43^m1^p0^m1^n0^>\"^e85^*80^.10^,640^K6^J6\"^e28^*44^.61^,100^K6^J6\" />";
-         this.CACHED_MAPS["c7a"] = "<q.^f-64^*1109^A0^B0^C100^D100^q0^r1^F1^E-1^k0^l-1\"^c-100^*190^.250^,220^_-150^*60^.120^,120^_-40^*200^.20^,90^_7^*74^.28^,4^_105^*60^.65^,100^_86^*120^.20^,20^_114^*81^.56^,31^_-50^*200^.15^,95^_-85^*87^.31^,70^T0^5-70^*160^.20^,400^A0^B0^Y100^g0\" /><inf x=\"-64^*1150^Zhero1_guns^;0^320^*160^.30^,40^_-101^*200^.321^,20^_100^*150^.50^,10^_130^*194^.90^,34^_-40^*87^.20^,7^_-30^*90^.20^,6^_-60^*66^.20^,12^_-46^*63^.10^,11^_-40^-20^.210^,40^_90^*170^.20^,30^_-150^*160^.80^,80^_-40^*51^.20^,51^_90^*51^.20^,550^T0^+-30^!^.135^,190^g0^3-24^*40^.74^,8^_60^*40^.18^,8^_32^*14^.26^,4^_30^*22^.4^,12^_^-^.30^,4^_58^-^.35^,4^_56^*14^.4^,7^_^*15^.4^,25^_^*39^.4^,9^_26^!4^.4^,8^_56^-^.4^,80^T0^6-13^*400^jantigravity^U-1^O0^P0^61^*400^jantigravity^U-1^O0^P0^615^*400^jantigravity^U-1^O0^P0^629^*400^jantigravity^U-1^O0^P0^643^*400^jantigravity^U-1^O0^P0^669^*400^jantigravity^U-1^O0^P0^683^-0^jantigravity^U-1^O0^P0^669^-0^jantigravity^U-1^O0^P0^623^-0^jantigravity^U-1^O0^P0^3-12^*4^.13^,40^T0^6-6^*40^jantigravity^U-1^O0^P0^637^-200^jantigravity^U-1^O0^P0^5-20^*52^.69^,120^A0^B-1^Y0^g0^315^*90^.9^,20^_46^*90^.9^,20^_20^*100^.30^,14^_44^*74^.5^,40^T0^561^*52^.17^,120^A0^B-1^Y0^g0^560^*24^.18^,240^A0^B-1^Y0^g0^516^*24^.14^,240^A0^B-1^Y0^g0^5-11^*24^.11^,200^A0^B-1^Y0^g0^530^*2^.14^,220^A0^B-1^Y0^g0^3-29^*117^.19^,50^T0^427^*750^iplasmagun^s0^L3130^*130^.40^,60^_139^*150^.81^,1300^T0^6123^*810^jantigravity^U-1^O0^P0^5114^*140^.16^,590^A0^B-0.45^Y0^g0^3110^*76^.14^,21^_45^*126^.21^,60^T0^262^*144^.3^,18^(I^656^*1260^jantigravity^U-1^O0^P0^361^*141^.5^,40^T0\"^e62^*154^.3^,180^K-1^J4^7^G1^m1^o0^m1^p0^m1^n0^>\"^e63^-6^.17^,130^K0^J1^3-30^*170^.55^,200^T0^550^*163^.11^,370^A0^B-0.45^Y0^g0^1-34^*869^A0^B0^C150^D150^q1^r1^F4^E-1^k0^l-1^4-23^*930^ia^#2^s-1^L1-23^*899^A0^B0^C150^D150^q1^r1^F4^E-1^k0^l-1^3-150^*90^.60^,700^T0^1-68^*599^A0^B0^C150^D150^q1^r1^F4^E-1^k0^l-1^110^*739^A0^B0^C150^D150^q1^r-1^F4^E-1^k0^l-1^1-26^*509^A0^B0^C150^D150^q1^r1^F4^E-1^k0^l-1^1-13^*1169^A0^B0^C150^D150^q1^r1^F4^E-1^k0^l-1^310^*125^.19^,50^T0^130^*999^A0^B0^C150^D150^q1^r-1^F4^E-1^k0^l-1^322^*108^.6^,100^T0^129^*1599^A0^B0^C150^D150^q1^r1^F4^E-1^k0^l-1^135^*1599^A0^B0^C150^D150^q1^r1^F4^E-1^k0^l-1^3-60^*90^.4^,40^T0\"^d-48^*76^~d1^*135^~d37^*112^~d20^*60^~d55^*15^~d-19^*25^~d45^*9^~d18^-5^~d83^-5^~d-16^!90^u0.4^t1^361^*160^.35^,170^T0\"^d18^*176^~d65^*1700^u0.4^t1^4-34^*900^ia^#2^s-1^L4-68^*630^ia^#2^s-1^L4-26^*540^ia^#2^s-1^L410^*770^ia^#2^s-1^L4-13^*1190^ia^#2^s-1^L429^*1620^ia^#2^s-1^L435^*1620^ia^#2^s-1^L431^*1020^ia^#2^s-1^L372^*76^.20^,6^_50^*86^.12^,6^_72^*106^.20^,12^_67^*100^.20^,60^T0^183^*1059^A0^B0^C400^D400^q1^r-1^F9^E-1^k0^l-1^1137^*1299^A0^B0^C150^D150^q1^r1^F4^E-1^k0^l-1^4137^*1320^ia^#2^s-1^L377^*110^.4^,7^_-15^*74^.15^,4^_12^*82^.8^,120^T0^1-6^*739^A0^B0^C150^D150^q1^r-1^F4^E-1^k0^l-1^4-6^*770^ia^#2^s-1^M0\"^d104^*870^u0.4^t1^177^*759^A0^B0^C400^D400^q1^r1^F9^E-1^k0^l-1^185^*759^A0^B0^C400^D400^q1^r1^F9^E-1^k0^l-1^1100^*1199^A0^B0^C400^D400^q1^r-1^F9^E-1^k0^l-1^578^*40^.12^,400^A0^B-1^Y0^g0\"^c150^*170^.70^,300^T0^113^*1699^A0^B0^C150^D150^q1^r1^F4^E-1^k0^l-1^413^*1710^ia^#2^s-1^L4-6^*760^irl^s-1^L4-17^*1710^jitem_grenade^s-1^L4-12^*1710^jitem_grenade^s-1^L417^*1260^jitem_grenade^s-1^L415^*1260^jitem_grenade^s-1^L432^*750^jitem_grenade^s-1^M0\"^e140^*167^.76^,230^K1^J6^7^G1^m1^o7^m1^p1^m1^nc8a^>^483^*1110^irailgun2^s1^M2^4100^*1250^irailgun2^s1^M2^477^*810^irailgun2^s1^M2^485^*810^irailgun2^s1^M2^1130^*1499^A0^B0^C150^D150^q1^r-1^F4^E-1^k0^l-1^4130^*1520^irl^s-1^M0\" />";
-         this.CACHED_MAPS["c8a"] = "<q.^f53^*139^A0^B0^C100^D100^q0^r1^F1^E-1^k0^l-1\"^c41^*100^.34^,300^T0\"^c41^*70^.16^,3100^T0\"^c63^*70^.147^,3100^T0^7^G1^m1^o0^m1^p#door_left^m1^n#door_left_open^>\"^e53^*16^.14^,110^K1^J1^250^*6^.20^,50^x^y0^z0^h8^I\"^e50^-225^.20^,50^K-1^J4^7^G1^m1^o0^m1^p0^m1^n1^>^3-30^-230^.310^,40^_75^-201^.81^,5^_150^!80^.13^,30^_120^!20^.37^,7^_75^!03^.23^,13^_96^!50^.37^,4^_120^!45^.17^,5^_123^!03^.36^,7^_193^*40^.87^,2900^T0^8^G-1^m1^o0^m1^p2^m1^n4^m2^o19^m2^p2^m2^n0^m3^o20^m3^p3^m3^n0^m4^o-1^m4^p0^m4^n0^$^3115^-70^.80^,100^T0\"^e137^!45^.13^,90^K8^J5^373^-50^.27^,5^_114^-50^.46^,5^_164^-65^.15^,7^_173^-60^.22^,12^_78^-40^.13^,14^_122^-26^.15^,8^_127^-21^.12^,9^_132^!6^.9^,23^_77^!1^.31^,10^_137^!1^.58^,10^_78^*14^.51^,8^_-30^*100^.80^,350^_70^-225^.93^,250^T0\"^d60^-2120^u0.3^t1^370^!00^.10^,110^_70^-64^.10^,320^T0\" /><inf x=\"53^*170^Zhero1_guns^;0^2101^!05^.19^,50^x^y0^z0^h5^I^376^!45^.25^,9^_134^!87^.19^,17^_128^!71^.9^,330^T0^+80^!80^.48^,210^g0^+90^!76^.38^,40^g0^374^!71^.16^,90^T0^484^!700^jitem_grenade^s-1^L487^!700^jitem_grenade^s-1^M0\"^e78^!51^.13^,250^K7^J1\"^e163^!80^.30^,70^K-1^J4\"^e163^-225^.30^,50^K-1^J4\"^e120^-212^.42^,140^K3^J6\"^e164^-211^.12^,200^K2^J6^7^G-1^m1^o0^m1^p2^m1^n5^m2^o19^m2^p3^m2^n0^m3^o20^m3^p2^m3^n0^m4^o-1^m4^p0^m4^n0^$^2163^-205^.30^,50^x^y0^z0^h6^I\"^e139^!08^.10^,140^K4^J1^7^G1^m1^o0^m1^p1^m1^n9^>\"^e101^!45^.19^,50^K-1^J4\"^e176^!67^.15^,140^K5^J1^7^G-1^m1^o0^m1^p2^m1^n5^m2^o19^m2^p2^m2^n0^m3^o20^m3^p3^m3^n0^m4^o-1^m4^p0^m4^n0^$\"^e137^!78^.13^,90^K6^J5^7^G-1^m1^o0^m1^p3^m1^n2^>^7^G1^m1^o0^m1^p3^m1^n11^>\"^e128^!32^.9^,130^K7^J1^2137^!45^.13^,90^x^y0^z0^h3^I^377^-221^.22^,6^_148^*12^.18^,6^_76^!30^.22^,60^T0^1187^-2051^A0^B0^C300^D300^q2^r-1^F7^E-1^k0^l-1^370^-7^.10^,530^T0\"^c57^*70^.6^,510^T0\"^c57^*17^.6^,440^T0\"^c57^-29^.6^,440^T0\"^c57^-75^.6^,440^T0\"^c57^!21^.6^,440^T0\"^c57^!67^.6^,440^T0\"^c57^-213^.6^,270^T0\"^d60^*180^u0.3^t1\"^d60^-280^u0.3^t1\"^d60^-740^u0.3^t1\"^d60^!200^u0.3^t1\"^d60^!660^u0.3^t1^370^*100^.10^,1030^T0\"^d110^-207^~d153^-2110^u0.4^t1^4187^-2030^irailgun2^s2^M2\" /><barrel x=\"106^-2230^jbar_orange^A0^B0\" /><barrel x=\"109^-2230^jbar_orange^A0^B0^3105^-7^.3^,5^_101^*100^.179^,66^_75^*100^.20^,660^T0^595^*100^.6^,860^A0^B-1.5^Y100^g0^5101^*30^.4^,160^A-0.5^B-1^Y100^g0^591^*30^.4^,160^A0.5^B-1^Y100^g0\"^d120^*290^u0.4^t1^698^*140^jantigravity^U-1^O0^P0^377^*40^.14^,10^_105^*40^.93^,100^T0^2101^*40^.5^,7^(I^2102^*36^.5^,4^(I^2103^*35^.5^,4^(I^290^*40^.5^,7^(I^289^*36^.5^,4^(I^288^*35^.5^,4^(I^2104^*34^.2^,4^(I^290^*34^.2^,4^(I^3180^*5^.18^,22^_88^-216^.16^,11^_120^!45^.13^,90^T0\" /><inf x=\"56^*1030^Zsky^;3\"^d86^!23^~d134^!510^u0.4^t1^7^G-1^m1^o22^m1^p7^m1^n1^>^3117^-31^.20^,8^_146^-35^.10^,4^_154^-32^.3^,7^_172^-3^.12^,13^_185^*20^.12^,4^_105^*7^.3^,50^T0\"^d110^*50^u0.4^t1^3154^!7^.3^,70^T0\"^d159^-22^~d104^-220^u0.4^t1^3185^-40^.10^,230^T0^1152^-351^A0^B0^C200^D200^q2^r-1^F8^E-1^k0^l-1^4152^-340^iplasmagun^s2^L1130^-501^A0^B0^C200^D200^q2^r-1^F8^E-1^k0^l-1^1169^-651^A0^B0^C200^D200^q2^r-1^F8^E-1^k0^l-1^197^-501^A0^B0^C300^D300^q2^r1^F7^E-1^k0^l-1^4130^-480^iplasmagun^s2^L497^-480^iplasmagun^s2^L4169^-640^iplasmagun^s2^L1189^-401^A0^B0^C300^D300^q2^r-1^F7^E-1^k0^l-1^4189^-380^irailgun^s-1^L1182^-601^A0^B0^C300^D300^q2^r-1^F7^E-1^k0^l-1^4182^-590^irailgun^s-1^L4182^-580^irl^s-1^L4189^-370^irl^s-1^L3114^-36^.8^,40^T0^1102^!11^A0^B0^C200^D200^q2^r1^F8^E-1^k0^l-1^489^-90^irl^s-1^L489^!00^irailgun^s-1^L189^!11^A0^B0^C200^D200^q2^r1^F8^E-1^k0^l-1^4102^!00^irailgun^s-1^L4102^-90^irl^s-1^L1155^!11^A0^B0^C200^D200^q2^r-1^F8^E-1^k0^l-1^1149^*119^A0^B0^C300^D300^q2^r-1^F7^E-1^k0^l-1^4155^!00^iplasmagun^s2^L4149^*130^iplasmagun^s2^L1184^*49^A0^B0^C300^D300^q2^r-1^F7^E-1^k0^l-1^1187^*199^A0^B0^C300^D300^q2^r-1^F7^E-1^k0^l-1^4184^*60^iplasmagun^s2^L4187^*210^iplasmagun^s2^M0\" /><barrel x=\"125^-240^jbar_orange^A0^B0\" /><barrel x=\"130^!90^jbar_orange^A0^B0\" /><barrel x=\"135^!40^jbar_orange^A0^B0\" /><barrel x=\"93^-480^jbar_orange^A0^B0\" /><barrel x=\"119^-680^jbar_orange^A0^B0\" /><barrel x=\"145^-680^jbar_orange^A0^B0\" /><barrel x=\"148^-680^jbar_orange^A0^B0\" /><barrel x=\"156^-480^jbar_orange^A0^B0\" /><barrel x=\"162^-680^jbar_orange^A0^B0\" /><barrel x=\"156^-300^jbar_orange^A0^B0\" /><barrel x=\"89^-380^jbar_orange^A0^B0^197^!451^A0^B0^C200^D200^q2^r1^F8^E-1^k0^l-1^191^!451^A0^B0^C200^D200^q2^r1^F8^E-1^k0^l-1^191^!301^A0^B0^C200^D200^q2^r1^F8^E-1^k0^l-1^197^!301^A0^B0^C200^D200^q2^r1^F8^E-1^k0^l-1^1124^!201^A0^B0^C200^D200^q2^r-1^F8^E-1^k0^l-1^1133^!201^A0^B0^C200^D200^q2^r-1^F8^E-1^k0^l-1^1143^!451^A0^B0^C200^D200^q2^r-1^F8^E-1^k0^l-1^1127^!031^A0^B0^C200^D200^q2^r-1^F8^E-1^k0^l-1^497^!430^i^/2^s-1^L497^!280^i^/2^s-1^L4124^!190^i^/2^s-1^L4133^!190^i^&^#^s-1^L491^!290^i^&^#^s-1^L491^!430^i^&^#^s-1^L4143^!430^i^&^#^s-1^L396^!05^.4^,11^_121^!05^.4^,50^T0\" /><vehicle x=\"67^*90^r1^jveh_crate^A0^B0\" hpp=\"100^468^*80^jitem_grenade^s-1^L467^*100^jitem_grenade^s-1^M0\" /><inf x=\"63^*1030^Zshadowmap_size^;35^3107^!67^.5^,7^_150^!03^.13^,63^_160^!03^.40^,57^_73^-76^.57^,140^T0^572^-96^.6^,40^A-1^B0^Y100^g0^194^!031^A0^B0^C300^D300^q2^r-1^F7^E-1^k0^l-1^494^!000^iplasmagun^s2^L4127^!000^iplasmagun^s2^M0\" /><barrel x=\"101^-740^jbar_orange^A0^B0\" /><barrel x=\"104^-740^jbar_orange^A0^B0^3170^-76^.10^,8^_170^!01^.10^,80^T0^6175^!000^jteleport^U-1^O0^P0^6175^-850^jteleport2^U-1^O0^P0\"^d175^-85^~d175^!000^u0.4^t1^383^-74^.10^,8^_83^-51^.10^,80^T0^688^-600^jteleport2^U-1^O0^P0^688^-730^jteleport^U-1^O0^P0\"^d88^-73^~d88^-60^~e84^-60^.8^,130^K-1^J4\"^e171^-83^.8^,190^K9^J2^7^G-1^m1^o30^m1^p14^m1^n13^>^377^!7^.14^,130^T0^1151^!031^A0^B0^C200^D200^q2^r-1^F8^E-1^k0^l-1^1168^!031^A0^B0^C200^D200^q2^r-1^F8^E-1^k0^l-1^4151^!000^iplasmagun^s2^L4168^!000^iplasmagun^s2^L4124^!170^iplasmagun^s2^L4133^!170^irailgun2^s2^M2^4149^*150^irl^s-1^L4187^*230^irl^s-1^L4184^*80^irl^s-1^L4155^-80^irl^s-1^M0\" /><barrel x=\"170^-90^jbar_orange^A0^B0\" /><barrel x=\"82^*160^jbar_orange^A0^B0\" /><barrel x=\"85^*160^jbar_orange^A0^B0\" /><barrel x=\"88^*160^jbar_orange^A0^B0\" /><barrel x=\"107^*160^jbar_orange^A0^B0\"^d95^!55^~c82^*100^.32^,300^T0\"^e87^*105^.21^,630^K10^J6^7^G1^m1^o7^m1^p1^m1^nc9a^>^550^*100^.20^,400^A0^B0^Y100^g0^494^!020^irailgun2^s2^M2^3107^!56^.5^,70^T0\"^c52^*58^.1^,2860^T4\"^c190^!82^.1^,460^T4\"^c165^!82^.1^,460^T4\"^c143^!48^.2^,360^T4\"^c103^!07^.1^,410^T4\"^c67^*58^.1^,2860^T4\"^c117^!07^.1^,410^T4^396^!13^.5^,20^T0\" />";
-         this.CACHED_MAPS["c9a"] = "<q.^f-118^-2031^A4^B0^C100^D100^q0^r1^F1^E-1^k0^l-1\"^c-210^!80^.150^,600^T0\"^c-60^*14^.109^,2540^T0^411^-280^irailgun^s-1^L3-48^*40^.99^,40^_10^*6^.35^,11^_31^!8^.13^,22^_40^!4^.10^,46^_-30^-30^.46^,10^_-8^-21^.15^,11^_-30^-50^.74^,10^_34^-70^.11^,100^T0^240^-60^.5^,100^x^y0^z0^h3^I^326^-77^.17^,11^_17^-85^.28^,15^_10^-97^.35^,4^_2^!11^.46^,9^_40^-200^.10^,32^_-30^-70^.10^,140^_-24^!28^.11^,9^_-25^!50^.50^,7^_4^!71^.26^,6^_3^!97^.19^,10^_-24^-200^.74^,10^_-23^!79^.15^,4^_-70^*40^.26^,250^_-30^-225^.80^,55^_40^-70^.10^,710^T0\" /><inf x=\"-118^!990^Zhero1_guns^;0^340^*6^.10^,160^T0^2-44^-204^.14^,60^x^y0^z0^h7^I\"^e-44^-30^.14^,60^K-1^J4^7^G-1^m1^o0^m1^p1^m1^n0^m2^o19^m2^p0^m2^n0^m3^o20^m3^p3^m3^n0^m4^o-1^m4^p0^m4^n0^$\"^e-43^-210^.12^,230^K0^J6^211^-72^.23^,50^x^y0^z0^h3^I^7^G1^m1^o0^m1^p2^m1^n13^m2^o0^m2^p3^m2^n6^m3^o0^m3^p1^m3^n7^m4^o0^m4^p4^m4^n10^m5^o28^m5^p5^m5^n11^m6^o29^m6^p0^m6^n11^m7^o-1^m7^p0^m7^n0^m8^o-1^m8^p0^m8^n0^m9^o-1^m9^p0^m9^n0^m10^o-1^m10^p0^m10^n0\"^e29^-40^.11^,100^K1^J1\"^e40^-50^.5^,100^K-1^J4\"^e11^-75^.22^,170^K2^J6^7^G1^m1^o0^m1^p0^m1^n3^>\"^e-20^!91^.10^,100^K4^J1^2-28^-60^.5^,100^x^y0^z0^h3^I\"^e-28^-50^.5^,100^K-1^J4\"^e-44^-70^.14^,60^K-1^J4\"^e-54^-210^.9^,200^K3^J6\"^e-44^-225^.14^,60^K-1^J4^7^G-1^m1^o0^m1^p1^m1^n9^m2^o19^m2^p3^m2^n0^m3^o20^m3^p0^m3^n0^m4^o-1^m4^p0^m4^n0^$^2-28^-40^.5^,100^x^y0^z0^h3^I\"^e-28^-30^.5^,100^K-1^J4^3^!36^.13^,5^_-22^!13^.5^,5^_2^!18^.7^,8^_36^!31^.9^,6^_21^!55^.9^,5^_^!54^.6^,7^_7^!75^.6^,7^_34^!80^.11^,5^_-24^!46^.15^,7^_-9^!16^.11^,6^_-26^-70^.37^,9^_^!05^.7^,150^T0^426^-2230^iplasmagun^s2^L134^-2251^A0^B0^C250^D250^q2^r-1^F8^E-1^k3^l-1^434^-2230^irl^s-1^L418^-2230^irailgun^s-1^L329^!4^.3^,260^T0^111^!971^A0^B0^C250^D250^q2^r-1^F8^E-1^k0^l-1^118^!971^A0^B0^C250^D250^q2^r1^F8^E-1^k0^l-1^418^!960^iplasmagun^s2^L411^!960^iplasmagun^s2^L111^!361^A0^B0^C250^D250^q2^r-1^F8^E-1^k0^l-1^411^!350^iplasmagun^s2^L119^!111^A0^B0^C250^D250^q2^r-1^F8^E-1^k0^l-1^131^!111^A0^B0^C250^D250^q2^r-1^F8^E-1^k0^l-1^419^!100^irl^s-1^L431^!100^irailgun^s-1^M0\"^e46^-68^.3^,10^K-1^J4\"^d5^!^~d28^-37^~d47^-61^~d9^-80^~d20^!21^~d14^!58^~d-10^!58^~d-19^!890^u0.4^t1^120^!711^A0^B0^C250^D250^q2^r1^F8^E-1^k0^l-1^420^!700^iplasmagun^s2^L122^!501^A0^B0^C250^D250^q2^r1^F8^E-1^k0^l-1^422^!490^iplasmagun^s2^L1-36^-2041^A0^B0^C250^D250^q2^r1^F8^E-1^k0^l-1^4-36^-2010^iplasmagun^s2^L123^-851^A0^B0^C150^D150^q2^r1^F8^E-1^k0^l-1^423^-830^iplasmagun^s2^L111^-301^A0^B0^C250^D250^q2^r-1^F8^E-1^k0^l-1^411^-290^iplasmagun^s2^L132^-501^A0^B0^C250^D250^q2^r-1^F8^E-1^k0^l-1^114^-501^A0^B0^C250^D250^q2^r1^F8^E-1^k0^l-1^414^-480^iplasmagun^s2^L432^-480^iplasmagun^s2^L135^!81^A0^B0^C250^D250^q2^r-1^F8^E-1^k0^l-1^435^!70^iplasmagun^s2^L414^-470^irl^s-1^L432^-470^irl^s-1^L435^!60^irailgun^s-1^L411^!340^irl^s-1^L422^!480^irl^s-1^L420^!690^irl^s-1^L418^!950^irl^s-1^L411^!950^irl^s-1^L4-36^-2020^irl^s-1^L3-49^!5^.33^,6^_-11^-26^.6^,60^T0^126^-2251^A0^B0^C250^D250^q2^r-1^F8^E-1^k3^l-1^118^-2251^A0^B0^C250^D250^q2^r-1^F8^E-1^k3^l-1^3-130^-225^.86^,55^_40^!48^.10^,37^_-54^-231^.34^,49^_-130^*40^.70^,230^_-210^-201^.90^,69^_-210^!28^.90^,680^T0^5-210^!91^.89^,150^A1^B-0.5^Y100^g0^1-75^-2251^A0^B0^C250^D250^q2^r1^F8^E-1^k0^l-1^1-67^-2251^A0^B0^C250^D250^q2^r1^F8^E-1^k0^l-1^4-75^-2220^i^&^#^s-1^L4-67^-2220^i^&^#^s-1^M0\"^d-56^-2110^u0.4^t1^3-80^!80^.20^,20^_-130^-215^.35^,170^T0\"^e-29^-210^.9^,200^K3^J6\" /><barrel x=\"-97^-2130^jbar_orange^A0^B0\" /><barrel x=\"-100^-2130^jbar_orange^A0^B0\" /><barrel x=\"-103^-2130^jbar_orange^A0^B0\"^e-12^-72^.23^,50^K-1^J4^348^-202^.162^,780^T1^347^!53^.9^,27^_47^-76^.9^,60^_47^!9^.9^,35^_47^*40^.9^,430^T0^241^!85^.7^,150^x^y0^z0^h5^I\"^e41^!70^.7^,150^K-1^J4^7^G1^m1^o0^m1^p5^m1^n14^>\"^d71^!330^u1^t0\"^d72^-580^u1^t0^2120^!92^.14^,10^(H^6127^!970^jstone^U-1^O0^P0\"^e110^!80^.100^,240^K5^J6^7^G1^m1^o7^m1^p1^m1^nc10a^>\"^c41^!85^.7^,150^T4\"^c-28^-40^.5^,300^T4\"^c40^-60^.5^,100^T4\"^c11^-72^.23^,50^T4\"^c-38^-32^.2^,1970^T4^590^-49^.80^,1310^A-1^B0^Y100^g0\" />";
-         this.CACHED_MAPS["c10a"] = "<q.^f9^-2021^A4^B0^C100^D100^q0^r1^F1^E-1^k0^l-1\"^c91^-91^.208^,1180^T0\" /><inf x=\"9^!980^Zhero1_guns^;0^3-120^-202^.219^,780^T1\" /><vehicle x=\"197^!730^r-1^jveh_jeep^A0^B0\" hpp=\"30^4197^!720^ivehminigun^s-1^M1^1197^!751^A0^B0^C250^D250^q2^r-1^F8^E-2^k0^l-1^3221^!60^.89^,51^_190^!80^.40^,310^T0^4197^!700^igl^s2^L3210^!70^.20^,20^_160^!90^.40^,200^T0^1157^-2021^A0^B0^C400^D400^q2^r1^F7^E-1^k0^l-1^4157^-2010^irl^s-1^L1187^!901^A0^B0^C400^D400^q2^r1^F7^E-1^k0^l-1^4187^!890^irl^s-1^L390^!96^.60^,14^_90^-90^.10^,88^_94^!56^.102^,4^_120^!20^.40^,4^_94^!50^.96^,8^_180^!26^.40^,4^_240^!36^.56^,7^_290^!30^.90^,81^_115^!15^.8^,25^_157^!15^.5^,9^_178^!21^.5^,19^_217^!21^.5^,9^_238^!31^.5^,190^T0\"^d119^-580^u1^t0\"^d219^-580^u1^t0\"^d164^-580^u1^t0\"^d261^-590^u1^t0\"^d311^-590^u1^t0^1176^!501^A0^B0^C250^D250^q2^r1^F8^E-1^k0^l-1^4156^!480^irailgun^s-1^L1155^!501^A0^B0^C250^D250^q2^r1^F8^E-1^k0^l-1^1191^!261^A0^B0^C250^D250^q2^r1^F8^E-1^k0^l-1^1209^!261^A0^B0^C250^D250^q2^r1^F8^E-1^k0^l-1^1201^!261^A0^B0^C250^D250^q2^r1^F8^E-1^k0^l-1^1149^!201^A0^B0^C250^D250^q2^r1^F8^E-1^k0^l-1^1132^!201^A0^B0^C250^D250^q2^r1^F8^E-1^k0^l-1^1141^!201^A0^B0^C250^D250^q2^r1^F8^E-1^k0^l-1^1252^!361^A0^B0^C400^D400^q2^r1^F7^E-1^k0^l-1^1276^!361^A0^B0^C400^D400^q2^r1^F7^E-1^k0^l-1^1265^!361^A0^B0^C400^D400^q2^r1^F7^E-1^k0^l-1^4177^!480^irailgun^s-1^L4191^!240^irailgun^s-1^L4210^!240^irailgun^s-1^L4149^!180^irailgun^s-1^L4133^!180^irailgun^s-1^M0\" /><vehicle x=\"256^!570^r1^jveh_crate^A0^B0\" hpp=\"100\" /><vehicle x=\"267^!570^r1^jveh_crate^A0^B0\" hpp=\"100\" /><vehicle x=\"277^!570^r1^jveh_crate^A0^B0\" hpp=\"100\" /><vehicle x=\"287^!570^r1^jveh_crate^A0^B0\" hpp=\"100^4256^!540^i^&^#^s-1^L4256^!530^i^&^#^s-1^L4256^!520^i^&^#^s-1^L4267^!540^i^/2^s-1^L4277^!540^jitem_grenade^s-1^L4267^!530^i^/2^s-1^L4267^!520^i^/2^s-1^L4277^!530^jitem_grenade^s-1^L4277^!520^jitem_grenade^s-1^L4287^!540^iplasmagun^s-1^L4287^!530^iplasmagun^s-1^L4287^!520^iplasmagun^s-1^M0\" /><barrel x=\"242^!580^jbar_orange^A0^B0\" /><barrel x=\"239^!580^jbar_orange^A0^B0\" /><barrel x=\"216^!680^jbar_orange^A0^B0\" /><barrel x=\"185^!240^jbar_orange^A0^B0\" /><barrel x=\"272^!340^jbar_orange^A0^B0\" /><barrel x=\"249^!340^jbar_orange^A0^B0\" /><barrel x=\"246^!340^jbar_orange^A0^B0\" /><barrel x=\"192^!540^jbar_orange^A0^B0\" /><barrel x=\"142^!480^jbar_orange^A0^B0\" /><barrel x=\"144^!480^jbar_orange^A0^B0^3290^-90^.20^,300^T0\"^c299^!06^.81^,300^T0\"^d61^!630^u1^t0^5-160^*21^.130^,2110^A2^B0^Y40^g0^217^!95^.12^,7^(H^623^!980^jstone^U-1^O0^P0^219^!93^.8^,4^(H^380^-84^.14^,760^T0\"^d180^!61^~d200^!31^~d142^!250^u0.4^t1^3160^-96^.27^,5^_220^!00^.30^,50^T0^1165^-961^A0^B0^C250^D250^q2^r1^F8^E-1^k0^l-1^1174^-961^A0^B0^C250^D250^q2^r1^F8^E-1^k0^l-1^1184^-961^A0^B0^C250^D250^q2^r1^F8^E-1^k0^l-1^1225^!001^A0^B0^C250^D250^q2^r1^F8^E-1^k0^l-1^1234^!001^A0^B0^C250^D250^q2^r1^F8^E-1^k0^l-1^1246^!001^A0^B0^C250^D250^q2^r1^F8^E-1^k0^l-1^4246^-980^irailgun^s-1^L4225^-980^irailgun^s-1^L4184^-950^irailgun^s-1^L4174^-950^irailgun2^s2^M2^4165^-950^irailgun^s-1^L3160^!41^.10^,14^_96^-202^.284^,78^_300^-70^.80^,400^T0^5300^*28^.60^,980^A-3^B0^Y100^g0^4234^-990^irailgun2^s2^M2^4202^!250^irailgun2^s2^M2^4142^!190^irailgun2^s2^M2^4252^!330^irailgun2^s2^M2^4265^!330^irailgun2^s2^M2^4276^!330^irailgun2^s2^M2^390^-90^.30^,10^_210^!37^.21^,6^_320^!20^.60^,210^T0\"^e294^!19^.16^,120^K0^J6^7^G1^m1^o7^m1^p1^m1^nc11a^>^3-160^!90^.130^,780^T1^394^!51^.75^,220^T0\" />";
-         this.CACHED_MAPS["c11a"] = "<q.^f-70^-21^A0^B0^C100^D100^q0^r1^F1^E-1^k0^l-1\"^c-160^*67^.420^,113^_-160^-^.87^,20^_-80^-2^.26^,18^_-57^*3^.7^,23^_-58^*22^.12^,5^_-160^*40^.87^,28^_-80^*22^.13^,5^_-160^!3^.160^,67^_5^-3^.35^,5^_10^*6^.20^,12^_-3^-20^.23^,6^_-3^-24^.15^,16^_-3^-37^.65^,43^_44^-25^.101^,55^_50^-3^.10^,7^_55^-5^.30^,5^_80^-3^.10^,7^_110^-3^.35^,34^_120^*23^.140^,103^_110^*25^.40^,5^_70^*25^.20^,5^_50^*20^.10^,6^_49^*45^.38^,5^_100^*45^.40^,5^_12^*37^.8^,7^_10^*37^.5^,17^_12^*50^.14^,5^_-21^*35^.12^,5^_-30^*23^.3^,13^_-20^*15^.10^,9^_-29^*13^.11^,3^_160^*55^.30^,5^_165^*90^.95^,46^_-160^*70^.70^,40^_34^-30^.16^,110^T0\" /><inf x=\"-70^*10^Zhero1_guns^;0^2-80^*12^.4^,12^(I^33^*25^.10^,5^_94^*12^.12^,2^_88^-8^.6^,20^T0^2170^*44^.6^,210^x^y0^z0^h3^I^390^-20^.25^,10^_84^-22^.11^,8^_106^-8^.6^,2^_-36^!0^.26^,70^T0^1-32^!01^A0^B0^C250^D250^q1^r-1^F8^E-1^k0^l-1^1-19^!01^A0^B0^C250^D250^q1^r-1^F8^E-1^k0^l-1^118^*59^A0^B0^C250^D250^q1^r-1^F8^E-1^k0^l-1^16^-201^A0^B0^C250^D250^q1^r-1^F8^E-1^k0^l-1^139^-301^A0^B0^C250^D250^q1^r-1^F8^E-1^k0^l-1^125^*59^A0^B0^C250^D250^q1^r-1^F8^E-1^k0^l-1^163^-51^A0^B0^C250^D250^q1^r-1^F8^E-1^k0^l-1^1157^*229^A0^B0^C1000^D1000^q1^r-1^F11^E-1^k3^l2^4-32^-70^i^&^#^s-1^L4-19^-70^i^&^#^s-1^L418^*80^i^&^#^s-1^L425^*80^i^&^#^s-1^L46^!80^i^&^#^s-1^L439^-270^i^&^#^s-1^L463^-30^i^&^#^s-1^L4157^*240^i^&^#^s-1^L6-52^*220^jantigravity^U-1^O0^P0^6-15^*350^jantigravity^U-1^O0^P0^5-19^*60^.8^,250^A0^B-1^Y0^g0^5-56^*47^.8^,250^A0^B-1^Y0^g0^3-41^*50^.12^,50^T0^6-35^*500^jantigravity^U-1^O0^P0^5-39^*75^.8^,250^A0^B-1^Y0^g0\" /><barrel x=\"-87^*420^jbar_orange^A0^B0\" /><barrel x=\"-85^*420^jbar_orange^A0^B0^5-160^*151^.70^,810^A2^B0^Y100^g0^655^*450^jantigravity^U-1^O0^P0^551^*70^.8^,250^A0^B-1^Y0^g0^620^*500^jantigravity^U-1^O0^P0^516^*75^.8^,250^A0^B-1^Y0^g0^4157^*250^ibfg^s1^L4157^*260^iplasmagun^s1^L4157^*270^irailgun2^s1^M2^5165^*171^.85^,810^A-2^B0^Y100^g0^317^*35^.23^,50^T0\"^d110^*900^u1^t0\"^d150^*900^u1^t0\"^d70^*900^u1^t0\"^d30^*900^u1^t0\"^d-10^*900^u1^t0\"^d-50^*900^u1^t0\"^d-90^*900^u1^t0\"^d72^!7^~d44^!7^~d23^*25^~d-70^*900^u1^t0\"^d-30^*900^u1^t0\"^d10^*900^u1^t0\"^d50^*900^u1^t0\"^d90^*900^u1^t0\"^d130^*900^u1^t0^4158^*250^jitem_grenade^s-1^L4158^*240^jitem_grenade^s-1^L6100^-200^jantigravity^U-1^O0^P0^596^-^.8^,200^A0^B-1^Y0^g0^397^*11^.6^,3^_98^*11^.4^,4^_99^*11^.2^,50^T0\" /><barrel x=\"-25^*150^jbar_orange^A0^B0\" /><barrel x=\"-22^*150^jbar_orange^A0^B0\" /><barrel x=\"8^*270^jbar_orange^A0^B0\" /><barrel x=\"22^*370^jbar_orange^A0^B0\" /><barrel x=\"25^*370^jbar_orange^A0^B0\" /><barrel x=\"14^-350^jbar_orange^A0^B0\" /><barrel x=\"17^-350^jbar_orange^A0^B0\" /><barrel x=\"108^!80^jbar_orange^A0^B0\" /><barrel x=\"118^!0^jbar_orange^A0^B0\"^e170^*64^.6^,210^K-1^J4^7^G1^m1^o0^m1^p1^m1^n0^>\"^e180^*44^.20^,210^K1^J6^7^G1^m1^o7^m1^p1^m1^nc12a^>^2176^*44^.6^,210^x^y0^z0^h3^I\"^e176^*64^.6^,210^K-1^J4^7^G1^m1^o0^m1^p2^m1^n2^>^1146^*249^A0^B0^C1000^D1000^q1^r-1^F11^E-1^k3^l0^4146^*290^irailgun2^s1^M2^4146^*280^iplasmagun^s1^L4146^*270^ibfg^s1^L4146^*260^i^&^#^s-1^L4147^*260^jitem_grenade^s-1^L4147^*270^jitem_grenade^s-1^L4146^*300^irl^s1^M2^4157^*280^irl^s1^M2^310^*56^.5^,11^_85^*51^.5^,11^_40^*20^.15^,30^T0\"^c170^*44^.12^,210^T4\" />";
-         this.CACHED_MAPS["c12a"] = "<q.^f-89^*599^A0^B0^C100^D100^q0^r1^F1^E-1^k0^l-1\"^c-170^*98^.146^,820^T0\"^c-24^*48^.131^,320^T0\"^c-39^*16^.158^,75^_-170^*60^.90^,80^_-160^*40^.90^,100^_-80^*30^.30^,90^_-70^*20^.50^,15^_-6^*20^.46^,15^_-6^!0^.46^,10^_-40^!0^.20^,10^_-60^*14^.30^,70^_-160^-50^.350^,40^_47^!4^.48^,16^_20^-27^.34^,29^_60^!0^.10^,10^_20^*40^.23^,33^_40^*34^.10^,4^_37^*11^.13^,4^_60^*34^.10^,3^_80^*34^.41^,4^_100^*48^.31^,38^_80^*21^.41^,9^_80^*50^.41^,4^_110^*80^.80^,1400^T0^+-30^-20^.50^,120^g0^+-20^!6^.14^,40^g0\" /><barrel x=\"7^*220^jbar_orange^A0^B0\" /><barrel x=\"9^*220^jbar_orange^A0^B0\" /><barrel x=\"-47^*220^jbar_orange^A0^B0\" /><barrel x=\"-30^*220^jbar_orange^A0^B0\" /><barrel x=\"-23^-80^jbar_orange^A0^B0\" /><barrel x=\"14^-80^jbar_orange^A0^B0\" /><barrel x=\"38^-80^jbar_orange^A0^B0\" /><barrel x=\"56^!20^jbar_orange^A0^B0\" /><barrel x=\"59^!20^jbar_orange^A0^B0^396^*55^.20^,130^T0\" /><inf x=\"-89^*630^Zhero1_guns^;0^3-170^*110^.90^,30^_-45^*103^.23^,33^_-90^*110^.60^,200^T0^2-100^*80^.10^,20^(I^165^*339^A0^B0^C400^D400^q1^r-1^F6^E-1^k0^l-1^465^*350^ia^#2^s1^L187^*209^A0^B0^C400^D400^q1^r-1^F6^E-1^k0^l-1^487^*220^ia^#2^s1^L145^*109^A0^B0^C400^D400^q1^r1^F6^E-1^k0^l-1^445^*120^ia^#2^s1^L166^!01^A0^B0^C400^D400^q1^r-1^F6^E-1^k0^l-1^187^!41^A0^B0^C400^D400^q1^r-1^F6^E-1^k0^l-1^466^-80^ia^#2^s1^L487^!30^ia^#2^s1^L171^-501^A0^B0^C400^D400^q1^r-1^F6^E-1^k0^l-1^180^-501^A0^B0^C400^D400^q1^r-1^F6^E-1^k0^l-1^471^-480^ia^#2^s1^L480^-480^ia^#2^s1^L18^!01^A0^B0^C400^D400^q1^r-1^F6^E-1^k0^l-1^48^-70^ia^#2^s1^L3-55^*32^.3^,40^T0^190^*499^A0^B0^C400^D400^q1^r-1^F6^E-1^k0^l-1^490^*510^ia^#2^s1^L490^*530^irl^s-1^L487^*240^irl^s-1^L465^*370^irl^s-1^L487^!10^irl^s-1^M0\" /><inf x=\"-77^*660^Zshadowmap_size^;35\" /><vehicle x=\"16^*360^r1^jveh_drone^A0^B0\" hpp=\"50^116^*319^A0^B0^C100^D100^q2^r-1^F5^E-2^k0^l-1^416^*340^ivehminigun^s-1^L1-31^*349^A0^B0^C100^D100^q2^r1^F5^E-2^k0^l-1\" /><vehicle x=\"-31^*390^r1^jveh_drone^A0^B0\" hpp=\"50^4-31^*360^ivehminigl^s-1^M0\" /><vehicle x=\"^*380^r-1^jveh_drone^A0^B0\" hpp=\"50^1^*349^A0^B0^C100^D100^q2^r-1^F5^E-2^k0^l-1^4^*360^ivehminigun^s-1^M0\"^d18^-2^~d60^*600^u1^t0\"^d80^*600^u1^t0\"^d40^*600^u1^t0^333^*50^.7^,130^T0\"^d14^*720^u1^t0\"^d-5^*850^u1^t0^+20^-20^.27^,70^g0^+40^!6^.7^,40^g0^3-35^-32^.62^,240^T0^662^-490^jteleport^U-1^O0^P0^662^-310^jteleport2^U-1^O0^P0\"^e57^-29^.10^,230^K0^J6^7^G1^m1^o7^m1^p1^m1^nc13a^>\"^d62^-31^~d62^-490^u0.4^t1\" />";
-         this.CACHED_MAPS["c13a"] = "<q.^f^*559^A0^B0^C100^D100^q0^r1^F1^E-1^k0^l-1\"^e-15^*22^.30^,150^K0^J6\"^c-90^*100^.180^,1600^T2^3-8^*50^.16^,110^T3^3-13^*46^.26^,100^T3^3-17^*40^.34^,30^T3^3-34^*35^.16^,50^T3^3-70^*34^.20^,40^T3^350^*34^.20^,40^T3^3-80^*90^.20^,400^T3^360^*34^.20^,940^T3^3-70^*20^.30^,70^T3^340^*20^.30^,70^T3^310^*10^.10^,700^T3^3-20^*10^.10^,700^T3^3-70^-^.55^,600^T3^314^-^.66^,600^T3^3-30^*5^.15^,150^T3^314^*5^.16^,150^T3\" /><inf x=\"^*590^Zhero1_guns^;0^270^*120^.80^,180^(I^2-150^*120^.80^,180^(I^3-80^*90^.150^,200^T0^2-150^*120^.300^,40^(I\"^d-30^*60^~d30^*60^~d^*280^u0.4^t1\" /><barrel x=\"-16^*420^jbar_blue^A0^B0\" /><barrel x=\"16^*420^jbar_blue^A0^B0\" /><barrel x=\"58^*220^jbar_blue^A0^B0\" /><barrel x=\"52^*220^jbar_blue^A0^B0\" /><barrel x=\"-58^*220^jbar_blue^A0^B0\" /><barrel x=\"-52^*220^jbar_blue^A0^B0^3-20^*34^.4^,80^T3^316^*34^.4^,80^T3\" /><barrel x=\"-28^*70^jbar_blue^A0^B0\" /><barrel x=\"27^*70^jbar_blue^A0^B0^2-10^*8^.20^,80^x^y0^z0^h1000^I^1^*79^A0^B0^C300^D300^q1^r-1^F2^E-1^k2^l-1^1120^*1199^A0^B0^C300^D300^q1^r-1^F2^E-1^k3^l-1^298^*136^.14^,24^(I^2109^*142^.22^,12^(I^2127^*133^.13^,19^(I\"^e-59^*49^.8^,160^K-1^J4\"^e51^*49^.8^,160^K-1^J4^7^G1^m1^o25^m1^p0^m1^n0^m2^o25^m2^p1^m2^n0^)^a^G7^X1^W30^7^G-1^m1^o28^m1^p2^m1^n1^m2^o28^m2^p2^m2^n2^m3^o29^m3^p1^m3^n0^m4^o29^m4^p2^m4^n0^$^4120^*1210^ia^#^s1^L318^*35^.16^,50^T3^1-22^*49^A4^B2^C0^D0^q1^r1^F8^E-1^k0^l-1^122^*39^A-4^B-2^C0^D0^q1^r1^F8^E-1^k0^l-1^130^*39^A-2^B0^C0^D0^q1^r-1^F8^E-1^k0^l-1^2-80^*32^.20^,14^(I^2-90^*15^.30^,17^(I^260^*15^.30^,17^(I^260^*32^.20^,14^(I\"^e-70^*32^.20^,20^K-1^J4\"^e-70^*15^.30^,20^K-1^J4\"^e40^*15^.30^,20^K-1^J4\"^e50^*32^.20^,20^K-1^J4^a^G1^X2^W60^7^G1^m1^o0^m1^p7^m1^n3^m2^o0^m2^p8^m2^n4^m3^o0^m3^p10^m3^n6^m4^o0^m4^p9^m4^n5^m5^o0^m5^p12^m5^n8^m6^o0^m6^p11^m6^n7^m7^o-1^m7^p0^m7^n0^m8^o-1^m8^p0^m8^n0^m9^o-1^m9^p0^m9^n0^m10^o-1^m10^p0^m10^n0^4-19^*100^i^&^#^s-1^L424^*50^i^&^#^s-1^L436^-0^i^/2^s-1^L360^*90^.20^,400^T3^3-80^*34^.20^,940^T3^2-70^*50^.10^,16^(I^260^*50^.10^,16^(I\"^e-80^*50^.10^,20^K-1^J4\"^e70^*50^.10^,20^K-1^J4^2-10^*8^.20^,80^x^y0^z0^h1000^I\"^e-35^-2^.20^,80^K-1^J4\"^e14^-2^.20^,80^K-1^J4^7^G1^m1^o0^m1^p3^m1^n9^>^7^G1^m1^o0^m1^p13^m1^n10^>\"^e-69^*49^.8^,170^K3^J1\"^e61^*49^.8^,170^K4^J1^3-80^*52^.10^,200^T3^370^*52^.10^,200^T3^350^*80^.20^,200^T3^3-70^*80^.20^,200^T3\"^e-20^-20^.40^,300^K5^J6^7^G1^m1^o7^m1^p1^m1^nc14a^>\"^c-10^*5^.7^,20^T4\"^c3^*5^.7^,20^T4\" />";
-         this.CACHED_MAPS["c14a"] = "<q.^f-50^*289^A0^B0^C100^D100^q0^r1^F1^E-1^k0^l-1\"^c-200^*100^.420^,2300^T2^3-200^*100^.140^,600^T3^3-40^*100^.20^,600^T3^3-60^*20^.20^,200^T3^3-200^*10^.280^,400^T3^3-200^*50^.120^,500^T3^3^*40^.70^,400^T3\" /><inf x=\"-50^*320^Zhero1_guns^;0^3-43^*13^.17^,70^T3^3-20^*15^.23^,70^T3^3-30^*100^.100^,400^T3^310^*70^.50^,700^T3^65^*410^jteleport^U-1^O0^P0^65^*590^jteleport2^U-1^O0^P0^5-20^*60^.20^,200^A1^B0^Y0^g0\"^d5^*59^~d5^*410^u0.4^t1^665^*590^jteleport2^U-1^O0^P0^665^*410^jteleport^U-1^O0^P0\"^d65^*59^~d65^*41^~e^*60^.10^,220^K0^J6\"^e60^*60^.10^,220^K-1^J6^7^G-1^m1^o30^m1^p0^m1^n1^m2^o43^m2^p0^m2^n0^)^+80^-60^.50^,300^g3\" /><barrel x=\"77^*120^jbar_blue^A0^B0\" /><barrel x=\"137^*120^jbar_blue^A0^B0^3140^*100^.80^,1100^T3^3130^*10^.90^,1400^T3^360^*100^.90^,300^T3^364^*38^.20^,40^T3^3120^*40^.26^,40^T3^390^*30^.14^,40^T3^3116^*20^.12^,40^T3^385^*14^.13^,40^T3^3100^*60^.4^,40^T3^3114^*53^.4^,40^T3^380^*60^.4^,40^T3^3130^*60^.4^,40^T3^399^*45^.11^,40^T3^3107^*6^.13^,40^T3^3118^!0^.16^,90^T3^390^-7^.14^,130^T3^371^-23^.15^,40^T3^391^!6^.43^,40^T3^3123^-35^.15^,40^T3^395^-41^.13^,40^T3^3-78^-68^.118^,620^T3^3107^-55^.15^,40^T3^376^-55^.15^,40^T3^330^-90^.114^,400^T3^330^-50^.50^,600^T3\" /><barrel x=\"73^*120^jbar_blue^A0^B0\" /><barrel x=\"133^*120^jbar_blue^A0^B0\" /><barrel x=\"132^*620^jbar_blue^A0^B0\" /><barrel x=\"102^*620^jbar_blue^A0^B0\" /><barrel x=\"82^*620^jbar_blue^A0^B0\" /><barrel x=\"116^*550^jbar_blue^A0^B0^1101^*449^A0^B0^C300^D300^q1^r1^F2^E-1^k0^l-1^1102^*299^A0^B0^C300^D300^q1^r1^F2^E-1^k0^l-1^192^*139^A0^B0^C300^D300^q1^r1^F2^E-1^k0^l-1^1109^*69^A0^B0^C300^D300^q1^r1^F2^E-1^k0^l-1^1118^*199^A0^B0^C300^D300^q1^r1^F2^E-1^k0^l-1^1122^*399^A0^B0^C300^D300^q1^r1^F2^E-1^k0^l-1^164^-501^A0^B0^C300^D300^q1^r1^F2^E-1^k0^l-1^174^-501^A0^B0^C300^D300^q1^r1^F2^E-1^k0^l-1^474^-470^ia^#^s1^L464^-470^ia^#^s1^L3-56^-50^.30^,40^T3\" /><barrel x=\"-16^-570^jbar_blue^A0^B0\" /><barrel x=\"19^-620^jbar_blue^A0^B0\" /><barrel x=\"-27^-480^jbar_blue^A0^B0\" /><barrel x=\"42^-480^jbar_blue^A0^B0\" /><barrel x=\"45^-480^jbar_blue^A0^B0\" /><barrel x=\"-4^-630^jbar_blue^A0^B0^320^-58^.20^,220^T3^3-20^-59^.11^,190^T3^3^-63^.10^,100^T3^3-120^-63^.52^,670^T3^3-200^-50^.100^,800^T3^3-88^-57^.11^,130^T3^3-10^-20^.30^,200^T3^4101^*470^ia^#^s1^L4102^*320^ia^#^s1^L4122^*430^ia^#^s1^L4118^*230^ia^#^s1^L492^*170^ia^#^s1^L4109^*100^ia^#^s1^L155^-501^A0^B0^C300^D300^q1^r1^F2^E-1^k0^l-1^159^-501^A0^B0^C300^D300^q1^r1^F2^E-1^k0^l-1^460^-470^ia^#^s1^L455^-470^ia^#^s1^L4-76^*110^jitem_grenade^s-1^L4-70^*110^jitem_grenade^s-1^L4-64^*110^jitem_grenade^s-1^L1-32^-501^A0^B0^C300^D300^q1^r1^F2^E-1^k0^l-1^4-32^-480^ia^#^s1^L1-92^-631^A0^B0^C300^D300^q1^r1^F2^E-1^k0^l-1^1-105^-501^A0^B0^C300^D300^q1^r1^F2^E-1^k0^l-1^3-90^-20^.30^,200^T3^1-11^-591^A0^B0^C300^D300^q1^r1^F2^E-1^k0^l-1^13^-631^A0^B0^C300^D300^q1^r1^F2^E-1^k0^l-1^4-11^-570^ia^#^s1^L42^-620^ia^#^s1^L3102^!8^.1^,120^T3^1126^-351^A0^B0^C300^D300^q1^r-1^F2^E-1^k0^l-1^4126^-320^irailgun2^s1^M2^1-111^-501^A0^B0^C300^D300^q1^r1^F2^E-1^k0^l-1^1-61^-671^A0^B0^C300^D300^q1^r1^F2^E-1^k0^l-1^4-61^-640^ia^#^s1^L4-111^-480^ia^#^s1^L5-60^*100^.20^,550^A0^B0^Y100^g0^2-126^-29^.6^,23^(I\"^e-121^-29^.7^,230^K1^J6\"^d90^*50^~d130^*30^~d83^-29^~d37^-35^~d-34^-350^u0.4^t1^1-98^-631^A0^B0^C300^D300^q1^r1^F2^E-1^k0^l-1^1-84^-561^A0^B0^C300^D300^q1^r1^F2^E-1^k0^l-1^4-84^-550^ia^#^s1^L1-71^-621^A0^B0^C300^D300^q1^r1^F2^E-1^k0^l-1^4-71^-590^ia^#^s1^L1-46^-501^A0^B0^C300^D300^q1^r1^F2^E-1^k0^l-1^4-46^-480^ia^#^s1^L1-111^-401^A0^B0^C300^D300^q1^r1^F2^E-1^k0^l-1^1-98^-521^A0^B0^C300^D300^q1^r1^F2^E-1^k0^l-1^1-91^-521^A0^B0^C300^D300^q1^r1^F2^E-1^k0^l-1^4-111^-380^ia^#^s1^L1-93^-401^A0^B0^C300^D300^q1^r1^F2^E-1^k0^l-1^325^-54^.10^,100^T3^315^-64^.10^,100^T3^3-5^-65^.10^,100^T3^4-93^-380^irl^s-1^L4-98^-490^irl^s-1^L4-92^-610^irl^s-1^L4-98^-610^irl^s-1^L4-91^-490^irl^s-1^L4-105^-480^irl^s-1^L7^G1^m1^o7^m1^p1^m1^nc15a^>\"^e-38^*25^.10^,130^K2^J6^7^G-1^m1^o43^m1^pThe grenade\'s blast force is a great power. What about a grenade jump?^m1^n0^>\" />";
-         this.CACHED_MAPS["c15a"] = "<q.^f67^*399^A0^B0^C100^D100^q0^r1^F1^E-1^k0^l-1\"^c-170^*80^.390^,2100^T2^360^*40^.160^,100^T3^360^*10^.90^,100^T3^360^*80^.160^,200^T3^360^!4^.60^,100^T3^360^-50^.90^,700^T3^3-5^!4^.35^,100^T3^3-10^-50^.40^,700^T3^3-75^*10^.35^,100^T3^274^*60^.6^,20^(I^3-80^!10^.230^,400^T3^5-40^!08^.30^,20^A0^B0^Y0^g100\" /><inf x=\"67^*430^Zhero1_guns^;0^3-170^*80^.120^,500^T3\"^d-130^*1100^u1^t0\"^d-100^*1100^u1^t0\"^d-70^*1100^u1^t0\"^d-40^*1100^u1^t0\"^d-10^*1100^u1^t0\"^d20^*1100^u1^t0\"^d50^*1100^u1^t0\"^d80^*1100^u1^t0^167^*99^A0^B0^C300^D300^q1^r-1^F2^E-1^k0^l-1^467^*130^irl^s-1^L320^*80^.10^,800^T3^3-5^*10^.31^,100^T3^3-10^*15^.10^,450^T3^185^!41^A0^B0^C400^D400^q1^r-1^F6^E-1^k0^l-1^325^*20^.15^,100^T3^485^!10^irl^s-1^L110^!41^A0^B0^C400^D400^q1^r1^F6^E-1^k0^l-1^410^!10^irl^s-1^L230^!4^.30^,50^x^y0^z0^h5^I^+30^-73^.30^,370^g50\"^e30^-4^.30^,110^K0^J6^4-65^!90^jitem_grenade^s0^M0\"^e30^!05^.30^,50^K-1^J6^7^G1^m1^o0^m1^p1^m1^n1^>^4-24^-490^jitem_grenade^s0^L4-67^!90^jitem_grenade^s0^L120^-501^A0^B0^C300^D300^q1^r1^F2^E-1^k0^l-1^420^-470^irailgun^s-1^L410^-390^irailgun^s-1^L410^-470^irailgun^s-1^L374^*33^.146^,270^T3^3140^*10^.80^,1600^T3^3130^-30^.17^,260^T3^3120^-40^.16^,180^T3\" /><barrel x=\"138^-280^jbar_blue^A0^B0\" /><barrel x=\"134^-280^jbar_blue^A0^B0\" /><barrel x=\"117^-480^jbar_blue^A0^B0\" /><barrel x=\"111^-480^jbar_blue^A0^B0^476^-470^irailgun^s-1^L486^-470^irailgun^s-1^L486^-390^irailgun^s-1^L3-170^-20^.130^,1300^T3^3-30^-50^.10^,50^T3^3-30^-35^.10^,50^T3^3-30^-20^.10^,50^T3^3-30^-5^.10^,50^T3^3-30^*10^.10^,50^T3^3-6^*30^.31^,50^T3^3-170^*17^.100^,470^T3^1-44^-201^A0^B0^C300^D300^q1^r1^F2^E-1^k0^l-1^4-44^!70^igl^s1^M3^1^*299^A0^B0^C400^D400^q1^r-1^F6^E-1^k0^l-1^4^*330^irl^s-1^L15^*299^A0^B0^C400^D400^q1^r-1^F6^E-1^k0^l-1^45^*330^irl^s-1^L1-48^*99^A0^B0^C300^D300^q1^r1^F2^E-1^k0^l-1^4-48^*130^igl^s1^M3^1-25^-51^A0^B0^C300^D300^q1^r1^F2^E-1^k0^l-1^4-25^-20^igl^s1^M3^1-58^-201^A0^B0^C300^D300^q1^r1^F2^E-1^k0^l-1^4-58^!70^igl^s1^M3\"^d-50^!0^~d100^-40^~d100^!0^~d11^*200^u0.4^t1^175^-501^A0^B0^C300^D300^q1^r-1^F2^E-1^k0^l-1^186^-501^A0^B0^C300^D300^q1^r-1^F2^E-1^k0^l-1^186^-421^A0^B0^C300^D300^q1^r-1^F2^E-1^k0^l-1^110^-501^A0^B0^C300^D300^q1^r1^F2^E-1^k0^l-1^110^-421^A0^B0^C300^D300^q1^r1^F2^E-1^k0^l-1^2-90^*30^.10^,13^(I^1-8^*149^A0^B0^C300^D300^q1^r-1^F2^E-1^k0^l-1^4-8^*170^igl^s1^M3^118^*99^A0^B0^C300^D300^q1^r-1^F2^E-1^k0^l-1^418^*130^igl^s1^M3\"^e-81^*31^.8^,160^K1^J6^7^G1^m1^o7^m1^p1^m1^nc16a^>\"^c32^!6^.1^,920^T4\"^c57^!6^.1^,920^T4^5-88^*156^.38^,760^A3^B0^Y100^g0^560^*156^.38^,760^A-3^B0^Y100^g0\" />";
-         this.CACHED_MAPS["c16a"] = "<q.^f-170^*59^A0^B0^C100^D100^q0^r1^F1^E-1^k0^l-1\"^c-203^*50^.403^,1030^T2^3-178^!0^.142^,600^T3\" /><inf x=\"-170^*80^Zhero1_guns^;0^310^!0^.190^,600^T3^3-49^!9^.72^,510^T3\" /><barrel x=\"-126^-80^jbar_blue^A0^B0\" /><barrel x=\"-81^-80^jbar_blue^A0^B0^3-260^*60^.88^,1300^T3\" /><barrel x=\"-135^-80^jbar_blue^A0^B0\" /><barrel x=\"-150^-80^jbar_blue^A0^B0\" /><barrel x=\"-75^-80^jbar_blue^A0^B0\"^d-70^*100^u0.4^t1^1-358^*1099^A0^B0^C350^D350^q1^r-1^F2^E-1^k1^l-1^4-358^*1130^ibfg^s1^L3-177^*6^.17^,210^T3^3-160^*25^.20^,50^T3^3-120^*13^.24^,110^T3^3-80^*24^.20^,40^T3^3-40^*20^.20^,200^T3^3^*15^.20^,50^T3^340^*20^.20^,420^T3^380^*60^.120^,400^T3^2-355^*125^.8^,20^(I^2-371^*126^.8^,20^(I^2-368^*131^.19^,11^(I\"^e-168^*41^.8^,360^K0^J6^7^G1^m1^o25^m1^p0^m1^n0^>^a^G3^X1^W50\"^e-68^*6^.18^,40^K-1^J4\"^e-39^*24^.18^,40^K-1^J4\"^e-20^!5^.18^,40^K-1^J4\"^e1^*19^.18^,40^K-1^J4^7^G-1^m1^o28^m1^p1^m1^n1^m2^o28^m2^p1^m2^n3^m3^o28^m3^p1^m3^n2^m4^o28^m4^p1^m4^n4^$^3-144^*9^.32^,60^T3^2-368^*110^.19^,11^(I^530^*19^.39^,290^A0^B-1^Y0^g0^635^!00^jantigravity^U-1^O0^P0^665^!00^jantigravity^U-1^O0^P0^3-69^*2^.19^,220^T3^3-10^*60^.98^,200^T3^3^*50^.20^,200^T3^3-110^*20^.20^,150^T3^3-140^*60^.100^,200^T3\"^d-170^*800^u1^t0\"^d-156^*800^u1^t0\"^d-140^*800^u1^t0\"^d-25^*800^u1^t0\"^d-39^*800^u1^t0\"^d-11^*800^u1^t0\"^d35^-90^u0.4^t0\"^d65^-90^u0.4^t0^380^-6^.7^,70^T3^399^*2^.101^,220^T3\"^e115^*23^.38^,260^K2^J6^7^G1^m1^o7^m1^p1^m1^nc17a^>^5^*152^.90^,920^A-1^B0^Y100^g0^5-260^*152^.70^,920^A1^B0^Y100^g0^3-132^*45^.13^,150^T3\"^c47^*40^.6^,200^T4\" />";
-         this.CACHED_MAPS["c17a"] = "<q.^f118^*19^A0^B0^C100^D100^q0^r1^F1^E-1^k0^l-1\"^c354^!1^.73^,160^T0\"^c511^-21^.74^,370^T1\"^c-50^*50^.308^,1010^T2^4227^*20^ivehcannon^s-1^M2\" /><inf x=\"118^*50^Zhero1_guns^;0^3-50^!0^.310^,900^T3^340^*20^.20^,420^T3^380^*62^.120^,420^T3^530^*19^.39^,290^A0^B-1^Y0^g0^635^!00^jantigravity^U-1^O0^P0^665^!00^jantigravity^U-1^O0^P0^3-50^*60^.138^,200^T3\"^d35^-90^u0.4^t0\"^d65^-90^u0.4^t0^380^-6^.7^,70^T3^399^*2^.101^,220^T3^247^*40^.6^,20^(I^3179^*60^.61^,200^T3^3230^*64^.30^,340^T3\" /><vehicle x=\"226^*80^r1^jveh_walker^A0^B0\" hpp=\"500^3250^-20^.263^,800^T1\"^d280^*400^u1^t0\"^d285^*300^u1^t0\"^d275^*490^u1^t0^3330^!0^.30^,30^_420^!0^.30^,30^_323^!6^.40^,11^_417^!6^.40^,110^T0^1356^!01^A0^B0^C150^D150^q1^r1^F8^E-1^k2^l-1^4356^-70^i^&^#^s-1^L4367^!70^irailgun2^s1^M3^4374^!70^irl^s-1^M3^4411^!70^irailgun2^s1^M3^4415^!70^irl^s-1^M3^1374^!91^A0^B0^C400^D400^q1^r-1^F11^E-1^k0^l-1^1338^!01^A0^B0^C150^D150^q1^r1^F8^E-1^k2^l-1^4338^-70^i^&^#^s-1^L1410^-201^A0^B0^C400^D400^q1^r-1^F11^E-1^k0^l-1^1366^!91^A0^B0^C400^D400^q1^r-1^F11^E-1^k0^l-1^1415^-201^A0^B0^C400^D400^q1^r-1^F11^E-1^k0^l-1\" /><vehicle x=\"391^*30^r-1^jveh_walker^A0^B0\" hpp=\"100^4389^*40^ivehcannon^s-1^M2^1391^-31^A0^B0^C150^D150^q1^r1^F8^E-2^k2^l-1^3580^-20^.127^,800^T1^3489^-50^.115^,500^T2^+513^-36^.67^,140^g15\"^d500^-0^u1^t0\"^d530^-0^u1^t0\"^d560^-0^u1^t0\"^d590^-0^u1^t0\"^d390^*80^u1^t0\" /><inf x=\"129^*60^Zshadowmap_size^;40\" /><vehicle x=\"484^!20^r-1^jveh_jeep^A0^B0\" hpp=\"100^1484^!61^A0^B0^C150^D150^q1^r-1^F8^E-2^k2^l-1^4483^!40^ivehminigun^s-1^M2\"^e590^*39^.20^,810^K0^J6^7^G1^m1^o3^m1^p0^m1^n0^m2^o43^m2^p0^m2^n0^)\" /><vehicle x=\"635^!20^r1^jveh_jeep^A0^B0\" hpp=\"200^4635^!20^ivehminigun^s-1^M3^3687^-40^.56^,600^T1^3733^-50^.177^,500^T1^3859^-40^.33^,350^T1^3870^-24^.33^,280^T1^3880^!0^.40^,900^T1^1775^-501^A0^B0^C300^D300^q1^r-1^F8^E-1^k0^l-1^1807^-501^A0^B0^C300^D300^q1^r-1^F8^E-1^k0^l-1^1837^-501^A0^B0^C300^D300^q1^r-1^F8^E-1^k0^l-1^1850^-501^A0^B0^C300^D300^q1^r-1^F8^E-1^k0^l-1^4775^-470^iplasmagun^s-1^L4807^-470^iplasmagun^s-1^L4837^-470^iplasmagun^s-1^L4850^-470^iplasmagun^s-1^M0\" /><inf x=\"135^*70^Zsky^;1^3940^!0^.100^,900^T1\"^e912^-20^.38^,560^K1^J6^7^G1^m1^o7^m1^p1^m1^nc18a^>\" /><vehicle x=\"741^-370^r1^jveh_crate^A0^B0\" hpp=\"100\" /><vehicle x=\"735^-370^r1^jveh_crate^A0^B0\" hpp=\"100^3950^*40^.20^,30^_960^*60^.80^,400^T0\"^d930^*300^u1^t0\"^c952^*37^.88^,700^T0^2954^*10^.9^,19^(I^5960^*141^.80^,810^A-2^B0^Y100^g0^582^*182^.178^,1220^A2^B0^Y100^g0\"^c914^!1^.31^,890^T1^31010^*40^.20^,300^T0^21015^*10^.9^,19^(I^3952^-9^.88^,110^T0\"^e161^*25^.31^,260^K2^J6^7^G1^m1^o43^m1^pPress the USE button to enter a vehicle.^m1^n0^>\"^e273^*47^.41^,710^K3^J6^7^G1^m1^o43^m1^pHold JUMP or DUCK buttons to control the walker\'s body positions.^m1^n0^>\"^e558^*3^.20^,550^K4^J3^7^G1^m1^o43^m1^pPress USE button again to leave walker.^m1^n0^>\"^e665^*40^.42^,760^K5^J6^7^G1^m1^o43^m1^p0^m1^n0^>\" />";
-         this.CACHED_MAPS["c18a"] = "<q.^f-10^*369^A0^B10^C100^D100^q0^r1^F1^E-1^k0^l-1\"^c40^*175^.260^,2350^T0\"^c-170^*80^.210^,1600^T1^3-60^*80^.40^,1000^T1^3^*80^.50^,1000^T1\" /><inf x=\"-10^*400^Zhero1_guns^;0^3-120^-40^.160^,400^T2^3-170^!0^.90^,700^T2^3-170^*80^.119^,700^T1^+-20^*20^.20^,400^g1^+-80^-20^.150^,200^g1^+-170^*10^.110^,200^g1^+-80^!0^.20^,100^g1^2-91^*9^.2^,2^(I^2-91^*5^.2^,2^(I^2-91^*1^.2^,2^(I^2-91^-3^.2^,2^(I^2-91^-7^.2^,2^(I^2-98^*10^.10^,20^(H^5-88^*10^.28^,200^A-0.2^B0^Y0^g0^5-60^-20^.120^,200^A-0.2^B0^Y0^g0^5-80^!0^.20^,300^A0^B-0.2^Y0^g0\"^d-10^*1200^u2^t0^5-20^!0^.20^,100^A0^B0.2^Y0^g0\" /><barrel x=\"31^-260^jbar_orange^A0^B0\" /><barrel x=\"-32^-370^jbar_orange^A0^B0\" /><barrel x=\"-87^-70^jbar_orange^A0^B0^128^-281^A-2^B-3^C0^D0^q1^r1^F2^E-1^k0^l-1^112^-401^A-2^B3^C0^D0^q1^r-1^F2^E-1^k0^l-1^1-40^-291^A-2^B-3^C0^D0^q1^r-1^F2^E-1^k0^l-1^1-86^-31^A-2^B0^C0^D0^q1^r-1^F2^E-1^k0^l-1^417^-330^ia^#^s1^L434^-320^ia^#^s1^L4-53^-330^ia^#^s1^L4-84^*20^ia^#^s1^M0\"^d-85^-70^u0.3^t0^+50^*20^.30^,400^g1^370^-20^.69^,10^_40^-40^.170^,40^_80^*22^.59^,52^_30^-41^.20^,39^_40^*60^.30^,30^_50^*60^.70^,200^T0^+70^-30^.100^,100^g1^560^-30^.110^,100^A-0.2^B0^Y0^g0^290^-31^.2^,2^(I^290^-34^.2^,2^(I^290^-37^.2^,2^(I^289^-30^.4^,10^(H\" /><barrel x=\"55^*110^jbar_orange^A0^B0\" /><barrel x=\"65^*10^jbar_orange^A0^B0^164^!21^A-20^B30^C0^D0^q1^r1^F2^E-1^k0^l-1^469^*100^ia^#^s1^M0\"^d95^-380^u0.3^t0\" /><barrel x=\"94^-380^jbar_orange^A0^B0^3124^*60^.42^,20^_133^*11^.74^,41^_113^*66^.17^,230^T0\"^d122^*42^~d122^*230^u0.1^t0^3195^*60^.125^,140^_162^*15^.8^,45^_162^*64^.8^,280^T0^2170^*15^.20^,40^x^y0^z0^h4^I^2170^*40^.20^,40^x^y0^z0^h4^I\"^e170^*64^.20^,40^K2^J6\"^e170^*89^.20^,40^K-1^J4^3190^*64^.8^,56^_162^*111^.8^,26^_190^*111^.8^,26^_113^*98^.17^,230^T0\"^d146^*1040^u0.4^t1^3192^*94^.18^,7^_219^*70^.101^,50^_229^*94^.19^,10^_236^*110^.84^,56^_79^*64^.21^,10^_45^*72^.39^,17^_97^*93^.21^,11^_89^*90^.11^,100^T0^2166^*57^.2^,210^x^y0^z0^h20^I^2168^*15^.2^,210^x^y0^z0^h20^I\"^e168^*36^.2^,210^K-1^J4\"^e166^*36^.2^,210^K-1^J4^7^G1^m1^o0^m1^p13^m1^n2^m2^o0^m2^p12^m2^n3^m3^o25^m3^p0^m3^n0^m4^o-1^m4^p0^m4^n0^$\"^e180^*36^.10^,210^K0^J6^a^G1^X1^W30^7^G1^m1^o0^m1^p11^m1^n1^m2^o0^m2^p10^m2^n0^)^2166^*85^.2^,210^x^y0^z0^h20^I^2168^*85^.2^,210^x^y0^z0^h20^I^2190^*85^.2^,210^x^y0^z0^h20^I^2192^*85^.2^,210^x^y0^z0^h20^I\"^e166^*106^.2^,210^K-1^J4\"^e168^*64^.2^,210^K-1^J4\"^e190^*64^.2^,210^K-1^J4\"^e192^*106^.2^,210^K-1^J4^7^G1^m1^o25^m1^p1^m1^n0^>^a^G1^X3^W60^7^G1^m1^o0^m1^p14^m1^n5^m2^o0^m2^p16^m2^n7^m3^o0^m3^p15^m3^n6^m4^o0^m4^p17^m4^n8^$^3152^*90^.3^,2^_160^*90^.5^,4^_127^*90^.11^,4^_127^*95^.7^,2^_161^*101^.10^,2^_161^*112^.10^,2^_161^*123^.10^,2^_161^*134^.10^,2^_169^*94^.22^,5^_12^*81^.58^,210^T0\"^c12^*160^.28^,810^T0^214^*100^.9^,19^(I^310^*135^.17^,350^T0^259^*100^.9^,19^(I^323^*120^.66^,10^_55^*123^.17^,23^_10^*168^.17^,27^_20^*177^.143^,27^_197^*177^.103^,27^_260^*125^.90^,45^_189^*101^.10^,2^_189^*112^.10^,2^_189^*123^.10^,2^_189^*134^.10^,20^T0\"^d163^*1830^u1^t0\"^d180^*1830^u1^t0\"^d197^*1830^u1^t0\"^d-10^*1400^u1^t0^355^*136^.17^,3^_117^*113^.13^,3^_113^*133^.29^,3^_128^*117^.4^,7^_128^*132^.4^,6^_90^*153^.10^,13^_87^*83^.10^,2^_19^*127^.23^,120^T0^511^*141^.15^,60^A1^B0^Y100^g0^3178^*162^.4^,4^_168^*162^.4^,4^_188^*162^.4^,40^T0^5163^*177^.34^,150^A0^B0^Y100^g0^5197^*244^.63^,670^A-1^B0^Y100^g0^5100^*244^.63^,670^A1^B0^Y100^g0^383^*113^.17^,3^_128^*153^.4^,70^T0^6225^*700^jantigravity^U-1^O0^P0^5220^*90^.9^,200^A0^B-1^Y0^g0^3214^*140^.26^,3^_250^*142^.20^,5^_240^*125^.30^,5^_214^*125^.16^,5^_232^*105^.19^,170^T0\"^d172^*1830^u1^t0\"^d189^*1830^u1^t0\"^d225^*710^u0.4^t0^1168^*239^A4^B7^C0^D0^q1^r1^F2^E-1^k0^l-1^1159^*599^A0^B0^C300^D300^q1^r1^F8^E-1^k0^l-1^1201^*599^A0^B0^C300^D300^q1^r-1^F8^E-1^k0^l-1^1144^*599^A0^B0^C400^D400^q1^r1^F7^E-1^k0^l-1^1216^*599^A0^B0^C400^D400^q1^r-1^F7^E-1^k0^l-1^4143^*630^i^&^#^s-1^L4217^*630^i^&^#^s-1^L1243^*1099^A0^B0^C400^D400^q1^r-1^F7^E-1^k0^l-1^4243^*1120^irl^s-1^L1189^*1119^A0^B0^C400^D400^q1^r-1^F7^E-1^k0^l-1^4189^*1140^irl^s-1^L1220^*1249^A0^B0^C400^D400^q1^r-1^F7^E-1^k0^l-1^4220^*1260^irl^s-1^L1237^*1399^A0^B0^C400^D400^q1^r-1^F7^E-1^k0^l-1^4237^*1410^irl^s-1^L1104^*929^A0^B0^C400^D400^q1^r1^F7^E-1^k0^l-1^4104^*950^irl^s-1^L192^*899^A0^B0^C400^D400^q1^r1^F7^E-1^k0^l-1^492^*920^irl^s-1^L177^*1199^A0^B0^C400^D400^q1^r1^F7^E-1^k0^l-1^1116^*1329^A0^B0^C400^D400^q1^r1^F7^E-1^k0^l-1^478^*1230^irl^s-1^L4117^*1360^irl^s-1^L4117^*1340^irailgun^s-1^L477^*1210^irailgun^s-1^L492^*940^irailgun^s-1^L3190^*137^.8^,15^_162^*137^.8^,150^T0^1136^*899^A0^B0^C1000^D1000^q1^r1^F11^E-1^k3^l-1^4136^*920^irl^s1^M2^4136^*930^irailgun2^s1^M1^4136^*940^iplasmagun^s1^M2^4136^*950^ibfg^s1^M1\" /><barrel x=\"73^*740^jbar_orange^A0^B0\" /><barrel x=\"133^*620^jbar_orange^A0^B0\" /><barrel x=\"123^*1150^jbar_orange^A0^B0\" /><barrel x=\"126^*1150^jbar_orange^A0^B0\" /><barrel x=\"91^*1150^jbar_orange^A0^B0\" /><barrel x=\"53^*1220^jbar_orange^A0^B0\" /><barrel x=\"135^*1350^jbar_orange^A0^B0\" /><barrel x=\"138^*1350^jbar_orange^A0^B0\" /><barrel x=\"203^*960^jbar_orange^A0^B0\" /><barrel x=\"206^*960^jbar_orange^A0^B0\" /><barrel x=\"234^*720^jbar_orange^A0^B0\" /><barrel x=\"231^*720^jbar_orange^A0^B0\" /><barrel x=\"254^*1120^jbar_orange^A0^B0\" /><barrel x=\"219^*1420^jbar_orange^A0^B0\" /><barrel x=\"224^*1420^jbar_orange^A0^B0\" /><barrel x=\"255^*1440^jbar_orange^A0^B0^1223^*939^A0^B0^C1000^D1000^q1^r-1^F11^E-1^k3^l-1^4223^*950^irl^s1^M2^4223^*960^irailgun2^s1^M1^4223^*970^iplasmagun^s1^M2^4223^*980^ibfg^s1^M1^3260^*180^.90^,430^T0\"^c300^*143^.50^,270^T0\"^e270^*140^.39^,200^K4^J6^7^G1^m1^o7^m1^p1^m1^nc19a^>\"^c166^*85^.4^,700^T4\"^c190^*85^.4^,210^T4\" />";
-         this.CACHED_MAPS["c19a"] = "<q.^f-80^*679^A0^B0^C100^D100^q0^r1^F1^E-1^k0^l-1\"^c-110^*161^.165^,131^_-170^*107^.96^,28^_-170^*68^.96^,28^_-170^*63^.115^,63^_-79^*90^.14^,5^_-68^*90^.21^,8^_-51^*95^.5^,17^_-49^*66^.10^,3^_-57^*43^.31^,43^_-32^*45^.67^,45^_-2^*51^.8^,10^_-10^*49^.12^,10^_29^*51^.94^,51^_-37^*90^.76^,8^_-38^*95^.5^,17^_29^*90^.18^,24^_41^*123^.82^,83^_-14^*95^.5^,22^_16^*107^.5^,290^T0^2-93^*79^.6^,11^(I\" /><inf x=\"-80^*700^Zhero1_guns^;0^3-50^*110^.36^,2^_-3^*105^.13^,5^_-170^*146^.80^,44^_-17^*64^.28^,4^_-24^*73^.5^,100^T0^1-12^*449^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^4-12^*480^i^&^#^s-1^L1-2^*639^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^17^*639^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^4-2^*670^i^&^#^s-1^L47^*670^i^&^#^s-1^L126^*449^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^118^*449^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^418^*480^i^&^#^s-1^L426^*480^i^&^#^s-1^L4-2^*660^irl^s-1^L47^*660^irl^s-1^L418^*470^irl^s-1^L426^*470^irl^s-1^L4-12^*470^irl^s-1^M0\"^d-23^*81^~d5^*81^~d-60^*810^u0.4^t1^3-40^*66^.3^,12^_-63^*54^.20^,21^_22^*70^.9^,40^T0^126^*699^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^426^*730^i^&^#^s-1^L426^*720^irl^s-1^M0^+-46^*95^.8^,80^g0^+-74^*135^.24^,460^g0^+-33^*108^.19^,180^g0^5-46^*87^.8^,210^A0^B-0.45^Y0^g0^+-9^*100^.25^,100^g0^+-90^*130^.16^,230^g0^+-50^*108^.17^,130^g0^+-14^*110^.5^,150^g0^+-9^*130^.6^,300^g0^+10^*130^.6^,300^g0^+-3^*130^.13^,250^g0^3-20^*130^.4^,11^_-40^*125^.4^,60^T0^+16^*130^.25^,230^g0^+21^*107^.20^,170^g0^+-50^*119^.41^,90^g0^+-50^*130^.10^,110^g0^+-36^*130^.16^,110^g0^+-16^*130^.7^,110^g0^+-40^*130^.4^,50^g0^+-50^*144^.70^,140^g0^3-170^*190^.96^,60^_-105^*190^.55^,55^_-60^*190^.96^,46^_20^*190^.103^,600^T0^1-5^*899^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^4-5^*930^irl^s-1^L113^*929^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^413^*960^irl^s-1^L1-6^*1139^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^117^*1199^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^126^*1089^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^4-6^*1170^irl^s-1^L417^*1230^irl^s-1^L426^*1120^irl^s-1^L1-43^*1129^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^1-32^*1259^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^1-27^*1129^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^4-27^*1160^irl^s-1^L4-43^*1160^irl^s-1^L4-32^*1290^irl^s-1^L1-84^*1079^A0^B0^C350^D350^q1^r1^F8^E-1^k0^l-1^1-74^*1189^A0^B0^C350^D350^q1^r1^F8^E-1^k0^l-1^4-84^*1110^irl^s-1^L4-74^*1220^irl^s-1^L4-43^*1150^iplasmagun^s-1^L4-32^*1280^iplasmagun^s-1^L4-27^*1150^iplasmagun^s-1^L4-6^*1160^iplasmagun^s-1^L413^*950^iplasmagun^s-1^M0\"^d-61^*1200^u0.4^t0\"^d1^*1260^u0.4^t0\"^d-29^*1370^u0.4^t0\"^d31^*970^u0.4^t0\"^c-170^*84^.60^,230^T0\"^c55^*134^.68^,150^T0^+41^*130^.82^,70^g0\"^e45^*134^.41^,170^K0^J6^7^G1^m1^o7^m1^p1^m1^nc20a^>^6-42^*660^jantigravity^U-1^O0^P0\" />";
-         this.CACHED_MAPS["c20a"] = "<q.^f-148^*1409^A0^B0^C100^D100^q0^r1^F1^E-1^k1^l-1\"^e127^*135^.11^,200^K2^J4\"^c40^*160^.220^,900^T0\"^c-240^*190^.280^,120^_-160^*140^.40^,10^_-100^*160^.20^,30^_-240^*110^.216^,70^_-240^*140^.100^,700^T0^+-240^*150^.140^,100^g0^+-120^*140^.20^,80^g0\" /><inf x=\"-148^*1450^Zhero1_guns^;0^5-240^*150^.88^,100^A3^B0^Y0^g0^3-100^*115^.30^,15^_-86^*160^.56^,20^_-40^*160^.20^,30^_-50^*115^.30^,350^T0\"^e-68^*123^.16^,140^K0^J1^7^G1^m1^o30^m1^p9^m1^n2^m2^o-1^m2^p0^m2^n2^m3^o0^m3^p0^m3^n3^m4^o40^m4^p1^m4^n0^$\"^e-139^*112^.12^,30^K-1^J4^6-133^*1110^jteleport^U-1^O0^P0\"^d-133^*1110^u0.4^t0^2-27^*131^.5^,170^x^y0^z0^h2^I\"^e-27^*146^.5^,170^K-1^J4^3-240^*190^.290^,40^_12^*136^.18^,3^_28^*116^.32^,6^_-24^*112^.24^,8^_26^*126^.14^,16^_-96^*90^.160^,50^_11^*99^.20^,15^_7^*95^.10^,8^_-30^*136^.15^,6^_96^*90^.140^,50^_-20^*85^.200^,45^_110^*116^.65^,6^_100^*170^.180^,30^_120^*125^.6^,15^_120^*143^.6^,14^_140^*93^.10^,8^_140^*112^.10^,13^_170^*116^.10^,35^_60^*100^.40^,50^T0^1-18^*1359^A0^B0^C500^D500^q1^r1^F7^E-1^k0^l-1^4-18^*1390^igl^s1^M2^1-12^*899^A0^B0^C350^D350^q1^r1^F8^E-1^k0^l-1^4-12^*930^irl^s-1^L118^*1359^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^135^*1259^A0^B0^C500^D500^q1^r-1^F7^E-1^k0^l-1^145^*1159^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^156^*1159^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^435^*1290^irl^s1^M2^445^*1190^irl^s1^M2^418^*1390^irailgun^s1^M2^456^*1190^irailgun^s1^M2^167^*849^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^191^*849^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^179^*849^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^467^*880^irailgun^s-1^L491^*880^irailgun^s-1^L479^*880^irl^s-1^L359^*118^.5^,8^_66^*103^.5^,80^T0^177^*999^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^477^*1030^irailgun^s-1^L315^*116^.18^,30^T0^124^*1159^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^121^*1159^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^1160^*899^A0^B0^C500^D500^q1^r-1^F7^E-1^k0^l-1\" /><barrel x=\"168^*920^jbar_orange^A0^B0\" /><barrel x=\"165^*920^jbar_orange^A0^B0\" /><barrel x=\"19^*1010^jbar_orange^A0^B0\" /><barrel x=\"22^*1010^jbar_orange^A0^B0\" /><barrel x=\"41^*920^jbar_orange^A0^B0\" /><barrel x=\"45^*920^jbar_orange^A0^B0\" /><barrel x=\"-10^*1140^jbar_orange^A0^B0\" /><barrel x=\"-5^*1140^jbar_orange^A0^B0\" /><barrel x=\"-3^*1140^jbar_orange^A0^B0^420^*1190^irailgun2^s1^M2^3-1^*95^.3^,10^_-1^*112^.3^,12^_60^*97^.5^,3^_95^*97^.5^,30^T0^4160^*930^irailgun2^s1^M2^6133^*910^jteleport^U-1^O0^P0^6133^*1090^jteleport2^U-1^O0^P0^6133^*1170^jteleport^U-1^O0^P0^6133^*1390^jteleport2^U-1^O0^P0\"^d133^*1090^u0.4^t0\"^d133^*910^u0.4^t0\"^d133^*1390^u0.4^t0\"^d133^*1170^u0.4^t0^6-133^*1290^jteleport2^U-1^O0^P0\"^d-133^*1290^u0.4^t0^328^*160^.4^,370^T0\"^d3^*124^~d-15^*980^u0.4^t1\" /><barrel x=\"-18^*920^jbar_orange^A0^B0\" /><barrel x=\"-15^*920^jbar_orange^A0^B0\" /><barrel x=\"86^*870^jbar_orange^A0^B0\" /><barrel x=\"84^*870^jbar_orange^A0^B0\"^d60^*1700^u0.5^t0\"^d76^*1700^u0.5^t0\"^d90^*1700^u0.5^t0^330^*142^.30^,3^_55^*140^.12^,60^T0^165^*1399^A0^B0^C500^D500^q1^r1^F7^E-1^k0^l-1^465^*1430^igl^s1^M2^157^*1419^A0^B0^C500^D500^q1^r1^F7^E-1^k0^l-1^457^*1450^igl^s1^M2\"^c-27^*130^.5^,150^T4\"^e128^*109^.11^,200^K1^J4\"^e124^*108^.3^,190^K-1^J4\"^e139^*134^.3^,190^K-1^J4^7^G-1^m1^o30^m1^p4^m1^n6^>^7^G-1^m1^o30^m1^p0^m1^n5^>^3220^*116^.120^,760^T0^4149^*1190^igl^s1^M2^1186^*899^A0^B0^C500^D500^q1^r-1^F7^E-1^k0^l-1^4186^*930^irailgun2^s1^M2^1213^*899^A0^B0^C500^D500^q1^r-1^F7^E-1^k0^l-1^4213^*930^irailgun2^s1^M2^3160^*148^.20^,13^_220^*148^.20^,13^_190^*95^.3^,7^_207^*95^.3^,70^T0^6200^*900^jantigravity^U-1^O0^P0^5193^*105^.14^,150^A0^B-0.7^Y0^g0\"^d200^*910^u0.4^t0\"^e64^*96^.32^,120^K3^J1\"^e64^*111^.32^,110^K-1^J4^7^G-1^m1^o30^m1^p7^m1^n8^>\" /><barrel x=\"177^*1180^jbar_orange^A0^B0\" /><barrel x=\"172^*1180^jbar_orange^A0^B0^2-157^*235^.17^,26^(H^2-131^*235^.17^,26^(H^2-150^*218^.30^,13^(H^2-150^*241^.30^,13^(H^1-136^*2179^A0^B0^C600^D600^q0^r1^F1^E-1^k1^l-1\" /><inf x=\"-136^*2200^Zhero1_guns^;-1\"^e-143^*230^.15^,150^K-1^J4^330^*160^.17^,200^T0^1227^*1159^A0^B0^C500^D500^q1^r-1^F7^E-1^k0^l-1^4227^*1190^igl^s1^M2^1239^*1159^A0^B0^C500^D500^q1^r-1^F7^E-1^k0^l-1^4239^*1190^igl^s1^M2^1148^*1159^A0^B0^C500^D500^q1^r-1^F7^E-1^k0^l-1^5180^*115^.40^,100^A0^B-0.7^Y0^g0\"^c250^*150^.90^,50^_250^*170^.90^,400^T0\"^e230^*147^.110^,430^K4^J7^7^G1^m1^o7^m1^p1^m1^nc21a^>\"^e-21^*106^.22^,180^K5^J1\"^e-19^*121^.14^,100^K-1^J4^7^G-1^m1^o30^m1^p11^m1^n12^>^4-73^*1160^idefibrillator^s0^L5100^*300^.97^,1310^A-3^B0^Y100^g0^5-47^*300^.97^,1100^A3^B0^Y100^g0^4-136^*2200^idefecator^s-1^M0\"^e-90^*129^.10^,150^K6^J6^7^G-1^m1^o43^m1^pWith help of this device (slot 6), you can revive dead allies. Press TAB to switch between heroes.^m1^n0^>^6-115^*1100^jantigravity^U-1^O0^P0^6-105^*1100^jantigravity^U-1^O0^P0\"^e257^*137^.8^,250^K7^J6^7^G-1^m1^o43^m1^pYou can continue only with ally.^m1^n0^>\"^e240^*155^.20^,720^K6^J6^2260^*133^.5^,19^(I\" />";
-         this.CACHED_MAPS["c21a"] = "<q.^f-53^*199^A0^B0^C100^D100^q0^r1^F1^E-1^k0^l-1\"^c-140^*130^.260^,160^_-200^*70^.145^,20^_-200^*130^.70^,130^_-55^*74^.90^,24^_-30^*60^.40^,15^_-50^*20^.80^,80^_-60^*80^.10^,40^_30^*80^.10^,40^_100^*20^.80^,80^_110^*130^.70^,130^_90^*70^.90^,20^_80^*60^.20^,10^_-110^*10^.50^,10^_40^*10^.50^,10^_60^*40^.20^,10^_-100^*40^.20^,100^T0\" /><inf x=\"-53^*220^Zhero1_guns^;0^1-38^*199^A0^B0^C700^D700^q0^r-1^F1^E-1^k0^l1\" /><inf x=\"-38^*220^Zhero1_guns^;-1^330^*70^.40^,6^_-100^*15^.30^,15^_50^*15^.30^,15^_-77^*20^.5^,20^_52^*20^.5^,20^_-55^*20^.95^,50^T0^9^G1^X0^W30^7^G1^m1^o33^m1^p1^m1^n1^>\" /><barrel x=\"-79^*170^jbar_orange^A0^B0\" /><barrel x=\"-82^*170^jbar_orange^A0^B0\" /><barrel x=\"59^*170^jbar_orange^A0^B0\" /><barrel x=\"62^*170^jbar_orange^A0^B0\" /><barrel x=\"-89^*420^jbar_orange^A0^B0\" /><barrel x=\"82^*350^jbar_orange^A0^B0\" /><barrel x=\"-68^*120^jbar_orange^A0^B0\" /><barrel x=\"48^*120^jbar_orange^A0^B0\" /><barrel x=\"-128^*220^jbar_orange^A0^B0\" /><barrel x=\"-125^*220^jbar_orange^A0^B0\" /><barrel x=\"108^*220^jbar_orange^A0^B0\" /><barrel x=\"105^*220^jbar_orange^A0^B0^2-28^*143^.7^,16^(H^2-12^*143^.7^,16^(H^2-26^*145^.18^,5^(H^1-16^*1299^A0^B0^C700^D700^q1^r-1^F1^E-1^k3^l-1\"^e7^*22^.6^,40^K-1^J4\"^e63^*43^.6^,40^K-1^J4^7^G1^m1^o25^m1^p1^m1^n0^m2^o0^m2^p3^m2^n2^)^a^G1^X2^W30^7^G1^m1^o28^m1^p2^m1^n0^m2^o28^m2^p2^m2^n1^m3^o28^m3^p2^m3^n0^m4^o28^m4^p2^m4^n1^$^+30^!0^.70^,100^g100^3-140^-20^.260^,40^_-110^*130^.145^,40^_-110^*33^.20^,3^_70^*33^.20^,3^_34^*43^.16^,3^_-70^*43^.16^,3^_74^*53^.16^,30^T0^610^*210^jteleport^U-1^O0^P0^666^*410^jteleport^U-1^O0^P0^3-125^*5^.80^,33^_30^*130^.90^,20^_70^*120^.57^,30^_-200^*20^.80^,800^T0\"^d-116^*42^~d-67^*25^~d52^*24^~d100^*43^~d60^*98^~d99^*800^u0.4^t1^4-16^*1320^iraygun^s1^M3^3-31^*26^.2^,8^_-1^*26^.2^,8^_94^*5^.10^,5^_47^*43^.4^,110^T0^270^*69^.20^,4^(I\"^e90^*69^.20^,40^K-1^J4\"^e-40^*93^.60^,210^K3^J6^7^G1^m1^o7^m1^p1^m1^nc22a^>\" />";
-         this.CACHED_MAPS["c22a"] = "<q.^f20^*739^A0^B0^C100^D100^q0^r-1^F1^E-1^k0^l-1\"^c-169^*230^.122^,590^T0\"^c-140^*171^.260^,142^_-200^*70^.145^,20^_-200^*183^.70^,154^_-55^*74^.90^,24^_-60^*80^.10^,40^_30^*80^.10^,40^_110^*180^.110^,151^_90^*70^.90^,200^T0\" /><inf x=\"20^*760^Zhero1_guns^;0^330^*70^.40^,6^_-60^*130^.95^,40^_30^*130^.90^,20^_70^*120^.57^,300^T0\"^d60^*98^~d99^*800^u0.4^t1^270^*69^.20^,4^(I^3-60^*180^.95^,33^_-200^*230^.40^,600^T0^1-55^*1299^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^4-55^*1320^irl^s-1^L1-117^*1459^A0^B15^C350^D350^q1^r1^F8^E-1^k0^l-1^1-43^*1299^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^4-117^*1470^irl^s-1^L4-43^*1320^irl^s-1^L1-33^*1299^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^4-33^*1320^iplasmagun^s-1^L1-86^*1699^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^1-74^*1699^A0^B0^C350^D350^q1^r1^F8^E-1^k0^l-1^4-86^*1720^iplasmagun^s-1^L4-73^*1720^iplasmagun^s-1^L6-80^*700^jantigravity^U-1^O0^P0^5-90^*90^.20^,200^A0^B-0.8^Y0^g0\"^d-80^*710^u0.4^t0^5-120^*120^.20^,200^A0^B-0.8^Y0^g0^6-110^*1000^jantigravity^U-1^O0^P0\"^d-110^*1010^u0.4^t0^3-120^*100^.20^,5^_-90^*130^.20^,50^T0^5-90^*150^.20^,200^A0^B-0.8^Y0^g0^6-80^*1300^jantigravity^U-1^O0^P0\"^d-80^*1310^u0.4^t0^3-120^*160^.20^,50^T0^6-110^*1600^jantigravity^U-1^O0^P0\"^d-110^*1610^u0.4^t0^3-200^*257^.160^,37^_-93^*230^.6^,30^_-17^*150^.17^,24^_-64^*170^.8^,6^_-55^*230^.15^,20^_130^*190^.90^,200^T0\"^c-50^*210^.5^,300^T4\"^d-20^*2100^u0.6^t0\"^d-11^*2060^u0.6^t0\"^d132^*2100^u0.6^t0\"^d65^*2370^u0.6^t0^327^*161^.40^,8^_82^*161^.40^,36^_74^*147^.14^,23^_67^*140^.14^,17^_60^*135^.12^,110^T0^1-28^*1799^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^1-17^*1799^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^4-28^*1820^irailgun^s-1^L4-17^*1820^irailgun^s-1^L1-10^*1799^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^4-10^*1820^irailgun^s-1^L189^*1609^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^1100^*1609^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^489^*1620^irailgun^s-1^L4101^*1620^irailgun^s-1^L127^*1299^A0^B0^C350^D350^q1^r1^F8^E-1^k0^l-1^139^*1299^A0^B0^C350^D350^q1^r1^F8^E-1^k0^l-1^427^*1320^irl^s-1^L440^*1330^irl^s-1^M0\" /><vehicle x=\"38^*1640^r1^jveh_crate^A0^B0\" hpp=\"100\" /><vehicle x=\"52^*1320^r1^jveh_crate^A0^B0\" hpp=\"100\" /><vehicle x=\"3^*1330^r1^jveh_crate^A0^B0\" hpp=\"100\" /><vehicle x=\"9^*1330^r1^jveh_crate^A0^B0\" hpp=\"100^44^*1340^jitem_grenade^s-1^L46^*1350^jitem_grenade^s-1^L46^*1320^jitem_grenade^s-1^L14^*1369^A0^B0^C350^D350^q1^r1^F8^E-1^k0^l-1^110^*1369^A0^B0^C350^D350^q1^r1^F8^E-1^k0^l-1^410^*1420^irailgun^s-1^L45^*1420^irailgun^s-1^M0\"^d49^*1520^u0.4^t1^3105^*170^.10^,15^_-144^*192^.18^,160^T0^2-50^*210^.5^,300^x^y0^z0^h5^I\"^e-50^*180^.5^,300^K-1^J4^7^G1^m1^o0^m1^p1^m1^n0^>\"^e-59^*206^.9^,260^K0^J6\" /><inf x=\"-8^*240^Zsky^;2\"^e137^*256^.83^,670^K1^J6^7^G1^m1^o7^m1^p1^m1^nc23a^>^355^*175^.27^,5^_73^*208^.11^,380^T0^5-90^*110^.20^,200^A0^B-0.6^Y0^g0^5-120^*140^.20^,200^A0^B-0.6^Y0^g0^5-90^*170^.20^,200^A0^B-0.6^Y0^g0^5-120^*180^.20^,200^A0^B-0.8^Y0^g0^5-120^*200^.20^,200^A0^B-0.6^Y0^g0\" />";
-         this.CACHED_MAPS["c23a"] = "<q.^f-208^*99^A0^B0^C100^D100^q0^r1^F1^E-1^k0^l-1\"^c-181^*10^.131^,490^T0\" /><inf x=\"-208^*120^Zhero1_guns^;0\" /><inf x=\"-191^*150^Zsky^;2^3-300^*10^.130^,80^_-350^*40^.90^,110^_-60^*10^.90^,80^_-190^-30^.150^,40^_-150^*40^.10^,50^_-120^*40^.10^,20^_-90^*40^.10^,500^T0^5-170^*10^.10^,400^A0^B-0.6^Y0^g0^5-70^*10^.10^,400^A0^B-0.6^Y0^g0^3-150^-25^.20^,15^_-120^-20^.10^,20^_-100^-25^.20^,15^_-100^-5^.16^,5^_-146^-5^.16^,50^T0^1-30^*359^A0^B0^C350^D350^q1^r-1^F8^E-2^k0^l-1^1-2^*359^A0^B0^C350^D350^q1^r-1^F8^E-2^k0^l-1^1-92^-51^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^1-137^-51^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^1-72^-301^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^1-95^-251^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^1-138^-251^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^4-138^-30^i^&^#^s-1^L4-91^-30^i^&^#^s-1^L4-95^-220^i^&^#^s-1^L4-71^-270^i^&^#^s-1^L4-138^-220^i^&^#^s-1^L4-138^-40^irl^s-1^L4-91^-40^irl^s-1^L4-95^-230^irl^s-1^L4-138^-230^irl^s-1^L4-71^-280^irl^s-1^L4-95^-210^irailgun2^s1^M2\" /><vehicle x=\"-236^*500^r1^jveh_capsule^A0^B30\" hpp=\"100\" /><vehicle x=\"-220^*500^r1^jveh_capsule^A0^B20\" hpp=\"100^1-236^*459^A0^B0^C350^D350^q1^r1^F8^E-2^k0^l-1^1-220^*459^A0^B0^C350^D350^q1^r1^F8^E-2^k0^l-1^4-220^*490^irailgun2^s1^M2^4-236^*490^irailgun2^s1^M2\" /><barrel x=\"-158^-280^jbar_orange^A0^B0\" /><barrel x=\"-153^-280^jbar_orange^A0^B0\" /><barrel x=\"-173^*120^jbar_orange^A0^B0\" /><barrel x=\"-250^*120^jbar_orange^A0^B0\" /><barrel x=\"-256^*120^jbar_orange^A0^B0\" /><vehicle x=\"-30^*400^r1^jveh_capsule^A0^B20\" hpp=\"100\" /><vehicle x=\"-2^*400^r1^jveh_capsule^A0^B20\" hpp=\"100^4-29^*390^irailgun2^s1^M2^4-1^*390^irailgun2^s1^M2^350^*10^.50^,80^_20^*36^.50^,10^_60^*49^.90^,119^_9^*16^.13^,120^T0^5-300^*131^.40^,910^A2^B0^Y100^g0\"^c20^*31^.53^,1010^T0\"^d10^*280^u1^t0^124^*99^A0^B0^C350^D350^q1^r-1^F8^E-2^k0^l-1^425^*110^iplasmagun^s1^M3^153^*99^A0^B0^C350^D350^q1^r-1^F8^E-2^k0^l-1^157^*99^A0^B0^C350^D350^q1^r-1^F8^E-2^k0^l-1^453^*110^iplasmagun^s1^M3^457^*110^iplasmagun^s1^M3\"^e30^-20^.20^,500^K0^J6^7^G1^m1^o7^m1^p1^m1^nc24a^>\"^c-150^*40^.70^,300^T0\"^d-140^*600^u1^t0\"^d-115^*600^u1^t0\"^d-90^*600^u1^t0\"^d-165^*600^u1^t0\"^d-65^*600^u1^t0\"^d-40^*600^u1^t0\"^d-190^*600^u1^t0^6-165^-300^jantigravity^U-1^O0^P0^6-65^-300^jantigravity^U-1^O0^P0\"^d-65^-290^u0.4^t0\"^d-165^-290^u0.4^t0^5-35^*47^.38^,160^A0^B0.1^Y0^g0^580^*158^.70^,680^A-2^B0^Y100^g0^380^*90^.70^,840^T0\" />";
-         this.CACHED_MAPS["c24a"] = "<q.^f-72^*599^A0^B4^C100^D100^q0^r1^F1^E-1^k0^l-1\"^c-260^*150^.428^,190^_-260^*150^.180^,100^_-60^*97^.30^,47^_-80^*36^.20^,7^_-70^*30^.30^,70^_-30^*20^.10^,6^_30^*30^.90^,70^_-10^*70^.10^,40^_-20^*50^.24^,10^_50^*52^.30^,12^_90^*40^.10^,20^_110^*70^.70^,110^_70^*55^.20^,5^_94^*160^.86^,950^T0\" /><inf x=\"-72^*630^Zhero1_guns^;0^3-65^*150^.75^,60^_-36^*75^.16^,4^_40^*78^.19^,4^_^*160^.80^,50^_74^*160^.29^,400^T0\"^d-74^*1490^u0.7^t0^1-7^*699^A-4^B2^C0^D0^q1^r1^F2^E-1^k0^l-1^1-1^*709^A-6^B0^C0^D0^q1^r1^F2^E-1^k0^l-1^1-20^*749^A2^B0^C0^D0^q1^r1^F2^E-1^k0^l-1\"^d-8^*81^~d34^*810^u0.4^t1^1-9^*199^A0^B0^C300^D300^q1^r1^F12^E-1^k3^l-1^117^*499^A0^B0^C300^D300^q1^r1^F12^E-1^k3^l-1^127^*499^A0^B0^C300^D300^q1^r1^F12^E-1^k3^l-1^148^*779^A0^B0^C300^D300^q1^r1^F12^E-1^k3^l-1^159^*779^A0^B0^C300^D300^q1^r1^F12^E-1^k3^l-1^175^*899^A0^B0^C300^D300^q1^r1^F12^E-1^k3^l-1^1102^*299^A0^B0^C300^D300^q1^r1^F12^E-1^k3^l-1^1105^*299^A0^B0^C300^D300^q1^r1^F12^E-1^k3^l-1^1108^*299^A0^B0^C300^D300^q1^r1^F12^E-1^k3^l-1^195^*399^A0^B0^C300^D300^q1^r-1^F12^E-1^k3^l-1^186^*549^A0^B0^C300^D300^q1^r1^F12^E-1^k3^l-1^3-50^*20^.13^,20^_27^*20^.14^,20^_-50^*3^.124^,430^T0^1-78^*199^A0^B0^C300^D300^q1^r-1^F12^E-1^k0^l-1^1-72^*199^A0^B0^C300^D300^q1^r-1^F12^E-1^k0^l-1^313^*50^.27^,4^_61^*90^.18^,4^_56^*70^.23^,4^_56^*77^.3^,100^T0^1-26^*29^A0^B0^C300^D300^q1^r-1^F12^E-1^k3^l-1^117^*29^A0^B0^C300^D300^q1^r1^F12^E-1^k3^l-1^3-160^*20^.100^,60^_-110^*25^.20^,10^_-8^*34^.18^,4^_27^*66^.19^,40^T0^154^*519^A0^B0^C300^D300^q1^r1^F12^E-1^k3^l-1^163^*519^A0^B0^C300^D300^q1^r1^F12^E-1^k3^l-1^158^*519^A0^B0^C300^D300^q1^r1^F12^E-1^k3^l-1\"^e28^*77^.12^,120^K0^J1^7^G1^m1^o0^m1^p0^m1^n1^>^2-107^*44^.14^,200^x^y0^z0^h3^I^3-110^*57^.20^,140^T0\"^e-107^*26^.14^,200^K-1^J4^1-109^*249^A0^B0^C300^D300^q1^r1^F12^E-1^k0^l-1^1-120^*199^A0^B0^C300^D300^q1^r1^F12^E-1^k0^l-1^1-126^*289^A0^B0^C300^D300^q1^r1^F12^E-1^k0^l-1^1-145^*199^A0^B0^C300^D300^q1^r1^F12^E-1^k0^l-1^3-142^*25^.11^,11^_-160^*25^.10^,130^T0^16^*339^A0^B0^C300^D300^q1^r1^F12^E-1^k3^l-1^1-18^*499^A0^B0^C300^D300^q1^r1^F12^E-1^k3^l-1^112^*29^A0^B0^C300^D300^q1^r1^F12^E-1^k3^l-1^324^*10^.14^,10^_-47^*10^.13^,10^_-11^*20^.31^,6^_-17^*7^.4^,6^_-160^*58^.10^,13^_-260^*58^.80^,980^T0^2-180^*24^.20^,6^(I\"^c-106^*43^.2^,170^T4\"^c-96^*43^.2^,170^T4\"^c-101^*43^.2^,170^T4\"^c-178^*22^.2^,620^T4\"^c-164^*22^.2^,620^T4\"^c-159^*45^.4^,200^T4^4-126^*320^i^&^%^s1^L4-145^*230^i^&^%^s1^L4-120^*230^i^&^%^s1^L4-109^*280^i^&^%^s1^M0\"^d-130^*400^u0.2^t1^3-135^*29^.11^,110^T0\" /><barrel x=\"-58^*320^jbar_blue^A0^B0\" /><barrel x=\"-55^*320^jbar_blue^A0^B0\" /><barrel x=\"-52^*320^jbar_blue^A0^B0\" /><barrel x=\"-87^*220^jbar_blue^A0^B0\" /><barrel x=\"-24^*220^jbar_blue^A0^B0\" /><barrel x=\"-22^*220^jbar_blue^A0^B0\" /><barrel x=\"32^*320^jbar_blue^A0^B0\" /><barrel x=\"-5^*50^jbar_blue^A0^B0^460^*310^ia^#^s2^L434^*510^ia^#^s2^L473^*560^ia^#^s2^L4-64^*370^ia^#^s2^M0\"^e-180^*41^.20^,180^K1^J1^7^G1^m1^o7^m1^p1^m1^nc25a^>\" />";
-         this.CACHED_MAPS["c25a"] = "<q.^f-59^*299^A0^B0^C100^D100^q0^r1^F1^E-1^k0^l-1\"^c-150^*120^.480^,130^_-80^*30^.80^,40^_-150^*143^.120^,93^_-150^*90^.80^,100^_-36^*54^.22^,4^_-14^*37^.40^,27^_2^*43^.26^,33^_21^*46^.35^,360^T0\" /><inf x=\"-59^*320^Zhero1_guns^;0^1-26^*539^A0^B0^C300^D300^q1^r1^F12^E-1^k0^l-1^4-19^*550^irailgun2^s1^M2^3-36^*70^.22^,7^_-49^*130^.104^,62^_70^*75^.5^,25^_90^*54^.13^,4^_110^*44^.25^,14^_67^*40^.15^,4^_91^*34^.48^,21^_-12^*22^.201^,32^_86^*27^.11^,12^_126^*53^.71^,40^_125^*67^.23^,3^_129^*81^.27^,30^T0^168^*399^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^3153^*85^.35^,360^T0^468^*430^i^&^#^s1^M2^494^*570^i^&^#^s1^M2^4103^*370^i^&^#^s1^M2^4117^*470^i^&^#^s1^M2^4149^*560^i^&^#^s1^M2\"^d56^*61^~d111^*72^~d95^*47^~d-28^*430^u0.4^t1\" /><barrel x=\"-29^*560^jbar_blue^A0^B0^222^*71^.11^,15^(I^240^*57^.11^,17^(I\"^e33^*68^.7^,230^K0^J6^7^G1^m1^o0^m1^p0^m1^n1^m2^o0^m2^p1^m2^n2^)\"^e22^*82^.11^,150^K-1^J4\"^e40^*45^.11^,170^K-1^J4^475^*240^iplasmagun^s1^M3^492^*360^iplasmagun^s1^M3^4103^*360^iplasmagun^s1^M3^4133^*690^iplasmagun^s1^M3^4146^*700^i^&^#^s1^M2\" /><barrel x=\"^*390^jbar_blue^A0^B0\" /><barrel x=\"-3^*390^jbar_blue^A0^B0^343^*126^.82^,53^_178^*78^.79^,88^_196^*95^.31^,4^_119^*132^.27^,40^_140^*122^.36^,12^_162^*100^.14^,60^T0^1248^*939^A0^B0^C1000^D1000^q1^r-1^F11^E-1^k0^l-1^1241^*939^A0^B0^C1000^D1000^q1^r-1^F11^E-1^k0^l-1^4180^*880^irl^s1^M2^4193^*810^irl^s1^M2^4206^*810^irl^s1^M2^4241^*960^irailgun^s1^M2^4248^*960^irailgun^s1^M2\"^d155^*105^~d192^*1070^u0.4^t1^3210^*150^.120^,40^_240^*94^.90^,104^_250^*125^.80^,410^T0^5240^*259^.121^,790^A-2^B0^Y100^g0\"^d181^*1410^u1^t0\"^d193^*1460^u1^t0\"^d206^*1500^u1^t0\"^d168^*1340^u1^t0^6204^*950^jantigravity^U-1^O0^P0^5198^*130^.12^,350^A0^B-1^Y0^g0^3240^*180^.90^,440^T0\" /><barrel x=\"59^*1280^jbar_orange^A0^B0\" /><barrel x=\"114^*1280^jbar_orange^A0^B0\" /><barrel x=\"117^*1280^jbar_orange^A0^B0^3-16^*137^.39^,18^_71^*133^.19^,110^T0^186^*1329^A0^B0^C350^D350^q1^r1^F8^E-1^k0^l-1^486^*1360^igl^s1^M2^486^*1370^irailgun^s1^M2^198^*1259^A0^B0^C350^D350^q1^r1^F8^E-1^k0^l-1^1107^*1259^A0^B0^C350^D350^q1^r1^F8^E-1^k0^l-1^498^*1300^irl^s1^M2^4107^*1300^irl^s1^M2^498^*1290^igl^s1^M2^4107^*1290^igl^s1^M2^128^*1299^A0^B0^C350^D350^q1^r1^F8^E-1^k0^l-1^138^*1299^A0^B0^C350^D350^q1^r1^F8^E-1^k0^l-1^428^*1330^irl^s1^M2^438^*1330^irl^s1^M2^438^*1320^igl^s1^M2^428^*1320^igl^s1^M2^1-25^*1299^A0^B0^C350^D350^q1^r1^F8^E-1^k0^l-1^1-52^*1429^A0^B0^C350^D350^q1^r1^F8^E-1^k0^l-1^1-38^*1429^A0^B0^C350^D350^q1^r1^F8^E-1^k0^l-1^4-25^*1330^irl^s1^M2^4-38^*1460^irailgun^s1^M2^4-52^*1460^irl^s1^M2^4-25^*1320^igl^s1^M2^4-38^*1450^igl^s1^M2^4-52^*1450^igl^s1^M2^4236^*1510^jitem_grenade^s-1^L4231^*1510^jitem_grenade^s-1^L4226^*1510^jitem_grenade^s-1^L4220^*1510^iplasmagun^s-1^L4215^*1510^iraygun^s-1^M0\"^e-150^*220^.90^,770^K1^J6^7^G1^m1^o7^m1^p1^m1^nc26a^>^3195^*101^.3^,10^_234^*86^.12^,110^T0\"^d86^*600^u0.4^t1^352^*27^.18^,10^_51^*36^.9^,13^_170^*114^.20^,40^T0^175^*219^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^194^*539^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^192^*339^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^1103^*339^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^1117^*439^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^1149^*529^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^1146^*669^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^1133^*669^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^1180^*849^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^1193^*779^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^1206^*779^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1\" />";
-         this.CACHED_MAPS["c26a"] = "<q.^f68^*199^A0^B0^C100^D100^q0^r1^F1^E-1^k0^l-1\"^c-113^*130^.164^,930^T0\"^c-104^*37^.132^,46^_-75^-^.255^,40^_-30^*3^.30^,19^_-35^*6^.30^,19^_-40^*9^.30^,19^_-45^*12^.30^,19^_-53^*15^.33^,19^_20^*50^.10^,36^_-20^*32^.48^,5^_-180^*32^.135^,72^_70^*20^.70^,300^T0^570^*113^.118^,930^A-2^B0^Y100^g0\" /><inf x=\"68^*220^Zhero1_guns^;0\"^e-20^*27^.10^,150^K0^J6^7^G1^m1^o28^m1^p1^m1^n1^m2^o28^m2^p1^m2^n2^)\"^e4^*46^.5^,20^K-1^J4\"^e-9^*37^.5^,20^K-1^J4^3-100^*60^.88^,5^_-180^*70^.90^,60^_-100^*35^.50^,15^_-15^*35^.43^,60^T0^1-91^*729^A0^B0^C500^D500^q2^r-1^F6^E-1^k0^l-1^4-91^*750^irailgun2^s2^M3\"^e-45^*27^.25^,130^K1^J1^2-45^*31^.25^,3^(I\"^e-20^*31^.25^,30^K-1^J4^7^G1^m1^o0^m1^p0^m1^n4^>^3-67^*40^.7^,11^_23^*50^.27^,20^_45^*80^.10^,45^_10^*90^.40^,200^T0^613^*350^jantigravity^U-1^O0^P0^56^*50^.14^,150^A0^B-1^Y0^g0^3-15^*60^.7^,100^T0^1-18^*319^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^4-18^*350^i^&^#^s1^M2^1-70^*349^A0^B0^C350^D350^q1^r1^F8^E-1^k0^l-1^4-70^*380^irl^s1^M2^3-94^*58^.34^,8^_-49^*27^.7^,190^T0^128^*499^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^428^*530^i^&^#^s1^M2^3-55^*64^.25^,70^T0^1-26^*599^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^4-26^*630^i^&^#^s1^M2^1-16^*599^A0^B0^C350^D350^q1^r1^F8^E-1^k0^l-1^4-16^*630^irl^s1^M2^3-55^*85^.25^,7^_-72^*90^.88^,10^_-180^*140^.80^,800^T0^2-34^*78^.3^,70^x^y0^z0^h3^I^2-34^*71^.3^,70^x^y0^z0^h3^I\"^e-34^*84^.3^,70^K-1^J4\"^e-34^*65^.3^,70^K-1^J4\"^e-26^*76^.11^,170^K2^J1^7^G1^m1^o0^m1^p1^m1^n5^m2^o0^m2^p2^m2^n6^)^3-106^*122^.26^,22^_-50^*95^.60^,9^_-180^*185^.155^,69^_-90^*120^.24^,8^_-50^*130^.30^,20^_-11^*54^.11^,40^T0\"^d60^*400^u1^t0\"^d70^*400^u1^t0\"^d80^*350^u1^t0^360^*10^.20^,16^_^*110^.23^,27^_-6^*103^.14^,12^_-30^*180^.53^,58^_40^*180^.20^,1040^T0^+23^*108^.17^,180^g0^3-75^*86^.5^,10^T0^45^*1110^i^#^s0^L3-180^*220^.240^,20^_47^*204^.13^,280^T0^424^*1810^jitem_grenade^s-1^L431^*1810^jitem_grenade^s-1^L438^*1810^jitem_grenade^s-1^L29^*110^.7^,20^x^y0^z0^h10^I\"^e19^*110^.7^,20^K-1^J4\"^e16^*110^.7^,20^K-1^J4\"^e12^*122^.11^,120^K3^J6^7^G-1^m1^o0^m1^p3^m1^n8^m2^o19^m2^p3^m2^n0^m3^o20^m3^p4^m3^n0^m4^o-1^m4^p0^m4^n0^$^8^G-1^m1^o0^m1^p3^m1^n9^m2^o19^m2^p4^m2^n0^m3^o20^m3^p3^m3^n0^m4^o-1^m4^p0^m4^n0^$\"^e23^*136^.17^,60^K4^J6\" /><barrel x=\"10^*1820^jbar_orange^A0^B0\" /><barrel x=\"7^*1820^jbar_orange^A0^B0\" /><barrel x=\"4^*1820^jbar_orange^A0^B0^3-120^*211^.95^,150^T0\"^e-120^*198^.80^,170^K5^J6^7^G1^m1^o7^m1^p1^m1^nc27a^>\" /><vehicle x=\"-72^*930^r1^jveh_crate^A0^B0\" hpp=\"100\" /><vehicle x=\"^*1820^r1^jveh_crate^A0^B0\" hpp=\"100^4-72^*920^irl^s-1^M0\" /><vehicle x=\"5^*1120^r1^jveh_crate^A0^B0\" hpp=\"100^45^*1130^i^&^#^s0^M0\"^c-180^*207^.233^,370^T0\"^c17^*170^.33^,400^T0\"^c23^*14^.4^,140^T4\"^d13^*360^u0.4^t0\"^d-35^*48^~d-57^*114^~d-3^*78^~d-60^*194^~d32^*142^~d32^*1710^u0.4^t1\" /><inf x=\"48^*230^Zsky^;2\"^e-101^*89^.12^,200^K6^J6^7^G1^m1^o43^m1^pI heard rockets can make you fly, maybe you should try that sometime.^m1^n0^>\"^e-66^*112^.18^,230^K7^J6^7^G1^m1^o43^m1^p0^m1^n0^>\"^e-9^*123^.11^,210^K8^J6^7^G1^m1^o43^m1^pThe distance between walls is larger than usual... Rifles are now your best friend.^m1^n0^>\" />";
-         this.CACHED_MAPS["c27a"] = "<q.^f70^!001^A0^B0^C100^D100^q0^r1^F1^E-1^k0^l-1\"^c-240^-57^.290^,730^T0\"^c-170^-20^.120^,370^T0\"^c-340^*10^.100^,150^_70^!00^.30^,10^_10^-60^.70^,20^_73^-75^.7^,9^_98^-84^.2^,2^_10^!00^.70^,70^_70^!20^.70^,500^T1^3160^!00^.100^,700^T1^3130^!25^.40^,450^T2\"^c140^!20^.20^,50^T1^+140^!20^.20^,50^g5^3180^-70^.80^,520^T1^3-90^-60^.110^,10^_-80^!20^.100^,50^_-210^!10^.90^,60^_-100^-60^.30^,33^_-150^-60^.30^,33^_-83^!12^.19^,15^_-77^!14^.19^,15^_-71^!16^.19^,15^_-65^!18^.19^,150^T0\" /><inf x=\"70^-970^Zhero1_guns^;0\"^d100^-400^u1^t0^3-280^-40^.120^,26^_-60^-21^.120^,45^_-190^*10^.220^,430^T0^2-149^-42^.10^,180^x^y0^z0^h3^I^2-81^-42^.10^,180^x^y0^z0^h3^I^3-100^!08^.3^,4^_-123^!08^.3^,4^_-180^-78^.10^,10^_-210^-60^.20^,17^_-210^-86^.40^,70^T0^1-207^-861^A0^B0^C300^D300^q1^r-1^F7^E-1^k0^l-1^4-207^-840^iplasmagun^s1^M2^2-120^!08^.20^,40^x^y0^z0^h3^I\"^e-120^-60^.20^,40^K-1^J4\"^e-120^!08^.20^,40^K-1^J4\"^e-130^-93^.10^,170^K0^J6^8^G-1^m1^o0^m1^p2^m1^n1^m2^o19^m2^p0^m2^n0^m3^o20^m3^p1^m3^n0^m4^o-1^m4^p0^m4^n0^$\"^e-100^-93^.10^,170^K0^J6\"^e-118^-94^.16^,170^K1^J1^7^G-1^m1^o0^m1^p2^m1^n0^m2^o19^m2^p1^m2^n0^m3^o20^m3^p0^m3^n0^m4^o-1^m4^p0^m4^n0^$\"^e-130^-33^.10^,270^K1^J6\"^e-100^-33^.10^,270^K1^J6\"^e-118^-46^.16^,170^K0^J1^3-142^-29^.3^,13^_-81^-29^.3^,130^T0\"^e-138^-47^.8^,140^K2^J1\"^e-81^-59^.10^,180^K-1^J4\"^e-149^-59^.10^,180^K-1^J4^7^G1^m1^o0^m1^p1^m1^n9^>\"^e-69^-47^.8^,140^K3^J1^7^G1^m1^o0^m1^p0^m1^n10^>^3-149^-29^.3^,13^_-74^-29^.3^,13^_-148^-29^.8^,6^_-80^-29^.8^,60^T0^1-144^-421^A0^B0^C500^D500^q1^r1^F7^E-1^k0^l-1^1-76^-421^A0^B0^C500^D500^q1^r-1^F7^E-1^k0^l-1^1-198^!101^A0^B0^C500^D500^q1^r1^F7^E-1^k0^l-1^4-198^!080^iplasmagun^s1^M2^1-190^!101^A0^B0^C500^D500^q1^r1^F7^E-1^k0^l-1^1-181^!101^A0^B0^C1000^D1000^q1^r1^F11^E-1^k0^l-1^4-190^!080^iplasmagun^s1^M2^4-181^!080^iplasmagun^s1^M2^1-205^!101^A0^B0^C500^D500^q1^r1^F7^E-1^k0^l-1^4-205^!080^iplasmagun^s1^M2^1-162^!101^A0^B0^C350^D350^q1^r1^F8^E-1^k3^l-1^1-155^!101^A0^B0^C350^D350^q1^r1^F8^E-1^k3^l-1^1-148^!101^A0^B0^C350^D350^q1^r1^F8^E-1^k3^l-1^4-76^-410^ibfg^s-1^L4-144^-410^ibfg^s1^M2\"^d142^!230^u1^t0^3-174^!07^.8^,70^T0\" /><barrel x=\"-7^!180^jbar_orange^A0^B0\" /><barrel x=\"-2^!180^jbar_orange^A0^B0^3-280^!12^.77^,58^_-240^!06^.14^,14^_-270^-60^.14^,14^_-240^-60^.14^,140^T0\"^d-267^-75^~d-259^-75^~d-237^-75^~d-229^-75^~d-144^-41^~d-76^-41^~d-110^-340^u0.4^t1^3-129^-54^.5^,8^_-96^-54^.5^,8^_-300^-89^.30^,4^_-330^!06^.30^,4^_-330^!30^.60^,40^_-410^-67^.90^,103^_-340^-67^.30^,5^_-290^-58^.20^,50^T0\" /><barrel x=\"-293^-870^jbar_orange^A0^B0\" /><barrel x=\"-289^-870^jbar_orange^A0^B0\" /><barrel x=\"-304^!040^jbar_orange^A0^B0\" /><barrel x=\"-301^!040^jbar_orange^A0^B0^5180^*140^.80^,2100^A-3^B0^Y100^g0^5-90^*170^.120^,1600^A3^B0^Y100^g0\"^d131^-430^u1^t0\"^d160^-600^u1^t0^1-283^-891^A0^B0^C500^D500^q1^r1^F7^E-1^k0^l-1^4-283^-880^iplasmagun^s1^M2^1-298^-891^A0^B0^C500^D500^q1^r1^F7^E-1^k0^l-1^4-298^-880^iplasmagun^s1^M2^1-289^-851^A0^B0^C500^D500^q1^r1^F7^E-1^k0^l-1^4-289^-840^iplasmagun^s1^M2^1-296^!301^A0^B0^C500^D500^q1^r1^F7^E-1^k0^l-1^1-303^!301^A0^B0^C500^D500^q1^r1^F7^E-1^k0^l-1^1-314^!301^A0^B0^C500^D500^q1^r1^F7^E-1^k0^l-1^4-314^!280^iplasmagun^s1^M2^4-303^!280^iplasmagun^s1^M2^4-296^!280^iplasmagun^s1^M2^1-237^!061^A0^B0^C1000^D1000^q1^r1^F11^E-1^k0^l-1^1-232^!061^A0^B0^C1000^D1000^q1^r1^F11^E-1^k0^l-1^4-237^!040^iplasmagun^s1^M2^4-232^!040^iplasmagun^s1^M2^1-307^!061^A0^B0^C1000^D1000^q1^r1^F11^E-1^k0^l-1^1-315^!061^A0^B0^C1000^D1000^q1^r1^F11^E-1^k0^l-1^4-315^!030^iplasmagun^s1^M2^4-307^!030^iplasmagun^s1^M2^1-279^!121^A0^B0^C500^D500^q1^r1^F11^E-1^k0^l-1^4-279^!090^irailgun^s1^M3^4-279^!100^irailgun^s1^M3^4-275^-880^irailgun^s1^M3^4-232^!030^irailgun^s1^M3^3-272^-85^.4^,8^_-272^-63^.4^,150^T0\"^d-300^-400^u0.4^t1^3-340^*10^.73^,40^_-410^*10^.80^,80^_-250^*10^.94^,560^T0^4150^!240^jitem_grenade^s-1^M0\"^d-200^-95^~d-180^-95^~d-160^-95^~d-140^-95^~d-120^-95^~d-100^-95^~d-80^-95^~c50^-70^.30^,40^_99^-85^.1^,160^T0^4-314^!260^ibfg^s1^M2^3-100^!10^.31^,60^_-125^!12^.31^,58^_-250^-90^.6^,24^_-207^-92^.4^,80^T0^6-256^!120^jantigravity^U-1^O0^P0^5-262^-98^.12^,140^A0^B-1^Y0^g0\" /><barrel x=\"-242^!100^jbar_orange^A0^B0^3-169^-79^.2^,2^_-165^-79^.2^,2^_-161^-79^.2^,2^_-157^-79^.2^,2^_-153^-79^.2^,2^_-152^-67^.7^,7^_-283^!12^.10^,50^T0\"^e-270^*10^.24^,300^K4^J6^7^G1^m1^o7^m1^p1^m1^nc28a^>\"^e-302^-65^.32^,250^K5^J6^7^G1^m1^o43^m1^pWith a rocket, anything is possible... even jumping!^m1^n0^>\" />";
-         this.CACHED_MAPS["c28a"] = "<q.^f46^!^A0^B0^C100^D100^q0^r1^F1^E-1^k0^l-1^3-10^-^.60^,140^_67^-^.83^,1400^T0\" /><inf x=\"46^*20^Zhero1_guns^;0^5-180^-20^.566^,1200^A0^B0^Y0^g1000^330^*23^.50^,7^_33^*30^.7^,12^_90^*3^.40^,8^_-19^*10^.39^,150^_13^*5^.14^,13^_110^*17^.10^,22^_138^*33^.22^,6^_134^*30^.46^,6^_146^*26^.8^,13^_140^-5^.168^,135^_200^*20^.57^,39^_190^*13^.13^,40^T0\" /><inf x=\"40^*40^Zsky^;2^376^*18^.7^,6^_167^*3^.13^,12^_-20^*15^.3^,90^T0\" /><barrel x=\"42^*250^jbar_blue^A0^B0\" /><barrel x=\"45^*250^jbar_blue^A0^B0\" /><barrel x=\"101^*50^jbar_blue^A0^B0\" /><barrel x=\"-5^*120^jbar_blue^A0^B0\" /><barrel x=\"132^*20^jbar_blue^A0^B0\" /><barrel x=\"136^*20^jbar_blue^A0^B0\" /><barrel x=\"164^-30^jbar_blue^A0^B0\" /><barrel x=\"162^*320^jbar_blue^A0^B0\" /><barrel x=\"194^*150^jbar_blue^A0^B0\" /><barrel x=\"197^*150^jbar_blue^A0^B0\" /><barrel x=\"184^-30^jbar_blue^A0^B0^2147^*52^.6^,200^x^y0^z0^h5^I\"^e147^*34^.6^,200^K-1^J4^7^G1^m1^o0^m1^p0^m1^n0^>\"^e191^*7^.8^,130^K0^J1\"^c45^!0^.27^,1300^T0\"^c30^*18^.53^,280^T0\"^c134^*30^.46^,500^T0\"^c180^*12^.30^,320^T0\"^c30^*23^.50^,50^T0\"^c15^*9^.15^,190^T0\"^c83^*15^.51^,35^_146^*59^.8^,80^T0\"^d-10^*500^u1^t0\"^d-30^*500^u1^t0\"^d10^*500^u1^t0\"^d30^*500^u1^t0\"^d80^*500^u1^t0\"^d100^*500^u1^t0\"^d120^*500^u1^t0\"^d140^*500^u1^t0\"^d180^*500^u1^t0\"^d200^*500^u1^t0\"^d220^*500^u1^t0^170^*229^A0^B0^C350^D350^q1^r1^F8^E-1^k0^l-1^470^*260^irl^s1^M2^154^*229^A0^B0^C350^D350^q1^r1^F8^E-1^k0^l-1^454^*260^irl^s1^M2^136^*299^A0^B0^C350^D350^q1^r1^F8^E-1^k0^l-1^436^*330^irailgun^s1^M2^1-14^*99^A0^B0^C350^D350^q1^r1^F8^E-1^k0^l-1^4-14^*130^igl^s1^M2^1114^*169^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^4114^*200^irl^s1^M2^1136^*299^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^1144^*329^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^4136^*330^irl^s1^M2^4144^*360^irl^s1^M2^4136^*320^irailgun^s1^M2^4144^*350^irailgun^s1^M2^1142^!^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^1169^*29^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^4142^*20^irailgun^s1^M2^4142^*30^irl^s1^M2^4169^*60^irl^s1^M2^4169^*50^irailgun^s1^M2^1169^*299^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^4169^*330^irl^s1^M2^4169^*320^irailgun^s1^M2^1205^*199^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^1215^*199^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^1227^*199^A0^B0^C350^D350^q1^r-1^F8^E-1^k0^l-1^4205^*230^irl^s1^M2^4215^*230^irl^s1^M2^4227^*230^irl^s1^M2^4205^*220^irailgun^s1^M2^4215^*220^irailgun^s1^M2^4227^*220^irailgun^s1^M2\"^c147^*52^.6^,200^T4^3336^-5^.104^,135^_358^*1^.22^,130^T0\"^e360^*30^.81^,440^K1^J6^7^G1^m1^o7^m1^p1^m1^nc29a^>^3254^*16^.28^,80^T0\" /><barrel x=\"288^-30^jbar_blue^A0^B0\" /><barrel x=\"291^-30^jbar_blue^A0^B0^1267^-51^A0^B0^C350^D350^q1^r1^F8^E-1^k0^l-1^1279^-51^A0^B0^C350^D350^q1^r1^F8^E-1^k0^l-1^4267^-20^irl^s1^M2^4279^-20^irl^s1^M2\" />";
-         this.CACHED_MAPS["c29a"] = "<q.^f-156^-201^A0^B0^C100^D100^q1^r1^F3^E-1^k0^l-1\"^c-340^*150^.530^,210^_-210^*60^.352^,40^_-340^-20^.530^,40^_-110^*40^.40^,40^_-340^*60^.170^,60^_-143^*21^.2^,3^_-139^*21^.2^,30^T0\"^d-140^*190^u0.4^t1^3-43^*21^.2^,3^_-39^*21^.2^,30^T0\"^d-40^*190^u0.4^t1^1-196^-201^A0^B0^C1000^D1000^q0^r1^F8^E-1^k1^l9^1-189^-201^A0^B0^C1000^D1000^q0^r1^F8^E-1^k1^l9^5-340^-^.130^,200^A1^B0^Y100^g0^1-182^-201^A0^B0^C1000^D1000^q0^r1^F11^E-1^k1^l9^4-189^!70^i^&^#^s-1^L4-196^!70^i^/2^s-1^L37^*21^.2^,30^T0\"^d10^*190^u0.4^t1^311^*21^.2^,3^_57^*21^.2^,30^T0\"^d60^*190^u0.4^t1^361^*21^.2^,3^_107^*21^.2^,3^_111^*21^.2^,30^T0\"^d110^*190^u0.4^t1^3-50^-5^.30^,2^_^*2^.30^,2^_50^*2^.30^,2^_110^*2^.30^,2^_-52^-5^.3^,5^_-21^-5^.3^,5^_-2^*2^.3^,5^_29^*2^.3^,5^_48^*2^.3^,5^_79^*2^.3^,5^_108^*2^.3^,5^_139^*2^.3^,250^T0^2142^*2^.18^,40^x^y0^z0^h3^I^3160^*60^.90^,1200^T0\"^e109^*17^.15^,160^K0^J6^7^G1^m1^o48^m1^p3^m1^n5^m2^o48^m2^p2^m2^n5^m3^o48^m3^p1^m3^n5^m4^o48^m4^p8^m4^n5^m5^o48^m5^p9^m5^n5^m6^o48^m6^p10^m6^n5^m7^o48^m7^p11^m7^n5^m8^o20^m8^p9^m8^n0^m9^o-1^m9^p0^m9^n0^m10^o-1^m10^p0^m10^n0^2-175^-^.4^,200^x^y0^z0^h3^I^2-209^*19^.4^,200^x^y0^z0^h3^I\"^e-209^-^.4^,200^K-1^J4\"^e-175^*19^.4^,200^K-1^J4^9^G1^X1^W20^7^G1^m1^o0^m1^p2^m1^n1^m2^o0^m2^p1^m2^n2^m3^o19^m3^p9^m3^n0^m4^o-1^m4^p0^m4^n0^$\"^e-204^-7^.9^,140^K2^J1^7^G1^m1^o0^m1^p3^m1^n4^>^4-189^!80^i^/2^s-1^L4-196^!80^i^&^#^s-1^L2139^*20^.3^,180^x^y0^z0^h50^I\"^e139^*2^.3^,180^K-1^J4\"^e139^*20^.3^,180^K-1^J4\"^e150^*20^.10^,180^K3^J6^7^G1^m1^o0^m1^p3^m1^n5^m2^o0^m2^p0^m2^n7^)^35^!5^.6^,8^_52^!5^.7^,9^_-110^!4^.40^,16^_140^-2^.26^,210^T0\"^e142^*40^.18^,40^K4^J5^7^G1^m1^o25^m1^p1^m1^n0^>^a^G1^X0^W30^1139^*599^A0^B0^C150^D150^q0^r1^F8^E-1^k0^l-1^4139^*630^i^&^#^s-1^L1163^*599^A0^B0^C150^D150^q0^r-1^F8^E-1^k0^l-1^4163^*630^i^&^#^s-1^L3170^*210^.80^,160^_100^*100^.90^,200^T0^177^*599^A0^B0^C150^D150^q0^r1^F8^E-1^k0^l-1^183^*599^A0^B0^C150^D150^q0^r1^F8^E-1^k0^l-1^483^*630^i^&^#^s-1^L477^*630^i^&^#^s-1^L116^-201^A0^B0^C1000^D1000^q0^r-1^F8^E-1^k0^l-1^447^!70^i^/2^s-1^L137^-201^A0^B0^C1000^D1000^q0^r-1^F8^E-1^k0^l-1^147^-201^A0^B0^C1000^D1000^q0^r-1^F8^E-1^k0^l-1^170^-201^A0^B0^C1000^D1000^q0^r-1^F8^E-1^k0^l-1^4-35^-40^jitem_grenade^s-1^L437^!70^i^/2^s-1^L470^!70^i^/2^s-1^M0\"^d90^*830^u0.4^t1^340^*100^.70^,10^_40^*100^.20^,300^T0\" /><vehicle x=\"63^*750^r1^jveh_crate^A0^B0\" hpp=\"100^463^*740^irailgun2^s-1^L358^*73^.8^,3^_120^*70^.10^,21^_-20^*70^.40^,20^_-30^*90^.30^,10^_-10^*84^.20^,4^_30^*90^.16^,7^_-140^*100^.100^,50^_50^*105^.40^,15^_-340^*150^.280^,100^_-140^*150^.120^,30^_-20^*107^.20^,4^_10^*107^.20^,4^_-30^*65^.20^,110^T0^1-19^*899^A0^B0^C200^D200^q0^r1^F8^E-1^k0^l-1^4-19^*930^irl^s0^L1-3^*899^A0^B0^C200^D200^q0^r1^F8^E-1^k0^l-1^4-3^*930^irl^s0^L1-24^*649^A0^B0^C200^D200^q0^r1^F8^E-1^k0^l-1^4-24^*680^irl^s0^L142^*999^A0^B0^C200^D200^q0^r-1^F8^E-1^k0^l-1^138^*899^A0^B0^C200^D200^q0^r-1^F8^E-1^k0^l-1^438^*930^irailgun^s0^L442^*1030^irailgun^s0^M0\" /><barrel x=\"22^*620^jbar_blue^A0^B0\" /><barrel x=\"25^*620^jbar_blue^A0^B0\" /><barrel x=\"2^*860^jbar_blue^A0^B0^1-44^*999^A0^B0^C200^D200^q0^r1^F8^E-1^k0^l-1^4-44^*1030^irailgun^s0^L1-53^*999^A0^B0^C200^D200^q0^r1^F8^E-1^k0^l-1^4-53^*1030^irailgun^s0^L4-53^*1020^irl^s0^M0\"^d5^*96^~d-36^*74^~d41^*1180^u0.4^t1^350^*150^.40^,300^T0^2140^*104^.30^,40^x^y0^z0^h3^I^1150^*1039^A0^B0^C200^D200^q0^r-1^F8^E-1^k0^l-1^1161^*1039^A0^B0^C200^D200^q0^r-1^F8^E-1^k0^l-1^4150^*1070^irailgun^s0^L4161^*1070^irailgun^s0^L3117^*104^.23^,90^T0\"^e140^*210^.30^,40^K-1^J4\"^e160^*120^.9^,170^K5^J1^7^G-1^m1^o0^m1^p4^m1^n8^>\"^e120^*120^.17^,170^K6^J1^7^G-1^m1^o0^m1^p4^m1^n11^>\"^e140^*104^.30^,40^K-1^J4^3110^*130^.30^,3^_100^*140^.7^,70^T0^1112^*1299^A0^B0^C200^D200^q0^r-1^F8^E-1^k0^l-1^1138^*1299^A0^B0^C200^D200^q0^r-1^F8^E-1^k0^l-1^4138^*1330^irailgun^s0^L4112^*1330^irailgun^s0^M0\"^d100^*1800^u1^t0\"^d120^*1800^u1^t0\"^d140^*1800^u1^t0\"^d80^*1800^u1^t0\"^d60^*1800^u1^t0\"^d40^*1800^u1^t0\"^d20^*1800^u1^t0\"^d^*1800^u1^t0\"^d-20^*1800^u1^t0\"^d-40^*1800^u1^t0\" /><inf x=\"85^*1650^Zsky^;2\"^d150^*700^u0.4^t1^5-121^*286^.101^,1360^A2^B0^Y100^g0\"^e130^*300^.40^,1300^K7^J6^7^G1^m1^o7^m1^p2^m1^nc30a^>\" /><inf x=\"119^*30^Zhero2_guns^;1^9^G1^X8^W40^7^G1^m1^o42^m1^pHalt! There\'s an intruder! She must be stopped!^m1^n4^>^8^G1^m1^o42^m1^pI\'m back! Did you miss me?^m1^n3^>\" />";
-         this.CACHED_MAPS["c30a"] = "<q.^f-165^-261^A0^B0^C100^D100^q0^r1^F3^E-1^k0^l-1\"^c-86^*19^.49^,270^T0\"^c-184^*21^.38^,23^_-150^-^.380^,150^_-185^*26^.5^,560^T0^2-180^-26^.30^,40^x^y0^z0^h3^I\" /><inf x=\"-165^-240^Zhero2_guns^;0^3-182^*22^.37^,60^T0^5-342^-30^.209^,700^A0^B0^Y0^g1000\"^e-176^*14^.22^,150^K0^J1\"^c-149^*16^.3^,160^T4^2-149^*16^.3^,160^x^y0^z0^h10^I\"^e-149^*1^.3^,160^K-1^J4^7^G1^m1^o0^m1^p1^m1^n1^>^1-137^!^A0^B0^C200^D200^q1^r1^F8^E-1^k0^l2^4-137^*30^i^&^#^s-1^L1-125^!^A0^B0^C200^D200^q1^r1^F8^E-1^k0^l2^4-125^*30^i^&^#^s-1^L1-147^*219^A0^B0^C200^D200^q1^r1^F8^E-1^k0^l2^4-147^*250^i^&^%^s-1^L3-183^*29^.29^,120^T0\"^d-115^*400^u1^t0\"^d-230^!000^u1^t0\" /><barrel x=\"-152^*240^jbar_blue^A0^B0\" /><inf x=\"-140^*270^Zsky^;2^3-330^-60^.70^,900^T0^9^G1^X1^W0\"^e-180^-^.30^,40^K-1^J4^7^G1^m1^o0^m1^p0^m1^n2^>^3-122^*5^.12^,90^T0^1-85^!^A0^B0^C300^D300^q2^r-1^F6^E-1^k0^l3^4-85^*30^ia^#2^s2^L1-74^*199^A0^B0^C300^D300^q2^r-1^F6^E-1^k0^l3^4-74^*220^irl^s2^M3^1-69^!^A0^B0^C200^D200^q2^r-1^F2^E-1^k0^l-1^1-54^*259^A0^B0^C200^D200^q2^r-1^F2^E-1^k0^l3^4-69^*30^ia^#^s2^L4-54^*290^ia^#^s2^L3-87^*20^.18^,4^_-71^*26^.12^,10^_-63^*26^.27^,5^_-85^*18^.4^,7^_-55^*8^.25^,180^T0^1-40^*259^A0^B0^C200^D200^q2^r-1^F2^E-1^k0^l3^1-41^*79^A0^B0^C200^D200^q2^r-1^F2^E-1^k0^l-1^4-40^*290^ia^#^s2^L4-41^*110^ia^#^s2^M0\"^c-62^*24^.25^,50^T0\"^d-6^*400^u1^t0\" /><barrel x=\"-133^*20^jbar_blue^A0^B0\" /><barrel x=\"-130^*20^jbar_blue^A0^B0\" /><barrel x=\"-63^*280^jbar_blue^A0^B0\" /><barrel x=\"-108^*20^jbar_blue^A0^B0\" /><barrel x=\"-24^*20^jbar_blue^A0^B0^3-180^*50^.16^,28^_-2^*6^.98^,20^_16^*21^.22^,35^_77^*21^.37^,35^_62^*14^.33^,28^_6^*14^.19^,280^T0^113^*139^A0^B0^C200^D200^q2^r-1^F2^E-1^k0^l-1^1-8^!^A0^B0^C200^D200^q2^r-1^F2^E-1^k0^l3^13^*59^A0^B0^C200^D200^q2^r-1^F2^E-1^k0^l3^4-8^*30^ia^#^s2^L43^*90^ia^#^s2^L413^*170^ia^#^s2^L1101^*209^A0^B0^C200^D200^q2^r-1^F2^E-1^k0^l-1^4101^*240^ibfg^s2^L1126^!^A0^B0^C200^D200^q2^r-1^F2^E-1^k0^l-1^4126^*30^ibfg^s2^L352^*33^.35^,5^_79^*31^.7^,140^T0^161^*329^A0^B0^C200^D200^q2^r-1^F2^E-1^k0^l3^461^*360^ibfg^s2^L176^*329^A0^B0^C200^D200^q2^r-1^F2^E-1^k0^l-1^476^*360^ibfg^s2^L9^G1^X0^W120^21^*150^.34^,4^(I^217^*167^.3^,21^(I^2^*167^.3^,21^(I^2^*167^.35^,4^(I^232^*167^.3^,21^(I^110^*1499^A0^B0^C200^D200^q1^r1^F8^E-1^k3^l2^410^*1530^irailgun^s1^L126^*1499^A0^B0^C200^D200^q2^r-1^F2^E-1^k3^l3^426^*1530^ia^#^s2^L7^G20^m1^o28^m1^p17^m1^n-4^>^7^G20^m1^o28^m1^p18^m1^n-3^>\"^e-140^*60^.236^,30^K-1^J4\"^e-145^*50^.259^,30^K-1^J4^331^*14^.12^,140^T0^1-85^*199^A0^B0^C200^D200^q1^r1^F8^E-1^k0^l2^4-85^*230^i^&^#^s-1^L1-96^!^A0^B0^C200^D200^q1^r1^F8^E-1^k0^l2^4-96^*30^i^&^#^s-1^L3140^*14^.90^,240^T0\"^e150^*40^.80^,400^K4^J6^7^G1^m1^o7^m1^p2^m1^nc31a^>^9^G1^X5^W30^7^G1^m1^o42^m1^pAliens are attacking our base! Call for reinforcements now!^m1^n4^>^7^G1^m1^o42^m1^pI will die before I surrender to these monsters!^m1^n4^>^7^G1^m1^o42^m1^pWe must stop them! Don\'t stop shooting!^m1^n4^>^9^G1^X6^W100^9^G1^X7^W200^7^G1^m1^o42^m1^pMan, I hate those aliens, they remind me of my wife!^m1^n4^>^7^G1^m1^o42^m1^pHold them off for as long as possible!^m1^n4^>^9^G1^X8^W260^9^G1^X9^W340\" /><inf x=\"-135^*270^Zmeat^;0\" />";
-         this.CACHED_MAPS["c31a"] = "<q.^f-56^*599^A3^B6^C100^D100^q0^r1^F3^E-1^k0^l-1\"^e99^*14^.47^,280^K8^J6\"^c134^*30^.306^,1100^T0\"^c46^!0^.14^,330^T0\" /><inf x=\"-56^*620^Zhero2_guns^;0^5-150^*155^.90^,950^A2^B0^Y100^g0^3-150^-40^.90^,14^_-80^-38^.18^,9^_-80^!3^.18^,90^T0^2-70^-22^.6^,16^(I^2-78^-22^.6^,16^(I^3-70^-43^.20^,7^_-20^-43^.40^,7^_40^-43^.30^,7^_-70^-70^.217^,400^T0^+-60^-50^.190^,200^g0^+-50^-46^.30^,40^g0^+20^-46^.20^,40^g0\"^c-150^!0^.90^,400^T0\"^c-70^-44^.210^,360^T0\"^d-40^-0^u1^t0\"^d-20^-0^u1^t0\"^d^-0^u1^t0\"^d20^-0^u1^t0\"^d40^*100^u1^t0\"^d60^*200^u1^t0^1-12^-431^A0^B0^C200^D200^q1^r1^F8^E-1^k0^l4^4-12^-400^irailgun2^s1^M3^1-7^-431^A0^B0^C200^D200^q1^r1^F8^E-1^k0^l4^4-7^-400^irailgun2^s1^M3^143^-431^A0^B0^C200^D200^q1^r-1^F8^E-1^k0^l4^151^-411^A0^B0^C200^D200^q1^r-1^F8^E-1^k0^l4^443^-400^irailgun^s1^M3^452^-380^irailgun^s1^M3^360^!0^.20^,440^T0^246^-40^.14^,3^(I^3-150^*60^.90^,800^T0\"^c57^!1^.1^,310^T4\"^c48^!1^.1^,310^T4^370^!0^.50^,10^_130^-58^.15^,32^_100^-44^.40^,60^T0\"^d102^-24^~c74^!4^.70^,300^T0\"^c120^!0^.20^,100^T0\"^d80^*300^u1^t0\"^d100^*300^u1^t0\"^d120^*300^u1^t0^3-150^-58^.90^,52^_-150^-47^.80^,200^T0^+-70^-54^.10^,40^g0^2-70^-54^.20^,40^x^y0^z0^h3^I^3130^-46^.15^,8^_140^!0^.10^,700^T0^+130^-54^.10^,40^g0\"^e-70^-54^.20^,40^K0^J5^7^G-1^m1^o0^m1^p3^m1^n2^>^7^G-1^m1^o0^m1^p3^m1^n1^>\"^e120^-54^.20^,40^K1^J5^9^G1^X0^W100\"^c-69^-55^.208^,20^T4^4-57^-530^jitem_grenade^s-1^L4-53^-530^jitem_grenade^s-1^L4138^-570^jitem_grenade^s-1^L4134^-570^jitem_grenade^s-1^L7^G0^m1^o-1^m1^p0^m1^n0^>\"^e101^-28^.15^,170^K2^J1^389^-5^.21^,9^_95^*4^.8^,12^_144^-71^.216^,390^T0\"^e-18^*60^.153^,20^K-1^J4^2-167^*39^.24^,8^(I^2-169^*54^.7^,18^(I^2-167^*54^.19^,5^(I^1-155^*389^A0^B0^C200^D200^q1^r-1^F8^E-1^k3^l-1^4-155^*420^irailgun2^s1^M3^a^G10^X3^W10^7^G10^m1^o28^m1^p5^m1^n-3^>^7^G1^m1^o25^m1^p1^m1^n0^>^3156^!6^.14^,64^_176^-22^.14^,58^_196^-30^.14^,50^_216^-22^.14^,58^_156^*33^.14^,33^_176^*33^.14^,18^_196^*33^.14^,24^_216^*33^.14^,27^_134^*33^.16^,23^_236^-31^.14^,49^_256^-25^.14^,55^_276^-22^.14^,58^_256^!0^.14^,5^_236^*33^.14^,33^_276^*33^.14^,23^_296^!6^.14^,64^_296^*33^.14^,33^_316^*33^.14^,33^_334^*33^.106^,39^_316^!0^.14^,70^_334^!6^.106^,940^T0\"^d153^*310^u0.6^t0\"^d174^*310^u0.6^t0\"^d193^*310^u0.6^t0\"^d213^*310^u0.6^t0\"^d233^*310^u0.6^t0\"^d253^*310^u0.6^t0\"^d273^*310^u0.6^t0\"^d293^*310^u0.6^t0\"^d313^*310^u0.6^t0\"^d332^*310^u0.6^t0^3256^*33^.14^,32^_196^-8^.14^,12^_276^-3^.14^,7^_236^!6^.14^,5^_176^*8^.14^,80^T0\" /><barrel x=\"199^-60^jbar_blue^A0^B0\" /><barrel x=\"203^-60^jbar_blue^A0^B0\" /><barrel x=\"180^*100^jbar_blue^A0^B0\" /><barrel x=\"205^-280^jbar_blue^A0^B0\" /><barrel x=\"208^-280^jbar_blue^A0^B0\" /><barrel x=\"178^-200^jbar_blue^A0^B0\" /><barrel x=\"246^-290^jbar_blue^A0^B0\" /><barrel x=\"246^!40^jbar_blue^A0^B0\" /><barrel x=\"249^!40^jbar_blue^A0^B0\" /><barrel x=\"258^-230^jbar_blue^A0^B0\" /><barrel x=\"228^-200^jbar_blue^A0^B0\" /><barrel x=\"268^-80^jbar_blue^A0^B0\" /><barrel x=\"282^!0^jbar_blue^A0^B0\" /><barrel x=\"285^!0^jbar_blue^A0^B0\" /><barrel x=\"278^-200^jbar_blue^A0^B0\" /><barrel x=\"281^-200^jbar_blue^A0^B0\" /><barrel x=\"308^!40^jbar_blue^A0^B0\" /><barrel x=\"335^!40^jbar_blue^A0^B0\" /><barrel x=\"338^!40^jbar_blue^A0^B0\" /><barrel x=\"304^!40^jbar_blue^A0^B0^1188^*79^A0^B0^C200^D200^q1^r-1^F8^E-1^k0^l-1^4188^*100^irl^s1^M3^1207^-81^A0^B0^C200^D200^q1^r-1^F8^E-1^k0^l-1^1188^-221^A0^B0^C200^D200^q1^r-1^F8^E-1^k0^l-1^1221^-221^A0^B0^C200^D200^q1^r-1^F8^E-1^k0^l-1^1258^!01^A0^B0^C200^D200^q1^r-1^F8^E-1^k0^l-1^1278^-31^A0^B0^C200^D200^q1^r-1^F8^E-1^k0^l-1^1322^!01^A0^B0^C200^D200^q1^r-1^F8^E-1^k0^l-1^1285^-221^A0^B0^C200^D200^q1^r-1^F8^E-1^k0^l-1^1344^!61^A0^B0^C200^D200^q1^r-1^F8^E-1^k0^l-1^4207^-50^irl^s1^M3^4188^!90^irl^s1^M3^4221^!90^irl^s1^M3^4258^-70^irl^s1^M3^4278^-0^irl^s1^M3^4285^!90^irl^s1^M3^4322^-70^irl^s1^M3^4344^!30^irl^s1^M3^5150^-68^.200^,30^A0^B0^Y0^g1000^5136^*30^.214^,100^A0^B0^Y100^g0^1262^-251^A0^B0^C200^D200^q1^r-1^F8^E-1^k0^l-1^4262^-220^irl^s1^M3^1238^-311^A0^B0^C200^D200^q1^r-1^F8^E-1^k0^l-1^4238^-280^irl^s1^M3^1238^!61^A0^B0^C200^D200^q1^r-1^F8^E-1^k0^l-1^4238^!30^irl^s1^M3\"^e360^-^.80^,210^K5^J6^7^G1^m1^o7^m1^p2^m1^nc32a^>\" /><inf x=\"-51^*480^Zsky^;2\"^e-59^*30^.25^,240^K6^J4^7^G1^m1^o43^m1^pPsst, hide...^m1^n0^>\"^e116^-24^.24^,210^K7^J6^7^G-1^m1^o43^m1^pYou really should think about that grenade jump!^m1^n0^>^7^G-1^m1^o43^m1^p0^m1^n0^>^3136^-20^.13^,2^_112^-20^.12^,2^_112^!8^.8^,4^_139^-32^.10^,15^_137^-24^.12^,2^_138^-28^.11^,2^_128^!1^.4^,20^T0\" />";
-         this.CACHED_MAPS["c32a"] = "<q.^f-120^*199^A0^B0^C100^D100^q0^r1^F3^E-1^k0^l-1\"^c60^*160^.30^,480^T0^7^G-1^m1^o43^m1^pStand against a wall and look at the place where your feet collides with fall, jump and start firing plasma!^m1^n0^>\"^c-210^*112^.336^,113^_-210^*20^.120^,50^_-210^*60^.120^,30^_-100^*10^.60^,40^_-50^*20^.20^,50^_-36^*17^.68^,47^_-100^*38^.20^,40^T0\" /><inf x=\"-120^*230^Zhero2_guns_nonades^;0^1-87^*99^A0^B0^C200^D200^q1^r1^F7^E-1^k0^l-1^1196^*489^A0^B0^C200^D200^q2^r-1^F2^E-1^k3^l-1^4196^*510^ia^#^s2^M3^1-78^*99^A0^B0^C300^D300^q1^r1^F12^E-1^k0^l-1^1-59^*99^A0^B0^C300^D300^q1^r1^F12^E-1^k0^l-1^4-87^*130^i^&^%^s1^M3^3-15^*38^.39^,5^_-66^*34^.9^,10^_-71^*35^.35^,40^T0^1-61^*349^A0^B0^C200^D200^q1^r1^F7^E-1^k3^l-1^1-85^*379^A0^B0^C200^D200^q1^r1^F7^E-1^k3^l-1^4-85^*410^iplasmagun^s1^M3^4-61^*380^iplasmagun^s1^M3^1185^*489^A0^B0^C300^D300^q2^r-1^F6^E-1^k3^l3^4185^*510^ia^#2^s2^M3^3-72^*38^.4^,4^_-97^*56^.24^,6^_-45^*56^.35^,6^_-64^*56^.12^,40^T0^2171^*66^.8^,21^(I^2167^*49^.43^,5^(I^2200^*66^.13^,25^(I^2168^*72^.40^,13^(I^320^*38^.106^,68^_58^*70^.68^,45^_58^*112^.68^,28^_78^*170^.48^,113^_7^*66^.35^,6^_8^*85^.29^,5^_-41^*86^.32^,6^_-77^*72^.35^,4^_-50^*86^.10^,18^_5^*66^.3^,9^_-11^*59^.3^,9^_-210^*99^.90^,460^T0^2-133^*30^.6^,10^(I^3-290^*124^.110^,154^_-124^*99^.38^,9^_11^*46^.29^,120^T0\"^d70^*1700^u0.4^t0\"^d50^*1600^u0.4^t0\"^d30^*1500^u0.4^t0\"^d10^*1400^u0.4^t0\"^d-10^*1300^u0.4^t0\"^d-30^*1300^u0.4^t0\"^d-50^*1300^u0.4^t0\"^d-70^*1300^u0.4^t0\"^d-90^*1300^u0.4^t0\"^d-110^*1400^u0.4^t0\"^d-130^*1500^u0.4^t0\" /><inf x=\"-51^*1410^Zsky^;2^3-92^*93^.9^,80^T0\"^d-75^*44^~d-25^*43^~d-25^*72^~d-103^*76^~d68^*78^~e-90^*116^.150^,20^K-1^J4\"^e-90^*118^.150^,20^K-1^J4\"^e-116^*32^.24^,140^K1^J6^7^G1^m1^o25^m1^p0^m1^n0^>^a^G10^X2^W60^7^G10^m1^o28^m1^p7^m1^n-1^m2^o28^m2^p2^m2^n-1^m3^o28^m3^p2^m3^n-1^m4^o-1^m4^p0^m4^n0^$^7^G-1^m1^o25^m1^p0^m1^n0^>^649^*380^jantigravity^U-1^O0^P0^543^*66^.13^,280^A0^B-1^Y0^g0^6-84^*560^jantigravity^U-1^O0^P0^5-90^*72^.12^,160^A0^B-1^Y0^g0^333^*98^.9^,180^T0^2-70^*36^.3^,4^(H^2-210^*40^.83^,30^(H^560^*274^.67^,1090^A-2^B0^Y100^g0^4-105^*210^iplasmagun^s0^M3^3-154^*138^.7^,18^_-290^*180^.143^,340^T0\"^c-290^*149^.140^,290^T0\"^d-182^*1440^u0.4^t1\" /><vehicle x=\"-140^*1150^r1^jveh_crate^A0^B0\" hpp=\"100^3-147^*113^.2^,2^_-142^*113^.5^,17^_-134^*113^.2^,20^T0^4-140^*1140^iplasmagun^s0^M3\" /><inf x=\"-194^*1270^Zhero2_guns_nades^;0^3-198^*127^.8^,50^T0\"^e-188^*146^.38^,220^K4^J6\"^e-181^*123^.28^,20^K-1^J4^2-208^*123^.28^,20^x^y0^z0^h20^I^7^G-1^m1^o0^m1^p7^m1^n4^m2^o19^m2^p4^m2^n0^m3^o20^m3^p5^m3^n0^m4^o43^m4^p0^m4^n0^$\"^e-208^*123^.28^,20^K-1^J4\"^e-180^*114^.27^,160^K5^J6^8^G-1^m1^o0^m1^p7^m1^n5^m2^o19^m2^p5^m2^n0^m3^o20^m3^p4^m3^n0^m4^o-1^m4^p0^m4^n0^$\"^e-290^*149^.80^,290^K6^J6^7^G1^m1^o7^m1^p2^m1^nc33a^>\"^e-182^*110^.41^,130^K0^J6^3-150^*138^.5^,30^T0^7^G-1^m1^o0^m1^p8^m1^n10^>\"^c-145^*137^.205^,10^T4^360^*138^.10^,3^_70^*125^.11^,30^T0\"^e-145^*138^.5^,30^K-1^J4\"^e55^*138^.5^,30^K-1^J4\"^e67^*124^.14^,140^K7^J1^2-110^*138^.5^,30^x^y0^z0^h6^I^7^G-1^m1^o0^m1^p8^m1^n9^>^360^*165^.30^,70^T0\"^e58^*151^.14^,140^K8^J1^2-272^*200^.6^,23^(H^2-288^*200^.6^,23^(H^2-288^*200^.22^,6^(H^1-277^*1799^A0^B0^C350^D350^q2^r1^F2^E-1^k9^l-1^4-277^*1830^irailgun2^s2^M3\"^e-70^*152^.10^,210^K9^J6^7^G1^m1^o14^m1^p8^m1^n14^>\"^e-142^*124^.4^,70^K-1^J4\" /><inf x=\"-110^*630^Zmeat^;0\" />";
-         this.CACHED_MAPS["c33a"] = "<q.^f104^*479^A0^B0^C100^D100^q0^r1^F3^E-1^k0^l-1\"^c-150^*80^.270^,110^_93^*41^.97^,41^_79^*32^.25^,3^_48^*41^.26^,4^_36^*39^.22^,9^_76^*29^.8^,4^_36^*14^.154^,84^_32^*17^.28^,5^_-75^*17^.81^,5^_-71^*14^.71^,64^_-119^!2^.179^,58^_14^*39^.9^,6^_7^*37^.12^,4^_-9^*52^.8^,12^_-9^*21^.11^,6^_-65^*56^.59^,9^_-70^*52^.8^,12^_-50^*50^.29^,5^_-50^*34^.29^,4^_-70^*21^.10^,6^_-45^*32^.19^,17^_25^*55^.11^,3^_34^*58^.4^,8^_-71^*140^.161^,70^_110^*140^.80^,1100^T0\"^c80^*140^.40^,600^T0\" /><inf x=\"104^*500^Zhero2_guns^;0^3-26^*37^.4^,5^_-210^*40^.115^,110^_-150^*140^.55^,800^T0\"^c-110^*140^.50^,600^T0\" /><vehicle x=\"90^*350^r1^jveh_crate^A0^B0\" hpp=\"100\"^d66^*32^~d-17^*39^~d-54^*39^~d-108^*500^u0.4^t1^3-210^*140^.80^,140^_10^*75^.10^,15^_50^*77^.19^,150^T0^640^*300^jray_ceil^U-1^O0^P0^640^*170^jray_floor^U-1^O0^P0\"^d40^*180^u0.4^t0\"^d40^*290^u0.4^t0^539^*30^.2^,130^A0^B0^Y0^g-100^192^*209^A0^B0^C300^D300^q1^r-1^F2^E-1^k0^l-1^192^*129^A0^B0^C300^D300^q1^r-1^F2^E-1^k0^l-1^492^*170^irl^s1^M3^119^*389^A0^B0^C300^D300^q1^r1^F2^E-1^k0^l-1^131^*549^A0^B0^C300^D300^q1^r1^F2^E-1^k0^l-1^1-12^*559^A0^B0^C300^D300^q1^r1^F2^E-1^k0^l-1^1-23^*559^A0^B0^C300^D300^q1^r1^F2^E-1^k0^l-1^492^*240^irl^s1^M3^419^*420^irl^s1^M3^431^*580^irl^s1^M3^4-12^*590^irl^s1^M3^4-23^*590^irl^s1^M3^57^*12^.24^,240^A0^B-1^Y0^g0^613^!20^jantigravity^U-1^O0^P0^625^!20^jantigravity^U-1^O0^P0^3-26^*47^.4^,70^T0^1-29^*339^A0^B0^C300^D300^q1^r1^F2^E-1^k0^l-1^4-29^*370^irl^s1^M3^1-40^*339^A0^B0^C300^D300^q1^r1^F2^E-1^k0^l-1^1-22^*169^A0^B0^C300^D300^q1^r1^F2^E-1^k0^l-1^4-40^*370^irl^s1^M3^4-22^*200^irl^s1^M3\" /><vehicle x=\"84^*350^r1^jveh_crate^A0^B0\" hpp=\"100^492^*160^irailgun^s1^M3^492^*230^irailgun^s1^M3^431^*570^irailgun^s1^M3^419^*410^irailgun^s1^M3^4-22^*190^irailgun^s1^M3^4-29^*360^irailgun^s1^M3^4-40^*360^irailgun^s1^M3^4-23^*580^irailgun^s1^M3^4-12^*580^irailgun^s1^M3^379^*32^.5^,70^T0^492^*250^iplasmagun^s1^M3^492^*180^iplasmagun^s1^M3^419^*430^iplasmagun^s1^M3^431^*590^iplasmagun^s1^M3^4-22^*210^iplasmagun^s1^M3^4-12^*600^iplasmagun^s1^M3^4-23^*600^iplasmagun^s1^M3^4-29^*380^iplasmagun^s1^M3^4-40^*380^iplasmagun^s1^M3\"^d3^*67^~d36^*680^u0.4^t1^358^*77^.22^,200^T0\"^e18^*1^.16^,140^K0^J1^2-32^*71^.5^,160^x^y0^z0^h5^I\"^e-32^*85^.5^,160^K-1^J4^7^G1^m1^o0^m1^p0^m1^n1^>^590^*140^.20^,600^A0^B2^Y100^g0^+-95^*10^.24^,220^g0^3-103^*30^.13^,50^T0^6-82^!20^jantigravity0^U-1^O0^P0\"^e-59^*29^.13^,130^K1^J1^7^G1^m1^o34^m1^p4^m1^nantigravity^m2^o36^m2^p3^m2^n-1^)^5-90^*140^.15^,1520^A0^B0^Y0^g0^2-89^!1^.13^,3^(H^2-97^*86^.26^,60^x^y0^z0^h10^I\"^e-71^*86^.26^,60^K-1^J4^7^G1^m1^o0^m1^p2^m1^n3^>\"^e-64^*66^.10^,110^K2^J1^1-115^*399^A0^B0^C300^D300^q1^r1^F2^E-1^k0^l-1^4-115^*430^irailgun2^s1^M3^4-115^*450^igl^s1^M3^1-82^*59^A0^B0^C0^D0^q1^r1^F2^E-1^k0^l-1\" /><barrel x=\"-85^!00^jbar_blue^A0^B0\" /><barrel x=\"-87^!00^jbar_blue^A0^B0\"^e-110^*140^.52^,400^K3^J6^7^G1^m1^o7^m1^p2^m1^nc34a^>\" />";
-         this.CACHED_MAPS["c34a"] = "<q.^f60^-341^A0^B-10^C100^D100^q0^r1^F3^E-1^k0^l-1\"^c-138^*90^.344^,140^_-21^-^.71^,90^_70^-^.180^,90^_20^*4^.20^,14^_85^*4^.15^,14^_20^*34^.20^,14^_80^*34^.20^,14^_10^*40^.47^,16^_63^*40^.47^,16^_50^*45^.20^,130^T0\"^d41^*230^u0.4^t1^553^-7^.14^,830^A0^B-1^Y0^g0\" /><inf x=\"60^-320^Zhero2_guns^;0\"^d41^*1^~d79^*1^~d79^*23^~d60^*31^~e45^*17^.30^,150^K0^J6^7^G1^m1^o0^m1^p0^m1^n1^>^270^!^.20^,60^x^y0^z0^h10^I\"^e50^!^.20^,60^K-1^J4^164^-591^A0^B-10^C0^D0^q1^r1^F2^E-1^k0^l-1^3170^*46^.80^,86^_-200^-30^.200^,60^_-200^-^.120^,50^_-200^*40^.90^,450^T0^+-80^!0^.59^,200^g1000^3-30^*40^.20^,16^_-79^*35^.95^,9^_-98^*32^.23^,4^_-135^*110^.85^,50^_-60^*110^.140^,40^_-200^*110^.80^,800^T0^6-104^-0^jantigravity0^U-1^O0^P0^2-110^*1^.11^,1^(H^6-60^-300^jantigravity0^U-1^O0^P0^6-40^-300^jantigravity0^U-1^O0^P0\"^e-47^*10^.14^,200^K1^J1\"^e-67^*10^.14^,200^K2^J1^5-70^*6^.20^,360^A0^B0^Y0^g0^5-50^*6^.20^,360^A0^B0^Y0^g0^7^G1^m1^o36^m1^p2^m1^n-1^m2^o34^m2^p2^m2^nantigravity^m3^o36^m3^p4^m3^n-1^m4^o-1^m4^p0^m4^n0^$^7^G1^m1^o36^m1^p1^m1^n-1^m2^o34^m2^p1^m2^nantigravity^m3^o36^m3^p3^m3^n-1^m4^o-1^m4^p0^m4^n0^$^5-70^-^.20^,300^A0^B0^Y0^g0^5-50^-^.20^,300^A0^B0^Y0^g0\"^d-60^-0^u0.2^t0\"^d-40^-0^u0.2^t0^3-110^*50^.12^,60^T0\" /><barrel x=\"-97^*20^jbar_red^A0^B0\"^e-110^*13^.11^,140^K3^J1^5-110^*34^.11^,330^A0^B0^Y0^g0^7^G1^m1^o36^m1^p5^m1^n-1^m2^o34^m2^p0^m2^nantigravity^)\" /><barrel x=\"-87^*20^jbar_red^A0^B0\" /><barrel x=\"-109^*30^jbar_red^A0^B0\" /><barrel x=\"-106^*30^jbar_red^A0^B0\" /><barrel x=\"-103^*30^jbar_red^A0^B0\" /><barrel x=\"-57^-280^jbar_red^A0^B0\" /><barrel x=\"-54^-280^jbar_red^A0^B0\" /><barrel x=\"-45^-280^jbar_red^A0^B0\" /><barrel x=\"-36^-280^jbar_red^A0^B0^227^*21^.6^,180^x^y0^z0^h10^I\"^e27^*37^.6^,180^K-1^J4^7^G1^m1^o0^m1^p2^m1^n5^>\"^e159^*19^.10^,200^K4^J1^2108^*30^.63^,50^x^y0^z0^h60^I\" /><barrel x=\"112^*320^jbar_red^A0^B0\" /><barrel x=\"119^*320^jbar_red^A0^B0\" /><barrel x=\"131^*320^jbar_red^A0^B0\" /><barrel x=\"127^*320^jbar_red^A0^B0\" /><barrel x=\"141^*320^jbar_red^A0^B0\" /><barrel x=\"146^*320^jbar_red^A0^B0\" /><barrel x=\"148^*320^jbar_red^A0^B0\" /><barrel x=\"144^*320^jbar_red^A0^B0\" /><barrel x=\"134^*320^jbar_red^A0^B0\" /><barrel x=\"123^*320^jbar_red^A0^B0\" /><barrel x=\"116^*320^jbar_red^A0^B0\" /><barrel x=\"114^*320^jbar_red^A0^B0\" /><barrel x=\"138^*320^jbar_red^A0^B0\" /><barrel x=\"136^*320^jbar_red^A0^B0\" /><barrel x=\"151^*320^jbar_red^A0^B0\"^e108^*29^.63^,50^K7^J5\"^e130^*27^.20^,280^K5^J6^7^G1^m1^o0^m1^p3^m1^n7^>^391^*46^.96^,110^T0\"^d-40^*67^~d80^*410^u0.4^t1^375^*110^.175^,460^T0\"^c33^-50^.52^,40^_80^*10^.10^,200^T0^6120^-0^jantigravity0^U-1^O0^P0^6150^-0^jantigravity0^U-1^O0^P0^6135^-0^jantigravity0^U-1^O0^P0^2114^*1^.12^,3^(H^2129^*1^.12^,3^(H^2144^*1^.12^,3^(H\"^c206^*80^.44^,500^T0\"^e120^*71^.130^,310^K6^J6^7^G1^m1^o7^m1^p2^m1^nc35a^>^5162^*36^.9^,70^A-1^B0^Y0^g0^5164^*37^.8^,80^A-4^B0^Y0^g0^5166^*38^.7^,90^A-10^B0^Y0^g0\" /><barrel x=\"-3^*370^jbar_red^A0^B0\" /><barrel x=\"1^*370^jbar_red^A0^B0\" /><barrel x=\"7^*370^jbar_red^A0^B0\" /><barrel x=\"3^*370^jbar_red^A0^B0\" /><barrel x=\"90^*420^jbar_red^A0^B0\" /><barrel x=\"88^*420^jbar_red^A0^B0\" /><barrel x=\"86^*420^jbar_red^A0^B0\" /><barrel x=\"83^*420^jbar_red^A0^B0\" /><barrel x=\"-112^*420^jbar_red^A0^B0\" /><barrel x=\"-114^*420^jbar_red^A0^B0\" /><barrel x=\"154^*320^jbar_red^A0^B0\" /><barrel x=\"158^*320^jbar_red^A0^B0\" /><barrel x=\"160^*320^jbar_red^A0^B0\"^e169^*29^.63^,50^K-1^J5^7^G1^m1^o0^m1^p3^m1^n10^m2^o36^m2^p9^m2^n0.1^)^5109^*36^.53^,50^A0^B0^Y0^g0\" />";
-         this.CACHED_MAPS["c35a"] = "<q.^f-67^*499^A0^B0^C100^D100^q0^r1^F3^E-1^k0^l-1\"^c-180^*90^.340^,113^_-180^*50^.130^,40^_-180^*113^.130^,43^_-55^*150^.112^,77^_50^*50^.100^,40^_50^*150^.80^,80^_-180^!0^.330^,40^_100^*50^.140^,100^_-180^*20^.80^,400^T0\" /><inf x=\"-67^*540^Zhero2_guns^;0\"^d-30^*30^~d30^*300^u0.4^t1^3-33^*33^.2^,2^_-29^*33^.2^,2^_-29^*29^.2^,2^_-33^*29^.2^,2^_31^*33^.2^,2^_27^*33^.2^,2^_27^*29^.2^,2^_31^*29^.2^,2^_-60^-4^.5^,8^_-110^-6^.30^,14^_55^-4^.5^,8^_80^-6^.30^,14^_-20^-6^.40^,9^_-30^-8^.60^,70^T0\"^d-49^*300^u0.05^t0\"^d49^*300^u0.05^t0\"^d30^-70^u0.02^t0\"^d-30^-70^u0.02^t0\"^d-30^*720^u0.02^t0\"^d30^*720^u0.02^t0^3-80^*20^.10^,15^_70^*20^.10^,15^_-13^*13^.2^,3^_11^*13^.2^,3^_2^*14^.10^,2^_-12^*14^.10^,2^_-3^*13^.6^,20^T0\"^d10^*11^~d-10^*11^~d-4^*11^~d4^*110^u0.4^t1^3-2^*12^.4^,2^_-10^*80^.20^,200^T0^670^*700^jray_ceil^U-1^O0^P0^670^*500^jray_floor^U-1^O0^P0\"^d70^*690^u0.2^t0\"^d70^*510^u0.2^t0^7^G1^m1^o38^m1^p0^m1^n0^m2^o34^m2^p1^m2^nnull^m3^o34^m3^p0^m3^nnull^m4^o25^m4^p0^m4^n0^$^568^*68^.4^,160^A0^B0^Y0^g-50000\"^e-95^*7^.12^,140^K0^J1\"^e^*43^.49^,20^K-1^J4^2-79^*129^.10^,17^(I^2-75^*130^.26^,5^(I^1-62^*1129^A0^B0^C400^D400^q1^r-1^F7^E-1^k3^l1^7^G20^m1^o28^m1^p1^m1^n-1^>^a^G5^X1^W15^4-62^*1150^iraygun^s1^M2\" /><vehicle x=\"117^*530^r1^jveh_crate^A0^B0\" hpp=\"100\" /><vehicle x=\"129^*530^r1^jveh_crate^A0^B0\" hpp=\"100\" /><vehicle x=\"135^*530^r1^jveh_crate^A0^B0\" hpp=\"100\" /><barrel x=\"-1^*150^jbar_red^A0^B0\" /><barrel x=\"1^*150^jbar_red^A0^B0\" /><barrel x=\"53^-80^jbar_red^A0^B0\" /><barrel x=\"62^-80^jbar_red^A0^B0\" /><barrel x=\"65^-80^jbar_red^A0^B0\" /><barrel x=\"-53^-80^jbar_red^A0^B0\" /><barrel x=\"-62^-80^jbar_red^A0^B0\" /><barrel x=\"-65^-80^jbar_red^A0^B0\" /><barrel x=\"-78^-80^jbar_red^A0^B0\" /><barrel x=\"-98^-40^jbar_red^A0^B0\" /><barrel x=\"78^-80^jbar_red^A0^B0\" /><barrel x=\"98^-40^jbar_red^A0^B0^3150^*150^.90^,120^_128^*150^.5^,900^T0^5-180^*80^.110^,410^A10^B0^Y-100^g0\"^c120^*150^.40^,600^T0\"^e119^*150^.44^,400^K2^J6^7^G1^m1^o7^m1^p2^m1^nc36a^>\"^e-19^*8^.38^,170^K3^J6^7^G-1^m1^o43^m1^pYou know, swords can make you jump higher.^m1^n0^>\"^e-40^*27^.11^,420^K4^J6\"^e-37^*37^.72^,130^K4^J6\"^e29^*28^.14^,440^K4^J6^7^G-1^m1^o43^m1^p0^m1^n0^>^3-4^*1^.7^,11^_-30^*10^.4^,4^_26^*10^.4^,40^T0\" /><inf x=\"-21^*170^Zmeat^;0\" />";
-         this.CACHED_MAPS["c36a"] = "<q.^f-71^*899^A0^B0^C100^D100^q0^r1^F1^E-1^k1^l8\"^c-160^*150^.750^,130^_-100^*90^.78^,70^_-160^*150^.70^,130^_-100^*150^.70^,40^_-32^*94^.23^,74^_-14^*88^.30^,68^_60^*90^.36^,11^_-6^*77^.42^,14^_5^*69^.48^,49^_-40^*150^.138^,30^_30^*124^.17^,24^_-7^*144^.17^,34^_70^*144^.17^,34^_70^*96^.18^,11^_44^*61^.268^,41^_72^*83^.18^,11^_99^*66^.18^,11^_150^*66^.18^,11^_130^*94^.13^,4^_180^*94^.13^,4^_190^*78^.37^,220^T0^1-60^*899^A0^B0^C100^D100^q0^r1^F3^E-1^k1^l8\" /><inf x=\"-71^*930^Zhero1_guns^;-1\" /><inf x=\"-60^*930^Zhero2_guns^;-1^3150^*84^.12^,4^_165^*112^.5^,29^_120^*130^.61^,20^_180^*70^.18^,14^_270^*78^.37^,50^T0^2237^*77^.2^,2^(I^2242^*77^.2^,2^(I^2247^*77^.2^,2^(I^2252^*77^.2^,2^(I^2257^*77^.2^,2^(I^3223^*75^.7^,19^_267^*75^.7^,19^_210^*104^.25^,4^_213^*110^.12^,8^_257^*150^.54^,40^_250^*150^.12^,55^_253^*99^.15^,7^_200^*150^.70^,30^_92^*90^.13^,4^_306^*65^.4^,8^_306^*75^.4^,5^_290^*65^.4^,8^_290^*75^.4^,5^_308^*63^.44^,43^_300^*100^.13^,4^_330^*94^.13^,3^_330^*82^.13^,2^_329^*85^.4^,4^_329^*93^.4^,4^_340^*85^.4^,4^_340^*93^.4^,4^_370^*83^.13^,3^_369^*82^.4^,4^_380^*82^.4^,4^_380^*74^.4^,4^_369^*74^.4^,4^_370^*71^.2^,2^_340^*55^.67^,35^_397^*63^.123^,43^_381^*71^.2^,2^_375^*71^.3^,2^_410^*72^.20^,5^_414^*81^.20^,5^_418^*90^.20^,5^_422^*99^.20^,5^_426^*108^.20^,5^_444^*108^.16^,51^_458^*108^.20^,5^_462^*99^.20^,5^_466^*90^.20^,5^_391^*110^.13^,4^_374^*98^.13^,4^_444^*150^.21^,30^_440^*150^.29^,20^_291^*121^.89^,10^_348^*150^.41^,170^T0\"^d-18^*116^~d59^*114^~d109^*115^~d187^*1060^u0.4^t1^3510^*150^.110^,70^_540^*90^.80^,70^_512^*83^.8^,70^T0^2520^*63^.20^,5^(I^3470^*81^.20^,50^T0\"^d336^*87^~d376^*76^~d283^*106^~d359^*105^~d339^*1600^u0.2^t0\"^d430^*1600^u0.2^t0\"^d500^*1600^u0.2^t0\"^d189^*1600^u0.2^t0\"^d111^*1600^u0.2^t0\"^d415^*1600^u0.2^t0\"^d399^*1600^u0.2^t0\"^d489^*1600^u0.2^t0\"^d479^*1600^u0.2^t0\"^d323^*1600^u0.2^t0\"^d174^*1600^u0.2^t0\"^d145^*1600^u0.2^t0\"^d128^*1600^u0.2^t0\"^d161^*1600^u0.2^t0\"^d530^*750^u0.4^t1^1336^*819^A0^B0^C350^D350^q1^r-1^F2^E-1^k0^l-1^1376^*709^A0^B0^C350^D350^q1^r-1^F2^E-1^k0^l-1^1415^*809^A0^B0^C350^D350^q1^r-1^F2^E-1^k0^l-1^1420^*899^A0^B0^C350^D350^q1^r-1^F2^E-1^k0^l-1^1424^*989^A0^B0^C350^D350^q1^r-1^F2^E-1^k0^l-1^1412^*719^A0^B0^C350^D350^q1^r-1^F2^E-1^k0^l-1^1363^*549^A0^B0^C350^D350^q1^r-1^F2^E-1^k0^l-1^1382^*549^A0^B0^C350^D350^q1^r-1^F2^E-1^k0^l-1^1391^*549^A0^B0^C350^D350^q1^r-1^F2^E-1^k0^l-1^1376^*979^A0^B0^C350^D350^q1^r-1^F2^E-1^k0^l-1^1377^*829^A0^B0^C350^D350^q1^r-1^F2^E-1^k0^l-1^1385^*979^A0^B0^C350^D350^q1^r-1^F2^E-1^k0^l-1^1311^*999^A0^B0^C350^D350^q1^r-1^F2^E-1^k0^l-1^1265^*989^A0^B0^C350^D350^q1^r-1^F2^E-1^k0^l-1^1242^*609^A0^B0^C350^D350^q1^r-1^F2^E-1^k0^l-1^1250^*609^A0^B0^C350^D350^q1^r-1^F2^E-1^k0^l-1^1258^*769^A0^B0^C350^D350^q1^r-1^F2^E-1^k0^l-1^1229^*749^A0^B0^C350^D350^q1^r-1^F2^E-1^k0^l-1^1234^*1039^A0^B0^C350^D350^q1^r-1^F2^E-1^k0^l-1^1212^*1039^A0^B0^C350^D350^q1^r-1^F2^E-1^k0^l-1^1184^*939^A0^B0^C350^D350^q1^r-1^F2^E-1^k0^l-1^1189^*939^A0^B0^C350^D350^q1^r-1^F2^E-1^k0^l-1^1171^*609^A0^B0^C350^D350^q1^r-1^F2^E-1^k0^l-1^1177^*609^A0^B0^C350^D350^q1^r-1^F2^E-1^k0^l-1^1186^*699^A0^B0^C350^D350^q1^r-1^F2^E-1^k0^l-1^1158^*839^A0^B0^C350^D350^q1^r-1^F2^E-1^k0^l-1^1130^*609^A0^B0^C350^D350^q1^r-1^F2^E-1^k0^l-1^1142^*609^A0^B0^C350^D350^q1^r-1^F2^E-1^k0^l-1^1102^*899^A0^B0^C350^D350^q1^r-1^F2^E-1^k0^l-1^170^*609^A0^B0^C350^D350^q1^r-1^F2^E-1^k0^l-1^143^*689^A0^B0^C350^D350^q1^r-1^F2^E-1^k0^l-1^133^*769^A0^B0^C350^D350^q1^r-1^F2^E-1^k0^l-1^124^*769^A0^B0^C350^D350^q1^r-1^F2^E-1^k0^l-1^165^*899^A0^B0^C350^D350^q1^r-1^F2^E-1^k0^l-1^184^*959^A0^B0^C350^D350^q1^r-1^F2^E-1^k0^l-1^424^*820^ia^#^s1^M3^433^*820^ia^#^s1^M3^443^*740^ia^#^s1^M3^470^*660^ia^#^s1^M3^465^*950^ia^#^s1^M3^484^*1010^ia^#^s1^M3^4102^*950^ia^#^s1^M3^4130^*660^ia^#^s1^M3^4142^*660^ia^#^s1^M3^4158^*890^ia^#^s1^M3^4171^*660^ia^#^s1^M3^4177^*660^ia^#^s1^M3^4186^*750^ia^#^s1^M3^4184^*990^ia^#^s1^M3^4189^*990^ia^#^s1^M3^4212^*1090^ia^#^s1^M3^4234^*1090^ia^#^s1^M3^4229^*800^ia^#^s1^M3^4258^*820^ia^#^s1^M3^4250^*660^ia^#^s1^M3^4242^*660^ia^#^s1^M3^4265^*1040^ia^#^s1^M3^4311^*1050^ia^#^s1^M3^1285^*609^A0^B0^C350^D350^q1^r-1^F2^E-1^k0^l-1^4285^*640^ia^#^s1^M3^4336^*850^ia^#^s1^M3^4363^*600^ia^#^s1^M3^4382^*600^ia^#^s1^M3^4391^*600^ia^#^s1^M3^4376^*740^ia^#^s1^M3^4377^*880^ia^#^s1^M3^4376^*1030^ia^#^s1^M3^4385^*1030^ia^#^s1^M3^4412^*770^ia^#^s1^M3^4415^*860^ia^#^s1^M3^4420^*950^ia^#^s1^M3^4424^*1040^ia^#^s1^M3^1471^*1079^A0^B0^C350^D350^q1^r-1^F2^E-1^k0^l-1^4471^*1130^ia^#^s1^M3\" /><inf x=\"-62^*1020^Zstrict_casual^;0^4-53^*910^idefibrillator^s-1^L4-51^*910^idefibrillator^s-1^M0\" /><barrel x=\"59^*630^jbar_blue^A0^B0\" /><barrel x=\"64^*630^jbar_blue^A0^B0\" /><barrel x=\"47^*710^jbar_blue^A0^B0\" /><barrel x=\"90^*920^jbar_blue^A0^B0\" /><barrel x=\"96^*920^jbar_blue^A0^B0\" /><barrel x=\"125^*630^jbar_blue^A0^B0\" /><barrel x=\"134^*630^jbar_blue^A0^B0\" /><barrel x=\"194^*800^jbar_blue^A0^B0\" /><barrel x=\"202^*800^jbar_blue^A0^B0\" /><barrel x=\"227^*1060^jbar_blue^A0^B0\" /><barrel x=\"334^*960^jbar_blue^A0^B0\" /><barrel x=\"330^*650^jbar_blue^A0^B0\" /><barrel x=\"334^*650^jbar_blue^A0^B0\" /><barrel x=\"395^*570^jbar_blue^A0^B0\" /><barrel x=\"367^*570^jbar_blue^A0^B0\" /><barrel x=\"358^*570^jbar_blue^A0^B0^1-3^*879^A0^B0^C350^D350^q2^r1^F8^E-1^k0^l-1^19^*879^A0^B0^C350^D350^q2^r1^F8^E-1^k0^l-1^49^*910^irailgun^s-1^L4-3^*910^irl^s-1^M0\"^e510^*78^.32^,170^K0^J7^7^G1^m1^o7^m1^p1^m1^nc37a^>^5-160^*232^.258^,820^A3^B0^Y100^g0^5510^*232^.110^,820^A-3^B0^Y100^g0^4242^*620^irailgun2^s1^M3^4285^*620^irailgun2^s1^M3^4471^*1090^irailgun2^s1^M3^1470^*629^A0^B0^C350^D350^q1^r1^F2^E-1^k0^l-1^4470^*680^ia^#^s1^M3^4470^*650^irailgun2^s1^M3^9^G1^X1^W30^7^G1^m1^o42^m1^pHey! Who are you and why are you here?^m1^n3^m2^o25^m2^p1^m2^n0^)^a^G1^X2^W90^7^G1^m1^o42^m1^pI\'m here to complete my mission.^m1^n1^m2^o25^m2^p2^m2^n0^)^a^G1^X3^W60^7^G1^m1^o42^m1^pWhat about you?^m1^n1^m2^o25^m2^p3^m2^n0^)^a^G1^X4^W30^7^G1^m1^o42^m1^pYou better not be part of the security troops. I hate those guys!^m1^n3^m2^o25^m2^p4^m2^n0^)^a^G1^X5^W60^7^G1^m1^o42^m1^pDon\'t be silly, of course I\'m not.^m1^n1^m2^o25^m2^p5^m2^n0^)^a^G1^X6^W60^7^G1^m1^o42^m1^pIf we stick together, we might live longer!^m1^n3^m2^o25^m2^p6^m2^n0^)^a^G1^X7^W60^7^G1^m1^o42^m1^pOkay.^m1^n1^>^7^G1^m1^o19^m1^p1^m1^n0^m2^o19^m2^p2^m2^n0^m3^o19^m3^p3^m3^n0^m4^o19^m4^p4^m4^n0^m5^o19^m5^p5^m5^n0^m6^o19^m6^p6^m6^n0^m7^o19^m7^p7^m7^n0^m8^o-1^m8^p0^m8^n0^m9^o-1^m9^p0^m9^n0^m10^o-1^m10^p0^m10^n0^3114^*114^.14^,40^T0\"^e135^*142^.25^,130^K9^J1^7^G1^m1^o33^m1^p42^m1^n0^m2^o28^m2^p42^m2^n3^m3^o28^m3^p42^m3^n2^m4^o33^m4^p42^m4^n1^m5^o42^m5^pSecret Androids activated.^m5^n-1^m6^o-1^m6^p0^m6^n0^m7^o-1^m7^p0^m7^n0^m8^o-1^m8^p0^m8^n0^m9^o-1^m9^p0^m9^n0^m10^o-1^m10^p0^m10^n0^2-173^*137^.18^,9^(I^2-175^*150^.8^,16^(I^2-173^*155^.23^,8^(I^1-165^*1369^A0^B0^C400^D400^q1^r1^F9^E-1^k1^l-1\"^e129^*148^.6^,60^K-1^J4\"^e160^*148^.6^,60^K-1^J4^4-165^*1400^ia^#2^s-1^M3^4329^*1220^ibfg^s-1^M0\" /><vehicle x=\"329^*1240^r1^jveh_crate^A0^B0\" hpp=\"100\"^e275^*74^.14^,140^K10^J4\"^e295^*74^.10^,140^K10^J4\"^e276^*82^.26^,50^K-1^J4^7^G-1^m1^o30^m1^p4^m1^n6^m2^o30^m2^p5^m2^n6^)\" />";
-         this.CACHED_MAPS["c37a"] = "<q.^f-55^*899^A0^B0^C100^D100^q0^r1^F1^E-1^k1^l10\"^c-90^*160^.50^,920^T0\"^c-40^*118^.546^,59^_-50^*160^.20^,56^_-150^*160^.80^,140^_-94^*90^.64^,70^_-4^*118^.34^,13^_-45^*86^.30^,66^_-28^*81^.48^,61^_-38^*123^.41^,12^_90^*118^.34^,13^_100^*81^.38^,61^_10^*75^.100^,55^_42^*93^.12^,3^_66^*93^.12^,3^_43^*91^.4^,7^_40^*79^.7^,100^T0^1-64^*899^A0^B0^C100^D100^q0^r1^F3^E-1^k1^l10\" /><inf x=\"-55^*930^Zhero1_guns^;-1\" /><inf x=\"-64^*930^Zhero2_guns^;-1\" /><inf x=\"-59^*1010^Zstrict_casual^;0^373^*79^.7^,10^_73^*91^.4^,7^_45^*91^.30^,3^_117^*91^.34^,71^_101^*133^.41^,16^_142^*110^.12^,3^_170^*110^.12^,3^_144^*83^.86^,63^_192^*96^.32^,21^_178^*90^.20^,12^_112^*86^.12^,9^_210^*71^.138^,51^_248^*80^.19^,20^_289^*92^.18^,32^_265^*107^.17^,7^_225^*115^.17^,5^_241^*136^.11^,9^_286^*83^.24^,23^_326^*93^.41^,6^_364^*91^.41^,6^_319^*68^.99^,48^_369^*75^.10^,15^_393^*90^.10^,12^_427^*74^.10^,11^_397^*66^.73^,46^_419^*92^.8^,9^_433^*95^.13^,9^_430^*99^.10^,13^_430^*111^.10^,9^_416^*118^.29^,10^_374^*97^.16^,11^_320^*150^.98^,40^_374^*115^.16^,8^_300^*113^.17^,3^_80^*108^.12^,3^_28^*108^.12^,3^_96^*125^.28^,11^_190^*121^.18^,9^_194^*148^.18^,3^_207^*148^.7^,13^_247^*136^.44^,13^_300^*128^.10^,3^_182^*133^.14^,16^_154^*133^.16^,16^_131^*137^.57^,13^_460^*70^.33^,50^_470^*80^.33^,60^_480^*90^.33^,700^T0\"^c110^*128^.84^,100^T0\"^c194^*147^.20^,290^T0\"^c214^*136^.116^,180^T0\"^d20^*1400^u0.4^t0\"^d40^*1400^u0.4^t0\"^d60^*1400^u0.4^t0\"^d80^*1400^u0.4^t0\"^d100^*1400^u0.4^t0\"^d160^*1600^u0.4^t0\"^d180^*1600^u0.4^t0\"^d200^*1600^u0.4^t0\"^d220^*1600^u0.4^t0\"^d240^*1600^u0.4^t0\"^d260^*1600^u0.4^t0\"^d280^*1600^u0.4^t0\"^d300^*1600^u0.4^t0\"^d320^*1600^u0.4^t0\"^d148^*100^~d176^*100^~d-9^*108^~d345^*103^~d360^*84^~d447^*100^~d438^*84^~d274^*1210^u0.4^t1^3203^*115^.10^,30^T0\"^e487^*111^.15^,220^K-1^J4^151^*929^A0^B0^C300^D300^q1^r-1^F6^E-1^k0^l-1^171^*929^A0^B0^C200^D200^q1^r-1^F2^E-1^k0^l-1^186^*1079^A0^B0^C200^D200^q1^r-1^F2^E-1^k0^l-1^152^*749^A0^B0^C200^D200^q1^r-1^F2^E-1^k0^l-1^164^*749^A0^B0^C200^D200^q1^r-1^F2^E-1^k0^l-1^133^*749^A0^B0^C200^D200^q1^r-1^F2^E-1^k0^l-1^1107^*809^A0^B0^C200^D200^q1^r-1^F2^E-1^k0^l-1^1126^*909^A0^B0^C200^D200^q1^r-1^F2^E-1^k0^l-1^1147^*1099^A0^B0^C200^D200^q1^r-1^F2^E-1^k0^l-1^1179^*1099^A0^B0^C300^D300^q1^r-1^F6^E-1^k0^l-1^1175^*829^A0^B0^C200^D200^q1^r-1^F2^E-1^k0^l-1^1240^*1149^A0^B0^C300^D300^q1^r-1^F6^E-1^k0^l-1^1266^*799^A0^B0^C300^D300^q1^r-1^F6^E-1^k0^l-1^1294^*919^A0^B0^C200^D200^q1^r-1^F2^E-1^k0^l-1^1288^*829^A0^B0^C200^D200^q1^r-1^F2^E-1^k0^l-1^1245^*709^A0^B0^C200^D200^q1^r-1^F2^E-1^k0^l-1^1269^*1069^A0^B0^C200^D200^q1^r-1^F2^E-1^k0^l-1^1280^*1069^A0^B0^C200^D200^q1^r-1^F2^E-1^k0^l-1^1305^*1129^A0^B0^C200^D200^q1^r-1^F2^E-1^k0^l-1^1333^*929^A0^B0^C200^D200^q1^r-1^F2^E-1^k0^l-1^1331^*709^A0^B0^C300^D300^q1^r-1^F6^E-1^k0^l-1^1349^*929^A0^B0^C200^D200^q1^r-1^F2^E-1^k0^l-1^1364^*929^A0^B0^C200^D200^q1^r-1^F2^E-1^k0^l-1^1356^*679^A0^B0^C200^D200^q1^r-1^F2^E-1^k0^l-1^1389^*679^A0^B0^C200^D200^q1^r-1^F2^E-1^k0^l-1^1425^*919^A0^B0^C200^D200^q1^r-1^F2^E-1^k0^l-1^1398^*909^A0^B0^C200^D200^q1^r-1^F2^E-1^k0^l-1^1435^*739^A0^B0^C200^D200^q1^r-1^F2^E-1^k0^l-1^1441^*659^A0^B0^C200^D200^q1^r-1^F2^E-1^k0^l-1^1443^*949^A0^B0^C300^D300^q1^r-1^F6^E-1^k0^l-1^1467^*699^A0^B0^C200^D200^q1^r-1^F2^E-1^k0^l-1^1477^*799^A0^B0^C300^D300^q1^r-1^F6^E-1^k0^l-1^1484^*899^A0^B0^C200^D200^q1^r-1^F2^E-1^k0^l-1^433^*780^ia^#^s1^M3^452^*780^ia^#^s1^M3^451^*960^ia^#2^s1^M3^464^*780^ia^#^s1^M3^471^*960^ia^#^s1^M3^486^*1110^ia^#^s1^M3^4107^*840^ia^#^s1^M3^4126^*940^ia^#^s1^M3^4147^*1130^ia^#^s1^M3^4179^*1130^ia^#2^s1^M3^4175^*860^ia^#^s1^M3^1218^*959^A0^B0^C200^D200^q1^r-1^F2^E-1^k0^l-1^1207^*959^A0^B0^C200^D200^q1^r-1^F2^E-1^k0^l-1^4207^*990^ia^#^s1^M3^4218^*990^ia^#^s1^M3^4240^*1180^ia^#2^s1^M3^4245^*740^ia^#^s1^M3^4266^*830^ia^#2^s1^M3^4288^*860^ia^#^s1^M3^4294^*950^ia^#^s1^M3^4280^*1100^ia^#^s1^M3^4269^*1100^ia^#^s1^M3^4305^*1160^ia^#^s1^M3^1321^*709^A0^B0^C200^D200^q1^r-1^F2^E-1^k0^l-1^4333^*960^ia^#^s1^M3^4321^*740^ia^#^s1^M3^4331^*740^ia^#2^s1^M3^4356^*710^ia^#^s1^M3^4349^*960^ia^#^s1^M3^4364^*960^ia^#^s1^M3^4398^*940^ia^#^s1^M3^4389^*710^ia^#^s1^M3^4425^*950^ia^#^s1^M3^4435^*770^ia^#^s1^M3^4441^*690^ia^#^s1^M3^4467^*730^ia^#^s1^M3^4443^*980^ia^#2^s1^M3^4477^*830^ia^#2^s1^M3^4484^*930^ia^#^s1^M3^3399^*81^.14^,3^_330^*210^.40^,700^T0^451^*950^ibfg^s1^M2^433^*1100^ibfg^s1^M2^133^*1079^A0^B0^C300^D300^q1^r1^F6^E-1^k0^l-1^433^*1110^ia^#2^s1^M3^4179^*1120^ibfg^s1^M2^4240^*1170^ibfg^s1^M2^4266^*820^ibfg^s1^M2^4331^*730^ibfg^s1^M2^4443^*970^ibfg^s1^M2^4477^*820^ibfg^s1^M2^4107^*860^irl^s1^M3^4126^*960^irl^s1^M3^4207^*1010^irl^s1^M3^4245^*760^irl^s1^M3^4269^*1120^irl^s1^M3^4333^*980^irl^s1^M3^4321^*760^irl^s1^M3^4398^*960^irl^s1^M3^4364^*980^irl^s1^M3^452^*760^irailgun^s1^M3^486^*1090^irailgun^s1^M3^4147^*1110^irailgun^s1^M3^4175^*840^irailgun^s1^M3^4218^*970^irailgun^s1^M3^4294^*930^irailgun^s1^M3^4288^*840^irailgun^s1^M3^4280^*1080^irailgun^s1^M3^4356^*690^irailgun^s1^M3^4435^*750^irailgun^s1^M3^4467^*710^irailgun^s1^M3^4425^*930^irailgun^s1^M3^4484^*910^irailgun^s1^M3\"^e47^*88^.26^,140^K0^J1\"^e55^*103^.10^,120^K-1^J4^7^G-1^m1^o30^m1^p1^m1^n2^>^1210^*1149^A0^B0^C300^D300^q1^r1^F6^E-1^k0^l-1^4210^*1190^irailgun2^s1^M3^1195^*1329^A0^B0^C300^D300^q1^r-1^F6^E-1^k0^l-1^4195^*1370^irailgun2^s1^M3^1195^*1479^A0^B0^C300^D300^q1^r-1^F6^E-1^k0^l-1^4195^*1520^irailgun2^s1^M3^1243^*1359^A0^B0^C300^D300^q1^r-1^F6^E-1^k0^l-1^4243^*1400^irailgun2^s1^M3^1255^*799^A0^B0^C300^D300^q1^r-1^F6^E-1^k0^l-1^4255^*840^irailgun2^s1^M3^1306^*1279^A0^B0^C300^D300^q1^r-1^F6^E-1^k0^l-1^4306^*1320^irailgun2^s1^M3^1291^*1359^A0^B0^C300^D300^q1^r1^F6^E-1^k0^l-1^4291^*1400^irailgun2^s1^M3\" /><vehicle x=\"8^*840^r1^jveh_crate^A0^B0\" hpp=\"100\" /><barrel x=\"-13^*830^jbar_blue^A0^B0\" /><barrel x=\"58^*770^jbar_blue^A0^B0\" /><barrel x=\"61^*770^jbar_blue^A0^B0\" /><barrel x=\"92^*770^jbar_blue^A0^B0\" /><barrel x=\"153^*850^jbar_blue^A0^B0\" /><barrel x=\"156^*850^jbar_blue^A0^B0\" /><barrel x=\"298^*940^jbar_blue^A0^B0\" /><barrel x=\"277^*730^jbar_blue^A0^B0\" /><barrel x=\"388^*990^jbar_blue^A0^B0\" /><barrel x=\"380^*990^jbar_blue^A0^B0\" /><barrel x=\"384^*990^jbar_blue^A0^B0\" /><barrel x=\"446^*680^jbar_blue^A0^B0\" /><barrel x=\"451^*680^jbar_blue^A0^B0^3505^*87^.215^,670^T1\" /><vehicle x=\"559^*1080^r-1^jveh_walker^A0^B0\" hpp=\"100^3490^*118^.16^,30^T0\"^d440^*1400^u0.4^t0\"^d460^*1400^u0.4^t0\"^d480^*1400^u0.4^t0\"^d500^*1400^u0.4^t0\"^d520^*1400^u0.4^t0\"^d540^*1400^u0.4^t0\"^d560^*1400^u0.4^t0^4559^*1050^ivehcannon^s-1^M2\" /><barrel x=\"516^*890^jbar_blue^A0^B0\" /><barrel x=\"522^*890^jbar_blue^A0^B0\" /><barrel x=\"502^*1200^jbar_blue^A0^B0^4559^*1110^igl^s1^M3^1559^*1049^A0^B0^C200^D200^q1^r-1^F2^E-2^k0^l-1^3504^*102^.2^,16^_470^*102^.2^,120^T0^5640^*140^.80^,610^A-2^B0^Y100^g0\"^e590^*140^.50^,610^K1^J7^3638^*89^.4^,4^_640^*88^.80^,20^T0^7^G1^m1^o7^m1^p1^m1^nc38a^>^9^G1^X2^W30^7^G1^m1^o42^m1^pSo what are you doing here?^m1^n3^m2^o25^m2^p1^m2^n0^)^a^G1^X3^W90^7^G1^m1^o42^m1^pDo you remember that day when the first experimental portal was opened up to go to \'\'Another World\'\'?^m1^n1^m2^o25^m2^p2^m2^n0^)^a^G1^X4^W180^7^G1^m1^o42^m1^pOh...^m1^n3^m2^o25^m2^p3^m2^n0^)^a^G1^X5^W230^7^G1^m1^o42^m1^pThat portal, which connects us to an unknown race in a corner of a galaxy, was the biggest mistake humanity made.^m1^n3^m2^o25^m2^p4^m2^n0^)^a^G1^X6^W230^7^G1^m1^o42^m1^pOnly one day, which abolished more than 2700 years of human life...^m1^n3^m2^o25^m2^p5^m2^n0^)^a^G1^X7^W210^7^G1^m1^o42^m1^pI remember that, scientists had sent two volunteers armed to the teeth... back to the past to change the course of history...^m1^n3^m2^o25^m2^p6^m2^n0^)^a^G1^X8^W140^7^G1^m1^o42^m1^pBut communication with them was lost.^m1^n3^m2^o-1^m2^p0^m2^n0^m3^o25^m3^p7^m3^n0^m4^o-1^m4^p0^m4^n0^$\"^e-38^*115^.23^,330^K9^J4^7^G1^m1^o42^m1^pYes, it\'s better we go.^m1^n3^m2^o19^m2^p2^m2^n0^m3^o19^m3^p3^m3^n0^m4^o19^m4^p4^m4^n0^m5^o19^m5^p5^m5^n0^m6^o19^m6^p6^m6^n0^m7^o19^m7^p7^m7^n0^m8^o19^m8^p8^m8^n0^m9^o-1^m9^p0^m9^n0^m10^o-1^m10^p0^m10^n0^7^G1^m1^o19^m1^p9^m1^n0^m2^o19^m2^p2^m2^n0^m3^o19^m3^p3^m3^n0^m4^o19^m4^p4^m4^n0^m5^o19^m5^p5^m5^n0^m6^o19^m6^p6^m6^n0^m7^o19^m7^p7^m7^n0^m8^o19^m8^p8^m8^n0^m9^o-1^m9^p0^m9^n0^m10^o-1^m10^p0^m10^n0^5-84^*160^.44^,500^A0^B0^Y100^g0^5-123^*215^.93^,550^A2^B0^Y100^g0^5-80^*160^.37^,400^A0^B3^Y0^g0^7^G1^m1^o19^m1^p9^m1^n0^m2^o42^m2^pSo let\'s find \'\'Correction Nine\'\' and finish what they started.^m2^n1^)^a^G1^X11^W140\" />";
-         this.CACHED_MAPS["c38a"] = "<q.^f-32^!^A0^B0^C100^D100^q0^r1^F1^E-1^k1^l-1\"^c190^*50^.170^,62^_-50^-^.100^,41^_-180^-2^.380^,400^T1^349^*1^.2^,4^_-51^*1^.2^,40^T0\" /><inf x=\"-69^*20^Zhero2_guns^;-1\" /><inf x=\"-32^*40^Zhero1_guns^;-1^6-50^*10^jray_floor^U-1^O0^P0^1-69^-21^A0^B0^C100^D100^q0^r1^F3^E-1^k0^l4^650^*10^jray_floor^U-1^O0^P0^3190^*60^.10^,500^T0^5-58^*120^.9^,1200^A10^B0^Y0^g-10^549^*120^.9^,1190^A-10^B0^Y0^g-10^5-80^*120^.22^,1000^A0^B0^Y0^g10000^558^*120^.82^,1300^A0^B0^Y0^g10000^5-180^*160^.360^,400^A0^B0^Y0^g10000^9^G50^X0^W100^7^G30^m1^o28^m1^p2^m1^n-1^m2^o29^m2^p0^m2^n1^)\"^e235^*30^.125^,360^K5^J7\"^e-40^*63^.80^,670^K-1^J4^3216^*10^.19^,17^_219^*18^.5^,100^T0^1229^*99^A0^B0^C150^D150^q1^r-1^F2^E-1^k2^l-1^4229^*130^irl^s1^M1^3-30^*23^.20^,3^_10^*23^.20^,3^_-7^*10^.5^,2^_20^*40^.10^,3^_-30^*40^.10^,3^_-40^*53^.10^,3^_30^*53^.10^,30^T0\"^c-12^*21^.1^,220^T4\"^c-29^*38^.1^,390^T4\"^c11^*21^.1^,220^T4\"^c28^*38^.1^,390^T4\"^c8^*8^.1^,90^T4\"^c-9^*8^.1^,90^T4\"^c21^*38^.1^,160^T4\"^c-22^*38^.1^,160^T4\"^c-39^*51^.1^,520^T4\"^c-32^*51^.1^,520^T4\"^c31^*51^.1^,520^T4\"^c38^*51^.1^,520^T4\" /><barrel x=\"12^*20^jbar_blue^A0^B0\" /><barrel x=\"-24^*250^jbar_blue^A0^B0\" /><barrel x=\"24^*250^jbar_blue^A0^B0\" /><barrel x=\"36^*20^jbar_blue^A0^B0\" /><barrel x=\"-28^*420^jbar_blue^A0^B0\" /><barrel x=\"28^*420^jbar_blue^A0^B0\" /><barrel x=\"18^*250^jbar_blue^A0^B0\" /><barrel x=\"-18^*250^jbar_blue^A0^B0\" /><barrel x=\"-12^*20^jbar_blue^A0^B0\"^d-15^*460^u1^t0\"^d-35^*300^u1^t0\"^d35^*300^u1^t0\"^d20^*30^u1^t0\"^d-20^*30^u1^t0^5-62^*22^.4^,340^A0^B0^Y0^g10000^5-180^*150^.100^,1620^A3^B0^Y100^g0^7^G-1^m1^o14^m1^p1^m1^n2^m2^o4^m2^p1^m2^n100^m3^o32^m3^p1^m3^n0^m4^o-1^m4^p0^m4^n0^$^9^G-1^X1^W0\"^e-73^!^.8^,20^K-1^J4\" /><barrel x=\"-36^*20^jbar_blue^A0^B0^3-10^*12^.5^,6^_5^*12^.5^,6^_26^*30^.3^,9^_-29^*30^.3^,9^_-39^*63^.3^,11^_36^*63^.3^,11^_-10^*43^.20^,3^_6^*46^.3^,4^_-9^*46^.3^,40^T0\"^c-5^*41^.1^,320^T4\"^c4^*41^.1^,320^T4\"^d15^*460^u1^t0^9^G50^X0^W80^9^G50^X0^W90\" /><inf x=\"-42^*110^Zmeat^;0^32^*10^.5^,20^T0^9^G1^X2^W1300^7^G1^m1^o38^m1^p4^m1^n0^m2^o38^m2^p2^m2^n0^m3^o38^m3^p5^m3^n0^m4^o38^m4^p0^m4^n0^m5^o38^m5^p1^m5^n0^m6^o38^m6^p3^m6^n0^m7^o34^m7^p0^m7^nnull^m8^o34^m8^p1^m8^nnull^m9^o35^m9^p0^m9^n0^m10^o35^m10^p1^m10^n0^7^G1^m1^o19^m1^p1^m1^n0^m2^o26^m2^p1^m2^n0^m3^o32^m3^p1^m3^n1^m4^o42^m4^pThe field is disabled, lets go!^m4^n3^$^7^G1^m1^o9^m1^pPROXY HAS DIED^m1^n0^>^9^G1^X3^W1300^3207^*2^.32^,8^_197^*70^.163^,40^_243^*60^.10^,500^T0\"^d222^*25^~d180^*200^u1^t0\"^d263^*200^u1^t1^3-11^*3^.4^,5^_7^*3^.4^,50^T0^5197^*187^.140^,1170^A-3^B0^Y100^g0^3265^*5^.55^,14^_190^-^.170^,420^T0^5270^*32^.90^,340^A-3^B0^Y100^g0^7^G1^m1^o7^m1^p1^m1^nc39a^>^9^G1^X6^W60^7^G1^m1^o42^m1^pOh no, you\'re trapped! Use your skills to stay alive!^m1^n3^>^4^*440^jitem_grenade^s-1^L45^*440^jitem_grenade^s-1^L4-5^*440^jitem_grenade^s-1^M0\" />";
-         this.CACHED_MAPS["c39a"] = "<q.^f255^-21\" uid=\"#hero_7^A0^B0^C100^D100^q0^r1^F1^E-1^k1^l-1\"^c535^*40^.312^,860^T0\"^c190^*40^.345^,62^_120^-2^.79^,780^T1\" /><inf x=\"246^*20\" uid=\"#engine_mark_8^Zhero2_guns^;-1\" /><inf x=\"255^*20\" uid=\"#engine_mark_9^Zhero1_guns^;-1^1246^-21\" uid=\"#player_12^A0^B0^C100^D100^q0^r1^F3^E-1^k1^l-1^3190^*60^.10^,50^_216^*10^.19^,17^_219^*18^.5^,100^T0^1235^*59\" uid=\"#playeri^A0^B0^C0^D0^q1^r-1^F2^E-1^k2^l-1^4229^*100\" uid=\"#gun_30^irl^s1^M1^3207^*2^.32^,8^_197^*70^.51^,40^_243^*60^.10^,500^T0\"^d222^*25^~d180^*200^u1^t0\"^d261^*290^u1^t1^5220^*254^.40^,1170\" uid=\"#pusher_93^A2^B0^Y100^g0^3270^*5^.50^,14^_190^-^.350^,800^T0^2192^*13^.6^,190\" uid=\"#door^x^y0^z0^h1^I^3390^*42^.70^,20^_400^*5^.50^,14^_267^*42^.63^,200^T0\"^d340^*600^u0.5^t0^3239^*64^.51^,300^T0\"^d360^*600^u0.5^t0\"^d380^*600^u0.5^t0^3380^*41^.20^,12^_320^*41^.20^,12^_450^*41^.20^,12^_260^*3^.70^,120^T0^6365^-0\" uid=\"#decor_563^jnull^U-1^O0^P0\"^e334^*29^.13^,330\" uid=\"#region_564^K0^J4^7^G1^m1^o34^m1^p0^m1^nship_noir^m2^o39^m2^p10^m2^n0^m3^o25^m3^p3^m3^n0^m4^o25^m4^p4^m4^n0^$^2365^-2^.18^,90\" uid=\"#doorc^x^y0^z0^h10^H^2369^-^.11^,60\" uid=\"#doorb^x^y0^z0^h10^H^2348^!^.9^,60\" uid=\"#doora^x^y0^z0^h10^H\"^e348^*3^.2^,20\" uid=\"#region_569^K-1^J4\"^e369^*6^.2^,20\" uid=\"#region_570^K-1^J4\"^e365^*4^.2^,20\" uid=\"#region_571^K-1^J4^7^G1^m1^o0^m1^p3^m1^n1^m2^o0^m2^p1^m2^n3^m3^o0^m3^p2^m3^n2^m4^o39^m4^p0^m4^n0^m5^o14^m5^p3^m5^n3^m6^o33^m6^p3^m6^n0^m7^o32^m7^p3^m7^n1^m8^o4^m8^p3^m8^n0^m9^o43^m9^pRevive Noir Lime to continue...^m9^n0^m10^o20^m10^p9^m10^n0^2199^*154^.20^,70\" uid=\"#door^x^y0^z0^h1^H^2213^*168^.6^,180\" uid=\"#door^x^y0^z0^h1^H^2197^*171^.22^,50\" uid=\"#door^x^y0^z0^h1^H^2199^*169^.5^,180\" uid=\"#door^x^y0^z0^h1^H^1209^*1539\" uid=\"#player_578^A0^B0^C1^D800^q2^r1^F13^E-1^k0^l-1^4209^*1570\" uid=\"#gun_579^iminigun^s-1^M0\" /><inf x=\"259^*160\" uid=\"#engine_mark_580^Zstrict_casual^;0\"^e390^*28^.30^,300\" uid=\"#region_581^K2^J7^7^G1^m1^o0^m1^p8^m1^n5^m2^o45^m2^p1^m2^n0^m3^o43^m3^p0^m3^n0^m4^o-1^m4^p0^m4^n0^$^5224^*159^.354^,390\" uid=\"#pusher_583^A0^B2^Y100^g0^3390^*3^.70^,12^_510^*41^.20^,12^_520^*42^.25^,20^_510^*3^.20^,12^_520^*5^.30^,470^T0^5540^*189^.38^,1170\" uid=\"#pusher_93^A-2^B0^Y100^g0^2420^*25^.10^,200\" uid=\"#doorczx^x^y0^z0^h10^I\"^e420^*41^.10^,200\" uid=\"#region_592^K-1^J4\"^d470^*600^u0.5^t0\"^d490^*600^u0.5^t0\"^d510^*600^u0.5^t0^3540^*74^.175^,38^_660^*42^.71^,18^_600^!8^.4^,12^_480^-24^.150^,56^_660^*5^.50^,10^_690^*74^.120^,82^_660^-24^.71^,56^_595^*5^.35^,10^_540^*5^.29^,10^_595^*40^.35^,160^T0^2630^*3^.30^,70\" uid=\"#doorasd^x^y0^z0^h5^I\"^e630^-26^.30^,70\" uid=\"#regionasd^K-1^J4\"^d575^*13^~d640^*34^~d627^-9^~d627^-21^~d650^*340^u0.4^t1^3621^*2^.4^,120^T0^1589^-201\" uid=\"#player^A0^B0^C1000^D1000^q1^r1^F11^E-1^k0^l-1^3553^*1^.46^,40^T0^1603^*49\" uid=\"#player^A0^B0^C1000^D1000^q1^r-1^F11^E-1^k0^l-1^1638^*29\" uid=\"#player^A0^B0^C1000^D1000^q1^r-1^F11^E-1^k0^l-1^1573^*9\" uid=\"#player^A0^B0^C1000^D1000^q1^r1^F11^E-1^k0^l-1^1596^-201\" uid=\"#player^A0^B0^C1000^D1000^q1^r1^F11^E-1^k0^l-1^2530^*25^.10^,200\" uid=\"#doorczx2^x^y0^z0^h10^I\"^e530^*41^.10^,200\" uid=\"#region_592b^K-1^J4\"^e500^*28^.30^,300\" uid=\"#region_581^K3^J7^7^G1^m1^o0^m1^p10^m1^n7^>^3480^*10^.10^,16^_475^*5^.10^,110^T0^4573^*30\" uid=\"#gun^irl^s-1^M3^4603^*70\" uid=\"#gun^irl^s-1^M3^4638^*50\" uid=\"#gun^irl^s-1^M3^3555^*14^.15^,16^_609^*28^.7^,130^T0^1666^*49\" uid=\"#player^A0^B0^C1000^D1000^q1^r-1^F11^E-1^k0^l-1^4666^*70\" uid=\"#gun^irailgun2^s-1^M3^1675^*49\" uid=\"#player^A0^B0^C1000^D1000^q1^r-1^F11^E-1^k0^l-1^4675^*70\" uid=\"#gun^irailgun2^s-1^M3^4209^*1560\" uid=\"#gun_712^jitem_grenade^s-1^L4209^*1550\" uid=\"#gun_712^jitem_grenade^s-1^L4209^*1580\" uid=\"#gun_712^jitem_grenade^s-1^L4209^*1590\" uid=\"#gun_712^jitem_grenade^s-1^L4209^*1600\" uid=\"#gun_712^jitem_grenade^s-1^L4209^*1610\" uid=\"#gun_712^jitem_grenade^s-1^L3560^*39^.27^,130^T0^4596^!80\" uid=\"#gun^iraygun^s-1^M3^4589^!80\" uid=\"#gun^iraygun^s-1^M3^4589^!70\" uid=\"#gun^i^#^s-1^M3^4596^!70\" uid=\"#gun^i^#^s-1^M3^1672^-241\" uid=\"#player^A0^B0^C1000^D1000^q1^r1^F11^E-1^k0^l-1^4672^-210\" uid=\"#gun^i^#^s-1^M3^4672^-220\" uid=\"#gun^iraygun^s-1^M3^1686^-241\" uid=\"#player^A0^B0^C1000^D1000^q1^r1^F11^E-1^k0^l-1^4686^-210\" uid=\"#gun^i^#^s-1^M3^4686^-220\" uid=\"#gun^iraygun^s-1^M3^3620^-34^.53^,460^T0\" /><vehicle x=\"436^*80\" uid=\"#vehicle_733^r1^jveh_crate^A0^B0\" hpp=\"100^4436^*70\" uid=\"#gun_734^idefibrillator^s-1^L4436^*80\" uid=\"#gun_734^idefibrillator^s-1^L4436^*90\" uid=\"#gun_734^idefibrillator^s-1^M0\" /><vehicle x=\"441^*80\" uid=\"#vehicle_733^r1^jveh_crate^A0^B0\" hpp=\"100^4441^*80\" uid=\"#gun_734^iplasmagun^s-1^M3^4441^*70\" uid=\"#gun_734^i^/2^s-1^M3\"^e637^*16^.16^,150\" uid=\"#region_741^K4^J1^7^G1^m1^o0^m1^p9^m1^n6^m2^o0^m2^p12^m2^n6^m3^o0^m3^p13^m3^n15^m4^o-1^m4^p0^m4^n0^$\" /><barrel x=\"628^-220\" uid=\"#barrel_743^jbar_red^A0^B0\" /><barrel x=\"662^-220\" uid=\"#barrel_743^jbar_red^A0^B0^3567^-^.9^,100^T0^6685^*60\" uid=\"#decor^jteleport^U-1^O0^P0^6685^*230\" uid=\"#decor^jteleport2^U-1^O0^P0\"^d685^*22^~d685^*70^u0.4^t1^6555^-230\" uid=\"#decor^jteleport^U-1^O0^P0^6555^-60\" uid=\"#decor^jteleport2^U-1^O0^P0\"^d555^-7^~d555^-220^u0.4^t1^3567^-20^.56^,120^T0\"^e552^-5^.6^,200\" uid=\"#regionfag^K5^J4\"^e682^*24^.6^,200\" uid=\"#region_758^K6^J4\"^e560^!5^.2^,90\" uid=\"#region_759^K-1^J4^7^G-1^m1^o30^m1^p10^m1^n13^>^7^G-1^m1^o30^m1^p11^m1^n12^>\"^e678^*14^.2^,90\" uid=\"#region_762^K-1^J4^3600^*2^.4^,11^_664^*2^.4^,12^_690^-21^.120^,590^T0^1613^-201\" uid=\"#player^A0^B0^C1000^D1000^q1^r1^F11^E-1^k0^l-1^4613^!70\" uid=\"#gun^i^#^s-1^M3^4613^!80\" uid=\"#gun^iraygun^s-1^M3\" /><inf x=\"264^*140\" uid=\"#engine_mark_772^Zno_auto_revive^;0^4484^*110\" uid=\"#gun^ivgun^s-1^L4573^*60\" uid=\"#gun^ivgun^s1^M3\" /><vehicle x=\"484^*130\" uid=\"#vehicle_733^r1^jveh_crate^A0^B0\" hpp=\"100^4484^*120\" uid=\"#gun^ivgun^s-1^L4485^*130\" uid=\"#gun^ivgun^s-1^L4603^*100\" uid=\"#gun^ivgun^s1^M3^4638^*90\" uid=\"#gun^ivgun^s1^M3^4666^*110\" uid=\"#gun^ivgun^s1^M3^4675^*110\" uid=\"#gun^ivgun^s1^M3^4672^!80\" uid=\"#gun^ivgun^s1^M3^4613^!40\" uid=\"#gun^ivgun^s1^M3^4596^!40\" uid=\"#gun^ivgun^s1^M3^4589^!40\" uid=\"#gun^ivgun^s1^M3^4686^!80\" uid=\"#gun^ivgun^s1^M3^2730^-6^.8^,170\" uid=\"#door^x^y0^z0^h1^I\"^e691^-7^.39^,150\" uid=\"#region_279^K7^J7^7^G1^m1^o7^m1^p1^m1^nc40a^>^2630^*3^.3^,400\" uid=\"#door_174^x^y0^z0^h5^I^2657^*3^.3^,400\" uid=\"#door_175^x^y0^z0^h5^I\"^e657^-26^.3^,70\" uid=\"#region_176^K-1^J4^3622^*11^.7^,80^T0\"^e372^*25^.38^,430\" uid=\"#region_402^K9^J7^7^G1^m1^o42^m1^pWelcome back to life, newcomer.^m1^n3^m2^o25^m2^p1^m2^n0^)^a^G1^X8^W30^8^G1^m1^o43^m1^p0^m1^n0^m2^o25^m2^p0^m2^n0^m3^o19^m3^p12^m3^n0^m4^o19^m4^p13^m4^n0^m5^o19^m5^p14^m5^n0^m6^o19^m6^p15^m6^n0^m7^o-1^m7^p0^m7^n0^m8^o-1^m8^p0^m8^n0^m9^o-1^m9^p0^m9^n0^m10^o-1^m10^p0^m10^n0^a^G1^X10^W60^7^G1^m1^o42^m1^pHi guys. It\'s very good that we do not have to wait for each other. It seems that all of us are ready.^m1^n2^m2^o25^m2^p2^m2^n0^)^a^G1^X11^W90^7^G1^m1^o42^m1^pWe\'re almost there, the time machine must be in this place...^m1^n2^m2^o25^m2^p7^m2^n0^)^a^G1^X12^W30^7^G1^m1^o42^m1^pOh...^m1^n1^m2^o25^m2^p5^m2^n0^)^a^G1^X13^W5^7^G1^m1^o42^m1^pDo you hear that noise?^m1^n3^>^7^G1^m1^o42^m1^pWait, I know this guy...^m1^n1^m2^o25^m2^p6^m2^n0^)^a^G1^X14^W60^7^G1^m1^o42^m1^pShould we revive him?^m1^n3^>^a^G1^X15^W120^a^G1^X16^W90^7^G1^m1^o42^m1^pSo let\'s go.^m1^n1^>^3200^*140^.30^,80^_270^*50^.30^,130^T0^6269^*640\" uid=\"#decor_800^jship^U-1^O0^P0^1254^*639\" uid=\"#player_801^A-3^B0^C0^D200^q10^r1^F14^E-1^k0^l-1^4237^*710\" uid=\"#gun_802^i^#^s-1^M3^1237^*699\" uid=\"#player_801^A-2^B0^C29^D200^q10^r1^F14^E-1^k0^l-1^1277^*639\" uid=\"#player_801^A1^B0^C0^D200^q10^r-1^F14^E-1^k0^l-1^4257^*650\" uid=\"#gun_802^i^#^s-1^M3^4280^*650\" uid=\"#gun_802^i^#^s-1^M3^4271^*650\" uid=\"#gun_802^iraygun^s-1^M3^4237^*730\" uid=\"#gun_802^idefibrillator^s-1^M0\" />";
-         this.CACHED_MAPS["c40a"] = "<q.^f-42^*699^A0^B0^C100^D100^q0^r1^F1^E-1^k1^l-1\"^c-260^*130^.720^,230^_-30^*70^.30^,40^_-120^*2^.20^,22^_-260^*130^.260^,400^T0\" /><inf x=\"-42^*740^Zhero1_guns^;0^2-60^*91^.11^,31^(H^2-55^*109^.4^,200^x^y0^z0^h5^I^2-31^*91^.7^,31^(H^2-29^*109^.4^,200^x^y0^z0^h5^I^1-21^*699^A0^B0^C100^D100^q0^r-1^F3^E-1^k0^l-1^1-15^*699^A0^B0^C800^D800^q0^r-1^F13^E-1^k0^l-1\" /><inf x=\"-21^*720^Zhero2_guns^;-1^4-15^*710^idefibrillator^s-1^L4-15^*720^i^/2^s-1^M3^4-15^*730^iraygun^s-1^M3^4-15^*740^iminigun^s-1^L4-15^*750^iplasmagun^s-1^M3^4-15^*760^irl^s-1^M3^4-15^*770^jitem_grenade^s-1^L2-50^*70^.20^,50^x^y0^z0^h10^I^9^G1^X0^W0^7^G1^m1^o0^m1^p1^m1^n0^>\"^e-55^*90^.4^,200^K-1^J4\"^e-50^*82^.20^,130^K1^J1^7^G1^m1^o0^m1^p4^m1^n2^>\"^e-50^-50^.20^,50^K-1^J4^3-10^*70^.100^,30^_^*76^.40^,30^_19^*80^.101^,300^T0\"^e-60^*20^.60^,140^K2^J6^3-111^-55^.170^,45^_-144^-50^.94^,50^_-30^-50^.120^,19^_23^-20^.81^,10^_20^-26^.90^,740^T0^7^G1^m1^o1^m1^p4^m1^n2^m2^o41^m2^ptest_sound^m2^n0^m3^o29^m3^p0^m3^n4^m4^o29^m4^p0^m4^n5^$^3-180^-40^.50^,60^_-260^-20^.110^,80^_-218^*70^.58^,60^_-260^*70^.80^,108^_-140^*10^.30^,10^_-70^*10^.20^,20^_-10^*130^.205^,30^_50^*10^.40^,10^_40^*70^.80^,40^_-130^*6^.15^,160^T0^5^-20^.20^,300^A0^B-1^Y0^g0^610^-500^jantigravity^U-1^O0^P0^3-180^*70^.130^,400^T0\"^d-40^*89^~d20^*99^~d50^*99^~d-80^*20^~d-55^!5^~d10^*36^~d10^-49^~d-170^-0^u0.4^t1^3100^*10^.95^,1100^T0\" /><vehicle x=\"77^!00^r-1^jveh_corvette^A0^B0\" hpp=\"400^177^!61^A0^B0^C100^D100^q1^r-1^F5^E-2^k0^l5^477^!30^ivehgun^s-1^L3^*10^.10^,10^_-30^-20^.10^,100^T0\" /><vehicle x=\"60^*200^r-1^jveh_corvette^A0^B0\" hpp=\"400^460^*180^ivehgun^s-1^L160^*159^A0^B0^C100^D100^q1^r-1^F5^E-2^k0^l4^3-80^*2^.20^,220^T0\"^e53^*40^.41^,630^K-1^J4^1-127^*129^A0^B0^C100^D100^q1^r1^F5^E-2^k0^l3\" /><vehicle x=\"-127^*170^r1^jveh_corvette^A0^B0\" hpp=\"400^4-127^*150^ivehgun^s-1^M0\"^e-138^*33^.24^,260^K-1^J4^+-80^-46^.100^,40^g1^+-50^-50^.20^,50^g1^+-130^-46^.30^,40^g1^3-100^-40^.20^,15^_-170^!4^.10^,10^_-140^-33^.8^,11^_-26^-24^.16^,60^T0^270^*30^.5^,200^x^y0^z0^h10^I^276^*30^.5^,200^x^y0^z0^h10^I^282^*30^.5^,200^x^y0^z0^h10^I^386^*7^.18^,30^T0\"^e70^*49^.5^,200^K-1^J4\"^e76^*49^.5^,200^K-1^J4\"^e82^*49^.5^,200^K-1^J4^7^G1^m1^o0^m1^p5^m1^n6^>^7^G1^m1^o0^m1^p6^m1^n7^>^7^G1^m1^o0^m1^p7^m1^n8^>^1105^*99^A0^B0^C1000^D1000^q1^r-1^F2^E-1^k0^l-1^4105^*130^iraygun^s-1^M2^1114^*99^A0^B0^C1000^D1000^q1^r-1^F2^E-1^k0^l-1^1123^*99^A0^B0^C1000^D1000^q1^r-1^F2^E-1^k0^l-1^4114^*130^iraygun^s-1^M2^4123^*130^iraygun^s-1^M2^3130^*22^.38^,22^_100^*80^.95^,40^_240^*60^.220^,160^_190^*5^.62^,1050^T0^9^G1^X6^W10^7^G1^m1^o42^m1^pSomebody has to activate the time machine, I will do it myself.^m1^n1^m2^o25^m2^p2^m2^n0^)^a^G1^X7^W60^7^G1^m1^o42^m1^pGood luck!^m1^n3^m2^o25^m2^p3^m2^n0^)^9^G1^X8^W60^7^G1^m1^o0^m1^p3^m1^n9^m2^o32^m2^p1^m2^n3^m3^o32^m3^p2^m3^n3^m4^o-1^m4^p0^m4^n0^$\"^e-29^*90^.4^,200^K-1^J4^260^*100^.6^,20^(I^3152^*17^.28^,170^T0\"^e186^*85^.5^,50^K-1^J4\"^e177^*41^.12^,330^K9^J6^7^G1^m1^o14^m1^p1^m1^n10^m2^o40^m2^p1^m2^n0^m3^o32^m3^p1^m3^n1^m4^o0^m4^p9^m4^n12^m5^o14^m5^p2^m5^n13^m6^o0^m6^p#doorasdc^m6^n#region_212^m7^o32^m7^p2^m7^n1^m8^o-1^m8^p0^m8^n0^m9^o-1^m9^p0^m9^n0^m10^o-1^m10^p0^m10^n0\"^c-55^*90^.4^,200^T4\"^c-29^*90^.4^,200^T4\"^c-48^*68^.1^,1210^T4\"^c-33^*68^.1^,1210^T4\"^c71^*30^.3^,200^T4\"^c77^*30^.3^,200^T4\"^c83^*30^.3^,200^T4\"^d196^*500^u0.4^t1^2162^*57^.5^,180^x^y0^z0^h10^I\"^e162^*40^.5^,180^K-1^J4\"^c163^*40^.3^,180^T4^2180^*100^.6^,20^(I\"^e190^*85^.5^,50^K-1^J4^3380^*130^.80^,1000^T0^6353^*740^jfinal_place2^U-1^O0^P0^2336^*75^.34^,3^(H^3180^*130^.90^,200^T0^6217^*50^jantigravity^U-1^O0^P0^6230^*50^jantigravity^U-1^O0^P0^6204^*50^jantigravity^U-1^O0^P0^5195^*60^.45^,550^A0^B-0.7^Y0^g0^3243^*70^.8^,16^_280^*66^.13^,16^_282^*73^.8^,16^_325^*73^.64^,16^_316^*65^.21^,10^_350^*130^.53^,200^T0\"^d280^*1500^u0.4^t0\"^d300^*1500^u0.4^t0\"^d320^*1500^u0.4^t0\"^d340^*1500^u0.4^t0\"^d360^*1500^u0.4^t0\"^d260^*1500^u0.4^t0\"^d200^*105^~d217^*6^~d230^*6^~d204^*60^u0.4^t1^1305^*899^A0^B0^C100^D100^q1^r-1^F5^E-2^k0^l-1\" /><vehicle x=\"305^*940^r-1^jveh_corvette^A0^B0\" hpp=\"400^4305^*930^ivehgun^s-1^L5270^*130^.80^,100^A0^B3^Y0^g0^1331^*889^A0^B0^C100^D100^q1^r-1^F5^E-2^k0^l-1\" /><vehicle x=\"331^*930^r-1^jveh_corvette^A0^B0\" hpp=\"400^4331^*920^ivehgun^s-1^L1322^*1059^A0^B0^C100^D100^q1^r-1^F5^E-2^k0^l-1\" /><vehicle x=\"322^*1100^r-1^jveh_corvette^A0^B0\" hpp=\"400^4322^*1090^ivehgun^s-1^L1288^*1059^A0^B0^C100^D100^q1^r-1^F5^E-2^k0^l-1\" /><vehicle x=\"288^*1100^r-1^jveh_corvette^A0^B0\" hpp=\"400^4288^*1090^ivehgun^s-1^L4230^*850^ivehgun^s-1^L1229^*819^A0^B0^C100^D100^q1^r-1^F5^E-2^k0^l-1\" /><vehicle x=\"229^*860^r-1^jveh_corvette^A0^B0\" hpp=\"400\"^e336^*102^.34^,280^K10^J7^7^G1^m1^o43^m1^pTo be continued...^m1^n0^m2^o47^m2^p0^m2^n0^m3^o41^m3^plast_teleport^m3^n0^m4^o-1^m4^p0^m4^n0^$^3187^*80^.23^,50^T0\"^e134^*40^.14^,190^K-1^J1\"^e134^*40^.14^,190^K11^J6^7^G1^m1^o41^m1^pt_switch2^m1^n0^>\"^e310^*123^.77^,680^K12^J7^7^G1^m1^o42^m1^pForward to the past!^m1^n2^>\" />";
-         this.CACHED_MAPS["c41a"] = "<q.^f-47^*259^A0^B0^C400^D400^q1^r1^F9^E-1^k0^l-1^3-180^-^.148^,700^T0\"^c-185^*100^.330^,1120^T1^3-8^*26^.46^,5^_-6^*30^.6^,19^_-40^*30^.6^,19^_-78^*26^.46^,5^_-96^*50^.46^,8^_10^*50^.46^,8^_60^*20^.10^,10^_-110^*20^.10^,10^_-170^*30^.40^,40^_90^*30^.40^,40^_-90^*5^.10^,10^_40^*5^.10^,10^_10^*5^.10^,10^_-60^*5^.10^,10^_-70^*24^.10^,8^_20^*24^.10^,8^_80^*20^.20^,10^_-140^*20^.20^,10^_-240^*180^.80^,2500^T2^3120^*180^.120^,1350^T2\"^d-150^*1100^u1^t0\"^d-120^*1100^u1^t0\"^d-90^*1100^u1^t0\"^d-60^*1100^u1^t0\"^d-30^*1100^u1^t0\"^d^*1100^u1^t0\"^d30^*1100^u1^t0\"^d60^*1100^u1^t0\"^d90^*1100^u1^t0\"^d119^*1100^u1^t0\" /><barrel x=\"-43^*280\" uid=\"#barrel^jbar_orange^A0^B0\" /><barrel x=\"-33^*280\" uid=\"#barrel^jbar_orange^A0^B0\" /><barrel x=\"-7^*280\" uid=\"#barrel^jbar_orange^A0^B0\" /><barrel x=\"3^*280\" uid=\"#barrel^jbar_orange^A0^B0\" /><barrel x=\"-33^*20\" uid=\"#barrel^jbar_orange^A0^B0\" /><barrel x=\"-7^*20\" uid=\"#barrel^jbar_orange^A0^B0\" /><barrel x=\"22^*20\" uid=\"#barrel^jbar_orange^A0^B0\" /><barrel x=\"-62^*20\" uid=\"#barrel^jbar_orange^A0^B0\" /><barrel x=\"-122^*20\" uid=\"#barrel^jbar_orange^A0^B0\" /><barrel x=\"82^*20\" uid=\"#barrel^jbar_orange^A0^B0\" /><barrel x=\"88^*220\" uid=\"#barrel^jbar_orange^A0^B0\" /><barrel x=\"-129^*220\" uid=\"#barrel^jbar_orange^A0^B0\" /><barrel x=\"-150^*320\" uid=\"#barrel^jbar_orange^A0^B0\" /><barrel x=\"110^*320\" uid=\"#barrel^jbar_orange^A0^B0\"^e-49^*66^.13^,50\" uid=\"#region^K-1^J4\"^e-150^*79^.260^,70\" uid=\"#region^K-1^J4^2-257^*20^.19^,90\" uid=\"#door^x^y0^z0^h1^I^2-257^*36^.6^,200\" uid=\"#door^x^y0^z0^h1^I^2-256^*36^.25^,50\" uid=\"#door^x^y0^z0^h1^I^a^G10^X0^W30^7^G-1^m1^o28^m1^p1^m1^n-1^>^1-241^*199\" uid=\"#playerasds2^A0^B0^C100^D100^q2^r1^F12^E-1^k3^l0^2-32^*19^.24^,40\" uid=\"#doorsadf^x^y0^z0^h4^I^9^G1^X1^W0^7^G-1^m1^o0^m1^p3^m1^n2^m2^o26^m2^p3^m2^n0^)\"^e-32^*26^.24^,40\" uid=\"#region_356^K3^J5^7^G-1^m1^o26^m1^p2^m1^n0^m2^o0^m2^p3^m2^n3^)^7^G-1^m1^o25^m1^p2^m1^n0^>^a^G-1^X2^W30\"^e-32^*1^.24^,40\" uid=\"#region_360^K4^J5^7^G-1^m1^o25^m1^p3^m1^n0^>^a^G-1^X1^W30^3-8^-^.148^,70^_-60^-3^.78^,670^T0\" /><inf x=\"-47^*560\" uid=\"#engine_mark^Zmeat^;0^3-60^*44^.15^,4^_5^*44^.15^,4^_-110^*44^.20^,4^_50^*44^.20^,40^T0^9^G1^X5^W1^7^G1^m1^o-1^m1^p0^m1^n0^m2^o25^m2^p0^m2^n0^)^5-32^!^.24^,40\" uid=\"#pusher_374^A0^B0^Y0^g0^4-47^*290\" uid=\"#gun_378^irailgun2^s1^M3\"^d-50^*20^~d10^*20^~d-75^*41^~d35^*410^u0.4^t1\" /><inf x=\"-47^*520\" uid=\"#engine_mark^Zsky^;3^+-130^*10^.220^,50\" uid=\"#water^g0^+50^*5^.40^,50\" uid=\"#water^g0^+20^*5^.20^,50\" uid=\"#water^g0^+-50^*5^.60^,50\" uid=\"#water^g0^+-32^-^.24^,30\" uid=\"#water^g0^+-130^*5^.40^,50\" uid=\"#water^g0^+-80^*5^.20^,50\" uid=\"#water^g0^+-120^*15^.10^,50\" uid=\"#water^g0^+-100^*15^.60^,50\" uid=\"#water^g0^+^*15^.60^,50\" uid=\"#water^g0^+-40^*11^.40^,10\" uid=\"#water^g0^+-34^*15^.28^,40\" uid=\"#water^g0^+70^*15^.10^,50\" uid=\"#water^g0^3120^*32^.120^,1020^T0\"^c124^*50^.116^,280^T0\"^c127^*45^.24^,130^T4^2127^*45^.4^,130\" uid=\"#door1^x^y0^z0^h1^I^2132^*45^.4^,130\" uid=\"#door2^x^y0^z0^h1^I^2137^*45^.4^,130\" uid=\"#door3^x^y0^z0^h1^I^2142^*45^.4^,130\" uid=\"#door4^x^y0^z0^h1^I^2147^*45^.4^,130\" uid=\"#door5^x^y0^z0^h1^I\"^e127^*57^.4^,130\" uid=\"#region1^K-1^J4\"^e132^*57^.4^,130\" uid=\"#region2^K-1^J4\"^e137^*57^.4^,130\" uid=\"#region3^K-1^J4\"^e142^*57^.4^,130\" uid=\"#region4^K-1^J4\"^e147^*57^.4^,130\" uid=\"#region5^K-1^J4\"^e155^*56^.41^,390\" uid=\"#region_507^K6^J6^7^G1^m1^o7^m1^pc0a^m1^n0^>^7^G1^m1^o0^m1^p4^m1^n4^>^7^G1^m1^o0^m1^p5^m1^n5^>^7^G1^m1^o0^m1^p6^m1^n6^>^7^G1^m1^o0^m1^p7^m1^n7^>^7^G1^m1^o0^m1^p8^m1^n8^>\"^e81^*11^.8^,120\" uid=\"#region_514^K7^J1\"^e21^*37^.8^,120\" uid=\"#region_514^K8^J1\"^e-69^*37^.8^,120\" uid=\"#tr^K10^J1\"^e-129^*11^.8^,120\" uid=\"#region_514^K11^J1\"^e-30^*73^.20^,120\" uid=\"#region_514^K9^J1^5-160^*180^.280^,300\" uid=\"#pusher_121^A0^B5^Y0^g0\" />";
          this.CUR_LOADING = "";
          this.GET_TRIES = 0;
          this.MP_waiting_for_answer = true;
@@ -44888,7 +45016,7 @@ package pb2_re34_fla
          });
          this.tt_1.gotoAndStop(1);
          this.tt_2.gotoAndStop(1);
-         if(TOOLTIPS)
+         if(this.TOOLTIPS)
          {
             this.tt_2.gotoAndStop(2);
          }
@@ -44910,7 +45038,7 @@ package pb2_re34_fla
          });
          this.hi_1.gotoAndStop(1);
          this.hi_2.gotoAndStop(1);
-         if(HINTS)
+         if(this.HINTS)
          {
             this.hi_2.gotoAndStop(2);
          }
@@ -47253,7 +47381,7 @@ package pb2_re34_fla
          });
          this.conmenu_set.tt_1.gotoAndStop(1);
          this.conmenu_set.tt_2.gotoAndStop(1);
-         if(TOOLTIPS)
+         if(this.TOOLTIPS)
          {
             this.conmenu_set.tt_2.gotoAndStop(2);
          }
@@ -47275,7 +47403,7 @@ package pb2_re34_fla
          });
          this.conmenu_set.hi_1.gotoAndStop(1);
          this.conmenu_set.hi_2.gotoAndStop(1);
-         if(HINTS)
+         if(this.HINTS)
          {
             this.conmenu_set.hi_2.gotoAndStop(2);
          }
@@ -47779,7 +47907,7 @@ package pb2_re34_fla
          this.vol.volume = this.FX_VOLUME;
          this.vol2.volume = this.MUSIC_VOLUME;
          this.SHAKEAMMOUT = 0;
-         if(!TOOLTIPS)
+         if(!this.TOOLTIPS)
          {
             this.myCursor.txt.htmlText = "";
          }
